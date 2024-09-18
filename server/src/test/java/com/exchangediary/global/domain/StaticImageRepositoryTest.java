@@ -16,7 +16,7 @@ class StaticImageRepositoryTest {
     private StaticImageRepository staticImageRepository;
 
     @Test
-    public void 기분이미지등록() {
+    void 기분이미지등록() {
         //given
         final StaticImage image = StaticImage.builder()
                 .type(StaticImageType.MOOD)
@@ -33,7 +33,7 @@ class StaticImageRepositoryTest {
     }
 
     @Test
-    public void 기분이미지조회() {
+    void 기분이미지조회() {
         //given
         final StaticImage image = StaticImage.builder()
                 .type(StaticImageType.MOOD)
