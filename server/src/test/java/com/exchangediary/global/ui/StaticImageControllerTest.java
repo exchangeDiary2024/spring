@@ -32,7 +32,7 @@ class StaticImageControllerTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void init() {
+    void init() {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(staticImageController)
                 .build();
