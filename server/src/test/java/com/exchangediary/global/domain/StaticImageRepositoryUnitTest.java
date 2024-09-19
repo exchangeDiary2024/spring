@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
-class StaticImageRepositoryTest {
+class StaticImageRepositoryUnitTest {
     @Autowired
     private StaticImageRepository staticImageRepository;
 

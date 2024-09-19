@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class StaticImageQueryServiceTest {
+class StaticImageQueryServiceUnitTest {
     @InjectMocks
     private StaticImageQueryService staticImageQueryService;
     @Mock
