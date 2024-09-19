@@ -19,19 +19,23 @@ import java.util.UUID;
 public class ImageService {
     private final StaticImageRepository staticImageRepository;
     private final UploadImageRepository uploadImageRepository;
+    private static final String STATIC_IMAGE_URL = "/api/images/static/";
+    private static final String STATIC_IMAGE_NAME = "exchange-static-";
+    private static final String UPLOAD_IMAGE_URL = "/api/images/upload/";
+    private static final String UPLOAD_IMAGE_NAME = "exchange-upload-";
 
     /**
      * 사용자가 올린 이미지 업로드
-     * @param file 이미지 파일
+     *
+     * @param file   이미지 파일
      * @param status 발행 상태
      * @return
      * @throws IOException
      */
-    public UploadImage saveUploadImage(MultipartFile file, PublicationStatus status)
-            throws IOException {
-        String extension = file.getOriginalFilename().substring(file.getOriginalFilename()
-                .lastIndexOf("."));
-        String newFilename = "/api/images/upload/" + UUID.randomUUID().toString() + extension;
+    public UploadImage saveUploadImage(MultipartFile file, PublicationStatus status) throws IOException {
+        String extension = file.getOriginalFilename()
+                .substring(file.getOriginalFilename().lastIndexOf("."));
+        String newFilename = UPLOAD_IMAGE_NAME + UUID.randomUUID().toString() + extension;
 
         UploadImage image = UploadImage.builder()
                 .contentType(file.getContentType())
@@ -40,27 +44,26 @@ public class ImageService {
                 .status(status)
                 .build();
 
-        UploadImage save = uploadImageRepository.save(image);
-        save.generateImageUrl("/api/images/upload/" + save.getId());
-        return save;
+        UploadImage savedImage = uploadImageRepository.save(image);
+        savedImage.generateImageUrl(UPLOAD_IMAGE_URL + savedImage.getId());
+        return uploadImageRepository.save(savedImage);
     }
 
-    public Optional<UploadImage> getUploadImage(Long id){
+    public Optional<UploadImage> getUploadImage(Long id) {
         return uploadImageRepository.findById(id);
     }
 
     /**
      * static 이미지 업로드
+     *
      * @param file 이미지 파일
      * @param type 이미지 종류
      * @return
      * @throws IOException
      */
-    public StaticImage saveStaticImage(MultipartFile file, StaticImageType type)
-            throws IOException {
-        String extension = file.getOriginalFilename().substring(file.getOriginalFilename()
-                .lastIndexOf("."));
-        String newFilename = "/api/images/static/" + UUID.randomUUID().toString() + extension;;
+    public StaticImage saveStaticImage(MultipartFile file, StaticImageType type) throws IOException {
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String newFilename = STATIC_IMAGE_NAME + UUID.randomUUID().toString() + extension;
 
         StaticImage image = StaticImage.builder()
                 .contentType(file.getContentType())
@@ -69,12 +72,12 @@ public class ImageService {
                 .type(type)
                 .build();
 
-        StaticImage save = staticImageRepository.save(image);
-        save.generateImageUrl("/api/images/static/" + save.getId());
-        return save;
+        StaticImage savedImage = staticImageRepository.save(image);
+        savedImage.generateImageUrl(STATIC_IMAGE_URL + savedImage.getId());
+        return staticImageRepository.save(savedImage);
     }
 
-    public Optional<StaticImage> getStaticImage(Long id){
+    public Optional<StaticImage> getStaticImage(Long id) {
         return staticImageRepository.findById(id);
     }
 }
