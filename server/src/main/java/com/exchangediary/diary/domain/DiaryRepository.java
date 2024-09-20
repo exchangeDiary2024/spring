@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
-
     @Query("SELECT d FROM Diary d WHERE YEAR(d.createdAt) = :year AND MONTH(d.createdAt) = :month")
     List<Diary> findByAllYearAndMonth(int year, int month);
 }
