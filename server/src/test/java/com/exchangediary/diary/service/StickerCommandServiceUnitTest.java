@@ -69,7 +69,7 @@ public class StickerCommandServiceUnitTest {
         long stickerId = 1L;
         StickerRequest stickerRequest = mock(StickerRequest.class);
 
-        when(diaryRepository.findById(diaryId)).thenThrow(new GlobalException(ErrorCode.DIARY_NOT_FOUND));
+        when(diaryRepository.findById(diaryId)).thenReturn(Optional.empty());
 
         // when
         GlobalException exception = assertThrows(GlobalException.class,
@@ -92,7 +92,7 @@ public class StickerCommandServiceUnitTest {
         StickerRequest stickerRequest = mock(StickerRequest.class);
 
         when(diaryRepository.findById(diaryId)).thenReturn(Optional.ofNullable(mock(Diary.class)));
-        when(staticImageRepository.findById(stickerId)).thenThrow(new GlobalException(ErrorCode.STICKER_IMAGE_NOT_FOUND));
+        when(staticImageRepository.findById(stickerId)).thenReturn(Optional.empty());
 
         // when
         GlobalException exception = assertThrows(GlobalException.class,
