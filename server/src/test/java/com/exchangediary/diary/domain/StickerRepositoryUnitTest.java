@@ -25,7 +25,7 @@ public class StickerRepositoryUnitTest {
         entityManager.persist(staticImage);
         entityManager.persist(diary);
         Sticker sticker = Sticker.builder()
-                .Id(1L)
+                .id(1L)
                 .coordX(10.0)
                 .coordY(20.0)
                 .coordZ(1)
