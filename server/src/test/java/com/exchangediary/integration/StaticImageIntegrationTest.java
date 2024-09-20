@@ -15,6 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -55,6 +58,11 @@ public class StaticImageIntegrationTest {
 
         //then
         assertThat(extract.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(extract.jsonPath()).isEqualTo("/exchange/static/1");
+        List<Map<String, Object>> moods = extract.jsonPath().getList("moods");
+        assertThat(moods.size()).isEqualTo(2);
+        assertThat(moods.get(0).get("id")).isNotNull();
+        assertThat(moods.get(0).get("imageUrl")).isEqualTo("/exchange/static/1");
+        assertThat(moods.get(1).get("id")).isNotNull();
+        assertThat(moods.get(1).get("imageUrl")).isEqualTo("/exchange/static/2");
     }
 }
