@@ -41,9 +41,9 @@ class StaticImageRepositoryUnitTest {
                 .type(StaticImageType.MOOD)
                 .url("moodImageUrl")
                 .build();
+        staticImageRepository.save(image);
 
         //when
-        staticImageRepository.save(image);
         List<StaticImage> findResult = staticImageRepository.findAllByType(StaticImageType.MOOD);
 
         //then
