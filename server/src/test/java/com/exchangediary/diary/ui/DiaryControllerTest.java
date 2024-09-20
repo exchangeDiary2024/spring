@@ -38,7 +38,7 @@ class DiaryControllerTest {
     }
 
     @Test
-    void postDiarySuccess() throws Exception {
+    void 일기작성성공() throws Exception {
         //given
         Long expectedDiaryId = 1L;
         Diary diaryMock = mock(Diary.class);

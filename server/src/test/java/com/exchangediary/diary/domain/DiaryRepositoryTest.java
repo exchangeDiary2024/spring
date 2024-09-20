@@ -16,7 +16,7 @@ public class DiaryRepositoryTest {
     private DiaryRepository diaryRepository;
 
     @Test
-    public void testSaveDiary() {
+    public void 일기등록() {
         //given
         StaticImage moodImage = mock(StaticImage.class);
         UploadImage uploadImage = mock(UploadImage.class);

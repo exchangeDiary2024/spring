@@ -38,7 +38,7 @@ public class diaryPostIntegrationTest {
     }
 
     @Test
-    void 일기작성_성공() throws Exception {
+    void 일기작성성공() throws Exception {
         //given
         StaticImage moodImage = StaticImage.builder()
                 .url("/exchange/static/1")

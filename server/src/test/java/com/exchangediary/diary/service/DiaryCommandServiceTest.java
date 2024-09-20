@@ -36,7 +36,7 @@ class DiaryCommandServiceTest {
     private MultipartFile file;
 
     @Test
-    void createDiarySuccess() throws Exception {
+    void 일기작성성공() throws Exception {
         //given
         DiaryRequest diaryRequest = diaryRequest();
         UploadImageRequest uploadImageRequest = uploadImageRequest();
