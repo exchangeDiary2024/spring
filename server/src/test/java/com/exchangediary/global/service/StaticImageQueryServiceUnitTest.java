@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class StaticImageQueryServiceUnitTest {
@@ -26,9 +26,8 @@ class StaticImageQueryServiceUnitTest {
     @Test
     void 기분목록조회성공() {
         //given
-        doReturn(staticImages())
-                .when(staticImageRepository)
-                .findAllByType(StaticImageType.MOOD);
+        when(staticImageRepository.findAllByType(StaticImageType.MOOD))
+                .thenReturn(createStaticImages());
 
         //when
         MoodsResponse moods = staticImageQueryService.findMoods();
@@ -43,7 +42,7 @@ class StaticImageQueryServiceUnitTest {
         assertThat(moods.moods().get(2).imageUrl()).isEqualTo("moodImageUrl3");
     }
 
-    private List<StaticImage> staticImages() {
+    private List<StaticImage> createStaticImages() {
         List<String> dummy = List.of("moodImageUrl1", "moodImageUrl2", "moodImageUrl3");
         AtomicLong count = new AtomicLong(1);
         return dummy.stream().map(url -> StaticImage.builder()

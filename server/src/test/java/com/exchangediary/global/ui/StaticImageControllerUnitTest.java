@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,9 +43,8 @@ class StaticImageControllerUnitTest {
         //given
         MoodsResponse response = createMoodsResponse();
 
-        doReturn(response)
-                .when(staticImageService)
-                .findMoods();
+        when(staticImageService.findMoods())
+                .thenReturn(response);
 
         //when
         ResultActions resultActions = mockMvc.perform(
