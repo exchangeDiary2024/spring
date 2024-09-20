@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 class DiaryControllerTest {
-
     @InjectMocks
     private DiaryController diaryController;
     @Mock
@@ -40,16 +39,14 @@ class DiaryControllerTest {
 
     @Test
     void postDiarySuccess() throws Exception {
-
         //given
         Long expectedDiaryId = 1L;
-
         Diary diaryMock = mock(Diary.class);
+
         when(diaryMock.getId()).thenReturn(expectedDiaryId);
-
-        doReturn(diaryMock).when(diaryCommandService)
-                .createDiary(any(DiaryRequest.class), any(UploadImageRequest.class));
-
+        when(diaryCommandService
+                .createDiary(any(DiaryRequest.class), any(UploadImageRequest.class)))
+                .thenReturn(diaryMock);
         MockMultipartFile dataPart = new MockMultipartFile(
                 "data",
                 "data",
@@ -60,11 +57,10 @@ class DiaryControllerTest {
         // When
         ResultActions resultActions = mockMvc.perform(
                 multipart("/diary")
-                        .file("file", new byte[0])  // Simulating an empty file upload
-                        .file(dataPart)  // Adding the data part
+                        .file("file", new byte[0])
+                        .file(dataPart)
                         .contentType(MediaType.MULTIPART_FORM_DATA)
         );
-
 
         //then
         MvcResult mvcResult = resultActions.andExpect(status().isCreated())

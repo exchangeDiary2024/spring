@@ -24,7 +24,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DiaryCommandServiceTest {
-
     @InjectMocks
     private DiaryCommandService diaryCommandService;
     @Mock
@@ -45,8 +44,10 @@ class DiaryCommandServiceTest {
         UploadImage uploadImage = mock(UploadImage.class);
         Diary expectedDiary = Diary.of(diaryRequest, moodImage, uploadImage);
 
-        when(staticImageRepository.findById(diaryRequest.todayMoodId())).thenReturn(Optional.of(moodImage));
-        when(imageService.saveUploadImage(file, PublicationStatus.PUBLISHED)).thenReturn(uploadImage);
+        when(staticImageRepository.findById(diaryRequest.todayMoodId()))
+                .thenReturn(Optional.of(moodImage));
+        when(imageService.saveUploadImage(file, PublicationStatus.PUBLISHED))
+                .thenReturn(uploadImage);
         when(diaryRepository.save(any(Diary.class))).thenReturn(expectedDiary);
 
         //when
