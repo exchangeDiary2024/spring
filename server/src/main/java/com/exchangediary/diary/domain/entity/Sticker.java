@@ -28,7 +28,7 @@ public class Sticker extends BaseEntity {
     @Id
     @Column(name = "sticker_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     private final Double coordX;
     private final Double coordY;
     private final Integer coordZ;
@@ -53,6 +53,7 @@ public class Sticker extends BaseEntity {
                 .coordZ(coordZ)
                 .width(stickerRequest.width())
                 .height(stickerRequest.height())
+                .rotation(stickerRequest.rotation())
                 .diary(diary)
                 .staticImage(staticImage)
                 .build();
