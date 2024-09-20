@@ -41,7 +41,7 @@ class StaticImageControllerUnitTest {
     @Test
     void 기분목록조회성공() throws Exception {
         //given
-        MoodsResponse response = moodsResponse();
+        MoodsResponse response = createMoodsResponse();
 
         doReturn(response)
                 .when(staticImageService)
@@ -66,13 +66,13 @@ class StaticImageControllerUnitTest {
                 .andReturn();
     }
 
-    private MoodsResponse moodsResponse() {
+    private MoodsResponse createMoodsResponse() {
         return MoodsResponse.builder()
-                .moods(staticImagesResponse())
+                .moods(createStaticImagesResponse())
                 .build();
     }
 
-    private List<StaticImageResponse> staticImagesResponse() {
+    private List<StaticImageResponse> createStaticImagesResponse() {
         List<String> dummy = List.of("moodImageUrl1", "moodImageUrl2", "moodImageUrl3");
         AtomicLong counter = new AtomicLong(1);
 
