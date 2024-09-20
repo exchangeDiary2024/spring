@@ -1,7 +1,6 @@
-package com.exchangediary.diary.controller;
+package com.exchangediary.diary.ui;
 
 import com.exchangediary.diary.service.StickerCommandService;
-import com.exchangediary.diary.ui.DiaryController;
 import com.exchangediary.diary.ui.dto.request.StickerRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
