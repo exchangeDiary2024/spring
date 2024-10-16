@@ -1,4 +1,4 @@
-package com.exchangediary.member;
+package com.exchangediary.member.api;
 
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
@@ -21,7 +21,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = {"classpath:truncate.sql"}, executionPhase = BEFORE_TEST_METHOD)
-public class KakaoLoginTest {
+public class LoginApiTest {
     @LocalServerPort
     private int port;
     @MockBean
@@ -45,9 +45,10 @@ public class KakaoLoginTest {
 
         var response = RestAssured
                 .given().log().all()
+                .redirects().follow(false)
                 .when().get("/api/kakao/callback?code="+mockCode)
                 .then().log().all()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.FOUND.value())
                 .extract();
 
         String token = response.cookie("token");
@@ -65,9 +66,10 @@ public class KakaoLoginTest {
 
         var response = RestAssured
                 .given().log().all()
+                .redirects().follow(false)
                 .when().get("/api/kakao/callback?code="+mockCode)
                 .then().log().all()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.FOUND.value())
                 .extract();
 
         String token = response.cookie("token");
