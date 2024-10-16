@@ -98,7 +98,8 @@ async function viewSelectableCharacter() {
 
 function confirmStep3() {
     if (selectedIcon != null) {
-        groupData.profileLocation = selectedIcon.children[0].children[0].src;
+        const profileLocation = selectedIcon.children[0].children[0].src;
+        groupData.profileLocation = profileLocation.substring(profileLocation.indexOf("/images"));
         return true;
     }
     openNotificationModal("error", ["캐릭터를 선택해주세요."], 2000);
