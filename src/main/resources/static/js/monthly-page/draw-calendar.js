@@ -3,7 +3,7 @@ const year = document.querySelector(".year");
 const month = document.querySelector(".month");
 const trs = Array.from(table.children[0].children).slice(3);
 const today = new Date();
-const calendarBottom = document.querySelector(".calendar-bottom")
+const calendarBottom = document.querySelector(".calendar-bottom");
 const groupId = localStorage.getItem("groupId");
 
 function init() {
@@ -22,12 +22,12 @@ async function drawDateOfCalendar() {
     let day = firstDay
     let column = 0;
 
-    const days = await fetch(`/api/groups/${groupId}/diaries/monthly?year=${year.innerText}&month=${month.innerText}`)
+    const writtenDiaryDays = await fetch(`/api/groups/${groupId}/diaries/monthly?year=${year.innerText}&month=${month.innerText}`)
         .then(response => response.json())
         .then(data => data.days);
 
     while (date <= lastDate) {
-        trs[column].children[day].innerHTML = makeCircle(date, days);
+        trs[column].children[day].innerHTML = makeCircle(date, writtenDiaryDays);
         date++;
         day++;
         if (day === 7) {
@@ -35,7 +35,7 @@ async function drawDateOfCalendar() {
             column++;
         }
     }
-    drawToday();
+    addBorderToday();
     addEvents();
 }
 
@@ -43,10 +43,10 @@ function clearDate() {
     trs.forEach(tr => Array.from(tr.children).forEach(td => td.innerText = ""));
 }
 
-function makeCircle(date, days) {
-    const index = days.findIndex((day) => day.date === date);
+function makeCircle(date, writtenDiaryDays) {
+    const index = writtenDiaryDays.findIndex((day) => day.date === date);
     if (index !== -1) {
-        return getProfileImageHtml(days[index].profileImage, date);
+        return getProfileImageHtml(writtenDiaryDays[index].profileImage, date);
     }
     if (isToday(date)) {
         return `<a class="date day${date} highlight" href="/diary">${date}</a>`;
@@ -92,6 +92,16 @@ function showDiary(event) {
         .then(data => window.location.href = `/diary/${data.diaryId}`);
 }
 
+function addBorderToday() {
+    if (isToday(today.getDate())) {
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay() - 1;
+        const todayDate = today.getDate();
+        const column = Math.floor((todayDate + firstDay) / 7);
+        const row = (todayDate + firstDay) % 7;
+        trs[column].children[row].querySelector("a").classList.add("today");
+    }
+}
+
 function drawBottom() {
     fetch(`/api/groups/${groupId}/diaries?year=${today.getFullYear()}&month=${today.getMonth() + 1}&day=${today.getDate()}`)
         .then(response => {
@@ -116,16 +126,6 @@ function drawBottom() {
                                             <span class="font-bold">일기를 작성해주세요!</span>
                                         </a>`
         })
-}
-
-function drawToday() {
-    if (isToday(today.getDate())) {
-        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay() - 1;
-        const todayDate = today.getDate();
-        const column = Math.floor((todayDate + firstDay) / 7);
-        const row = (todayDate + firstDay) % 7;
-        trs[column].children[row].querySelector("a").classList.add("today");
-    }
 }
 
 init();
