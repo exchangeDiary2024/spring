@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class GroupController {
     @GetMapping
     public String createOrJoinGroup() {
-        return "group/group-page";
+        return "group/group-create-join";
     }
 
     @GetMapping("/{groupId}")
     public String showCalendar(Model model, @PathVariable Long groupId) {
         // 인가 거쳤다고 가정
         model.addAttribute("groupId", groupId);
-        return "group/group-calendar";
+        return "group/group-monthly";
     }
 }

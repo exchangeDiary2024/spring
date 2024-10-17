@@ -1,3 +1,4 @@
+const groupName = document.querySelector(".group-name");
 const table = document.querySelector("table");
 const year = document.querySelector(".year");
 const month = document.querySelector(".month");
