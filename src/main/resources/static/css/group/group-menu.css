@@ -1,0 +1,92 @@
+.group-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.group-menu.blur {
+    background: rgba(118, 118, 118, 0.70);
+    backdrop-filter: blur(2px);
+}
+
+.group-menu .menu {
+    width: 299px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    background-color: #FFF;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+}
+
+.menu-body {
+    width: 299px;
+    height: 491px;
+}
+
+.menu-content {
+    width: 254px;
+    height: 361px;
+    position: relative;
+    left: 24px;
+    top: 80px;
+    background-image: url("/images/group/menu/post-it.svg");
+}
+
+.group-members {
+    width: 216px;
+    height: 277px;
+    position: relative;
+    top: 19px;
+    left: 19px;
+    background-image: url("/images/group/menu/members-circle.svg");
+}
+
+.group-name {
+    height: 65px;
+    position: relative;
+    top: 19px;
+
+    color: var(--kakao-logo, #000);
+    text-align: center;
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: "SOYOMaple";
+    font-size: 18.951px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 65px; /* 141.667% */
+}
+
+.menu-footer {
+    width: 299px;
+    height: 176px;
+}
+
+.menu-footer .btn {
+    width: 118px;
+    height: 40px;
+    float: left;
+
+    display: flex;
+    width: 118.442px;
+    height: 39.481px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    color: #000000;
+
+    border-radius: 15.792px;
+    border: 0.395px solid var(--kakao-logo, #000);
+}
+
+.btn.group-leave {
+    margin-left: 28px;
+}
+
+.btn.group-code {
+    margin-left: 14px;
+}

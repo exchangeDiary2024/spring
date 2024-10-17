@@ -7,6 +7,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
+import com.exchangediary.group.ui.dto.response.GroupResponse;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +49,9 @@ public class GroupQueryService {
                         "",
                         String.valueOf(groupId)
                 ));
+    }
+
+    public GroupResponse viewGroup(Long groupId) {
+        return GroupResponse.of(findGroup(groupId));
     }
 }
