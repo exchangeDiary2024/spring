@@ -41,6 +41,7 @@ public class DiaryCommandService {
             return savedDiary.getId();
         }
 
+        validateImageType(file);
         try {
             UploadImage image = UploadImage.builder()
                     .image(file.getBytes())
@@ -76,6 +77,24 @@ public class DiaryCommandService {
 
     private boolean isEmptyFile(MultipartFile file) {
         return file == null || file.isEmpty();
+    }
+
+    private void validateImageType(MultipartFile file) {
+        String contentType = file.getContentType();
+
+        if (isValidImageType(contentType)) {
+            throw new FailedImageUploadException(
+                    ErrorCode.FAILED_UPLOAD_IMAGE,
+                    "지원하지 않는 파일 형식입니다.",
+                    file.getOriginalFilename()
+            );
+        }
+    }
+
+    private boolean isValidImageType(String contentType) {
+        return "image/jpeg".equals(contentType) ||
+                "image/gif".equals(contentType) ||
+                "image/png".equals(contentType);
     }
 
 }
