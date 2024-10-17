@@ -5,7 +5,7 @@ const STEP2_HTML_CREATE = `
                         <div class="input-box">
                             <div class="input-textarea">
                                 <label>
-                                    <textarea class="group-name input-value" placeholder="그룹명" spellcheck="false" maxlength="10"></textarea>
+                                    <textarea class="group-name input-value" placeholder="그룹명" spellcheck="false" maxlength="11"></textarea>
                                 </label>
                             </div>
                         </div>
@@ -48,36 +48,32 @@ function initStep2() {
 
     inputValue.addEventListener("input", () => {
         changeBoxBorderStyle();
-        if (isCreate()) {
+        if (isCreateInStep2()) {
             error.innerText = verifyGroupName();
         }
     })
 }
 
 async function confirmStep2() {
-    if (isCreate() && error.innerText === "") {
-        if (inputValue.value === "") {
-            openNotificationModal("error", ["그룹명을 입력해주세요."], 2000);
-            return false;
-        }
+    if (isJoinInStep2()) {
+        return await matchGroupByGroupCode()
+    }
+    if (inputValue.value === "") {
+        openNotificationModal("error", ["그룹명을 입력해주세요."], 2000);
+        return false;
+    }
+    if (isCreateInStep2() && error.innerText === "") {
         groupData.groupName = inputValue.value;
         return true;
-    }
-    if (isJoin()) {
-        if (inputValue.value === "") {
-            openNotificationModal("error", ["그룹코드를 입력해주세요."], 2000);
-            return false;
-        }
-        return await matchGroupByGroupCode()
     }
     return false;
 }
 
-function isCreate() {
+function isCreateInStep2() {
     return inputValue.classList.contains("group-name");
 }
 
-function isJoin() {
+function isJoinInStep2() {
     return inputValue.classList.contains("group-code");
 }
 
@@ -95,13 +91,13 @@ function changeBoxBorderStyle() {
 function verifyGroupName() {
     const groupName = document.querySelector(".group-name");
     const specialChar = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
-    const whiteSpace = /^\s/;
+    const whiteSpace = /\s/;
 
     if (specialChar.test(groupName.value)) {
         return "특수문자는 사용할 수 없습니다.";
     }
     if (whiteSpace.test(groupName.value)) {
-        return "공백으로 시작할 수 없습니다.";
+        return "공백을 포함할 수 없습니다.";
     }
     if (groupName.value.length > 10) {
         return "최대 10자까지 입력 가능합니다.";
@@ -121,18 +117,18 @@ async function matchGroupByGroupCode() {
             "code": groupCode.value
         })
     })
-        .then(response => {
-        if (response.status !== 200) {
-            throw new Error();
-        }
-        return response.json();
+        .then(async response => {
+            if (response.status !== 200) {
+                throw await response.json();
+            }
+            return response.json();
     })
         .then(data => {
             groupData.groupId = data.groupId;
             return true;
         })
-        .catch(() => {
-            openNotificationModal("error", ["그룹코드가 유효하지 않습니다."], 2000);
+        .catch(data => {
+            openNotificationModal("error", [data.message], 2000);
             return false;
         });
 }

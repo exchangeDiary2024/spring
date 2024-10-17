@@ -23,11 +23,12 @@
             </div>
         </div>
         <div class="content">
-            <div class="image photo-btn">
-                <img src="/images/diary/write-page/photo_icon.svg" style="position: relative; top: 95px;">
-            </div>
+            <a class="image photo-btn">
+                <img src="/images/diary/write-page/photo_icon.svg">
+            </a>
+            <input id="photo-input" type="file" accept="image/*" style="display: none;" />
             <div class="diary-content-area">
-                <textarea class="diary-content" placeholder="여기에 일기를 작성해주세요〰️"></textarea>
+                <textarea class="diary-content" placeholder="이곳을 클릭해 일기를 작성하세요."></textarea>
             </div>
         </div>
     </div>
@@ -68,28 +69,6 @@
                         </tr>
                     </table>
                 </div>
-                <div class="photo">
-                    <div class="modal-title">
-                        <p class="modal-text">사진을 추가할 방법을 선택해주세요.</p>
-                    </div>
-                    <a class="modal-btn camera" href="#">
-                        <div class="modal-icon">
-                            <img src="/images/diary/write-page/modal/camera_icon.svg" style="width: 50px; height: 50px; flex-shrink: 0;"/>
-                        </div>
-                        <div class="modal-btn-text">
-                            <span class="photo-text">카메라</span>
-                        </div>
-                    </a>
-                    <div class="partition-line"></div>
-                    <a class="modal-btn gallery" href="#">
-                        <div class="modal-icon">
-                            <img src="/images/diary/write-page/modal/photo_icon.svg" style="width: 48px; height: 48px; flex-shrink: 0;"/>
-                        </div>
-                        <div class="modal-btn-text">
-                            <span class="photo-text">갤러리</span>
-                        </div>
-                    </a>
-                </div>
             </div>
         </div>
     </div>
@@ -100,6 +79,7 @@
     <script src="/js/diary/write-page/modal.js"></script>
     <script src="/js/diary/write-page/sync-textarea.js"></script>
     <script src="/js/diary/write-page/write-diary.js"></script>
+    <script src="/js/diary/write-page/photo.js"></script>
 </th:block>
 
 </html>
