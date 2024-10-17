@@ -85,8 +85,9 @@ function addEvents() {
 function showDiary(event) {
     event.preventDefault();
     const url = event.currentTarget.href;
+    const day = event.currentTarget.classList[1].substr(3);
 
-    fetch(`${url}?year=${year.innerText}&month=${month.innerText}&day=${event.target.innerText}`)
+    fetch(`${url}?year=${year.innerText}&month=${month.innerText}&day=${day}`)
         .then(response => response.json())
         .then(data => window.location.href = `/group/${groupId}/diary/${data.diaryId}`);
 }
