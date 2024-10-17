@@ -115,6 +115,29 @@ class DiaryCreateApiTest extends ApiBaseTest {
                 .body("message", equalTo(ErrorCode.DIARY_DUPLICATED.getMessage()));
     }
 
+    @Test
+    void 일기_작성_실패_이미지_형식_실패() throws JsonProcessingException {
+        Group group = createGroup();
+        groupRepository.save(group);
+        Map<String, String> data = new HashMap<>();
+        data.put("content", "buddies");
+        data.put("moodLocation", "/images/sad.png");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonData = objectMapper.writeValueAsString(data);
+
+        RestAssured
+                .given().log().all()
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("data", jsonData, "application/json")
+                .multiPart("file", new File("src/main/resources/static/images/character/red.svg"), "image/svg")
+                .cookie("token", token)
+                .when().post(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+                .body("message", equalTo(ErrorCode.INVALID_IMAGE_FORMAT.getMessage()));
+    }
+
+
     private Diary createDiary(Group group) {
         return Diary.builder()
                 .content("하이하이")
