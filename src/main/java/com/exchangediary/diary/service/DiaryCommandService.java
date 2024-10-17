@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,6 @@ public class DiaryCommandService {
     private final DiaryRepository diaryRepository;
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
-
 
     public Long createDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
@@ -41,7 +41,6 @@ public class DiaryCommandService {
             return savedDiary.getId();
         }
 
-        validateImageSize(file);
         validateImageType(file);
         try {
             UploadImage image = UploadImage.builder()
@@ -82,8 +81,9 @@ public class DiaryCommandService {
 
     private void validateImageType(MultipartFile file) {
         String contentType = file.getContentType();
+        System.out.println(contentType);
 
-        if (!isValidImageType(contentType)) {
+        if (!VALID_IMAGE_TYPES.contains(contentType)) {
             throw new FailedImageUploadException(
                     ErrorCode.INVALID_IMAGE_FORMAT,
                     "",
@@ -92,22 +92,11 @@ public class DiaryCommandService {
         }
     }
 
-    private boolean isValidImageType(String contentType) {
-        return "image/jpeg".equals(contentType) ||
-                "image/gif".equals(contentType) ||
-                "image/png".equals(contentType) ||
-                "image/heic".equals(contentType) ||
-                "image/heif".equals(contentType);
-    }
-
-    private void validateImageSize(MultipartFile file) {
-        long maxSizeInBytes = 5 * 1024 * 1024;
-        if (file.getSize() >= maxSizeInBytes) {
-            throw new FailedImageUploadException(
-                    ErrorCode.IMAGE_SIZE_TOO_LARGE,
-                    "",
-                    file.getOriginalFilename()
-            );
-        }
-    }
+    private static final Set<String> VALID_IMAGE_TYPES = Set.of(
+            "image/jpeg",
+            "image/gif",
+            "image/png",
+            "image/heic",
+            "image/heif"
+    );
 }
