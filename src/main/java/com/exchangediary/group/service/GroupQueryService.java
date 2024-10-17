@@ -49,4 +49,14 @@ public class GroupQueryService {
                         String.valueOf(groupId)
                 ));
     }
+
+    public String findGroupName(Long groupId) {
+        return groupRepository.findNameById(groupId)
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.GROUP_NOT_FOUND,
+                        "",
+                        String.valueOf(groupId)
+                ))
+                .name();
+    }
 }

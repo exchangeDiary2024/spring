@@ -28,7 +28,6 @@ public class DiaryCommandService {
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
 
-
     public Long createDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
         Group group = groupQueryService.findGroup(groupId);
