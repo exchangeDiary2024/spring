@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http//www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
 
 <th:block layout:fragment="header">
     <title>스프링 - 일기 작성</title>
@@ -12,7 +12,7 @@
     <div class="background" style="background-image: url('/images/diary/write-page/background.svg');">
         <div class="top-bar">
             <div class="bar-back">
-                <a href="/" class="back-btn"><img class="bar-icon" src="/images/common/back_icon.svg" /></a>
+                <a th:href="@{/group/{groupId}(groupId=${groupId})}" class="back-btn"><img class="bar-icon" src="/images/common/back_icon.svg" /></a>
             </div>
             <div class="bar-main">
                 <span class="date"></span>
@@ -76,6 +76,9 @@
 
 
 <th:block layout:fragment="script">
+    <script>
+        const groupId = [[${groupId}]];
+    </script>
     <script src="/js/diary/write-page/modal.js"></script>
     <script src="/js/diary/write-page/sync-textarea.js"></script>
     <script src="/js/diary/write-page/write-diary.js"></script>

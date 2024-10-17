@@ -13,7 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JwtAuthenticationInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
     private static final String COOKIE_NAME = "token";
     private final JwtService jwtService;
     private final CookieService cookieService;
@@ -31,10 +31,10 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             Long memberId = jwtService.extractMemberId(token);
             request.setAttribute("memberId", memberId);
         } catch (UnauthorizedException exception) {
-            response.sendRedirect(request.getContextPath()+ "/");
-            return false;
+            return true;
         }
-        return true;
+        response.sendRedirect(request.getContextPath()+ "/group");
+        return false;
     }
 
     private String getJwtTokenFromCookies(HttpServletRequest request) {

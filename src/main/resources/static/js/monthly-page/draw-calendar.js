@@ -3,8 +3,7 @@ const year = document.querySelector(".year");
 const month = document.querySelector(".month");
 const trs = Array.from(table.children[0].children).slice(3);
 const today = new Date();
-const calendarBottom = document.querySelector(".calendar-bottom");
-const groupId = localStorage.getItem("groupId");
+const calendarBottom = document.querySelector(".calendar-bottom")
 
 function init() {
     year.innerText = today.getFullYear();
@@ -49,7 +48,7 @@ function makeCircle(date, writtenDiaryDays) {
         return getProfileImageHtml(writtenDiaryDays[index].profileImage, date);
     }
     if (isToday(date)) {
-        return `<a class="date day${date} highlight" href="/diary">${date}</a>`;
+        return `<a class="date day${date} highlight" href="/group/${groupId}/diary">${date}</a>`;
     }
     return `<span class="date day${date}">${date}</span>`;
 }
@@ -85,11 +84,10 @@ function addEvents() {
 function showDiary(event) {
     event.preventDefault();
     const url = event.currentTarget.href;
-    const day = event.currentTarget.classList[1].substr(3);
 
-    fetch(`${url}?year=${year.innerText}&month=${month.innerText}&day=${day}`)
+    fetch(`${url}?year=${year.innerText}&month=${month.innerText}&day=${event.target.innerText}`)
         .then(response => response.json())
-        .then(data => window.location.href = `/diary/${data.diaryId}`);
+        .then(data => window.location.href = `/group/${groupId}/diary/${data.diaryId}`);
 }
 
 function addBorderToday() {
@@ -111,14 +109,14 @@ function drawBottom() {
             return response.json()
         })
         .then(data => {
-            calendarBottom.innerHTML = `<a href="/diary/${data.diaryId}" class="bottom-font">
+            calendarBottom.innerHTML = `<a href="/group/${groupId}/diary/${data.diaryId}" class="bottom-font">
                                                         <span class="font-bold">오늘 일기가 업로드 되었어요.</span>
                                                         <br>
                                                         <span>날짜를 눌러 확인해보세요!</span>
                                                     </a>`
         })
         .catch(() => {
-            calendarBottom.innerHTML = `<a href="/diary" class="bottom-font">
+            calendarBottom.innerHTML = `<a href="/group/${groupId}/diary" class="bottom-font">
                                             <span>내가 일기를 작성할 차례에요.</span>
                                             <br>
                                             <span>기다리는 친구들을 위해</span>
