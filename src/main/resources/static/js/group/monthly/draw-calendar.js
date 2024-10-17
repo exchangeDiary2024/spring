@@ -1,4 +1,3 @@
-const groupName = document.querySelector(".group-name");
 const table = document.querySelector("table");
 const year = document.querySelector(".year");
 const month = document.querySelector(".month");
@@ -9,6 +8,7 @@ const calendarBottom = document.querySelector(".calendar-bottom")
 function init() {
     year.innerText = today.getFullYear();
     month.innerText = today.getMonth() + 1;
+    document.querySelector(".group-name").innerText = `${groupName}\`s`
 
     drawDateOfCalendar();
     drawBottom();
