@@ -42,6 +42,7 @@ public class DiaryCommandService {
         }
 
         validateImageType(file);
+        validateImageSize(file);
         try {
             UploadImage image = UploadImage.builder()
                     .image(file.getBytes())
@@ -82,10 +83,10 @@ public class DiaryCommandService {
     private void validateImageType(MultipartFile file) {
         String contentType = file.getContentType();
 
-        if (isValidImageType(contentType)) {
+        if (!isValidImageType(contentType)) {
             throw new FailedImageUploadException(
-                    ErrorCode.FAILED_UPLOAD_IMAGE,
-                    "지원하지 않는 파일 형식입니다.",
+                    ErrorCode.INVALID_IMAGE_FORMAT,
+                    "",
                     file.getOriginalFilename()
             );
         }
@@ -94,7 +95,19 @@ public class DiaryCommandService {
     private boolean isValidImageType(String contentType) {
         return "image/jpeg".equals(contentType) ||
                 "image/gif".equals(contentType) ||
-                "image/png".equals(contentType);
+                "image/png".equals(contentType) ||
+                "image/heic".equals(contentType) ||
+                "image/heif".equals(contentType);
     }
 
+    private void validateImageSize(MultipartFile file) {
+        long maxSizeInBytes = 5 * 1024 * 1024;
+        if (file.getSize() >= maxSizeInBytes) {
+            throw new FailedImageUploadException(
+                    ErrorCode.IMAGE_SIZE_TOO_LARGE,
+                    "",
+                    file.getOriginalFilename()
+            );
+        }
+    }
 }
