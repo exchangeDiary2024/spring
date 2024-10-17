@@ -94,6 +94,10 @@ async function viewSelectableCharacter() {
 
         pring.classList.add("gray");
     });
+
+    if (selectedImages.length === 7) {
+        openNotificationModal("error", ["그룹원이 꽉 차", "해당 그룹에 들어갈 수 없습니다."], 2000, prevStep);
+    }
 }
 
 function confirmStep3() {
