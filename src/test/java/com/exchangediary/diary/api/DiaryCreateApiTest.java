@@ -137,7 +137,6 @@ class DiaryCreateApiTest extends ApiBaseTest {
                 .body("message", equalTo(ErrorCode.INVALID_IMAGE_FORMAT.getMessage()));
     }
 
-
     private Diary createDiary(Group group) {
         return Diary.builder()
                 .content("하이하이")

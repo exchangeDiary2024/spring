@@ -41,8 +41,8 @@ public class DiaryCommandService {
             return savedDiary.getId();
         }
 
-        validateImageType(file);
         validateImageSize(file);
+        validateImageType(file);
         try {
             UploadImage image = UploadImage.builder()
                     .image(file.getBytes())
