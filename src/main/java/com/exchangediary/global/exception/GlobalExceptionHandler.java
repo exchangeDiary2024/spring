@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Objects;
 
-import static com.exchangediary.global.exception.ErrorCode.IMAGE_SIZE_TOO_LARGE;
-import static com.exchangediary.global.exception.ErrorCode.INVALID_IMAGE_FORMAT;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -71,17 +68,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({FailedImageUploadException.class})
     public ResponseEntity<ApiErrorResponse> handleFailedImageUploadException(FailedImageUploadException exception) {
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        ErrorCode errorCode = exception.getErrorCode();
-
-        if (errorCode == IMAGE_SIZE_TOO_LARGE) {
-            status = HttpStatus.PAYLOAD_TOO_LARGE;
-        }
-        if (errorCode == INVALID_IMAGE_FORMAT) {
-            status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-        }
-        ApiErrorResponse apiErrorResponse = ApiErrorResponse.from(errorCode, errorCode.getMessage(), exception.getValue());
-
-        return new ResponseEntity<>(apiErrorResponse, status);
+        ApiErrorResponse apiErrorResponse = ApiErrorResponse.from(
+                exception.getErrorCode(),
+                exception.getErrorCode().getMessage(),
+                exception.getValue()
+        );
+        return ResponseEntity
+                .status(exception.getErrorCode().getStatusCode())
+                .body(apiErrorResponse);
     }
 }

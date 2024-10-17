@@ -81,7 +81,6 @@ public class DiaryCommandService {
 
     private void validateImageType(MultipartFile file) {
         String contentType = file.getContentType();
-        System.out.println(contentType);
 
         if (!VALID_IMAGE_TYPES.contains(contentType)) {
             throw new FailedImageUploadException(

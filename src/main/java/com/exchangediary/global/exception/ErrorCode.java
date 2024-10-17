@@ -24,8 +24,6 @@ public enum ErrorCode {
 
     FULL_MEMBERS_OF_GROUP(HttpStatus.CONFLICT, "그룹내의 인원수가 초과되었습니다."),
 
-    IMAGE_SIZE_TOO_LARGE(HttpStatus.PAYLOAD_TOO_LARGE, "사진 파일 크기가 너무 큽니다."),
-
     INVALID_IMAGE_FORMAT(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 파일 형식입니다."),
 
     FAILED_TO_LOGIN_KAKAO(HttpStatus.INTERNAL_SERVER_ERROR, "kakao 로그인에 실패했습니다."),
