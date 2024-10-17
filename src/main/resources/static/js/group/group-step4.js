@@ -127,10 +127,10 @@ async function joinGroup() {
         })
     })
         .then(response => {
-            if (response.status === 200) {
-                return true;
-            }
-            openNotificationModal("error", ["이미 선택된 캐릭터입니다.<br>다시 선택해주세요."], 2000);
+             if (response.status === 200) {
+                 return true;
+             }
+            openNotificationModal("error", ["이미 선택된 캐릭터입니다.<br>다시 선택해주세요."], 2000, prevStep);
             return false;
         });
 }

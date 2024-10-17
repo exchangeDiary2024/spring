@@ -52,7 +52,7 @@ function writeDiary() {
         })
         .then(contentLocation => {
             closeModal(); // TODO: 약간의 딜레이 문제
-            openNotificationModal("success", ["일기가 작성되었어요!"], 2000, contentLocation);
+            openNotificationModal("success", ["일기가 작성되었어요!"], 2000, () => redirect(contentLocation));
             showSuccess(contentLocation);
         })
         .catch(() => {
