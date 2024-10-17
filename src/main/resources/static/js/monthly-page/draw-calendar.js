@@ -46,14 +46,23 @@ function clearDate() {
 function makeCircle(date, days) {
     const index = days.findIndex((day) => day.date === date);
     if (index !== -1) {
-        return `<a class="date day${date} highlight written" href="/api/groups/${groupId}/diaries">
-                    <img id="${days[index].profileImage}" style="width: 30px; height: 30px;">
-                </a>`;
+        return getProfileImageHtml(days[index].profileImage, date);
     }
     if (isToday(date)) {
         return `<a class="date day${date} highlight" href="/diary">${date}</a>`;
     }
     return `<span class="date day${date}">${date}</span>`;
+}
+
+function getProfileImageHtml(profileImage, date) {
+    if (profileImage === "blue" || profileImage === "green") {
+        return `<a class="date day${date} highlight written" href="/api/groups/${groupId}/diaries">
+                    <img id="${profileImage}" class=${profileImage}>
+                </a>`;
+    }
+    return `<a class="date day${date} highlight written" href="/api/groups/${groupId}/diaries">
+                <img id="${profileImage}" class="profile-icon"">
+            </a>`;
 }
 
 function isToday(date) {

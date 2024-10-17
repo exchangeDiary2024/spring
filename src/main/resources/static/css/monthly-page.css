@@ -189,3 +189,23 @@ th,td {
     line-height: 28px; /* 140% */
     letter-spacing: 0.2px;
 }
+
+.profile-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.blue {
+    width: 30px;
+    height: 35.946px;
+    position: relative;
+    bottom: 2px;
+    flex-shrink: 0;
+}
+
+.green {
+    width: 37.155px;
+    height: 30px;
+    flex-shrink: 0;
+}
