@@ -25,10 +25,9 @@ async function drawDateOfCalendar() {
     const days = await fetch(`/api/groups/${groupId}/diaries/monthly?year=${year.innerText}&month=${month.innerText}`)
         .then(response => response.json())
         .then(data => data.days);
-    const diaryDays = days.map(day => Number(day.date))
 
     while (date <= lastDate) {
-        trs[column].children[day].innerHTML = makeCircle(date, diaryDays);
+        trs[column].children[day].innerHTML = makeCircle(date, days);
         date++;
         day++;
         if (day === 7) {
@@ -36,36 +35,39 @@ async function drawDateOfCalendar() {
             column++;
         }
     }
-    addEvents();
     drawToday();
+    addEvents();
 }
 
 function clearDate() {
     trs.forEach(tr => Array.from(tr.children).forEach(td => td.innerText = ""));
 }
 
-function makeCircle(date, diaryDays) {
-    if (diaryDays.includes(date)) {
-        return `<a class="date day${date} diary highlight" href="/api/groups/${groupId}/diaries">${date}</a>`;
+function makeCircle(date, days) {
+    const index = days.findIndex((day) => day.date === date);
+    if (index !== -1) {
+        return `<a class="date day${date} highlight written" href="/api/groups/${groupId}/diaries">
+                    <img id="${days[index].profileImage}" style="width: 30px; height: 30px;">
+                </a>`;
     }
     if (isToday(date)) {
-        return `<a class="date day${date} today highlight" href="/diary">${date}</a>`;
+        return `<a class="date day${date} highlight" href="/diary">${date}</a>`;
     }
     return `<span class="date day${date}">${date}</span>`;
 }
 
 function isToday(date) {
-    if (today.getFullYear() != year.innerText) {
+    if (today.getFullYear() !== Number(year.innerText)) {
         return false
     }
-    if (today.getMonth() != month.innerText - 1) {
+    if (today.getMonth() !== Number(month.innerText) - 1) {
         return false
     }
-    return today.getDate() == date;
+    return today.getDate() === date;
 }
 
 function addEvents() {
-    const diaryDays = document.querySelectorAll("a.diary");
+    const diaryDays = document.querySelectorAll("a.written");
     Array.from(diaryDays).forEach( date => {
         date.addEventListener("click", showDiary);
     })
@@ -73,8 +75,10 @@ function addEvents() {
 
 function showDiary(event) {
     event.preventDefault();
-    const url = event.target.href
-    fetch(`${url}?year=${year.innerText}&month=${month.innerText}&day=${event.target.innerText}`)
+    const url = event.currentTarget.href;
+    const day = event.currentTarget.classList[1].substr(3);
+
+    fetch(`${url}?year=${year.innerText}&month=${month.innerText}&day=${day}`)
         .then(response => response.json())
         .then(data => window.location.href = `/diary/${data.diaryId}`);
 }

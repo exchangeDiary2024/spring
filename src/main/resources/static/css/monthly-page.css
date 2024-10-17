@@ -140,17 +140,12 @@ th,td {
     transform: rotate(45deg); /* 각도 */
 }
 
-.diary {
-    background-color: #FFCC00;
-}
-
 .today {
     color: rgba(0, 0, 0, 1);
     border-width: 2px;
 }
 
 .highlight {
-    color: rgba(0, 0, 0, 1);
     width: 36px;
     height: 36px;
 }
