@@ -45,10 +45,20 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
                 .members();
 
         assertThat(members).hasSize(7);
+        assertThat(members.get(0).isSelf()).isTrue();
         assertThat(members.get(0).nickname()).isEqualTo(this.member.getNickname());
-        for (int idx = 1; idx < 7; idx++) {
-            assertThat(members.get(idx).nickname()).isEqualTo("name" + (idx + 1));
-        }
+        assertThat(members.get(1).nickname()).isEqualTo("name2");
+        assertThat(members.get(2).nickname()).isEqualTo("name3");
+        assertThat(members.get(3).nickname()).isEqualTo("name4");
+        assertThat(members.get(4).nickname()).isEqualTo("name5");
+        assertThat(members.get(5).nickname()).isEqualTo("name6");
+        assertThat(members.get(6).nickname()).isEqualTo("name7");
+        assertThat(members.get(1).isSelf()).isFalse();
+        assertThat(members.get(2).isSelf()).isFalse();
+        assertThat(members.get(3).isSelf()).isFalse();
+        assertThat(members.get(4).isSelf()).isFalse();
+        assertThat(members.get(5).isSelf()).isFalse();
+        assertThat(members.get(6).isSelf()).isFalse();
     }
 
     @Test
@@ -77,13 +87,14 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
                 .members();
 
         assertThat(members).hasSize(7);
-        assertThat(members.get(0).nickname()).isEqualTo(this.member.getNickname());
-        assertThat(members.get(1).nickname()).isEqualTo("name5");
-        assertThat(members.get(2).nickname()).isEqualTo("name6");
-        assertThat(members.get(3).nickname()).isEqualTo("name7");
-        assertThat(members.get(4).nickname()).isEqualTo("name1");
-        assertThat(members.get(5).nickname()).isEqualTo("name2");
-        assertThat(members.get(6).nickname()).isEqualTo("name3");
+        assertThat(members.get(3).isSelf()).isEqualTo(true);
+        assertThat(members.get(0).nickname()).isEqualTo("name1");
+        assertThat(members.get(1).nickname()).isEqualTo("name2");
+        assertThat(members.get(2).nickname()).isEqualTo("name3");
+        assertThat(members.get(3).nickname()).isEqualTo(this.member.getNickname());
+        assertThat(members.get(4).nickname()).isEqualTo("name5");
+        assertThat(members.get(5).nickname()).isEqualTo("name6");
+        assertThat(members.get(6).nickname()).isEqualTo("name7");
     }
 
     @Test
@@ -108,10 +119,14 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
                 .members();
 
         assertThat(members).hasSize(7);
-        assertThat(members.get(0).nickname()).isEqualTo(this.member.getNickname());
-        for (int idx = 1; idx < 7; idx++) {
-            assertThat(members.get(idx).nickname()).isEqualTo("name" + idx);
-        }
+        assertThat(members.get(6).isSelf()).isEqualTo(true);
+        assertThat(members.get(6).nickname()).isEqualTo(this.member.getNickname());
+        assertThat(members.get(0).nickname()).isEqualTo("name1");
+        assertThat(members.get(1).nickname()).isEqualTo("name2");
+        assertThat(members.get(2).nickname()).isEqualTo("name3");
+        assertThat(members.get(3).nickname()).isEqualTo("name4");
+        assertThat(members.get(4).nickname()).isEqualTo("name5");
+        assertThat(members.get(5).nickname()).isEqualTo("name6");
     }
 
     private Group createGroup() {
