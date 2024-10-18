@@ -31,13 +31,13 @@ public class GroupValidationService {
         }
     }
 
-    public void checkProfileDuplicate(List<Member> members, String profileLocation) {
+    public void checkProfileDuplicate(List<Member> members, String profileImage) {
         if (members.stream()
-                .anyMatch(member -> member.getProfileLocation().equals(profileLocation))) {
+                .anyMatch(member -> member.getProfileImage().equals(profileImage))) {
             throw new DuplicateException(
                     ErrorCode.PROFILE_DUPLICATED,
                     "",
-                    profileLocation
+                    profileImage
             );
         }
     }

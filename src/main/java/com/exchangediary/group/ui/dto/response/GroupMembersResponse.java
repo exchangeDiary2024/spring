@@ -21,12 +21,12 @@ public record GroupMembersResponse(
     @Builder
     private record MemberResponse(
             String nickname,
-            String profileLocation
+            String profileImage
     ) {
         public static MemberResponse from(Member member) {
             return MemberResponse.builder()
                     .nickname(member.getNickname())
-                    .profileLocation(member.getProfileLocation())
+                    .profileImage(member.getProfileImage())
                     .build();
         }
     }

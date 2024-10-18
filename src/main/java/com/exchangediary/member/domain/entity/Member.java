@@ -33,15 +33,15 @@ public class Member extends BaseEntity {
     @NotNull
     private final Long kakaoId;
     private String nickname;
-    private String profileLocation;
+    private String profileImage;
     private Integer orderInGroup;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", foreignKey = @ForeignKey(name = "member_group_id_fkey"))
     private Group group;
 
-    public void updateMemberGroupInfo(String nickname, String profileLocation, int orderInGroup, Group group) {
+    public void updateMemberGroupInfo(String nickname, String profileImage, int orderInGroup, Group group) {
         this.nickname = nickname;
-        this.profileLocation = profileLocation;
+        this.profileImage = profileImage;
         this.orderInGroup = orderInGroup;
         this.group = group;
     }

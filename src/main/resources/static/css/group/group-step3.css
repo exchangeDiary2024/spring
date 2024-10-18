@@ -39,30 +39,30 @@ a.gray {
     pointer-events: none
 }
 
-#pring1.gray .character-icon {
-    content: url("/images/group/character/gray-pring1.svg")
+#red.gray.character-icon {
+    content: url("/images/character/gray-red.svg")
 }
 
-#pring2.gray .character-icon {
-    content: url("/images/group/character/gray-pring2.svg")
+#orange.gray.character-icon {
+    content: url("/images/character/gray-orange.svg")
 }
 
-#pring3.gray .character-icon {
-    content: url("/images/group/character/gray-pring3.svg")
+#yellow.gray.character-icon {
+    content: url("/images/character/gray-yellow.svg")
 }
 
-#pring4.gray .character-icon {
-    content: url("/images/group/character/gray-pring4.svg")
+#green.gray.character-icon {
+    content: url("/images/character/gray-green.svg")
 }
 
-#pring5.gray .character-icon {
-    content: url("/images/group/character/gray-pring5.svg")
+#blue.gray.character-icon {
+    content: url("/images/character/gray-blue.svg")
 }
 
-#pring6.gray .character-icon {
-    content: url("/images/group/character/gray-pring6.svg")
+#navy.gray.character-icon {
+    content: url("/images/character/gray-navy.svg")
 }
 
-#pring7.gray .character-icon {
-    content: url("/images/group/character/gray-pring7.svg")
+#purple.gray.character-icon {
+    content: url("/images/character/gray-purple.svg")
 }

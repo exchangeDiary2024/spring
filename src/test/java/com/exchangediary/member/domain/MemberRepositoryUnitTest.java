@@ -33,7 +33,7 @@ public class MemberRepositoryUnitTest {
         Collections.shuffle(nums);
         for (int num : nums) {
             Member member = Member.builder()
-                    .profileLocation("/images/" + num)
+                    .profileImage("red" + num)
                     .kakaoId(num * 10L)
                     .nickname(String.valueOf(num))
                     .orderInGroup(num)

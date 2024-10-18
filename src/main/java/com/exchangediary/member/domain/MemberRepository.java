@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBykakaoId(Long kakaoId);
     List<Member> findAllByGroupOrderByOrderInGroup(Group group);
-    boolean existsByIdAndGroupIsNotNull(Long memberId);
+    Optional<GroupId> findGroupIdById(Long memberId);
 }

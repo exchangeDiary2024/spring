@@ -41,6 +41,5 @@ function initStep5() {
 }
 
 function confirmStep5() {
-    window.localStorage.setItem("groupId", groupData.groupId);
-    window.location.href ="/";
+    window.location.href = `/group/${groupData.groupId}`;
 }

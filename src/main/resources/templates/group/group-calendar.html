@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http//www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
 
 <th:block layout:fragment="header">
     <title>스프링 - 달력형</title>
@@ -108,6 +108,9 @@
 </th:block>
 
 <th:block layout:fragment="script">
+    <script>
+        const groupId = [[${groupId}]];
+    </script>
     <script src="/js/monthly-page/draw-calendar.js"></script>
     <script src="/js/monthly-page/calendar-arrow.js"></script>
 </th:block>

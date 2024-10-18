@@ -97,7 +97,7 @@ class GroupProfileApiTest extends ApiBaseTest {
 
     private Member createMember(Group group, int index) {
         return Member.builder()
-                .profileLocation("resource/profile-Image" + index)
+                .profileImage("red" + index)
                 .kakaoId(1234L + index)
                 .group(group)
                 .build();

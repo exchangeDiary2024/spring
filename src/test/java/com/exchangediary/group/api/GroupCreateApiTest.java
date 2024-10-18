@@ -24,12 +24,12 @@ public class GroupCreateApiTest extends ApiBaseTest {
     @Test
     void 그룹_생성_성공() {
         String groupName = "버니즈";
-        String profileLocation = "/profile/location";
+        String profileImage = "red";
         String nickname = "yen";
 
         var response = RestAssured
                 .given().log().all()
-                .body(new GroupCreateRequest(groupName, profileLocation, nickname))
+                .body(new GroupCreateRequest(groupName, profileImage, nickname))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(API_PATH)
@@ -43,18 +43,18 @@ public class GroupCreateApiTest extends ApiBaseTest {
         assertThat(groupCreator.getGroup().getId()).isEqualTo(group.getId());
         assertThat(groupCreator.getOrderInGroup()).isEqualTo(1);
         assertThat(groupCreator.getNickname()).isEqualTo(nickname);
-        assertThat(groupCreator.getProfileLocation()).isEqualTo(profileLocation);
+        assertThat(groupCreator.getProfileImage()).isEqualTo(profileImage);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "    "})
     void 그룹_생성_실패_빈_닉네임(String nickname) {
         String groupName = "버니즈";
-        String profileLocation = "/profile/location";
+        String profileImage = "red";
 
         RestAssured
                 .given().log().all()
-                .body(new GroupCreateRequest(groupName, profileLocation, nickname))
+                .body(new GroupCreateRequest(groupName, profileImage, nickname))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(API_PATH)
@@ -64,13 +64,13 @@ public class GroupCreateApiTest extends ApiBaseTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "    "})
-    void 그룹_생성_실패_빈_프로필_경로(String profileLocation) {
+    void 그룹_생성_실패_빈_프로필_경로(String profileImage) {
         String groupName = "버니즈";
         String nickname = "yen";
 
         RestAssured
                 .given().log().all()
-                .body(new GroupCreateRequest(groupName, profileLocation, nickname))
+                .body(new GroupCreateRequest(groupName, profileImage, nickname))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(API_PATH)

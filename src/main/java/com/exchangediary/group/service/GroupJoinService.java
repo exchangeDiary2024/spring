@@ -25,12 +25,12 @@ public class GroupJoinService {
         Member member = memberQueryService.findMember(memberId);
 
         List<Member> members = group.getMembers();
-        groupValidationService.checkProfileDuplicate(members, request.profileLocation());
+        groupValidationService.checkProfileDuplicate(members, request.profileImage());
         groupValidationService.checkNumberOfMembers(members.size());
 
         member.updateMemberGroupInfo(
                 request.nickname(),
-                request.profileLocation(),
+                request.profileImage(),
                 members.size() + 1,
                 group);
         memberRepository.save(member);
