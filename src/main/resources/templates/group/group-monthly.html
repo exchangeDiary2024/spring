@@ -10,7 +10,7 @@
     <div class="background" style="background-image: url('/images/group/monthly-page/background.svg');">
         <div class="calendar-main">
             <div style="height: 50px;">
-                <span class="group-name">‘s</span>
+                <span class="group-name">[[${groupName}]]‘s</span>
             </div>
             <div>
                 <table frame="void">
@@ -110,7 +110,6 @@
 <th:block layout:fragment="script">
     <script>
         const groupId = [[${groupId}]];
-        const groupName = "[[${groupName}]]";
     </script>
     <script src="/js/group/monthly/draw-calendar.js"></script>
     <script src="/js/group/monthly/calendar-arrow.js"></script>
