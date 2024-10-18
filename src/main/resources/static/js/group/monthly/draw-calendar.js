@@ -3,14 +3,12 @@ const year = document.querySelector(".year");
 const month = document.querySelector(".month");
 const trs = Array.from(table.children[0].children).slice(3);
 const today = new Date();
-const calendarBottom = document.querySelector(".calendar-bottom")
 
 function init() {
     year.innerText = today.getFullYear();
     month.innerText = today.getMonth() + 1;
 
     drawDateOfCalendar();
-    drawBottom();
 }
 
 async function drawDateOfCalendar() {
@@ -99,32 +97,6 @@ function addBorderToday() {
         const row = (todayDate + firstDay) % 7;
         trs[column].children[row].querySelector("a").classList.add("today");
     }
-}
-
-function drawBottom() {
-    fetch(`/api/groups/${groupId}/diaries?year=${today.getFullYear()}&month=${today.getMonth() + 1}&day=${today.getDate()}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("")
-            }
-            return response.json()
-        })
-        .then(data => {
-            calendarBottom.innerHTML = `<a href="/group/${groupId}/diary/${data.diaryId}" class="bottom-font">
-                                                        <span class="font-bold">오늘 일기가 업로드 되었어요.</span>
-                                                        <br>
-                                                        <span>날짜를 눌러 확인해보세요!</span>
-                                                    </a>`
-        })
-        .catch(() => {
-            calendarBottom.innerHTML = `<a href="/group/${groupId}/diary" class="bottom-font">
-                                            <span>내가 일기를 작성할 차례에요.</span>
-                                            <br>
-                                            <span>기다리는 친구들을 위해</span>
-                                            <br>
-                                            <span class="font-bold">일기를 작성해주세요!</span>
-                                        </a>`
-        })
 }
 
 init();
