@@ -9,9 +9,9 @@ import java.util.List;
 public record GroupMembersResponse(
         List<GroupMemberResponse> members
 ) {
-    public static GroupMembersResponse from(List<Member> members) {
+    public static GroupMembersResponse of(List<Member> members, Member self) {
         List<GroupMemberResponse> response = members.stream()
-                .map(GroupMemberResponse::from)
+                .map(member -> GroupMemberResponse.of(member, self))
                 .toList();
         return GroupMembersResponse.builder()
                 .members(response)
@@ -21,12 +21,14 @@ public record GroupMembersResponse(
     @Builder
     public record GroupMemberResponse(
             String nickname,
-            String profileImage
+            String profileImage,
+            boolean isSelf
     ) {
-        public static GroupMemberResponse from(Member member) {
+        public static GroupMemberResponse of(Member member, Member self) {
             return GroupMemberResponse.builder()
                     .nickname(member.getNickname())
                     .profileImage(member.getProfileImage())
+                    .isSelf(member.equals(self))
                     .build();
         }
     }

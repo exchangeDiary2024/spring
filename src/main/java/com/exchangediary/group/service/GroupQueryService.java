@@ -44,12 +44,13 @@ public class GroupQueryService {
 
     public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
         Group group = findGroup(groupId);
-        List<Member> reorderedMembers = reorderSelfToFirst(group.getMembers(), memberId);
-        return GroupMembersResponse.from(reorderedMembers);
+        List<Member> members = group.getMembers();
+        Member self = findSelf(members, memberId);
+        return GroupMembersResponse.of(members, self);
     }
 
-    private List<Member> reorderSelfToFirst(List<Member> members, Long memberId) {
-        Member self = members.stream()
+    private Member findSelf(List<Member> members, Long memberId) {
+        return members.stream()
                 .filter(member -> memberId.equals(member.getId()))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(
@@ -57,11 +58,5 @@ public class GroupQueryService {
                         "",
                         String.valueOf(memberId)
                 ));
-        int order = 1;
-        while (order < self.getOrderInGroup()) {
-            members.add(members.removeFirst());
-            order++;
-        }
-        return members;
     }
 }
