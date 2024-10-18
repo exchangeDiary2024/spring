@@ -4,9 +4,7 @@ const STEP2_HTML_CREATE = `
                         </div>
                         <div class="input-box">
                             <div class="input-textarea">
-                                <label>
-                                    <textarea class="group-name input-value" placeholder="그룹명" spellcheck="false" maxlength="11"></textarea>
-                                </label>
+                                <input class="group-name input-value" type="text" placeholder="그룹명" spellcheck="false" maxlength="11">
                             </div>
                         </div>
                         <div class="error-message" style="width: 283px; height: 34px; float: left; position: relative; left: 46px; top: 24px;">
@@ -19,9 +17,7 @@ const STEP2_HTML_JOIN = `
                         </div>
                         <div class="input-box">
                             <div class="input-textarea">
-                                <label>
-                                    <textarea class="group-code input-value" placeholder="그룹코드" spellcheck="false"></textarea>
-                                </label>
+                                <input class="group-code input-value" type="text" placeholder="그룹코드" spellcheck="false">
                             </div>
                         </div>`
 
