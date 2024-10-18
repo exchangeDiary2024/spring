@@ -22,8 +22,7 @@ public class GroupController {
     @GetMapping("/{groupId}")
     public String showCalendar(Model model, @PathVariable Long groupId) {
         // 인가 거쳤다고 가정
-        model.addAttribute("groupId", groupId);
-        model.addAttribute("groupName", groupQueryService.findGroupName(groupId));
+        model.addAttribute("group", groupQueryService.getGroupMonthlyInfo(groupId));
         return "group/group-monthly";
     }
 }

@@ -7,6 +7,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
+import com.exchangediary.group.ui.dto.response.GroupMonthlyResponse;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -50,13 +51,8 @@ public class GroupQueryService {
                 ));
     }
 
-    public String findGroupName(Long groupId) {
-        return groupRepository.findNameById(groupId)
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.GROUP_NOT_FOUND,
-                        "",
-                        String.valueOf(groupId)
-                ))
-                .name();
+    public GroupMonthlyResponse getGroupMonthlyInfo(Long groupId) {
+        Group group = findGroup(groupId);
+        return GroupMonthlyResponse.of(group);
     }
 }
