@@ -40,6 +40,10 @@ async function confirmStep4() {
     if (error.innerText !== "") {
         return false;
     }
+    if (nickname.value === "") {
+        openNotificationModal("error", ["이름을 입력해주세요."], 2000);
+        return false;
+    }
     if (isCreateInStep4()) {
         steps[5].draw = drawStep5Create;
         return await createGroup();
