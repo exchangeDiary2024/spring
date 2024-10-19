@@ -46,7 +46,7 @@ public class GroupQueryService {
         Group group = findGroup(groupId);
         List<Member> members = group.getMembers();
         Member self = findSelf(members, memberId);
-        return GroupMembersResponse.of(members, self);
+        return GroupMembersResponse.of(members, self.getOrderInGroup() - 1);
     }
 
     private Member findSelf(List<Member> members, Long memberId) {

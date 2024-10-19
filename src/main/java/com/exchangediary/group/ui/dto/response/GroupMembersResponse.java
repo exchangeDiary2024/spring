@@ -7,14 +7,16 @@ import java.util.List;
 
 @Builder
 public record GroupMembersResponse(
-        List<GroupMemberResponse> members
+        List<GroupMemberResponse> members,
+        int selfIndex
 ) {
-    public static GroupMembersResponse of(List<Member> members, Member self) {
+    public static GroupMembersResponse of(List<Member> members, int index) {
         List<GroupMemberResponse> response = members.stream()
-                .map(member -> GroupMemberResponse.of(member, self))
+                .map(GroupMemberResponse::from)
                 .toList();
         return GroupMembersResponse.builder()
                 .members(response)
+                .selfIndex(index)
                 .build();
     }
 
@@ -24,11 +26,10 @@ public record GroupMembersResponse(
             String profileImage,
             boolean isSelf
     ) {
-        public static GroupMemberResponse of(Member member, Member self) {
+        public static GroupMemberResponse from(Member member) {
             return GroupMemberResponse.builder()
                     .nickname(member.getNickname())
                     .profileImage(member.getProfileImage())
-                    .isSelf(member.equals(self))
                     .build();
         }
     }
