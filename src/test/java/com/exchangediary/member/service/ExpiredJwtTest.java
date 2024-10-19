@@ -28,7 +28,7 @@ public class ExpiredJwtTest {
     private RefreshTokenRepository refreshTokenRepository;
 
     @Test
-    void 만료된_access_token_검증() throws InterruptedException {
+    void 만료된_액세스_토큰_검증() throws InterruptedException {
         Long memberId = 1L;
         String token = jwtService.generateAccessToken(memberId);
 
@@ -39,7 +39,7 @@ public class ExpiredJwtTest {
     }
 
     @Test
-    void 만료된_refresh_token_검증() throws InterruptedException {
+    void 만료된_리프레쉬_토큰_검증() throws InterruptedException {
         Member member = Member.from(1L);
         memberRepository.save(member);
         RefreshToken refreshToken = RefreshToken.of(
