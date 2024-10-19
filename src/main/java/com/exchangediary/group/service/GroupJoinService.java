@@ -4,6 +4,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.request.GroupJoinRequest;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import com.exchangediary.member.service.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class GroupJoinService {
                 request.nickname(),
                 request.profileImage(),
                 members.size() + 1,
+                GroupRole.GROUP_MEMBER,
                 group);
         memberRepository.save(member);
     }
