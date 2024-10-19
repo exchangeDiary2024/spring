@@ -5,7 +5,7 @@ const groupMembers = menu.querySelector(".group-members");
 
 menuBtn.addEventListener("click", openMenu);
 groupMenu.addEventListener("click", closeMenu);
-drawMembers(3);
+drawMembers(7);
 
 function openMenu() {
     groupMenu.style.display = "block";

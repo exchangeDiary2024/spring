@@ -76,6 +76,42 @@
     transform: translate(-50%, -50%);
 }
 
+.group-members .group-size {
+    width: 45px;
+    height: 22px;
+
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+
+    color: var(--kakao-logo, #000);
+    text-align: center;
+    font-variant-numeric: lining-nums tabular-nums;
+    font-family: "SOYOMaple TTF";
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.08px;
+}
+
+.group-size .group-number {
+    color: var(--kakao-logo, #000);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-family: "SOYO Maple TTF";
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.08px;
+}
+
 .group-member {
     width: 40px;
     height: 40px;
