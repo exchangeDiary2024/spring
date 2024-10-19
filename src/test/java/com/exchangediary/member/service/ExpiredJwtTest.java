@@ -1,13 +1,13 @@
 package com.exchangediary.member.service;
 
-import com.exchangediary.global.exception.serviceexception.UnauthorizedException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"security.jwt.expiration-time=1000"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"security.jwt.access-token.expiration-time=1000"})
 public class ExpiredJwtTest {
     @Autowired
     private JwtService jwtService;
@@ -18,7 +18,7 @@ public class ExpiredJwtTest {
         String token = jwtService.generateAccessToken(memberId);
 
         Thread.sleep(1000);
-        assertThrows(UnauthorizedException.class, () ->
+        assertThrows(ExpiredJwtException.class, () ->
                 jwtService.verifyAccessToken(token)
         );
     }
