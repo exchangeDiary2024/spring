@@ -4,6 +4,7 @@ import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.UnauthorizedException;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
             Long memberId = jwtService.extractMemberId(token);
             request.setAttribute("memberId", memberId);
-        } catch (UnauthorizedException exception) {
+        } catch (UnauthorizedException | ExpiredJwtException exception) {
             return true;
         }
         response.sendRedirect(request.getContextPath()+ "/group");
