@@ -9,6 +9,13 @@
 
 <th:block layout:fragment="content">
     <div class="background" style="background-image: url('/images/monthly-page/background.svg');">
+        <div class="calendar-top">
+            <div class="menu-bar">
+                <a href="#" class="menu-btn">
+                    <img src="/images/monthly-page/menu-icon.svg">
+                </a>
+            </div>
+        </div>
         <div class="calendar-main">
             <div style="height: 50px;">
                 <span class="group-name">[[${group.name}]];</span>
@@ -106,6 +113,10 @@
         <div class="calendar-bottom">
         </div>
     </div>
+</th:block>
+
+<th:block layout:fragment="body">
+    <div th:replace="~{group/group-menu :: menu}"></div>
 </th:block>
 
 <th:block layout:fragment="script">
