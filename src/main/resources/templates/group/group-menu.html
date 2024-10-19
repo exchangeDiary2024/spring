@@ -4,19 +4,23 @@
 <th:block th:fragment="menu">
   <div class="group-menu">
     <div class="menu">
-      <div class="menu-body">
-        <div class="menu-content">
-          <div class="group-members">
-          </div>
-          <div class="group-name">
-            <span>[[${group.name}]];</span>
+      <div class="menu-main">
+        <img class="background-icons" src="/images/group/menu/background-icons.svg">
+        <div class="menu-body">
+          <div class="menu-content">
+            <div class="group-members">
+              <img class="circle" src="/images/group/menu/members-circle.svg">
+            </div>
+            <div class="group-name">
+              <span>[[${group.name}]]</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="menu-footer">
-        <div class="">
-          <a class="btn group-leave" href="#">탈퇴하기</a>
-          <a class="btn group-code" href="#">코드 복사</a>
+        <div class="menu-footer">
+          <div class="menu-btns">
+            <a class="btn group-leave" href="#">탈퇴하기</a>
+            <a class="btn group-code" href="#">코드 복사</a>
+          </div>
         </div>
       </div>
     </div>

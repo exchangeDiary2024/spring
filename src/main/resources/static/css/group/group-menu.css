@@ -14,7 +14,7 @@
 }
 
 .group-menu .menu {
-    width: 299px;
+    width: 294px;
     height: 100%;
     position: absolute;
     right: 0;
@@ -23,34 +23,64 @@
     transition: transform 0.3s ease-out;
 }
 
+.group-menu .menu-main {
+    width: 294px;
+    height: 667px;
+    position: absolute;
+    bottom: 0;
+}
+
+.background-icons {
+    width: 231px;
+    height: 501px;
+    position: absolute;
+    top: 22px;
+    right: 0;
+    z-index: 1;
+}
+
 .menu-body {
-    width: 299px;
-    height: 491px;
+    width: 294px;
+    height: 476px;
 }
 
 .menu-content {
     width: 254px;
-    height: 361px;
+    height: 360px;
     position: relative;
-    left: 24px;
-    top: 80px;
-    background-image: url("/images/group/menu/post-it.svg");
+    left: 20px;
+    top: 116px;
+    background-color: #FCF9D1;
+    border-radius: 8px;
+    border: 0.4px solid #767676;
 }
 
 .group-members {
     width: 216px;
-    height: 277px;
+    height: 278px;
     position: relative;
-    top: 19px;
+    top: 20px;
     left: 19px;
-    background-image: url("/images/group/menu/members-circle.svg");
+    background-color: #FFF;
+    border-radius: 8px;
+    border: 0.4px solid #767676;
+}
+
+.group-members .circle {
+    width: 160px;
+    height: 160px;
+
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .group-member {
-    width: 39px;
-    height: 39px;
+    width: 40px;
+    height: 40px;
     border-radius: 50px;
-    border: 0.4px solid #767676;
+    border: 0.5px solid #767676;
     position: absolute;
     background-color: #FFF;
 
@@ -60,50 +90,55 @@
 }
 
 .group-member.order {
-    border: 2.4px solid #FC0;
+    border: 2px solid #FC0;
 }
 
 .menu-body .group-name {
-    height: 65px;
+    height: 62px;
     position: relative;
-    top: 19px;
+    top: 20px;
 
     color: var(--kakao-logo, #000);
     text-align: center;
     font-variant-numeric: lining-nums proportional-nums;
-    font-family: "SOYOMaple";
+    font-family: "SOYOMaple TTF";
     font-size: 18.951px;
     font-style: normal;
     font-weight: 700;
-    line-height: 65px; /* 141.667% */
+    line-height: 62px;
 }
 
 .menu-footer {
-    width: 299px;
-    height: 176px;
+    width: 294px;
+    height: 191px;
+}
+
+.menu-footer .menu-btns {
+    width: 294px;
+    height: 40px;
+    position: relative;
+    top: 66px;
 }
 
 .menu-footer .btn {
     width: 118px;
-    height: 40px;
+    height: 38px;
     float: left;
 
     display: flex;
-    width: 118.442px;
-    height: 39.481px;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
     color: #000000;
 
-    border-radius: 15.792px;
-    border: 0.395px solid var(--kakao-logo, #000);
+    border-radius: 16px;
+    border: 0.4px solid var(--kakao-logo, #000);
 }
 
 .btn.group-leave {
-    margin-left: 28px;
+    margin-left: 20px;
 }
 
 .btn.group-code {
-    margin-left: 14px;
+    margin-left: 18px;
 }
