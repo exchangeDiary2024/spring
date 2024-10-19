@@ -1,7 +1,9 @@
 package com.exchangediary.member.api;
 
 import com.exchangediary.member.domain.MemberRepository;
+import com.exchangediary.member.domain.RefreshTokenRepository;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.entity.RefreshToken;
 import com.exchangediary.member.service.JwtService;
 import com.exchangediary.member.service.KakaoService;
 import io.restassured.RestAssured;
@@ -30,6 +32,8 @@ public class LoginApiTest {
     private JwtService jwtService;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
     @BeforeEach
     public void setup() {
@@ -53,6 +57,9 @@ public class LoginApiTest {
 
         String token = response.cookie("token");
         assertThat(token).isNotNull();
+        Long memberId = jwtService.extractMemberId(token);
+        RefreshToken refreshToken = refreshTokenRepository.findByMemberId(memberId).get();
+        assertThat(refreshToken).isNotNull();
     }
 
     @Test
@@ -75,5 +82,7 @@ public class LoginApiTest {
         String token = response.cookie("token");
         Long memberId = jwtService.extractMemberId(token);
         assertThat(memberId).isEqualTo(member.getId());
+        RefreshToken refreshToken = refreshTokenRepository.findByMemberId(memberId).get();
+        assertThat(refreshToken).isNotNull();
     }
 }
