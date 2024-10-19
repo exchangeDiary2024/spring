@@ -4,6 +4,7 @@ import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.UnauthorizedException;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     ) throws IOException {
         try {
             String token = getJwtTokenFromCookies(request);
-            jwtService.verifyAccessToken(token);
+            verifyToken(token, response);
 
             Long memberId = jwtService.extractMemberId(token);
             request.setAttribute("memberId", memberId);
@@ -48,6 +49,16 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
                     "",
                     COOKIE_NAME
             );
+        }
+    }
+
+    private void verifyToken(String token, HttpServletResponse response) {
+        try {
+            jwtService.verifyAccessToken(token);
+        } catch (ExpiredJwtException exception) {
+            String newToken = jwtService.verifyRefreshToken(Long.valueOf(exception.getClaims().getSubject()));
+            Cookie cookie = cookieService.createCookie(COOKIE_NAME, newToken);
+            response.addCookie(cookie);
         }
     }
 }
