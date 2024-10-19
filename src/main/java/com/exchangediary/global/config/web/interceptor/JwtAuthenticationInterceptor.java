@@ -2,6 +2,7 @@ package com.exchangediary.global.config.web.interceptor;
 
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.UnauthorizedException;
+import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -18,6 +19,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     private static final String COOKIE_NAME = "token";
     private final JwtService jwtService;
     private final CookieService cookieService;
+    private final MemberRepository memberRepository;
 
     @Override
     public boolean preHandle(
@@ -30,6 +32,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             verifyToken(token, response);
 
             Long memberId = jwtService.extractMemberId(token);
+            checkMemberExists(memberId);
             request.setAttribute("memberId", memberId);
         } catch (UnauthorizedException exception) {
             response.sendRedirect(request.getContextPath()+ "/");
@@ -63,5 +66,14 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             Cookie cookie = cookieService.createCookie(COOKIE_NAME, newToken);
             response.addCookie(cookie);
         }
+    }
+
+    private void checkMemberExists(Long memberId) {
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new UnauthorizedException(
+                        ErrorCode.NOT_EXIST_MEMBER_TOKEN,
+                        "",
+                        String.valueOf(memberId)
+                ));
     }
 }
