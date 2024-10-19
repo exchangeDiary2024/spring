@@ -26,7 +26,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     ) throws IOException {
         try {
             String token = getJwtTokenFromCookies(request);
-            jwtService.verifyToken(token);
+            jwtService.verifyAccessToken(token);
 
             Long memberId = jwtService.extractMemberId(token);
             request.setAttribute("memberId", memberId);

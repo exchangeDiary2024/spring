@@ -15,11 +15,11 @@ public class ExpiredJwtTest {
     @Test
     void 만료된_토큰_검증() throws InterruptedException {
         Long memberId = 1L;
-        String token = jwtService.generateToken(memberId);
+        String token = jwtService.generateAccessToken(memberId);
 
         Thread.sleep(1000);
         assertThrows(UnauthorizedException.class, () ->
-                jwtService.verifyToken(token)
+                jwtService.verifyAccessToken(token)
         );
     }
 }

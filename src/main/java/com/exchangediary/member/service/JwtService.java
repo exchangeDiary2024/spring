@@ -19,14 +19,20 @@ import java.util.Date;
 public class JwtService {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
-    @Value("${security.jwt.expiration-time}")
-    private long validityInMilliseconds;
+    @Value("${security.jwt.access-token.expiration-time}")
+    private long accessTokenExpirationTime;
+    @Value("${security.jwt.refresh-token.expiration-time}")
+    private long refreshTokenExpirationTime;
 
-    public String generateToken(Long memberId) {
-        return buildToken(memberId);
+    public String generateAccessToken(Long memberId) {
+        return buildAccessToken(memberId);
     }
 
-    public void verifyToken(String token) {
+    public String generateRefreshToken() {
+        return buildRefreshToken();
+    }
+
+    public void verifyAccessToken(String token) {
         try {
             extractAllClaims(token);
         } catch (ExpiredJwtException exception) {
@@ -48,13 +54,25 @@ public class JwtService {
         return Long.valueOf(extractAllClaims(token).getSubject());
     }
 
-    private String buildToken(Long memberId) {
+    private String buildAccessToken(Long memberId) {
         Date now = new Date(System.currentTimeMillis());
-        Date expiration = new Date(now.getTime() + validityInMilliseconds);
+        Date expiration = new Date(now.getTime() + accessTokenExpirationTime);
 
         return Jwts
                 .builder()
                 .setSubject(String.valueOf(memberId))
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private String buildRefreshToken() {
+        Date now = new Date(System.currentTimeMillis());
+        Date expiration = new Date(now.getTime() + refreshTokenExpirationTime);
+
+        return Jwts
+                .builder()
                 .setIssuedAt(now)
                 .setExpiration(expiration)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

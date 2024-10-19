@@ -14,7 +14,7 @@ public class JwtServiceTest {
     @Test
     void 토큰_발급_성공() {
         Long memberId = 1L;
-        String token = jwtService.generateToken(memberId);
+        String token = jwtService.generateAccessToken(memberId);
 
         Long result = jwtService.extractMemberId(token);
 
@@ -24,8 +24,8 @@ public class JwtServiceTest {
     @Test
     void 유효한_토큰_검증() {
         Long memberId = 1L;
-        String token = jwtService.generateToken(memberId);
+        String token = jwtService.generateAccessToken(memberId);
 
-        jwtService.verifyToken(token);
+        jwtService.verifyAccessToken(token);
     }
 }
