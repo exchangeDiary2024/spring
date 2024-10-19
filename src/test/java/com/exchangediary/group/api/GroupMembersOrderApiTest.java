@@ -34,18 +34,18 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
             memberRepository.save(member);
         }
 
-        var members = RestAssured
+        var response = RestAssured
                 .given().log().all()
                 .cookie("token", token)
                 .when()
                 .get("/api/groups/" + group.getId() + "/members")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(GroupMembersResponse.class)
-                .members();
+                .extract().as(GroupMembersResponse.class);
+        var members = response.members();
 
+        assertThat(response.selfIndex()).isEqualTo(0);
         assertThat(members).hasSize(7);
-        assertThat(members.get(0).isSelf()).isTrue();
         assertThat(members.get(0).nickname()).isEqualTo(this.member.getNickname());
         assertThat(members.get(1).nickname()).isEqualTo("name2");
         assertThat(members.get(2).nickname()).isEqualTo("name3");
@@ -53,12 +53,6 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
         assertThat(members.get(4).nickname()).isEqualTo("name5");
         assertThat(members.get(5).nickname()).isEqualTo("name6");
         assertThat(members.get(6).nickname()).isEqualTo("name7");
-        assertThat(members.get(1).isSelf()).isFalse();
-        assertThat(members.get(2).isSelf()).isFalse();
-        assertThat(members.get(3).isSelf()).isFalse();
-        assertThat(members.get(4).isSelf()).isFalse();
-        assertThat(members.get(5).isSelf()).isFalse();
-        assertThat(members.get(6).isSelf()).isFalse();
     }
 
     @Test
@@ -76,18 +70,18 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
             memberRepository.save(member);
         }
 
-        var members = RestAssured
+        var response = RestAssured
                 .given().log().all()
                 .cookie("token", token)
                 .when()
                 .get("/api/groups/" + group.getId() + "/members")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(GroupMembersResponse.class)
-                .members();
+                .extract().as(GroupMembersResponse.class);
+        var members = response.members();
 
+        assertThat(response.selfIndex()).isEqualTo(3);
         assertThat(members).hasSize(7);
-        assertThat(members.get(3).isSelf()).isEqualTo(true);
         assertThat(members.get(0).nickname()).isEqualTo("name1");
         assertThat(members.get(1).nickname()).isEqualTo("name2");
         assertThat(members.get(2).nickname()).isEqualTo("name3");
@@ -108,25 +102,25 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
             memberRepository.save(member);
         }
 
-        var members = RestAssured
+        var response = RestAssured
                 .given().log().all()
                 .cookie("token", token)
                 .when()
                 .get("/api/groups/" + group.getId() + "/members")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(GroupMembersResponse.class)
-                .members();
+                .extract().as(GroupMembersResponse.class);
+        var members = response.members();
 
+        assertThat(response.selfIndex()).isEqualTo(6);
         assertThat(members).hasSize(7);
-        assertThat(members.get(6).isSelf()).isEqualTo(true);
-        assertThat(members.get(6).nickname()).isEqualTo(this.member.getNickname());
         assertThat(members.get(0).nickname()).isEqualTo("name1");
         assertThat(members.get(1).nickname()).isEqualTo("name2");
         assertThat(members.get(2).nickname()).isEqualTo("name3");
         assertThat(members.get(3).nickname()).isEqualTo("name4");
         assertThat(members.get(4).nickname()).isEqualTo("name5");
         assertThat(members.get(5).nickname()).isEqualTo("name6");
+        assertThat(members.get(6).nickname()).isEqualTo(this.member.getNickname());
     }
 
     private Group createGroup() {
