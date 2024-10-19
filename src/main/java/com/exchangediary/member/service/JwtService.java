@@ -11,7 +11,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,7 @@ public class JwtService {
         verifyToken(token);
     }
 
-    public String verifyRefreshToken(Long memberId) {
+    public void verifyRefreshToken(Long memberId) {
         RefreshToken refreshToken = refreshTokenRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new UnauthorizedException(
                         ErrorCode.JWT_TOKEN_UNAUTHORIZED,
@@ -59,7 +58,6 @@ public class JwtService {
                     refreshToken.getToken()
             );
         }
-        return buildAccessToken(memberId);
     }
 
     public Long extractMemberId(String token) {

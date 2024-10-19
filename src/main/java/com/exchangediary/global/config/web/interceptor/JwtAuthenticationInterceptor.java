@@ -56,7 +56,10 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         try {
             jwtService.verifyAccessToken(token);
         } catch (ExpiredJwtException exception) {
-            String newToken = jwtService.verifyRefreshToken(Long.valueOf(exception.getClaims().getSubject()));
+            Long memberId = Long.valueOf(exception.getClaims().getSubject());
+
+            jwtService.verifyRefreshToken(memberId);
+            String newToken = jwtService.generateAccessToken(memberId);
             Cookie cookie = cookieService.createCookie(COOKIE_NAME, newToken);
             response.addCookie(cookie);
         }
