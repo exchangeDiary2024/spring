@@ -31,4 +31,11 @@ public class RefreshToken {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "refresh_token_member_id_fkey"))
     private final Member member;
+
+    public static RefreshToken of(String token, Member member) {
+        return RefreshToken.builder()
+                .token(token)
+                .member(member)
+                .build();
+    }
 }

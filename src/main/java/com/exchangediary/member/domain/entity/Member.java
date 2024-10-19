@@ -43,6 +43,13 @@ public class Member extends BaseEntity {
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private RefreshToken refreshToken;
 
+    public static Member from(Long kakaoId) {
+        return Member.builder()
+                .kakaoId(kakaoId)
+                .orderInGroup(0)
+                .build();
+    }
+
     public void updateMemberGroupInfo(String nickname, String profileImage, int orderInGroup, Group group) {
         this.nickname = nickname;
         this.profileImage = profileImage;

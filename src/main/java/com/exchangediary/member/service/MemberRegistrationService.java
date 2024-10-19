@@ -18,27 +18,17 @@ public class MemberRegistrationService {
     public MemberIdResponse getOrCreateMember(Long kakaoId) {
         Member member = memberRepository.findBykakaoId(kakaoId)
                 .orElseGet(() -> signUp(kakaoId));
+
         if (member.getRefreshToken() == null) {
-            RefreshToken refreshToken = RefreshToken.builder()
-                    .token(jwtService.generateRefreshToken())
-                    .member(member)
-                    .build();
+            RefreshToken refreshToken = RefreshToken.of(jwtService.generateRefreshToken(), member);
             member.updateRefreshToken(refreshToken);
         }
-        return MemberIdResponse.builder()
-                .memberId(member.getId())
-                .build();
+        return MemberIdResponse.from(member.getId());
     }
 
     private Member signUp(Long kakaoId) {
-        Member newMember = Member.builder()
-                .kakaoId(kakaoId)
-                .orderInGroup(0)
-                .build();
-        RefreshToken refreshToken = RefreshToken.builder()
-                .token(jwtService.generateRefreshToken())
-                .member(newMember)
-                .build();
+        Member newMember = Member.from(kakaoId);
+        RefreshToken refreshToken = RefreshToken.of(jwtService.generateRefreshToken(), newMember);
         newMember.updateRefreshToken(refreshToken);
         return memberRepository.save(newMember);
     }
