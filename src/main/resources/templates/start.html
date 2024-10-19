@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+
+<th:block layout:fragment="header">
+  <title>스프링 - 시작페이지</title>
+  <link rel="stylesheet" href="/css/start.css" type="text/css">
+</th:block>
+
+<th:block layout:fragment="content">
+  <div style="background-image: url('/images/start-page/background.svg'); background-repeat: no-repeat; background-size: contain; height:100%;">
+    <img class="logo"/>
+    <div class="title-box">
+      <span class="text spring" >스프링</span>
+    </div>
+  </div>
+</th:block>
+
+<th:block layout:fragment="script">
+  <script src="/js/start-page/start.js"></script>
+</th:block>
+
+</html>

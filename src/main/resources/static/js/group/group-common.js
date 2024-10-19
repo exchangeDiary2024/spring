@@ -27,7 +27,7 @@ const steps = {
 const groupData = {
     "groupId": "",
     "groupName": "",
-    "profileLocation": "",
+    "profileImage": "",
     "nickname": "",
     "groupCode": ""
 }

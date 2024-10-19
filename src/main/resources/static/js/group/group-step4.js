@@ -1,6 +1,6 @@
 const STEP4_HTML = `
-                        <div style="width: 100px; height: 100px;">
-                            <img class="selected-pring" src="" style="width: 100px; height: 100px;">
+                        <div style="">
+                            <img id="selected-character" style="width: 100px; height: 100px;">
                         </div>
                         <div style="width: 100%; height: 34px; position: relative; top: 16px;">
                             <span class="subject">캐릭터 이름을 지어주세요.</span>
@@ -8,7 +8,7 @@ const STEP4_HTML = `
                         <div class="input-box">
                             <div class="input-textarea">
                                 <label>
-                                    <textarea class="nickname input-value" placeholder="이름" maxlength="10" spellcheck="false"></textarea>
+                                    <textarea class="nickname input-value" placeholder="이름" maxlength="11" spellcheck="false"></textarea>
                                 </label>
                             </div>
                         </div>
@@ -32,54 +32,69 @@ function initStep4() {
 
     setProfileImage();
     nickname.addEventListener("input", async () => {
-        if (nickname.value === "") {
-            nicknameBox.style.border = "0.5px solid #767676";
-        } else {
-            nicknameBox.style.border = "2px solid #FC0";
-            error.innerText = await verifyNickname();
-        }
+        error.innerText = await changeStyleAndGetErrorMessage();
     });
 }
 
 async function confirmStep4() {
-    if (groupData.groupId === "") {
-        if (error.innerText !== "") {
-            return false;
-        }
+    if (error.innerText !== "") {
+        return false;
+    }
+    if (isCreateInStep4()) {
         steps[5].draw = drawStep5Create;
         return await createGroup();
     }
     steps[5].draw = drawStep5Join;
-    if (error.innerText !== "") {
-        return false;
-    }
     return await joinGroup();
 }
 
-function setProfileImage() {
-    const pring = document.querySelector(".selected-pring");
+function isCreateInStep4() {
+    return groupData.groupId === "";
+}
 
-    pring.src = groupData.profileLocation;
+function setProfileImage() {
+    const profileImage = document.querySelector("#selected-character");
+
+    profileImage.id = groupData.profileImage;
+}
+
+async function changeStyleAndGetErrorMessage() {
+    if (nickname.value !== "") {
+        nicknameBox.classList.add("input");
+        return await verifyNickname();
+    }
+    nicknameBox.classList.remove("input");
+    return "";
 }
 
 async function verifyNickname() {
     const specialChar = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"₩]/;
+    const whiteSpace = /\s/;
 
     if (specialChar.test(nickname.value)) {
         return "특수문자는 사용할 수 없습니다.";
     }
-    if (await isDuplicateNickname()) {
-        return "이미 존재하는 이름입니다.";
+    if (whiteSpace.test(nickname.value)) {
+        return "공백을 포함할 수 없습니다.";
     }
-    return "";
+    if (nickname.value.length > 10) {
+        return "최대 10자까지 입력 가능합니다.";
+    }
+    return await isDuplicateNickname();
 }
 
 async function isDuplicateNickname() {
-    if (groupData.groupId === "") {
-        return false;
+    if (isCreateInStep4()) {
+        return "";
     }
     return await fetch(`/api/groups/${groupData.groupId}/nickname/verify?nickname=${nickname.value}`)
-        .then(response => response.status !== 200);
+        .then(async response => {
+            if (response.status !== 200) {
+                throw await response.json();
+            }
+            return "";
+        })
+        .catch(data => data.message)
 }
 
 async function createGroup() {
@@ -90,13 +105,13 @@ async function createGroup() {
         },
         body: JSON.stringify({
             "groupName": groupData.groupName,
-            "profileLocation": groupData.profileLocation,
+            "profileImage": groupData.profileImage,
             "nickname": nickname.value
         })
     })
         .then(response => {
             if (response.status !== 201) {
-                throw response.status;
+                throw response;
             }
             return response.json();
         })
@@ -105,12 +120,14 @@ async function createGroup() {
             groupData.groupId = data.groupId;
             return true;
         })
-        .catch(status => {
-            if (status === 409) {
-                openNotificationModal("error", ["그룹 정원이 가득 찼습니다."], 2000);
-                return false;
+        .catch(async response => {
+            if (response.status === 400) {
+                throw await response.json();
             }
-            openNotificationModal("error", ["그룹 생성에 실패했습니다."], 2000);
+        })
+        .catch(data => {
+            const messages = data.message.split("\n");
+            openNotificationModal("error", messages, 2000);
             return false;
         });
 }
@@ -122,15 +139,24 @@ async function joinGroup() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "profileLocation": groupData.profileLocation,
+            "profileImage": groupData.profileImage,
             "nickname": nickname.value
         })
     })
         .then(response => {
-            if (response.status === 200) {
-                return true;
+            if (response.status !== 200) {
+                throw response;
             }
-            openNotificationModal("error", ["이미 선택된 캐릭터입니다.<br>다시 선택해주세요."], 2000);
+            return true;
+        })
+        .catch(async response => {
+            if (response.status === 400  || response.status === 409) {
+                throw await response.json();
+            }
+        })
+        .catch(data => {
+            const messages = data.message.split("\n");
+            openNotificationModal("error", messages, 2000);
             return false;
         });
 }

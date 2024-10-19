@@ -30,7 +30,7 @@ public record DiaryMonthlyResponse(
         public static DiaryInfo of(Diary diary) {
             return DiaryInfo.builder()
                     .date(diary.getCreatedAt().getDayOfMonth())
-                    .profileImage(diary.getMember().getProfileLocation())
+                    .profileImage(diary.getMember().getProfileImage())
                     .build();
         }
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http//www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
 
 <th:block layout:fragment="header">
     <title>스프링 - 일기 조회</title>
@@ -10,7 +10,7 @@
     <div class="background" style="background-image: url('/images/diary/view-page/background.svg');">
         <div class="top-bar">
             <div class="bar-back">
-                <a href="/" class="back-btn"><img class="bar-icon" src="/images/common/back_icon.svg"/></a>
+                <a th:href="@{/group/{groupId}(groupId=${groupId})}" class="back-btn"><img class="bar-icon" src="/images/common/back_icon.svg"/></a>
             </div>
             <div class="bar-main">
                 <span class="date">[[${diary.createdAt}]]</span>
@@ -32,8 +32,8 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        window.moodLocation = [[${diary.moodLocation}]];
-        window.uploadImage = [[${diary.uploadImage}]];
+        const moodLocation = [[${diary.moodLocation}]];
+        const uploadImage = [[${diary.uploadImage}]];
     </script>
     <script src="/js/diary/view-diary/draw-diary.js"></script>
 </th:block>

@@ -28,7 +28,7 @@ public class GroupCodeService {
         Group group = groupRepository.findByCode(code)
                 .orElseThrow(() -> new NotFoundException(
                         ErrorCode.GROUP_NOT_FOUND,
-                        "",
+                        "그룹코드가 유효하지 않습니다.",
                         code
                 ));
 

@@ -33,8 +33,7 @@ public class GroupCreateService {
 
     private void updateMember(Long memberId, GroupCreateRequest request, Group group) {
         Member member = memberQueryService.findMember(memberId);
-        member.updateMemberGroupInfo(request.nickname(), request.profileLocation(), 1, group);
+        member.updateMemberGroupInfo(request.nickname(), request.profileImage(), 1, group);
         memberRepository.save(member);
-
     }
 }

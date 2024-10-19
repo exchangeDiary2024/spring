@@ -3,8 +3,6 @@ package com.exchangediary.group.ui.dto.response;
 import com.exchangediary.group.domain.entity.Group;
 import lombok.Builder;
 
-import java.time.format.DateTimeFormatter;
-
 @Builder
 public record GroupResponse(
         Long id,

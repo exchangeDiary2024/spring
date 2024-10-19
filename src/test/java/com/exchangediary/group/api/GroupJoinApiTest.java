@@ -27,7 +27,7 @@ class GroupJoinApiTest extends ApiBaseTest {
         groupRepository.save(group);
         Member groupMember = createMemberInGroup(group);
         memberRepository.save(groupMember);
-        GroupJoinRequest request = new GroupJoinRequest("resource/image2", "jisunggi");
+        GroupJoinRequest request = new GroupJoinRequest("orange", "jisunggi");
 
         RestAssured
                 .given().log().all()
@@ -41,7 +41,7 @@ class GroupJoinApiTest extends ApiBaseTest {
 
         Member updatedMember = memberRepository.findById(member.getId()).get();
         assertThat(updatedMember.getNickname()).isEqualTo("jisunggi");
-        assertThat(updatedMember.getProfileLocation()).isEqualTo("resource/image2");
+        assertThat(updatedMember.getProfileImage()).isEqualTo("orange");
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(2);
         assertThat(updatedMember.getGroup().getId()).isEqualTo(group.getId());
     }
@@ -52,7 +52,7 @@ class GroupJoinApiTest extends ApiBaseTest {
         groupRepository.save(group);
         Member member = createMemberInGroup(group);
         memberRepository.save(member);
-        GroupJoinRequest request = new GroupJoinRequest("resource/image1", "jisunggi");
+        GroupJoinRequest request = new GroupJoinRequest("red", "jisunggi");
 
         RestAssured
                 .given().log().all()
@@ -78,7 +78,7 @@ class GroupJoinApiTest extends ApiBaseTest {
         return Member.builder()
                 .kakaoId(12345L)
                 .orderInGroup(1)
-                .profileLocation("resource/image1")
+                .profileImage("red")
                 .group(group)
                 .build();
     }

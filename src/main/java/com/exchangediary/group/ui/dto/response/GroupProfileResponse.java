@@ -11,7 +11,7 @@ public record GroupProfileResponse(
 ) {
     public static GroupProfileResponse from(List<Member> members) {
         List<ImageResponse> imageResponses = members.stream()
-                .map(member -> ImageResponse.from(member.getProfileLocation()))
+                .map(member -> ImageResponse.from(member.getProfileImage()))
                 .toList();
         return GroupProfileResponse.builder()
                 .selectedImages(imageResponses)
@@ -20,11 +20,11 @@ public record GroupProfileResponse(
 
     @Builder
     private record ImageResponse(
-            String profileLocation
+            String profileImage
     ) {
-        public static ImageResponse from(String profileLocation) {
+        public static ImageResponse from(String profileImage) {
             return ImageResponse.builder()
-                    .profileLocation(profileLocation)
+                    .profileImage(profileImage)
                     .build();
         }
     }
