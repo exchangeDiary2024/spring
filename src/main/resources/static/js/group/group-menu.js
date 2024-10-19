@@ -5,7 +5,7 @@ const groupMembers = menu.querySelector(".group-members");
 
 menuBtn.addEventListener("click", openMenu);
 groupMenu.addEventListener("click", closeMenu);
-drawMembers(7);
+drawMembers(6);
 
 function openMenu() {
     groupMenu.style.display = "block";
@@ -26,11 +26,14 @@ function drawMembers(memberSize) {
     const centerY = 119;
     const r = 79;
 
+    // 테스트를 위한 코드 입니다.
+    const testCharacters = ["red", "orange", "yellow", "green", "blue", "navy", "purple"];
+    const testNicknames = ["하니", "민지", "해린", "해린", "다니엘", "버니", "혜인"];
     for (number = 0; number < memberSize; number++) {
         const groupMember = document.createElement("div");
         const radian = getRadian(getAngle(number, memberSize))
         groupMember.classList.add("group-member");
-        groupMember.innerText = number + 1;
+        groupMember.innerHTML = makeMemberHtml(testCharacters[number], testNicknames[number]);
         groupMember.style.left = `${centerX - r * Math.cos(radian)}px`;
         groupMember.style.top = `${centerY - r * Math.sin(radian)}px`;
         groupMembers.appendChild(groupMember);
@@ -47,4 +50,11 @@ function getAngle(number, memberSize) {
         return angle;
     }
     return 0;
+}
+
+function makeMemberHtml(characterName, memberName) {
+    return `<a class="profile-image" href="#">
+                <img class="${characterName} character-icon" />
+            </a>
+            <span class="profile-nickname">${memberName}</span>`
 }
