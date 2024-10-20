@@ -87,7 +87,7 @@ function viewSelectableCharacter() {
         .then(data => data.selectedImages)
         .then(selectedImages => {
             selectedImages.forEach(image => {
-                const profileImage = document.querySelector(`#${image.profileImage}`);
+                const profileImage = document.querySelector(`.${image.profileImage}`);
 
                 profileImage.parentElement.classList.add("gray");
                 profileImage.classList.add("gray");
@@ -97,7 +97,7 @@ function viewSelectableCharacter() {
 
 function confirmStep3() {
     if (selectedIcon != null) {
-        groupData.profileImage = selectedIcon.children[0].children[0].id;
+        groupData.profileImage = selectedIcon.children[0].children[0].classList[0];
         return true;
     }
     openNotificationModal("error", ["캐릭터를 선택해주세요."], 2000);
