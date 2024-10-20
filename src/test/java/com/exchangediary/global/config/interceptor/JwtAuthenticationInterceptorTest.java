@@ -32,7 +32,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
     private RefreshTokenRepository refreshTokenRepository;
 
     @Test
-    void 쿠키에_토큰없는_경우_인증_실패() {
+    void 인증_실패_쿠키에_토큰없음() {
         RestAssured
                 .given().log().all()
                 .redirects().follow(false)
@@ -43,7 +43,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "invalid-token"})
-    void 쿠키에_잘못된_토큰_들어가는_경우_인증_실패(String token) {
+    void 인증_실패_쿠키에_잘못된_토큰(String token) {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
@@ -54,7 +54,8 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
     }
 
     @Test
-    void 유효한_액세스_토큰으로_인증_성공() {
+    @DisplayName("Valid access token. Then success authentication.")
+    void 인증_성공_유효한_액세스_토큰() {
         RestAssured
                 .given().log().all()
                 .cookie("token", this.token)
@@ -65,7 +66,8 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
     }
 
     @Test
-    void 액세스_토큰_재발급_후_인증_성공() {
+    @DisplayName("Expired access token, and valid refresh token, so re-issue access token. Then success authentication.")
+    void 인증_성공_액세스_토큰_재발급() {
         this.token = buildExpiredAccessToken();
         RefreshToken refreshToken = RefreshToken.of(jwtService.generateRefreshToken(), this.member);
         refreshTokenRepository.save(refreshToken);
@@ -84,8 +86,8 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
     }
 
     @Test
-    @DisplayName("Expired access token, and no refresh token. Then fail authentication.")
-    void 리프레쉬_토큰_없음_인증_실패() {
+    @DisplayName("Expired access token, and member has no refresh token. Then fail authentication.")
+    void 인증_실패_리프레쉬_토큰없음() {
         this.token = buildExpiredAccessToken();
 
         RestAssured
@@ -98,7 +100,8 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
     }
 
     @Test
-    void 만료된_리프레쉬_토큰_인증_실패() {
+    @DisplayName("Expired access token, and expired refresh token. Then fail authentication.")
+    void 인증_실패_만료된_리프레쉬_토큰() {
         this.token = buildExpiredAccessToken();
         RefreshToken refreshToken = RefreshToken.of(buildExpiredRefreshToken(), this.member);
         refreshTokenRepository.save(refreshToken);
