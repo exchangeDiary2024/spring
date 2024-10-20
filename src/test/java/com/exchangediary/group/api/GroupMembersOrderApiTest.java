@@ -6,6 +6,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
     void 그룹원_순서_조회_내순서_1번일때() {
         Group group = createGroup();
         groupRepository.save(group);
-        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 1, group);
+        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         for (int idx = 6; idx > 0; idx--) {
             Member member = createMember(group, idx + 1, PROFILE_IMAGES.get(7 - idx));
@@ -59,7 +60,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
     void 그룹원_순서_조회_내순서_4번일때() {
         Group group = createGroup();
         groupRepository.save(group);
-        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 4, group);
+        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 4, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         for (int idx = 3; idx > 0; idx--) {
             Member member = createMember(group, idx, PROFILE_IMAGES.get(7 - idx));
@@ -95,7 +96,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
     void 그룹원_순서_조회_내순서_7번일때() {
         Group group = createGroup();
         groupRepository.save(group);
-        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 7, group);
+        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 7, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         for (int idx = 6; idx > 0; idx--) {
             Member member = createMember(group, idx, PROFILE_IMAGES.get(7 - idx));

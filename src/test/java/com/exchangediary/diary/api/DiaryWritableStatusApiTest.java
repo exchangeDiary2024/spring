@@ -7,6 +7,7 @@ import com.exchangediary.diary.ui.dto.response.DiaryWritableStatusResponse;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public class DiaryWritableStatusApiTest extends ApiBaseTest {
     void 내_순서_오늘_일기_작성_완료() {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         Diary diary = createDiary(group, member);
         diaryRepository.save(diary);
@@ -50,7 +51,7 @@ public class DiaryWritableStatusApiTest extends ApiBaseTest {
     void 내_순서_오늘_일기_작성_미완료() {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
 
         DiaryWritableStatusResponse response = RestAssured
@@ -70,7 +71,7 @@ public class DiaryWritableStatusApiTest extends ApiBaseTest {
     void 친구_순서_오늘_일기_작성_완료() {
         Group group = createGroup(2);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember));
         Diary diary = createDiary(group, groupMember);
@@ -93,7 +94,7 @@ public class DiaryWritableStatusApiTest extends ApiBaseTest {
     void 친구_순서_오늘_일기_작성_미완료() {
         Group group = createGroup(2);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember));
 
