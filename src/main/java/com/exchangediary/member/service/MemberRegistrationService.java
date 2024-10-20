@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberRegistrationService {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     public MemberIdResponse getOrCreateMember(Long kakaoId) {
         Member member = memberRepository.findBykakaoId(kakaoId)
