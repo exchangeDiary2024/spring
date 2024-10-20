@@ -27,7 +27,7 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "refresh_token_id")
     private Long id;
-    private final String token;
+    private String token;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "refresh_token_member_id_fkey"))
     private final Member member;
@@ -37,5 +37,9 @@ public class RefreshToken {
                 .token(token)
                 .member(member)
                 .build();
+    }
+
+    public void reissueToken(String token) {
+        this.token = token;
     }
 }
