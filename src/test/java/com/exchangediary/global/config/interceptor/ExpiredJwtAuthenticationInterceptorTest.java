@@ -9,6 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,20 @@ public class ExpiredJwtAuthenticationInterceptorTest extends ApiBaseTest {
 
         Long memberId = jwtService.extractMemberId(token);
         assertThat(memberId).isEqualTo(this.member.getId());
+    }
+
+    @Test
+    @DisplayName("Expired access token, and no refresh token. Then fail authentication.")
+    void 리프레쉬_토큰_없음_인증_실패() {
+        this.token = buildExpiredAccessToken();
+
+        RestAssured
+                .given().log().all()
+                .cookie("token", this.token)
+                .redirects().follow(false)
+                .when().get("/group")
+                .then().log().all()
+                .statusCode(HttpStatus.FOUND.value());
     }
 
     private String buildExpiredAccessToken() {
