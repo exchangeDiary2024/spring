@@ -5,12 +5,12 @@ const STEP3_HTML = `<div style="width: 100%; height: 34px;">
                                 <div style="margin-left: 90px; height: 100%">
                                     <div class="character-btn">
                                         <a href="#" class="character-icon">
-                                            <img id="orange" class="character-icon">
+                                            <img class="orange character-icon">
                                         </a>
                                     </div>
                                     <div class="character-btn">
                                         <a href="#" class="character-icon">
-                                            <img id="yellow" class="character-icon">
+                                            <img class="yellow character-icon">
                                         </a>
                                     </div>
                                 </div>
@@ -19,17 +19,17 @@ const STEP3_HTML = `<div style="width: 100%; height: 34px;">
                                 <div style="margin-left: 35px; height: 100%">
                                     <div class="character-btn">
                                         <a href="#" class="character-icon">
-                                            <img id="red" class="character-icon">
+                                            <img class="red character-icon">
                                         </a>
                                     </div>
                                     <div class="character-btn">
                                         <a href="#" class="character-icon">
-                                            <img id="purple" class="character-icon">
+                                            <img class="purple character-icon">
                                         </a>
                                     </div>
                                     <div class="character-btn">
                                         <a href="#" class="character-icon">
-                                            <img id="green" class="character-icon green">
+                                            <img class="green character-icon green-icon">
                                         </a>
                                     </div>
                                 </div>
@@ -38,12 +38,12 @@ const STEP3_HTML = `<div style="width: 100%; height: 34px;">
                                 <div style="margin-left: 90px; height: 100%">
                                     <div class="character-btn">
                                         <a href="#" class="character-icon">
-                                            <img id="blue" class="character-icon blue">
+                                            <img class="blue character-icon blue-icon">
                                         </a>                                    
                                     </div>
                                     <div class="character-btn">
                                         <a href="#" class="character-icon">
-                                            <img id="navy" class="character-icon">
+                                            <img class="navy character-icon">
                                         </a>
                                     </div>           
                                 </div>

@@ -1,5 +1,5 @@
 const STEP4_HTML = `
-                        <div style="">
+                        <div>
                             <img id="selected-character" style="width: 100px; height: 100px;">
                         </div>
                         <div style="width: 100%; height: 34px; position: relative; top: 16px;">
@@ -55,7 +55,7 @@ function isCreateInStep4() {
 function setProfileImage() {
     const profileImage = document.querySelector("#selected-character");
 
-    profileImage.id = groupData.profileImage;
+    profileImage.classList.add(groupData.profileImage);
 }
 
 async function changeStyleAndGetErrorMessage() {
