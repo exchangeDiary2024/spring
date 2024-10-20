@@ -17,9 +17,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     private static final String COOKIE_NAME = "token";
+
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final MemberRepository memberRepository;
+
+    private String token;
 
     @Override
     public boolean preHandle(
@@ -28,8 +31,8 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             Object handler
     ) throws IOException {
         try {
-            String token = getJwtTokenFromCookies(request);
-            verifyToken(token, response);
+            token = getJwtTokenFromCookies(request);
+            verifyToken(response);
 
             Long memberId = jwtService.extractMemberId(token);
             checkMemberExists(memberId);
@@ -55,15 +58,15 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         }
     }
 
-    private void verifyToken(String token, HttpServletResponse response) {
+    private void verifyToken(HttpServletResponse response) {
         try {
             jwtService.verifyAccessToken(token);
         } catch (ExpiredJwtException exception) {
             Long memberId = Long.valueOf(exception.getClaims().getSubject());
 
             jwtService.verifyRefreshToken(memberId);
-            String newToken = jwtService.generateAccessToken(memberId);
-            Cookie cookie = cookieService.createCookie(COOKIE_NAME, newToken);
+            token = jwtService.generateAccessToken(memberId);
+            Cookie cookie = cookieService.createCookie(COOKIE_NAME, token);
             response.addCookie(cookie);
         }
     }
