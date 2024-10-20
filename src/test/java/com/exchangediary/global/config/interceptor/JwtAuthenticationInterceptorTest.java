@@ -32,4 +32,15 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .then().log().all()
                 .statusCode(HttpStatus.FOUND.value());
     }
+
+    @Test
+    void 유효한_액세스_토큰으로_인증_성공() {
+        RestAssured
+                .given().log().all()
+                .cookie("token", this.token)
+                .redirects().follow(false)
+                .when().get("/group")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+    }
 }
