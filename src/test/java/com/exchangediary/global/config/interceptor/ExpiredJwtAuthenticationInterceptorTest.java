@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,6 +60,24 @@ public class ExpiredJwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .when().get("/group")
                 .then().log().all()
                 .statusCode(HttpStatus.FOUND.value());
+    }
+
+    @Test
+    void 만료된_리프레쉬_토큰_인증_실패() {
+        this.token = buildExpiredAccessToken();
+        RefreshToken refreshToken = RefreshToken.of(buildExpiredRefreshToken(), this.member);
+        refreshTokenRepository.save(refreshToken);
+
+        RestAssured
+                .given().log().all()
+                .cookie("token", this.token)
+                .redirects().follow(false)
+                .when().get("/group")
+                .then().log().all()
+                .statusCode(HttpStatus.FOUND.value());
+
+        Optional<RefreshToken> result = refreshTokenRepository.findByMemberId(member.getId());
+        assertThat(result.isEmpty()).isTrue();
     }
 
     private String buildExpiredAccessToken() {
