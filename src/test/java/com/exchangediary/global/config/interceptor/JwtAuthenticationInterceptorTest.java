@@ -118,6 +118,19 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
         assertThat(result.isEmpty()).isTrue();
     }
 
+    @Test
+    void 인증_실패_존재하지_않는_사용자의_토큰() {
+        this.token = jwtService.generateAccessToken(this.member.getId() + 100L);
+
+        RestAssured
+                .given().log().all()
+                .cookie("token", this.token)
+                .redirects().follow(false)
+                .when().get("/group")
+                .then().log().all()
+                .statusCode(HttpStatus.FOUND.value());
+    }
+
     private String buildExpiredAccessToken() {
         Date now = new Date(System.currentTimeMillis());
         Date expiration = new Date(now.getTime() - 1000);
