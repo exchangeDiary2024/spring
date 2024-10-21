@@ -28,7 +28,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
     void 그룹원_순서_조회_내순서_1번일때() {
         Group group = createGroup();
         groupRepository.save(group);
-        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 1, GroupRole.GROUP_MEMBER, group);
+        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 1, GroupRole.GROUP_LEADER, group);
         memberRepository.save(member);
         for (int idx = 6; idx > 0; idx--) {
             Member member = createMember(group, idx + 1, PROFILE_IMAGES.get(7 - idx));
@@ -46,6 +46,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
         var members = response.members();
 
         assertThat(response.selfIndex()).isEqualTo(0);
+        assertThat(response.leaderIndex()).isEqualTo(0);
         assertThat(members).hasSize(7);
         assertThat(members.get(0).nickname()).isEqualTo(this.member.getNickname());
         assertThat(members.get(1).nickname()).isEqualTo("name2");
@@ -60,7 +61,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
     void 그룹원_순서_조회_내순서_4번일때() {
         Group group = createGroup();
         groupRepository.save(group);
-        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 4, GroupRole.GROUP_MEMBER, group);
+        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 4, GroupRole.GROUP_LEADER, group);
         memberRepository.save(member);
         for (int idx = 3; idx > 0; idx--) {
             Member member = createMember(group, idx, PROFILE_IMAGES.get(7 - idx));
@@ -82,6 +83,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
         var members = response.members();
 
         assertThat(response.selfIndex()).isEqualTo(3);
+        assertThat(response.leaderIndex()).isEqualTo(3);
         assertThat(members).hasSize(7);
         assertThat(members.get(0).nickname()).isEqualTo("name1");
         assertThat(members.get(1).nickname()).isEqualTo("name2");
@@ -96,7 +98,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
     void 그룹원_순서_조회_내순서_7번일때() {
         Group group = createGroup();
         groupRepository.save(group);
-        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 7, GroupRole.GROUP_MEMBER, group);
+        this.member.updateMemberGroupInfo("self", PROFILE_IMAGES.get(0), 7, GroupRole.GROUP_LEADER, group);
         memberRepository.save(member);
         for (int idx = 6; idx > 0; idx--) {
             Member member = createMember(group, idx, PROFILE_IMAGES.get(7 - idx));
@@ -114,6 +116,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
         var members = response.members();
 
         assertThat(response.selfIndex()).isEqualTo(6);
+        assertThat(response.leaderIndex()).isEqualTo(6);
         assertThat(members).hasSize(7);
         assertThat(members.get(0).nickname()).isEqualTo("name1");
         assertThat(members.get(1).nickname()).isEqualTo("name2");
@@ -138,6 +141,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
                 .kakaoId(1234L + index)
                 .orderInGroup(index)
                 .nickname("name" + index)
+                .groupRole(GroupRole.GROUP_MEMBER)
                 .group(group)
                 .build();
     }
