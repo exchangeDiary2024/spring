@@ -7,6 +7,7 @@ import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
@@ -35,7 +36,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         Map<String, String> data = new HashMap<>();
         data.put("content", "buddies");
@@ -69,7 +70,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_내용만() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         Map<String, String> data = new HashMap<>();
         data.put("content", "buddies");
@@ -127,7 +128,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_순서_확인() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
@@ -166,7 +167,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_순서_확인_맨_첫_순서로() throws JsonProcessingException {
         Group group = createGroup(3);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 3, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 3, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
@@ -205,7 +206,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_순서_확인_내용만() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));

@@ -1,7 +1,4 @@
-const mood = document.querySelector(".mood");
 const image = document.querySelector(".image");
-
-mood.children[0].src = moodLocation;
 
 if (uploadImage) {
     image.className = "image";
