@@ -44,6 +44,6 @@ public class ApiBaseTest {
     }
 
     private String getToken() {
-        return jwtService.generateToken(member.getId());
+        return jwtService.generateAccessToken(member.getId());
     }
 }

@@ -2,7 +2,7 @@ package com.exchangediary.member.service;
 
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
-import com.exchangediary.member.domain.GroupId;
+import com.exchangediary.member.domain.dto.GroupId;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
 import lombok.RequiredArgsConstructor;

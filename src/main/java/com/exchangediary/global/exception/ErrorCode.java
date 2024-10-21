@@ -15,6 +15,7 @@ public enum ErrorCode {
     NEED_TO_REQUEST_TOKEN(HttpStatus.UNAUTHORIZED, "요청에서 토큰을 찾을 수 없습니다."),
     INVALID_AUTHORIZATION_TYPE(HttpStatus.UNAUTHORIZED, "인증 타입이 유효하지 않습니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
+    NOT_EXIST_MEMBER_TOKEN(HttpStatus.UNAUTHORIZED, "존재하지 않는 사용자의 토큰입니다."),
     JWT_TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "jwt 토큰 인증에 실패했습니다."),
 
     DIARY_WRITE_FORBIDDEN(HttpStatus.FORBIDDEN, "일기 작성 권한이 없습니다."),
