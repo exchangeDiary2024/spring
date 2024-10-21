@@ -14,7 +14,7 @@ public record ApiErrorResponse(
     public static ApiErrorResponse from(FieldError fieldError) {
         return ApiErrorResponse.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .message(String.format("%s %s", fieldError.getField(), fieldError.getDefaultMessage()))
+                .message(String.format("%s", fieldError.getDefaultMessage()))
                 .value((String) fieldError.getRejectedValue())
                 .build();
     }

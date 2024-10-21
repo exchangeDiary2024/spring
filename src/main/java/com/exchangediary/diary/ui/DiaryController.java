@@ -11,18 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/diary")
+@RequestMapping("/group/{groupId}/diary")
 public class DiaryController {
     private final DiaryQueryService diaryQueryService;
 
     @GetMapping
-    public String writePage() {
+    public String writePage(Model model, @PathVariable Long groupId) {
+        model.addAttribute("groupId", groupId);
         return "diary/write-page";
     }
 
     @GetMapping("/{diaryId}")
-    public String viewDiary(Model model, @PathVariable Long diaryId) {
+    public String viewDiary(
+            Model model,
+            @PathVariable Long groupId,
+            @PathVariable Long diaryId
+    ) {
         DiaryResponse diary = diaryQueryService.viewDiary(diaryId);
+        model.addAttribute("groupId", groupId);
         model.addAttribute("diary", diary);
         return "diary/view-diary";
     }

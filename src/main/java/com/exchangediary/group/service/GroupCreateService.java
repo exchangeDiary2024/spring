@@ -6,6 +6,7 @@ import com.exchangediary.group.ui.dto.request.GroupCreateRequest;
 import com.exchangediary.group.ui.dto.response.GroupCreateResponse;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import com.exchangediary.member.service.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,7 @@ public class GroupCreateService {
 
     private void updateMember(Long memberId, GroupCreateRequest request, Group group) {
         Member member = memberQueryService.findMember(memberId);
-        member.updateMemberGroupInfo(request.nickname(), request.profileImage(), 1, group);
+        member.updateMemberGroupInfo(request.nickname(), request.profileImage(), 1, GroupRole.GROUP_LEADER, group);
         memberRepository.save(member);
-
     }
 }

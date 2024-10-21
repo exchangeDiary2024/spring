@@ -36,45 +36,15 @@ public class GlobalExceptionHandler {
         return ApiErrorResponse.from(exception);
     }
 
-    @ExceptionHandler({InvalidDateException.class, DuplicateException.class})
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse handleInvalidRangeException(ServiceException exception) {
-        return ApiErrorResponse.from(exception.getErrorCode(), exception.getMessage(), exception.getValue());
-    }
-
-    @ExceptionHandler({UnauthorizedException.class})
-    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public ApiErrorResponse handleUnauthorizedException(ServiceException exception) {
-        return ApiErrorResponse.from(exception.getErrorCode(), exception.getMessage(), exception.getValue());
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ApiErrorResponse handleNotFoundException(ServiceException exception) {
-        return ApiErrorResponse.from(exception.getErrorCode(), exception.getMessage(), exception.getValue());
-    }
-
-    @ExceptionHandler({KakaoLoginFailureException.class})
-    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiErrorResponse handleKakaoLoginException(ServiceException exception) {
-        return ApiErrorResponse.from(exception.getErrorCode(), exception.getMessage(), exception.getValue());
-    }
-
-    @ExceptionHandler({ConfilctException.class})
-    @ResponseStatus(code = HttpStatus.CONFLICT)
-    public ApiErrorResponse handleConfilctException(ServiceException exception) {
-        return ApiErrorResponse.from(exception.getErrorCode(), exception.getMessage(), exception.getValue());
-    }
-
-    @ExceptionHandler({FailedImageUploadException.class})
-    public ResponseEntity<ApiErrorResponse> handleFailedImageUploadException(FailedImageUploadException exception) {
-        ApiErrorResponse apiErrorResponse = ApiErrorResponse.from(
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<ApiErrorResponse> handleServiceException(ServiceException exception) {
+        ApiErrorResponse body = ApiErrorResponse.from(
                 exception.getErrorCode(),
-                exception.getErrorCode().getMessage(),
+                exception.getMessage(),
                 exception.getValue()
         );
         return ResponseEntity
                 .status(exception.getErrorCode().getStatusCode())
-                .body(apiErrorResponse);
+                .body(body);
     }
 }

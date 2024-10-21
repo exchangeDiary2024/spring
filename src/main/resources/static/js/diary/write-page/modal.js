@@ -1,9 +1,7 @@
 const modal = document.querySelector("#modal");
 const modalBody = modal.querySelector(".modal-body");
 const moodBtn = document.querySelector(".mood-btn");
-const photoBtn = document.querySelector(".photo-btn");
 const emojiDiv = modalBody.querySelector(".emojies");
-const photoDiv = modalBody.querySelector(".photo");
 
 var currentModal = null
 
@@ -15,10 +13,6 @@ backgroundImage.src = "/images/diary/write-page/modal/background.svg";
 
 moodBtn.addEventListener("click", (event) => {
     clickModalBtn(event, emojiDiv);
-});
-
-photoBtn.addEventListener("click", (event) => {
-    clickModalBtn(event, photoDiv);
 });
 
 Array.from(emojiDiv.querySelectorAll("a")).forEach(mood => {
@@ -61,5 +55,4 @@ function changeMood(event) {
 
 function undisplayModalBody() {
     emojiDiv.style.display = "none";
-    photoDiv.style.display = "none";
 }

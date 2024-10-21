@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,13 +37,18 @@ public class Group extends BaseEntity {
     @NotNull
     private String code;
     @OneToMany(mappedBy = "group")
+    @OrderBy("order_in_group ASC")
     private List<Member> members;
 
     public static Group of(String groupName, String code) {
         return Group.builder()
                 .name(groupName)
-                .currentOrder(0)
+                .currentOrder(1)
                 .code(code)
                 .build();
+    }
+
+    public void updateCurrentOrder(Integer currentOrder) {
+        this.currentOrder = currentOrder;
     }
 }
