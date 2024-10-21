@@ -4,6 +4,7 @@
 <th:block layout:fragment="header">
     <title>스프링 - 일기 조회</title>
     <link rel="stylesheet" href="/css/diary/diary-common.css" type="text/css">
+    <link rel="stylesheet" href="/css/diary/veiw-page.css" type="text/css">
 </th:block>
 
 <th:block layout:fragment="content">
@@ -19,8 +20,13 @@
         </div>
         <div class="content">
             <div class="page-bar"></div>
+            <div class="title">
+                <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
+                <span class="title-font">[[${diary.member.nickname}]]의 일기</span>
+                <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
+            </div>
             <div class="image no-image">
-                <img class="image"/>
+                <img class="image-size"/>
             </div>
             <div class="diary-content-area">
                 <p class="diary-content">[[${diary.content}]]</p>
@@ -31,7 +37,7 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        const uploadImage = [[${diary.uploadImage}]];
+        const photo = [[${diary.uploadImage}]];
     </script>
     <script src="/js/diary/view-diary/draw-diary.js"></script>
 </th:block>

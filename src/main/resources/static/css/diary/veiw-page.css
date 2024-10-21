@@ -1,0 +1,61 @@
+@charset "utf-8";
+
+.title {
+    width: 375px;
+    height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.character {
+    width: 20px;
+    height: 20px;
+
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.character-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.character-icon.green-icon {
+    width: auto;
+}
+
+.character-icon.blue-icon {
+    height: auto;
+    /*margin-bottom: 13px;*/
+}
+
+.title-font {
+    float: left;
+    margin: 0 8px 3px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--kakao-logo, #000);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-feature-settings: 'dlig' on;
+    font-family: "SOYOMapleBold";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px; /* 70% */
+    letter-spacing: 0.2px;
+}
+
+.image {
+    width: 215px;
+    height: 215px;
+    flex-shrink: 0;
+
+    position: relative;
+    top: 14px;
+}

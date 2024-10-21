@@ -20,7 +20,7 @@ function uploadImage(event) {
     reader.onloadend = function () {
         photoBtn.classList.remove("photo-btn");
         photoBtn.innerHTML = `
-                            <img src="${reader.result}" class="image">
+                            <img src="${reader.result}" class="image-size">
                                 <a class="cancel-btn cancel-icon">
                                     <img src="/images/diary/write-page/cancel-upload.svg" class="cancel-icon">
                                 </a>

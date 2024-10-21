@@ -10,6 +10,14 @@
     left: 140px;
 }
 
+.upload-photo {
+    width: 215px;
+    height: 215px;
+    flex-shrink: 0;
+
+    position: relative;
+}
+
 .photo-btn {
     border-radius: 20px;
     border: 1px dashed #767676;

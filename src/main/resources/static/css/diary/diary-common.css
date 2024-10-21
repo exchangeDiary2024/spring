@@ -114,12 +114,10 @@ a {
     margin-bottom: 17px;
 }
 
-.image {
+.image-size {
     width: 215px;
     height: 215px;
     flex-shrink: 0;
-
-    position: relative;
 }
 
 .no-image {
@@ -128,5 +126,5 @@ a {
 
 .diary-content-area {
     position: relative; 
-    top: 22px;
+    top: 24px;
 }
