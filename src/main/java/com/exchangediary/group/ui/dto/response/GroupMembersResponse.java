@@ -8,15 +8,21 @@ import java.util.List;
 @Builder
 public record GroupMembersResponse(
         List<GroupMemberResponse> members,
-        int selfIndex
+        int selfIndex,
+        int leaderIndex
 ) {
-    public static GroupMembersResponse of(List<Member> members, int index) {
+    public static GroupMembersResponse of(
+            List<Member> members,
+            int selfIndex,
+            int leaderIndex
+    ) {
         List<GroupMemberResponse> response = members.stream()
                 .map(GroupMemberResponse::from)
                 .toList();
         return GroupMembersResponse.builder()
                 .members(response)
-                .selfIndex(index)
+                .selfIndex(selfIndex)
+                .leaderIndex(leaderIndex)
                 .build();
     }
 

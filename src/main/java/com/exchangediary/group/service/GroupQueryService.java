@@ -8,6 +8,7 @@ import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,13 @@ public class GroupQueryService {
         Group group = findGroup(groupId);
         List<Member> members = group.getMembers();
         Member self = findSelf(members, memberId);
-        return GroupMembersResponse.of(members, self.getOrderInGroup() - 1);
+        Member leader = findGroupLeader(group);
+
+        return GroupMembersResponse.of(
+                members,
+                self.getOrderInGroup() - 1,
+                leader.getOrderInGroup() - 1
+        );
     }
 
     private Member findSelf(List<Member> members, Long memberId) {
@@ -57,6 +64,17 @@ public class GroupQueryService {
                         ErrorCode.GROUP_NOT_FOUND,
                         "",
                         String.valueOf(memberId)
+                ));
+    }
+
+    private Member findGroupLeader(Group group) {
+        return group.getMembers().stream()
+                .filter(member -> GroupRole.GROUP_LEADER.equals(member.getGroupRole()))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.GROUP_LEADER_NOT_FOUND,
+                        "",
+                        String.valueOf(group.getId())
                 ));
     }
 }
