@@ -27,10 +27,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Transactional
 public class DiaryCommandService {
-    private final DiaryRepository diaryRepository;
-    private final MemberQueryService memberQueryService;
-    private final GroupQueryService groupQueryService;
-    private final GroupRepository groupRepository;
     private static final Set<String> VALID_IMAGE_FORMAT = Set.of(
             "image/jpeg",
             "image/gif",
@@ -38,6 +34,10 @@ public class DiaryCommandService {
             "image/heic",
             "image/heif"
     );
+    private final DiaryRepository diaryRepository;
+    private final MemberQueryService memberQueryService;
+    private final GroupQueryService groupQueryService;
+    private final GroupRepository groupRepository;
 
     public Long createDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
@@ -106,6 +106,7 @@ public class DiaryCommandService {
         group.updateCurrentOrder(currentOrder);
         groupRepository.save(group);
     }
+
     private void validateImageType(MultipartFile file) {
         String contentType = file.getContentType();
 
