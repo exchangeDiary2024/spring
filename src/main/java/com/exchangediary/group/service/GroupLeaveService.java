@@ -19,10 +19,10 @@ public class GroupLeaveService {
 
     public void leaveGroup(Long memberId) {
         Member member = memberQueryService.findMember(memberId);
-        member.updateGroup(null);
-        memberRepository.save(member);
         Group group = member.getGroup();
         group.getMembers().remove(member);
+        member.updateGroup(null);
         groupRepository.save(group);
+        memberRepository.save(member);
     }
 }
