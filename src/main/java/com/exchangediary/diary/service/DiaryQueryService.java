@@ -63,13 +63,14 @@ public class DiaryQueryService {
 
     public DiaryWritableStatusResponse getDiaryWritableStatus(Long groupId, Long memberId) {
         Boolean writtenTodayDiary = false;
+        Long diaryId = null;
 
         Boolean isMyOrder = isCurrentOrder(groupId, memberId);
         Optional<Diary> todayDiary = findTodayDiary(groupId);
         if (todayDiary.isPresent()) {
             writtenTodayDiary = true;
+            diaryId = getViewableDiaryId(isMyOrder, writtenTodayDiary, memberId, todayDiary.get());
         }
-        Long diaryId = getViewableDiaryId(isMyOrder, writtenTodayDiary, memberId, todayDiary.get());
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
     }
 
