@@ -31,6 +31,13 @@ public class DiaryCommandService {
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
     private final GroupRepository groupRepository;
+    private static final Set<String> VALID_IMAGE_FORMAT = Set.of(
+            "image/jpeg",
+            "image/gif",
+            "image/png",
+            "image/heic",
+            "image/heif"
+    );
 
     public Long createDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
@@ -102,7 +109,7 @@ public class DiaryCommandService {
     private void validateImageType(MultipartFile file) {
         String contentType = file.getContentType();
 
-        if (!VALID_IMAGE_TYPES.contains(contentType)) {
+        if (!VALID_IMAGE_FORMAT.contains(contentType)) {
             throw new FailedImageUploadException(
                     ErrorCode.INVALID_IMAGE_FORMAT,
                     "",
@@ -110,12 +117,4 @@ public class DiaryCommandService {
             );
         }
     }
-
-    private static final Set<String> VALID_IMAGE_TYPES = Set.of(
-            "image/jpeg",
-            "image/gif",
-            "image/png",
-            "image/heic",
-            "image/heif"
-    );
 }
