@@ -38,7 +38,7 @@ public class DiaryQueryService {
                         "",
                         String.valueOf(diaryId))
                 );
-        return DiaryResponse.of(diary);
+        return DiaryResponse.from(diary);
     }
 
     public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId) {
