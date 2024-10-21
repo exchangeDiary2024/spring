@@ -19,7 +19,6 @@ public class GroupLeaderService {
     public void handOverGroupLeader(Long groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
         Member currentLeader = groupQueryService.findSelfInGroup(group, memberId);
-
         Member newLeader = findGroupMemberByIndex(group, request.nextLeaderIndex());
 
         currentLeader.changeGroupRole(GroupRole.GROUP_MEMBER);
