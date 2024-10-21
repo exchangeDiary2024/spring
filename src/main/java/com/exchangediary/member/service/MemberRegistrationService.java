@@ -2,6 +2,7 @@ package com.exchangediary.member.service;
 
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.entity.RefreshToken;
 import com.exchangediary.member.ui.dto.response.MemberIdResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,21 +12,28 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class MemberRegistrationService {
+    private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
     public MemberIdResponse getOrCreateMember(Long kakaoId) {
         Member member = memberRepository.findBykakaoId(kakaoId)
-                .orElseGet(() -> saveUser(kakaoId));
-        return MemberIdResponse.builder()
-                .memberId(member.getId())
-                .build();
+                .orElseGet(() -> signUp(kakaoId));
+        RefreshToken refreshToken = issueRefreshToken(member);
+        member.updateRefreshToken(refreshToken);
+        return MemberIdResponse.from(member.getId());
     }
 
-    private Member saveUser(Long kakaoId) {
-        Member newMember = Member.builder()
-                .kakaoId(kakaoId)
-                .orderInGroup(0)
-                .build();
+    private Member signUp(Long kakaoId) {
+        Member newMember = Member.from(kakaoId);
         return memberRepository.save(newMember);
+    }
+
+    private RefreshToken issueRefreshToken(Member member) {
+        if (member.getRefreshToken() != null) {
+            RefreshToken refreshToken = member.getRefreshToken();
+            refreshToken.reissueToken(jwtService.generateRefreshToken());
+            return refreshToken;
+        }
+        return RefreshToken.of(jwtService.generateRefreshToken(), member);
     }
 }
