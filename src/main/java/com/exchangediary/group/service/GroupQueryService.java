@@ -53,7 +53,7 @@ public class GroupQueryService {
                 .filter(member -> memberId.equals(member.getId()))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.GROUP_NOT_FOUND,
+                        ErrorCode.MEMBER_NOT_FOUND,
                         "",
                         String.valueOf(memberId)
                 ));
