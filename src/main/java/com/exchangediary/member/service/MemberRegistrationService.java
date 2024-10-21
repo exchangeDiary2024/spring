@@ -1,7 +1,6 @@
 package com.exchangediary.member.service;
 
 import com.exchangediary.member.domain.MemberRepository;
-import com.exchangediary.member.domain.RefreshTokenRepository;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.entity.RefreshToken;
 import com.exchangediary.member.ui.dto.response.MemberIdResponse;

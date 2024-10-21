@@ -2,10 +2,10 @@ package com.exchangediary.member.service;
 
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.UnauthorizedException;
-import com.exchangediary.member.domain.RefreshTokenRepository;
 import com.exchangediary.member.domain.entity.RefreshToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,14 +27,14 @@ public class JwtService {
     private long accessTokenExpirationTime;
     @Value("${security.jwt.refresh-token.expiration-time}")
     private long refreshTokenExpirationTime;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
 
     public String generateAccessToken(Long memberId) {
-        return buildAccessToken(memberId);
+        return buildToken(memberId);
     }
 
     public String generateRefreshToken() {
-        return buildRefreshToken();
+        return buildToken(null);
     }
 
     public void verifyAccessToken(String token) {
@@ -42,21 +42,12 @@ public class JwtService {
     }
 
     public void verifyRefreshToken(Long memberId) {
-        RefreshToken refreshToken = refreshTokenRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new UnauthorizedException(
-                        ErrorCode.JWT_TOKEN_UNAUTHORIZED,
-                        "",
-                        String.valueOf(memberId)
-                ));
+        RefreshToken refreshToken = refreshTokenService.findRefreshTokenByMemberId(memberId);
 
         try {
             verifyToken(refreshToken.getToken());
         } catch (ExpiredJwtException exception) {
-            refreshTokenRepository.delete(refreshToken);
-            throw new UnauthorizedException(ErrorCode.EXPIRED_TOKEN,
-                    "",
-                    refreshToken.getToken()
-            );
+            refreshTokenService.expireRefreshToken(refreshToken);
         }
     }
 
@@ -64,29 +55,23 @@ public class JwtService {
         return Long.valueOf(extractAllClaims(token).getSubject());
     }
 
-    private String buildAccessToken(Long memberId) {
+    private String buildToken(Long memberId) {
         Date now = new Date(System.currentTimeMillis());
-        Date expiration = new Date(now.getTime() + accessTokenExpirationTime);
+        long expirationTime = refreshTokenExpirationTime;
+        if (memberId != null) {
+            expirationTime = accessTokenExpirationTime;
+        }
+        Date expiration = new Date(now.getTime() + expirationTime);
 
-        return Jwts
-                .builder()
-                .setSubject(String.valueOf(memberId))
+        JwtBuilder jwtBuilder = Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256);
 
-    private String buildRefreshToken() {
-        Date now = new Date(System.currentTimeMillis());
-        Date expiration = new Date(now.getTime() + refreshTokenExpirationTime);
-
-        return Jwts
-                .builder()
-                .setIssuedAt(now)
-                .setExpiration(expiration)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
+        if (memberId != null) {
+            jwtBuilder.setSubject(String.valueOf(memberId));
+        }
+        return jwtBuilder.compact();
     }
 
     private void verifyToken(String token) {

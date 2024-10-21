@@ -16,8 +16,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LoginInterceptor implements HandlerInterceptor {
     private static final String COOKIE_NAME = "token";
+
     private final JwtService jwtService;
     private final CookieService cookieService;
+
+    private String token;
 
     @Override
     public boolean preHandle(
@@ -26,12 +29,12 @@ public class LoginInterceptor implements HandlerInterceptor {
             Object handler
     ) throws IOException {
         try {
-            String token = getJwtTokenFromCookies(request);
-            jwtService.verifyAccessToken(token);
+            token = getJwtTokenFromCookies(request);
+            verifyAndReissueAccessToken(response);
 
             Long memberId = jwtService.extractMemberId(token);
             request.setAttribute("memberId", memberId);
-        } catch (UnauthorizedException | ExpiredJwtException exception) {
+        } catch (UnauthorizedException exception) {
             return true;
         }
         response.sendRedirect(request.getContextPath()+ "/group");
@@ -49,6 +52,19 @@ public class LoginInterceptor implements HandlerInterceptor {
                     "",
                     COOKIE_NAME
             );
+        }
+    }
+
+    private void verifyAndReissueAccessToken(HttpServletResponse response) {
+        try {
+            jwtService.verifyAccessToken(token);
+        } catch (ExpiredJwtException exception) {
+            Long memberId = Long.valueOf(exception.getClaims().getSubject());
+
+            jwtService.verifyRefreshToken(memberId);
+            token = jwtService.generateAccessToken(memberId);
+            Cookie cookie = cookieService.createCookie(COOKIE_NAME, token);
+            response.addCookie(cookie);
         }
     }
 }

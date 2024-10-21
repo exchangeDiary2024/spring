@@ -32,7 +32,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     ) throws IOException {
         try {
             token = getJwtTokenFromCookies(request);
-            verifyToken(response);
+            verifyAndReissueAccessToken(response);
 
             Long memberId = jwtService.extractMemberId(token);
             checkMemberExists(memberId);
@@ -58,7 +58,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         }
     }
 
-    private void verifyToken(HttpServletResponse response) {
+    private void verifyAndReissueAccessToken(HttpServletResponse response) {
         try {
             jwtService.verifyAccessToken(token);
         } catch (ExpiredJwtException exception) {
