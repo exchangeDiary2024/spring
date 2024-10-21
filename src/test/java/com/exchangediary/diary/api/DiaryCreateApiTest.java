@@ -38,9 +38,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         groupRepository.save(group);
         member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -72,9 +70,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         groupRepository.save(group);
         member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -105,9 +101,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         groupRepository.save(group);
         Diary diary = createDiary(group);
         diaryRepository.save(diary);
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -132,9 +126,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -171,9 +163,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -210,9 +200,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -245,9 +233,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         groupRepository.save(group);
         member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -285,5 +271,12 @@ class DiaryCreateApiTest extends ApiBaseTest {
                 .profileImage("red")
                 .group(group)
                 .build();
+    }
+
+    private Map<String, String> makeDiaryData() {
+        Map<String, String> data = new HashMap<>();
+        data.put("content", "buddies");
+        data.put("moodLocation", "/images/sad.png");
+        return data;
     }
 }
