@@ -1,6 +1,13 @@
 package com.exchangediary.global.exception;
 
+import com.exchangediary.global.exception.serviceexception.ConfilctException;
+import com.exchangediary.global.exception.serviceexception.FailedImageUploadException;
+import com.exchangediary.global.exception.serviceexception.KakaoLoginFailureException;
+import com.exchangediary.global.exception.serviceexception.DuplicateException;
 import com.exchangediary.global.exception.serviceexception.ServiceException;
+import com.exchangediary.global.exception.serviceexception.InvalidDateException;
+import com.exchangediary.global.exception.serviceexception.NotFoundException;
+import com.exchangediary.global.exception.serviceexception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
