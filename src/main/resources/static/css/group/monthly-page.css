@@ -196,16 +196,12 @@ th,td {
     flex-shrink: 0;
 }
 
-.blue {
-    width: 30px;
-    height: 35.946px;
+.blue-icon {
+    height: auto;
     position: relative;
-    bottom: 2px;
-    flex-shrink: 0;
+    bottom: 3px;
 }
 
-.green {
-    width: 37.155px;
-    height: 30px;
-    flex-shrink: 0;
+.green-icon {
+    width: auto;
 }

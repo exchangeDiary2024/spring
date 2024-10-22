@@ -54,11 +54,11 @@ function makeCircle(date, writtenDiaryDays) {
 function getProfileImageHtml(profileImage, date) {
     if (profileImage === "blue" || profileImage === "green") {
         return `<a class="date day${date} highlight written" href="/api/groups/${groupId}/diaries">
-                    <img id="${profileImage}" class=${profileImage}>
+                    <img class="${profileImage} profile-icon ${profileImage}-icon">
                 </a>`;
     }
     return `<a class="date day${date} highlight written" href="/api/groups/${groupId}/diaries">
-                <img id="${profileImage}" class="profile-icon"">
+                <img class="${profileImage} profile-icon">
             </a>`;
 }
 
