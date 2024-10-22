@@ -1,6 +1,7 @@
 package com.exchangediary.diary.service;
 
 import com.exchangediary.diary.domain.DiaryRepository;
+import com.exchangediary.diary.domain.UploadImageRepository;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.entity.UploadImage;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
@@ -28,6 +29,7 @@ public class DiaryCommandService {
     private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
     private final GroupRepository groupRepository;
+    private final UploadImageRepository uploadImageRepository;
 
     public Long createDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
@@ -42,24 +44,11 @@ public class DiaryCommandService {
             );
         }
 
-        if (isEmptyFile(file)) {
-            Diary diary = Diary.of(diaryRequest, null);
-            changeCurrentOrderOfGroup(group);
-            diary.addMemberAndGroup(member, group);
-            Diary savedDiary = diaryRepository.save(diary);
-            return savedDiary.getId();
-        }
-
-        diaryValidationService.validateImageType(file);
         try {
-            UploadImage image = UploadImage.builder()
-                    .image(file.getBytes())
-                    .build();
-            Diary diary = Diary.of(diaryRequest, image);
+            Diary diary = Diary.from(diaryRequest, member, group);
+            uploadImage(file, diary);
             changeCurrentOrderOfGroup(group);
-            diary.addMemberAndGroup(member, group);
             Diary savedDiary = diaryRepository.save(diary);
-            image.uploadToDiary(savedDiary);
             return savedDiary.getId();
         } catch (IOException e) {
             throw new FailedImageUploadException(
@@ -67,6 +56,13 @@ public class DiaryCommandService {
                     "네트워크 오류로 인해 \n일기 업로드에 실패했습니다.\n다시 시도해주세요.",
                     file.getOriginalFilename()
             );
+        }
+    }
+
+    private void uploadImage(MultipartFile file, Diary diary) throws IOException{
+        if (!isEmptyFile(file)) {
+            diaryValidationService.validateImageType(file);
+            uploadImageRepository.save(UploadImage.of(file.getBytes(), diary));
         }
     }
 
