@@ -84,7 +84,10 @@ public class DiaryCommandService {
         LocalDate today = LocalDate.now();
         Optional<Long> todayDiary =
                 diaryRepository.findIdByGroupAndDate(
-                        groupId, today.getYear(), today.getMonthValue(), today.getDayOfMonth());
+                        groupId,
+                        today.getYear(),
+                        today.getMonthValue(),
+                        today.getDayOfMonth());
 
         if (todayDiary.isPresent()) {
             throw new DuplicateException(
