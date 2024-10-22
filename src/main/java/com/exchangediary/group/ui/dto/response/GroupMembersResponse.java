@@ -32,8 +32,7 @@ public record GroupMembersResponse(
     @Builder
     public record GroupMemberResponse(
             String nickname,
-            String profileImage,
-            boolean isSelf
+            String profileImage
     ) {
         public static GroupMemberResponse from(Member member) {
             return GroupMemberResponse.builder()
