@@ -42,7 +42,7 @@ public class GroupLeaderService {
     }
 
     public void kickOutMember(Long groupId, GroupKickOutRequest request) {
-        Long memberId = memberRepository.findIdByNickname(request.Nickname());
-        groupLeaveService.leaveGroup(groupId, memberId);
+        Member member = memberRepository.findByNickname(request.nickname());
+        groupLeaveService.leaveGroup(groupId, member.getId());
     }
 }
