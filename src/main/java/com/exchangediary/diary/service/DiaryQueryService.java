@@ -62,9 +62,16 @@ public class DiaryQueryService {
     }
 
     public DiaryWritableStatusResponse getDiaryWritableStatus(Long groupId, Long memberId) {
+        Boolean writtenTodayDiary = false;
+        Long diaryId = null;
+
         Boolean isMyOrder = isCurrentOrder(groupId, memberId);
-        Boolean writtenTodayDiary = isTodayDiaryExistent(groupId);
-        return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary);
+        Optional<Diary> todayDiary = findTodayDiary(groupId);
+        if (todayDiary.isPresent()) {
+            writtenTodayDiary = true;
+            diaryId = getTodayDiaryId(isMyOrder, memberId, todayDiary.get());
+        }
+        return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
     }
 
     private void checkValidDate(int year, int month, Integer day) {
@@ -90,14 +97,27 @@ public class DiaryQueryService {
     private Boolean isCurrentOrder(Long groupId, Long memberId) {
         Group group = groupQueryService.findGroup(groupId);
         Member member = memberQueryService.findMember(memberId);
-        return group.getCurrentOrder() == member.getOrderInGroup();
+        return group.getCurrentOrder().equals(member.getOrderInGroup());
     }
 
-    private Boolean isTodayDiaryExistent(Long groupId) {
+    private Optional<Diary> findTodayDiary(Long groupId) {
         LocalDate today = LocalDate.now();
-        Optional<Long> todayDiary =
-                diaryRepository.findIdByGroupAndDate(
-                        groupId, today.getYear(), today.getMonthValue(), today.getDayOfMonth());
-        return todayDiary.isPresent();
+        Optional<Diary> todayDiary = diaryRepository.findByGroupAndDate(
+                groupId,
+                today.getYear(),
+                today.getMonthValue(),
+                today.getDayOfMonth());
+        return todayDiary;
+    }
+
+    private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary
+    ) {
+        if (todayDiary.getMember().getId().equals(memberId)) {
+            return todayDiary.getId();
+        }
+        if (isMyOrder) {
+            return todayDiary.getId();
+        }
+        return null;
     }
 }
