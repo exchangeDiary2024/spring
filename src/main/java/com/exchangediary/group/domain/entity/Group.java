@@ -58,4 +58,8 @@ public class Group extends BaseEntity {
         }
         this.currentOrder = currentOrder;
     }
+
+    public void updateLastSkipOrderDate() {
+        this.lastSkipOrderDate = LocalDate.now();
+    }
 }

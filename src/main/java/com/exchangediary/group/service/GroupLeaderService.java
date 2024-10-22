@@ -30,6 +30,7 @@ public class GroupLeaderService {
         Group group = groupQueryService.findGroup(groupId);
         groupValidationService.checkSkipOrderAuthority(group);
         group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
+        group.updateLastSkipOrderDate();
     }
 
     private Member findGroupMemberByIndex(Group group, int index) {
