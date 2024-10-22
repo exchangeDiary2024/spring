@@ -14,4 +14,5 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Optional<Long> findIdByGroupAndDate(Long groupId, int year, int month, int day);
     @Query("SELECT d FROM Diary d WHERE d.group.id = :groupId AND YEAR(d.createdAt) = :year AND MONTH(d.createdAt) = :month AND DAY(d.createdAt) = :day")
     Optional<Diary> findByGroupAndDate(Long groupId, int year, int month, int day);
+    void deleteByMemberId(Long memberId);
 }
