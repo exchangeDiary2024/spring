@@ -8,9 +8,12 @@ import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.enums.GroupRole;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -24,6 +27,7 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     private MemberRepository memberRepository;
 
     @Test
+    @DisplayName("순서 변경 할 멤버들 없을 경우")
     public void 그룹_나가기() {
         Group group = createGroup();
         groupRepository.save(group);
@@ -40,7 +44,44 @@ public class GroupLeaveApiTest extends ApiBaseTest {
                 .statusCode(HttpStatus.OK.value());
 
         Member updatedMember = memberRepository.findById(member.getId()).get();
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedMember.getGroup()).isEqualTo(null);
+        assertThat(updatedMember.getNickname()).isEqualTo(null);
+        assertThat(updatedMember.getGroupRole()).isEqualTo(null);
+        assertThat(updatedMember.getProfileImage()).isEqualTo(null);
+        assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("순서 변경 할 멤버들 있을 경우")
+    public void 그룹_나가기_순서_변경() {
+        Group group = createGroup();
+        groupRepository.save(group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
+        Member groupMember = createMemberInGroup(group,2);
+        Member groupMember2 = createMemberInGroup(group,3);
+        memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .when()
+                .patch(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+
+        Member updatedMember = memberRepository.findById(member.getId()).get();
+        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
+        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
+        assertThat(updatedMember.getGroup()).isEqualTo(null);
+        assertThat(updatedMember.getNickname()).isEqualTo(null);
+        assertThat(updatedMember.getGroupRole()).isEqualTo(null);
+        assertThat(updatedMember.getProfileImage()).isEqualTo(null);
+        assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+        assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
+        assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
     }
 
     private Group createGroup() {
@@ -48,6 +89,15 @@ public class GroupLeaveApiTest extends ApiBaseTest {
                 .name(GROUP_NAME)
                 .currentOrder(0)
                 .code("code")
+                .build();
+    }
+
+    private Member createMemberInGroup(Group group, int orderInGroup) {
+        return Member.builder()
+                .kakaoId(12345L)
+                .orderInGroup(orderInGroup)
+                .profileImage("red")
+                .group(group)
                 .build();
     }
 }
