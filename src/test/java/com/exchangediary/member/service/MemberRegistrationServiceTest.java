@@ -22,6 +22,8 @@ public class MemberRegistrationServiceTest {
     private MemberRegistrationService memberRegistrationService;
     @Mock
     private MemberRepository memberRepository;
+    @Mock
+    private JwtService jwtService;
 
     @Test
     void 새로운_회원_생성() {

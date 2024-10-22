@@ -21,11 +21,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class DiaryCommandService {
+    private static final Set<String> VALID_IMAGE_FORMAT = Set.of(
+            "image/jpeg",
+            "image/gif",
+            "image/png",
+            "image/heic",
+            "image/heif"
+    );
     private final DiaryRepository diaryRepository;
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
@@ -52,6 +60,7 @@ public class DiaryCommandService {
             return savedDiary.getId();
         }
 
+        validateImageType(file);
         try {
             UploadImage image = UploadImage.builder()
                     .image(file.getBytes())
@@ -96,5 +105,17 @@ public class DiaryCommandService {
             currentOrder = 1;
         group.updateCurrentOrder(currentOrder);
         groupRepository.save(group);
+    }
+
+    private void validateImageType(MultipartFile file) {
+        String contentType = file.getContentType();
+
+        if (!VALID_IMAGE_FORMAT.contains(contentType)) {
+            throw new FailedImageUploadException(
+                    ErrorCode.INVALID_IMAGE_FORMAT,
+                    "",
+                    file.getOriginalFilename()
+            );
+        }
     }
 }

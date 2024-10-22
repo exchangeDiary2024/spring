@@ -6,6 +6,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.request.GroupCreateRequest;
 import com.exchangediary.group.ui.dto.response.GroupCreateResponse;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ public class GroupCreateApiTest extends ApiBaseTest {
         assertThat(groupCreator.getOrderInGroup()).isEqualTo(1);
         assertThat(groupCreator.getNickname()).isEqualTo(nickname);
         assertThat(groupCreator.getProfileImage()).isEqualTo(profileImage);
+        assertThat(groupCreator.getGroupRole()).isEqualTo(GroupRole.GROUP_LEADER);
     }
 
     @ParameterizedTest

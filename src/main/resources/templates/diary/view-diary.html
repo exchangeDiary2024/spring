@@ -14,14 +14,13 @@
             </div>
             <div class="bar-main">
                 <span class="date">[[${diary.createdAt}]]</span>
-                <div class="mood"><img src=""></div>
+                <div class="mood"><img th:src="${diary.moodLocation}"></div>
             </div>
         </div>
-
         <div class="content">
             <div class="page-bar"></div>
             <div class="image no-image">
-                <img class="image" src=""/>
+                <img class="image"/>
             </div>
             <div class="diary-content-area">
                 <p class="diary-content">[[${diary.content}]]</p>
@@ -32,7 +31,6 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        const moodLocation = [[${diary.moodLocation}]];
         const uploadImage = [[${diary.uploadImage}]];
     </script>
     <script src="/js/diary/view-diary/draw-diary.js"></script>
