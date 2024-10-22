@@ -2,7 +2,9 @@ package com.exchangediary.diary.api;
 
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.diary.domain.DiaryRepository;
+import com.exchangediary.diary.domain.UploadImageRepository;
 import com.exchangediary.diary.domain.entity.Diary;
+import com.exchangediary.diary.domain.entity.UploadImage;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
@@ -31,9 +33,11 @@ class DiaryCreateApiTest extends ApiBaseTest {
     private GroupRepository groupRepository;
     @Autowired
     private DiaryRepository diaryRepository;
+    @Autowired
+    private UploadImageRepository uploadImageRepository;
 
     @Test
-    void 일기_작성_성공() throws JsonProcessingException {
+    void 일기_작성_성공_사진포함() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
         member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
@@ -62,10 +66,12 @@ class DiaryCreateApiTest extends ApiBaseTest {
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
         assertThat(newDiary.getContent()).isEqualTo(data.get("content"));
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
+        UploadImage uploadImage = uploadImageRepository.findAll().getLast();
+        assertThat(uploadImage.getDiary().getId()).isEqualTo(newDiary.getId());
     }
 
     @Test
-    void 일기_작성_성공_내용만() throws JsonProcessingException {
+    void 일기_작성_성공_사진_미포함() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
         member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
