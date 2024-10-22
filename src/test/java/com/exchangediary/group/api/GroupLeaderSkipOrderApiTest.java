@@ -20,7 +20,7 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
 
     @Test
     void 일기_건너뛰기_성공() {
-        Group group = createGroup(2, LocalDate.now().minusDays(1));
+        Group group = createGroup(2);
         updateSelf(group, 1, GroupRole.GROUP_LEADER);
         createMember(group, 2, GroupRole.GROUP_MEMBER);
 
@@ -31,13 +31,14 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
 
-        int result = groupRepository.findById(group.getId()).get().getCurrentOrder();
-        assertThat(result).isEqualTo(1);
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
+        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(1);
+        assertThat(updatedGroup.getLastSkipOrderDate()).isEqualTo(LocalDate.now());
     }
 
     @Test
     void 일기_건너뛰기_실패_오늘_이미_실행() {
-        Group group = createGroup(2, LocalDate.now());
+        Group group = createGroup(2);
         updateSelf(group, 1, GroupRole.GROUP_LEADER);
         createMember(group, 2, GroupRole.GROUP_MEMBER);
 
@@ -45,15 +46,21 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .when().patch("/api/group/" + group.getId() + "/leader/skip-order")
+                .then().log().all();
+        RestAssured
+                .given().log().all()
+                .cookie("token", token)
+                .when().patch("/api/group/" + group.getId() + "/leader/skip-order")
                 .then().log().all()
                 .statusCode(HttpStatus.CONFLICT.value());
 
-        int result = groupRepository.findById(group.getId()).get().getCurrentOrder();
-        assertThat(result).isEqualTo(2);
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
+        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(1);
+        assertThat(updatedGroup.getLastSkipOrderDate()).isEqualTo(LocalDate.now());
     }
 
-    private Group createGroup(int order, LocalDate lastDate) {
-        Group group = Group.of("group-name", "code", lastDate);
+    private Group createGroup(int order) {
+        Group group = Group.of("group-name", "code", LocalDate.now().minusDays(1));
         group.updateCurrentOrder(order, 2);
         return groupRepository.save(group);
     }
