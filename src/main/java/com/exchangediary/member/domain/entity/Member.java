@@ -69,6 +69,10 @@ public class Member extends BaseEntity {
         this.group = group;
     }
 
+    public void changeGroupRole(GroupRole groupRole) {
+        this.groupRole = groupRole;
+    }
+
     public void updateRefreshToken(RefreshToken refreshToken) {
         this.refreshToken = refreshToken;
     }
