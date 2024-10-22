@@ -55,7 +55,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
         assertThat(members.get(6).nickname()).isEqualTo("name7");
         assertThat(response.selfIndex()).isEqualTo(0);
         assertThat(response.leaderIndex()).isEqualTo(0);
-        assertThat(response.currentWriter().index()).isEqualTo(0);
+        assertThat(response.currentWriterIndex()).isEqualTo(0);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
         assertThat(members.get(6).nickname()).isEqualTo("name7");
         assertThat(response.selfIndex()).isEqualTo(3);
         assertThat(response.leaderIndex()).isEqualTo(3);
-        assertThat(response.currentWriter().index()).isEqualTo(0);
+        assertThat(response.currentWriterIndex()).isEqualTo(0);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
         assertThat(members.get(6).nickname()).isEqualTo(this.member.getNickname());
         assertThat(response.selfIndex()).isEqualTo(6);
         assertThat(response.leaderIndex()).isEqualTo(6);
-        assertThat(response.currentWriter().index()).isEqualTo(0);
+        assertThat(response.currentWriterIndex()).isEqualTo(0);
     }
 
     private Group createGroup() {

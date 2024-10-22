@@ -10,13 +10,13 @@ public record GroupMembersResponse(
         List<GroupMemberResponse> members,
         int selfIndex,
         int leaderIndex,
-        CurrentDiaryWriterResponse currentWriter
+        int currentWriterIndex
 ) {
     public static GroupMembersResponse of(
             List<Member> members,
             int selfIndex,
             int leaderIndex,
-            CurrentDiaryWriterResponse currentWriter
+            int currentWriterIndex
     ) {
         List<GroupMemberResponse> response = members.stream()
                 .map(GroupMemberResponse::from)
@@ -25,7 +25,7 @@ public record GroupMembersResponse(
                 .members(response)
                 .selfIndex(selfIndex)
                 .leaderIndex(leaderIndex)
-                .currentWriter(currentWriter)
+                .currentWriterIndex(currentWriterIndex)
                 .build();
     }
 

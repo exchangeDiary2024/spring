@@ -4,7 +4,6 @@ import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
-import com.exchangediary.group.ui.dto.response.CurrentDiaryWriterResponse;
 import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
@@ -53,7 +52,7 @@ public class GroupQueryService {
                 group.getMembers(),
                 self.getOrderInGroup() - 1,
                 leader.getOrderInGroup() - 1,
-                CurrentDiaryWriterResponse.of(currentWriter.getOrderInGroup() - 1, false) // TODO: isOverdue 여부 판단
+                currentWriter.getOrderInGroup() - 1
         );
     }
 
