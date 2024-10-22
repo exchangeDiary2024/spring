@@ -6,21 +6,15 @@ function drawBottom() {
         .then(async data => calendarBottom.innerHTML = await getCalendarBottomHtml(data));
 }
 
-/*
-TODO: API 수정 후
-    1. 마지막 일기 작성자에 대한 처리 필요
-    2. diaryId
-*/
-
 async function getCalendarBottomHtml(diaryStatus) {
     console.log(diaryStatus);
-    if (diaryStatus.isMyOrder) {
-        if (diaryStatus.writtenTodayDiary) {
-            return `<a href="/group/${groupId}/diary/${data.diaryId}" class="bottom-font">
+    if (diaryStatus.viewableDiaryId != null) {
+        return `<a href="/group/${groupId}/diary/${diaryStatus.viewableDiaryId}" class="bottom-font">
                         <span class="font-bold">오늘 일기가 업로드 되었어요.</span><br>
                         <span>날짜를 눌러 확인해보세요!</span>
                     </a>`;
-        }
+    }
+    if (diaryStatus.isMyOrder) {
         return `<a href="/group/${groupId}/diary" class="bottom-font">
                     <span>내가 일기를 작성할 차례에요.</span><br>
                     <span>기다리는 친구들을 위해</span><br>
