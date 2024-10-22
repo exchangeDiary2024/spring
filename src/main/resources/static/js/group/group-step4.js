@@ -1,6 +1,6 @@
 const STEP4_HTML = `
-                        <div style="">
-                            <img id="selected-character" style="width: 100px; height: 100px;">
+                        <div>
+                            <img class="selected-character" style="width: 100px; height: 100px;">
                         </div>
                         <div style="width: 100%; height: 34px; position: relative; top: 16px;">
                             <span class="subject">캐릭터 이름을 지어주세요.</span>
@@ -53,9 +53,9 @@ function isCreateInStep4() {
 }
 
 function setProfileImage() {
-    const profileImage = document.querySelector("#selected-character");
+    const profileImage = document.querySelector(".selected-character");
 
-    profileImage.id = groupData.profileImage;
+    profileImage.classList.add(groupData.profileImage);
 }
 
 async function changeStyleAndGetErrorMessage() {
