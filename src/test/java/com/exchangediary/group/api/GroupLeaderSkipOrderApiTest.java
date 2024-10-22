@@ -1,6 +1,7 @@
 package com.exchangediary.group.api;
 
 import com.exchangediary.ApiBaseTest;
+import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.entity.Member;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
     @Autowired
@@ -52,7 +54,9 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
                 .cookie("token", token)
                 .when().patch("/api/group/" + group.getId() + "/leader/skip-order")
                 .then().log().all()
-                .statusCode(HttpStatus.CONFLICT.value());
+                .statusCode(HttpStatus.CONFLICT.value())
+                .body("message", equalTo(ErrorCode.ALREADY_SKIP_ORDER_TODAY.getMessage()));
+        ;
 
         Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(1);
