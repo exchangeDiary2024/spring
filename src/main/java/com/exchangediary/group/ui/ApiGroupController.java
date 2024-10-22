@@ -109,9 +109,10 @@ public class ApiGroupController {
 
     @PatchMapping("{groupId}/leave")
     public ResponseEntity<Void> leaveGroup(
+            @PathVariable Long groupId,
             @RequestAttribute Long memberId
     ) {
-        groupLeaveService.leaveGroup(memberId);
+        groupLeaveService.leaveGroup(groupId, memberId);
         return ResponseEntity
                 .ok()
                 .build();
