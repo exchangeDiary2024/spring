@@ -69,7 +69,7 @@ public class DiaryQueryService {
         Optional<Diary> todayDiary = findTodayDiary(groupId);
         if (todayDiary.isPresent()) {
             writtenTodayDiary = true;
-            diaryId = getViewableDiaryId(isMyOrder, writtenTodayDiary, memberId, todayDiary.get());
+            diaryId = getTodayDiaryId(isMyOrder, memberId, todayDiary.get());
         }
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
     }
@@ -97,27 +97,25 @@ public class DiaryQueryService {
     private Boolean isCurrentOrder(Long groupId, Long memberId) {
         Group group = groupQueryService.findGroup(groupId);
         Member member = memberQueryService.findMember(memberId);
-        return group.getCurrentOrder() == member.getOrderInGroup();
+        return group.getCurrentOrder().equals(member.getOrderInGroup());
     }
 
     private Optional<Diary> findTodayDiary(Long groupId) {
         LocalDate today = LocalDate.now();
-        Optional<Diary> todayDiary =
-                diaryRepository.findByGroupAndDate(
-                        groupId, today.getYear(), today.getMonthValue(), today.getDayOfMonth());
+        Optional<Diary> todayDiary = diaryRepository.findByGroupAndDate(
+                groupId,
+                today.getYear(),
+                today.getMonthValue(),
+                today.getDayOfMonth());
         return todayDiary;
     }
 
-    private Long getViewableDiaryId(
-            Boolean isMyOrder,
-            Boolean writtenTodayDiary,
-            Long memberId,
-            Diary todayDiary
+    private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary
     ) {
         if (todayDiary.getMember().getId().equals(memberId)) {
             return todayDiary.getId();
         }
-        if (isMyOrder && writtenTodayDiary) {
+        if (isMyOrder) {
             return todayDiary.getId();
         }
         return null;
