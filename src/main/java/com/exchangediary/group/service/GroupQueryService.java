@@ -46,24 +46,23 @@ public class GroupQueryService {
 
     public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
         Group group = findGroup(groupId);
-        List<Member> members = group.getMembers();
-        Member self = findSelf(members, memberId);
+        Member self = findSelfInGroup(group, memberId);
         Member leader = findGroupLeader(group);
         Member currentWriter = group.getMembers().get(group.getCurrentOrder() - 1);
         return GroupMembersResponse.of(
-                members,
+                group.getMembers(),
                 self.getOrderInGroup() - 1,
                 leader.getOrderInGroup() - 1,
                 CurrentDiaryWriterResponse.of(currentWriter.getOrderInGroup() - 1, false) // TODO: isOverdue 여부 판단
         );
     }
 
-    private Member findSelf(List<Member> members, Long memberId) {
-        return members.stream()
+    public Member findSelfInGroup(Group group, Long memberId) {
+        return group.getMembers().stream()
                 .filter(member -> memberId.equals(member.getId()))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.GROUP_NOT_FOUND,
+                        ErrorCode.MEMBER_NOT_FOUND,
                         "",
                         String.valueOf(memberId)
                 ));
