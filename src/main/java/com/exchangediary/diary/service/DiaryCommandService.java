@@ -23,7 +23,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Transactional
 public class DiaryCommandService {
-
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
     private final DiaryValidationService diaryValidationService;

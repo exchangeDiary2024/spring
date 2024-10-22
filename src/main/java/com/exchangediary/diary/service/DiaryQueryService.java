@@ -84,12 +84,12 @@ public class DiaryQueryService {
                 groupId,
                 today.getYear(),
                 today.getMonthValue(),
-                today.getDayOfMonth());
+                today.getDayOfMonth()
+        );
         return todayDiary;
     }
 
-    private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary
-    ) {
+    private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary) {
         if (todayDiary.getMember().getId().equals(memberId)) {
             return todayDiary.getId();
         }
