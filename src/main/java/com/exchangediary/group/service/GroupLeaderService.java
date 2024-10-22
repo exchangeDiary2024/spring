@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class GroupLeaderService {
     private final GroupQueryService groupQueryService;
+    private final GroupValidationService groupValidationService;
 
     public void handOverGroupLeader(Long groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
@@ -23,6 +24,17 @@ public class GroupLeaderService {
 
         currentLeader.changeGroupRole(GroupRole.GROUP_MEMBER);
         newLeader.changeGroupRole(GroupRole.GROUP_LEADER);
+    }
+
+    public void skipDiaryOrder(Long groupId) {
+        Group group = groupQueryService.findGroup(groupId);
+        groupValidationService.checkSkipOrderAuthority(group);
+
+        int order = group.getCurrentOrder() + 1;
+        if (order > group.getMembers().size()) {
+            order = 1;
+        }
+        group.updateCurrentOrder(order);
     }
 
     private Member findGroupMemberByIndex(Group group, int index) {
