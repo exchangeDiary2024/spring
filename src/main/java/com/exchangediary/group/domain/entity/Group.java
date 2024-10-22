@@ -52,7 +52,10 @@ public class Group extends BaseEntity {
                 .build();
     }
 
-    public void updateCurrentOrder(Integer currentOrder) {
+    public void updateCurrentOrder(int currentOrder, int numberOfMembers) {
+        if (currentOrder > numberOfMembers) {
+            currentOrder = 1;
+        }
         this.currentOrder = currentOrder;
     }
 }

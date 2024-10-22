@@ -29,12 +29,7 @@ public class GroupLeaderService {
     public void skipDiaryOrder(Long groupId) {
         Group group = groupQueryService.findGroup(groupId);
         groupValidationService.checkSkipOrderAuthority(group);
-
-        int order = group.getCurrentOrder() + 1;
-        if (order > group.getMembers().size()) {
-            order = 1;
-        }
-        group.updateCurrentOrder(order);
+        group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
     }
 
     private Member findGroupMemberByIndex(Group group, int index) {

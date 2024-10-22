@@ -54,7 +54,7 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
 
     private Group createGroup(int order, LocalDate lastDate) {
         Group group = Group.of("group-name", "code", lastDate);
-        group.updateCurrentOrder(order);
+        group.updateCurrentOrder(order, 2);
         return groupRepository.save(group);
     }
 
