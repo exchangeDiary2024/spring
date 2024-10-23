@@ -1,6 +1,6 @@
 package com.exchangediary.diary.ui;
 
-import com.exchangediary.diary.service.DiaryCommandService;
+import com.exchangediary.diary.service.DiaryWriteService;
 import com.exchangediary.diary.service.DiaryQueryService;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.diary.ui.dto.response.DiaryWritableStatusResponse;
@@ -24,17 +24,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/api/groups/{groupId}/diaries")
 public class ApiDiaryController {
-    private final DiaryCommandService diaryCommandService;
+    private final DiaryWriteService diaryWriteService;
     private final DiaryQueryService diaryQueryService;
 
     @PostMapping
-    public ResponseEntity<Void> createDiary(
+    public ResponseEntity<Void> writeDiary(
             @RequestPart(name = "data") @Valid DiaryRequest diaryRequest,
             @RequestPart(name = "file", required = false) MultipartFile file,
             @PathVariable Long groupId,
             @RequestAttribute Long memberId
     ) {
-        Long diaryId = diaryCommandService.createDiary(diaryRequest, file, groupId, memberId);
+        Long diaryId = diaryWriteService.writeDiary(diaryRequest, file, groupId, memberId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("Content-Location", "/group/" + groupId + "/diary/" + diaryId)
