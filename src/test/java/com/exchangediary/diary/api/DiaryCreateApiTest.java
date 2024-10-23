@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -268,6 +269,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
                 .name("버니즈")
                 .currentOrder(currentOrder)
                 .code("code")
+                .lastSkipOrderDate(LocalDate.now())
                 .build();
     }
 

@@ -71,10 +71,6 @@ public class GroupCodeServiceTest {
     }
 
     private Group createGroup() {
-        return Group.builder()
-                .name(GROUP_NAME)
-                .currentOrder(0)
-                .code("code")
-                .build();
+        return Group.of(GROUP_NAME, "code");
     }
 }

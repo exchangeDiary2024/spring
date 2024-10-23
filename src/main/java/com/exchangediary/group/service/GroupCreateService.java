@@ -30,7 +30,7 @@ public class GroupCreateService {
     }
 
     private Group saveGroup(String groupName) {
-        Group group = Group.of(groupName, groupCodeService.generateCode(groupName), LocalDate.now().minusDays(1));
+        Group group = Group.of(groupName, groupCodeService.generateCode(groupName));
         return groupRepository.save(group);
     }
 
