@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/group", "/diary/**", "/group/**", "/api/**")
                 .excludePathPatterns("/api/kakao/callback");
         registry.addInterceptor(new BelongToGroupInterceptor(memberQueryService))
-                .addPathPatterns("/group/*");
+                .addPathPatterns("/group", "/group/*");
         registry.addInterceptor(new LoginInterceptor(jwtService, cookieService))
                 .addPathPatterns("/login");
 
