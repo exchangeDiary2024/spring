@@ -15,6 +15,7 @@ public enum ErrorCode {
     NEED_TO_REQUEST_TOKEN(HttpStatus.UNAUTHORIZED, "요청에서 토큰을 찾을 수 없습니다."),
     INVALID_AUTHORIZATION_TYPE(HttpStatus.UNAUTHORIZED, "인증 타입이 유효하지 않습니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
+    NOT_EXIST_MEMBER_TOKEN(HttpStatus.UNAUTHORIZED, "존재하지 않는 사용자의 토큰입니다."),
     JWT_TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "jwt 토큰 인증에 실패했습니다."),
 
     DIARY_WRITE_FORBIDDEN(HttpStatus.FORBIDDEN, "일기 작성 권한이 없습니다."),
@@ -25,6 +26,8 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "멤버를 찾을 수 없습니다."),
 
     FULL_MEMBERS_OF_GROUP(HttpStatus.CONFLICT, "그룹원이 꽉 차\n해당 그룹에 들어갈 수 없습니다."),
+
+    INVALID_IMAGE_FORMAT(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 파일 형식입니다."),
 
     FAILED_TO_LOGIN_KAKAO(HttpStatus.INTERNAL_SERVER_ERROR, "kakao 로그인에 실패했습니다."),
     FAILED_TO_ISSUE_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "kakao 토큰 발급에 실패했습니다."),

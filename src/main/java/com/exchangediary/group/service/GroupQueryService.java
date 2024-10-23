@@ -7,7 +7,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
-import com.exchangediary.member.domain.MemberRepository;
+import com.exchangediary.group.ui.dto.response.GroupMonthlyResponse;
 import com.exchangediary.member.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,13 +21,6 @@ import java.util.List;
 public class GroupQueryService {
     private final GroupValidationService groupValidationService;
     private final GroupRepository groupRepository;
-    private final MemberRepository memberRepository;
-
-    public GroupMembersResponse listGroupMembersInfo(Long groupId) {
-        Group group = findGroup(groupId);
-        List<Member> members = memberRepository.findAllByGroupOrderByOrderInGroup(group);
-        return GroupMembersResponse.from(members);
-    }
 
     public GroupProfileResponse viewSelectableProfileImage(Long groupId) {
         Group group = findGroup(groupId);
@@ -47,6 +40,28 @@ public class GroupQueryService {
                         ErrorCode.GROUP_NOT_FOUND,
                         "",
                         String.valueOf(groupId)
+                ));
+    }
+
+    public GroupMonthlyResponse getGroupMonthlyInfo(Long groupId) {
+        Group group = findGroup(groupId);
+        return GroupMonthlyResponse.of(group);
+    }
+
+    public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
+        Group group = findGroup(groupId);
+        Member self = findSelfInGroup(group, memberId);
+        return GroupMembersResponse.of(group.getMembers(), self.getOrderInGroup() - 1);
+    }
+
+    public Member findSelfInGroup(Group group, Long memberId) {
+        return group.getMembers().stream()
+                .filter(member -> memberId.equals(member.getId()))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.MEMBER_NOT_FOUND,
+                        "",
+                        String.valueOf(memberId)
                 ));
     }
 }

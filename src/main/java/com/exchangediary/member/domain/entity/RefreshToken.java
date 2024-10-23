@@ -1,4 +1,4 @@
-package com.exchangediary.diary.domain.entity;
+package com.exchangediary.member.domain.entity;
 
 import com.exchangediary.global.domain.entity.BaseEntity;
 import jakarta.persistence.Column;
@@ -9,15 +9,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.descriptor.jdbc.LongVarbinaryJdbcType;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -27,23 +23,24 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED, force = true)
 @AllArgsConstructor(access = PRIVATE)
-public class UploadImage extends BaseEntity {
+public class RefreshToken extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "upload_image_id")
+    @Column(name = "refresh_token_id")
     private Long id;
-    @Lob
-    @JdbcType(LongVarbinaryJdbcType.class)
-    @NotNull
-    private final byte[] image;
+    private String token;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id", foreignKey = @ForeignKey(name = "upload_image_diary_id_fkey"))
-    private final Diary diary;
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "refresh_token_member_id_fkey"))
+    private final Member member;
 
-    public static UploadImage of(byte[] image, Diary diary) {
-        return UploadImage.builder()
-                .image(image)
-                .diary(diary)
+    public static RefreshToken of(String token, Member member) {
+        return RefreshToken.builder()
+                .token(token)
+                .member(member)
                 .build();
+    }
+
+    public void reissueToken(String token) {
+        this.token = token;
     }
 }

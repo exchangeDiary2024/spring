@@ -26,11 +26,11 @@
     height: 70px;
 }
 
-.character-icon.green {
+.character-icon.green-icon {
     width: auto;
 }
 
-.character-icon.blue {
+.character-icon.blue-icon {
     height: auto;
     margin-bottom: 13px;
 }
@@ -39,30 +39,30 @@ a.gray {
     pointer-events: none
 }
 
-#red.gray.character-icon {
+.red.gray.character-icon {
     content: url("/images/character/gray-red.svg")
 }
 
-#orange.gray.character-icon {
+.orange.gray.character-icon {
     content: url("/images/character/gray-orange.svg")
 }
 
-#yellow.gray.character-icon {
+.yellow.gray.character-icon {
     content: url("/images/character/gray-yellow.svg")
 }
 
-#green.gray.character-icon {
+.green.gray.character-icon {
     content: url("/images/character/gray-green.svg")
 }
 
-#blue.gray.character-icon {
+.blue.gray.character-icon {
     content: url("/images/character/gray-blue.svg")
 }
 
-#navy.gray.character-icon {
+.navy.gray.character-icon {
     content: url("/images/character/gray-navy.svg")
 }
 
-#purple.gray.character-icon {
+.purple.gray.character-icon {
     content: url("/images/character/gray-purple.svg")
 }

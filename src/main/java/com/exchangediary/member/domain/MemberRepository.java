@@ -1,6 +1,7 @@
 package com.exchangediary.member.domain;
 
 import com.exchangediary.group.domain.entity.Group;
+import com.exchangediary.member.domain.dto.GroupId;
 import com.exchangediary.member.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 

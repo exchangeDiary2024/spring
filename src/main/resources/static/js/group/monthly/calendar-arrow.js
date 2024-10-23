@@ -6,30 +6,36 @@ rightArrow.addEventListener("click", clickRightArrowButton);
 
 function clickLeftArrowButton(event) {
     event.preventDefault();
-    month.innerText -= 1;
-    if (month.innerText === "0") {
-        month.innerText = 12;
-        year.innerText -= 1;
+    if (!isSameGroupCreatedYearAndMonth()) {
+        month.innerText -= 1;
+        if (month.innerText === "0") {
+            month.innerText = 12;
+            year.innerText -= 1;
+        }
+        clearDate();
+        drawDateOfCalendar();
     }
-    clearDate();
-    drawDateOfCalendar()
 }
 
 function clickRightArrowButton(event) {
     event.preventDefault();
-    if (!isSameYearAndMonthWithToday()) {
+    if (!isSameCurrentDateYearAndMonth()) {
         month.innerText = Number(month.innerText) + 1;
         if (month.innerText === "13") {
             month.innerText = 1;
             year.innerText = Number(year.innerText) + 1;
         }
         clearDate();
-        drawDateOfCalendar()
+        drawDateOfCalendar();
     }
 }
 
+function isSameGroupCreatedYearAndMonth() {
+    return Number(year.innerText) === groupCreatedYear
+        && Number(month.innerText) === groupCreatedMonth;
+}
 
-function isSameYearAndMonthWithToday() {
+function isSameCurrentDateYearAndMonth() {
     const today = new Date();
 
     return Number(year.innerText) === today.getFullYear()
