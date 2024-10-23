@@ -47,7 +47,7 @@ public class GroupLeaveService {
         groupRepository.save(group);
     }
 
-    private List<Member> getMembersLargerOrder(List<Member> members, Integer orderInGroup) {
+    private List<Member> getMembersLargerOrder(List<Member> members, int orderInGroup) {
         return members.stream()
                 .filter(member -> member.getOrderInGroup() > orderInGroup)
                 .toList();
