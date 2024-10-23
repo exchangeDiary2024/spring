@@ -43,12 +43,12 @@ public class Group extends BaseEntity {
     @OrderBy("order_in_group ASC")
     private List<Member> members;
 
-    public static Group of(String groupName, String code, LocalDate lastSkipOrderDate) {
+    public static Group of(String groupName, String code) {
         return Group.builder()
                 .name(groupName)
                 .currentOrder(1)
                 .code(code)
-                .lastSkipOrderDate(lastSkipOrderDate)
+                .lastSkipOrderDate(LocalDate.now().minusDays(1))
                 .build();
     }
 
