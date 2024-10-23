@@ -1,5 +1,6 @@
 package com.exchangediary.group.ui;
 
+import com.exchangediary.group.service.GroupQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,15 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/group")
 public class GroupController {
+    private final GroupQueryService groupQueryService;
+
     @GetMapping
     public String createOrJoinGroup() {
-        return "group/group-page";
+        return "group/group-create-join";
     }
 
     @GetMapping("/{groupId}")
     public String showCalendar(Model model, @PathVariable Long groupId) {
         // 인가 거쳤다고 가정
-        model.addAttribute("groupId", groupId);
-        return "group/group-calendar";
+        model.addAttribute("group", groupQueryService.getGroupMonthlyInfo(groupId));
+        return "group/group-monthly";
     }
 }

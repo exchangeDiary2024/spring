@@ -7,6 +7,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
+import com.exchangediary.group.ui.dto.response.GroupMonthlyResponse;
 import com.exchangediary.member.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,11 @@ public class GroupQueryService {
                         "",
                         String.valueOf(groupId)
                 ));
+    }
+
+    public GroupMonthlyResponse getGroupMonthlyInfo(Long groupId) {
+        Group group = findGroup(groupId);
+        return GroupMonthlyResponse.of(group);
     }
 
     public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
