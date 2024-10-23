@@ -27,12 +27,43 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     private MemberRepository memberRepository;
 
     @Test
-    @DisplayName("순서 변경 할 멤버들 없을 경우")
-    public void 그룹_나가기() {
+    @DisplayName("마지막 사람 나감, 그룹 현재 순서 나간 사람 전")
+    public void 그룹_나가기_마지막_사람() {
         Group group = createGroup();
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
-        memberRepository.save(member);
+        Member groupMember = createMemberInGroup(group,1);
+        Member groupMember2 = createMemberInGroup(group,2);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 3, GroupRole.GROUP_MEMBER, group);
+        memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .when()
+                .patch(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+
+        Member updatedMember = memberRepository.findById(member.getId()).get();
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
+        assertThat(updatedMember.getGroup()).isEqualTo(null);
+        assertThat(updatedMember.getNickname()).isEqualTo(null);
+        assertThat(updatedMember.getGroupRole()).isEqualTo(null);
+        assertThat(updatedMember.getProfileImage()).isEqualTo(null);
+        assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(group.getCurrentOrder());
+    }
+
+    @Test
+    @DisplayName("마지막 사람 나감, 그룹 현재 순서 나간 사람")
+    public void 그룹_나가기_마지막_사람_현재순서변경() {
+        Group group = createGroup();
+        groupRepository.save(group);
+        Member groupMember = createMemberInGroup(group,1);
+        Member groupMember2 = createMemberInGroup(group,2);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 3, GroupRole.GROUP_MEMBER, group);
+        memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
 
         RestAssured
                 .given().log().all()
@@ -85,11 +116,7 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.builder()
-                .name(GROUP_NAME)
-                .currentOrder(0)
-                .code("code")
-                .build();
+        return Group.of(GROUP_NAME, "code");
     }
 
     private Member createMemberInGroup(Group group, int orderInGroup) {
