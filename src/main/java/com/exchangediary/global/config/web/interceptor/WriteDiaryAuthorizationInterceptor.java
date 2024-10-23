@@ -21,6 +21,10 @@ public class WriteDiaryAuthorizationInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) throws IOException {
+        if (!request.getParameterMap().isEmpty()) {
+            return true;
+        }
+
         Long memberId = (Long) request.getAttribute("memberId");
 //        Long groupId = (Long) request.getAttribute("groupId"); todo: 그룹 인가 구현 후 주석 제거 & 아래 코드 제거
         Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
