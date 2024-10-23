@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -27,9 +28,9 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     private MemberRepository memberRepository;
 
     @Test
-    @DisplayName("마지막 사람 나감, 그룹 현재 순서 나간 사람 전")
+    @DisplayName("마지막 사람 나감, 그룹 현재 순서 나간 사람보다 전")
     public void 그룹_나가기_마지막_사람() {
-        Group group = createGroup();
+        Group group = createGroup(1);
         groupRepository.save(group);
         Member groupMember = createMemberInGroup(group,1);
         Member groupMember2 = createMemberInGroup(group,2);
@@ -58,7 +59,7 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     @Test
     @DisplayName("마지막 사람 나감, 그룹 현재 순서 나간 사람")
     public void 그룹_나가기_마지막_사람_현재순서변경() {
-        Group group = createGroup();
+        Group group = createGroup(3);
         groupRepository.save(group);
         Member groupMember = createMemberInGroup(group,1);
         Member groupMember2 = createMemberInGroup(group,2);
@@ -85,9 +86,9 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     }
 
     @Test
-    @DisplayName("순서 변경 할 멤버들 있을 경우")
-    public void 그룹_나가기_순서_변경() {
-        Group group = createGroup();
+    @DisplayName("중간 사람 나감, 그룹 현재 순서 나간 사람보다 전")
+    public void 그룹_나가기_중간_사람() {
+        Group group = createGroup(1);
         groupRepository.save(group);
         member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group,2);
@@ -106,6 +107,7 @@ public class GroupLeaveApiTest extends ApiBaseTest {
         Member updatedMember = memberRepository.findById(member.getId()).get();
         Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
         Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedMember.getGroup()).isEqualTo(null);
         assertThat(updatedMember.getNickname()).isEqualTo(null);
         assertThat(updatedMember.getGroupRole()).isEqualTo(null);
@@ -113,10 +115,49 @@ public class GroupLeaveApiTest extends ApiBaseTest {
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
         assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
         assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
+        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(group.getCurrentOrder());
     }
 
-    private Group createGroup() {
-        return Group.of(GROUP_NAME, "code");
+    @Test
+    @DisplayName("중간 사람 나감, 그룹 현재 순서 나간 사람보다 후")
+    public void 그룹_나가기_중간_사람_현재순서변경() {
+        Group group = createGroup(3);
+        groupRepository.save(group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
+        Member groupMember = createMemberInGroup(group,2);
+        Member groupMember2 = createMemberInGroup(group,3);
+        memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .when()
+                .patch(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+
+        Member updatedMember = memberRepository.findById(member.getId()).get();
+        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
+        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
+        assertThat(updatedMember.getGroup()).isEqualTo(null);
+        assertThat(updatedMember.getNickname()).isEqualTo(null);
+        assertThat(updatedMember.getGroupRole()).isEqualTo(null);
+        assertThat(updatedMember.getProfileImage()).isEqualTo(null);
+        assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+        assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
+        assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
+        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
+    }
+
+    private Group createGroup(int currentOrder) {
+        return Group.builder()
+                .name(GROUP_NAME)
+                .currentOrder(currentOrder)
+                .code("code")
+                .lastSkipOrderDate(LocalDate.now())
+                .build();
     }
 
     private Member createMemberInGroup(Group group, int orderInGroup) {
