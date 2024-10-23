@@ -15,7 +15,7 @@ public class DiaryAuthorizationService {
     private final DiaryQueryService diaryQueryService;
 
     public boolean canWriteDiary(Long memberId, Long groupId) {
-        if (groupQueryService.isSameWithGroupCurrentOrder(memberId)) {
+        if (!groupQueryService.isSameWithGroupCurrentOrder(memberId)) {
             throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
         }
         if (diaryQueryService.findTodayDiary(groupId).isPresent()) {
