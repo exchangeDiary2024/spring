@@ -27,6 +27,7 @@ function drawStep2(html, direction) {
     step_content.innerHTML = html;
     note_body.appendChild(step_content);
     setTimeout(() => step_content.style.transform = "translateX(0)", 10);
+    addBackBtn();
     initStep2();
 }
 
