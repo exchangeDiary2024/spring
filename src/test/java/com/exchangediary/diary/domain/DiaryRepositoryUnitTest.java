@@ -35,21 +35,20 @@ public class DiaryRepositoryUnitTest {
 
     @Test
     void 일기_사진_영속_확인() {
+        byte[] image = getBinaryImage();
         UploadImage uploadImage = UploadImage.builder()
-                .image(getBinaryImage())
+                .image(image)
                 .build();
         Diary diary = Diary.builder()
                 .content("하이하이")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .uploadImage(uploadImage)
                 .build();
-        uploadImage.uploadToDiary(diary);
         entityManager.persist(diary);
 
-        Diary result = uploadImageRepository.findById(uploadImage.getId()).get().getDiary();
+        UploadImage updatedUploadImage = uploadImageRepository.findById(uploadImage.getId()).get();
 
-        assertThat(result.getContent()).isEqualTo("하이하이");
-        assertThat(result.getUploadImage().getId()).isEqualTo(uploadImage.getId());
+        assertThat(updatedUploadImage.getImage()).isEqualTo(image);
     }
 
     @Test
@@ -62,7 +61,6 @@ public class DiaryRepositoryUnitTest {
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .uploadImage(uploadImage)
                 .build();
-        uploadImage.uploadToDiary(diary);
         entityManager.persist(diary);
 
         diaryRepository.delete(diary);

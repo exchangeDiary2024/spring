@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,7 +30,7 @@ public class GroupCreateService {
     }
 
     private Group saveGroup(String groupName) {
-        Group group = Group.of(groupName, groupCodeService.generateCode(groupName));
+        Group group = Group.of(groupName, groupCodeService.generateCode(groupName), LocalDate.now().minusDays(1));
         return groupRepository.save(group);
     }
 
