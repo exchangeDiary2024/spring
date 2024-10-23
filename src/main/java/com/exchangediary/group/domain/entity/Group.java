@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -36,19 +37,29 @@ public class Group extends BaseEntity {
     private Integer currentOrder;
     @NotNull
     private String code;
+    @NotNull
+    private LocalDate lastSkipOrderDate;
     @OneToMany(mappedBy = "group")
     @OrderBy("order_in_group ASC")
     private List<Member> members;
 
-    public static Group of(String groupName, String code) {
+    public static Group of(String groupName, String code, LocalDate lastSkipOrderDate) {
         return Group.builder()
                 .name(groupName)
                 .currentOrder(1)
                 .code(code)
+                .lastSkipOrderDate(lastSkipOrderDate)
                 .build();
     }
 
-    public void updateCurrentOrder(Integer currentOrder) {
+    public void updateCurrentOrder(int currentOrder, int numberOfMembers) {
+        if (currentOrder > numberOfMembers) {
+            currentOrder = 1;
+        }
         this.currentOrder = currentOrder;
+    }
+
+    public void updateLastSkipOrderDate() {
+        this.lastSkipOrderDate = LocalDate.now();
     }
 }

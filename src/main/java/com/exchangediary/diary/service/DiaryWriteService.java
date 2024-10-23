@@ -64,9 +64,7 @@ public class DiaryWriteService {
 
     private void changeCurrentOrderOfGroup(Group group) {
         int currentOrder = group.getCurrentOrder() + 1;
-        if (group.getMembers().size() < currentOrder)
-            currentOrder = 1;
-        group.updateCurrentOrder(currentOrder);
+        group.updateCurrentOrder(currentOrder, group.getMembers().size());
         groupRepository.save(group);
     }
 }
