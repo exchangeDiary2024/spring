@@ -29,7 +29,7 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
-                .when().patch("/api/group/" + group.getId() + "/leader/skip-order")
+                .when().patch(String.format("/api/groups/%s/leader/skip-order", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
 
@@ -47,12 +47,12 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
-                .when().patch("/api/group/" + group.getId() + "/leader/skip-order")
+                .when().patch(String.format("/api/groups/%s/leader/skip-order", group.getId()))
                 .then().log().all();
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
-                .when().patch("/api/group/" + group.getId() + "/leader/skip-order")
+                .when().patch(String.format("/api/groups/%s/leader/skip-order", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.CONFLICT.value())
                 .body("message", equalTo(ErrorCode.ALREADY_SKIP_ORDER_TODAY.getMessage()));

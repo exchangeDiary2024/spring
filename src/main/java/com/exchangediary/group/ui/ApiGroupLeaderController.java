@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/group/{groupId}/leader")
+@RequestMapping("/api/groups/{groupId}/leader")
 @RequiredArgsConstructor
 public class ApiGroupLeaderController {
     private final GroupLeaderService groupLeaderService;

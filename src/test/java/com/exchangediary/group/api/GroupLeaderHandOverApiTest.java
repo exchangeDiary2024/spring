@@ -34,7 +34,7 @@ public class GroupLeaderHandOverApiTest extends ApiBaseTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(new GroupLeaderHandOverRequest(member.getOrderInGroup() - 1))
-                .when().patch(String.format("/api/group/%s/leader/hand-over", group.getId()))
+                .when().patch(String.format("/api/groups/%s/leader/hand-over", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
 
@@ -54,7 +54,7 @@ public class GroupLeaderHandOverApiTest extends ApiBaseTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(new GroupLeaderHandOverRequest(1))
-                .when().patch(String.format("/api/group/%s/leader/hand-over", group.getId()))
+                .when().patch(String.format("/api/groups/%s/leader/hand-over", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
