@@ -41,7 +41,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_사진포함() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -75,7 +75,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_사진_미포함() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -129,7 +129,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_순서_확인() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
@@ -166,7 +166,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_순서_확인_맨_첫_순서로() throws JsonProcessingException {
         Group group = createGroup(3);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 3, GroupRole.GROUP_MEMBER, group);
+        member.joinGroup("api요청멤버", "orange", 3, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
@@ -203,7 +203,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_성공_순서_확인_내용만() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
@@ -238,7 +238,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
     void 일기_작성_실패_이미지_형식_실패() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
         Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
