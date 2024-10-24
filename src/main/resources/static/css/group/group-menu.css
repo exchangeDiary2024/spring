@@ -139,12 +139,25 @@
     align-items: center;
 }
 
-.profile-image.order {
+.group-member.order .profile-image {
     border: 2px solid #FC0;
 }
 
-.profile-image.order.highlight {
+.group-member.order.highlight .profile-image {
     border: 2px solid #E84D59;
+}
+
+.group-member .my {
+    width: 12px;
+    height: 12px;
+    box-sizing: border-box;
+    border-radius: 50px;
+    background-color: #767676;
+    position: absolute;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .profile-image .character-icon {
@@ -161,6 +174,13 @@
     widthL 22px;
     height: auto;
     margin-bottom: 4px;
+}
+
+.profile-image .crown {
+    content: url("/images/group/menu/crown.svg");
+    position: absolute;
+    left: 15px;
+    top: 3px;
 }
 
 .profile-nickname {

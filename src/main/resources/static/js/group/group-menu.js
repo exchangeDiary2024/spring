@@ -31,7 +31,7 @@ function drawMembers(memberSize) {
     const testNicknames = ["하니", "민지", "해린", "해린", "다니엘", "버니", "혜인"];
     for (number = 0; number < memberSize; number++) {
         const groupMember = document.createElement("div");
-        const radian = getRadian(getAngle(number, memberSize))
+        const radian = getRadian(getAngle(number, memberSize));
         groupMember.classList.add("group-member");
         groupMember.innerHTML = makeMemberHtml(testCharacters[number], testNicknames[number]);
         groupMember.style.left = `${centerX - r * Math.cos(radian)}px`;
@@ -53,7 +53,9 @@ function getAngle(number, memberSize) {
 }
 
 function makeMemberHtml(characterName, memberName) {
-    return `<a class="profile-image" href="#">
+    return `<div class="my"><span style='color: #FFF; text-align: center; font-family: "SOYOMaple"; font-size: 6px; font-style: normal; font-weight: 700; line-height: 100%; letter-spacing: 0.06px;'>나</span></div>
+            <a class="profile-image" href="#">
+                <img class="crown" />
                 <img class="${characterName} character-icon" />
             </a>
             <span class="profile-nickname">${memberName}</span>`
