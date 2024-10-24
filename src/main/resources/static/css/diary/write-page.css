@@ -44,7 +44,6 @@
     flex-shrink: 0;
 }
 
-
 .bar-write {
     width: 38px; 
     height: 38px;
@@ -80,4 +79,9 @@
     font-weight: 600;
     line-height: 34px;
     letter-spacing: -0.4px;
+}
+
+.diary-content-area {
+    position: relative;
+    top: 24px;
 }

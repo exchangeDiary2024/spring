@@ -8,7 +8,7 @@
 </th:block>
 
 <th:block layout:fragment="content">
-    <div class="background" style="background-image: url('/images/diary/view-page/background.svg');">
+    <div class="background" style="background-image: url('/images/group/background.svg');">
         <div class="top-bar">
             <div class="bar-back">
                 <a th:href="@{/group/{groupId}(groupId=${groupId})}" class="back-btn"><img class="bar-icon" src="/images/common/back_icon.svg"/></a>
@@ -19,17 +19,29 @@
             </div>
         </div>
         <div class="content">
-            <div class="page-bar"></div>
-            <div class="title">
-                <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
-                <span class="title-font">[[${diary.member.nickname}]]의 일기</span>
-                <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
-            </div>
-            <div class="image no-image">
-                <img class="image-size"/>
-            </div>
-            <div class="diary-content-area">
-                <p class="diary-content">[[${diary.content}]]</p>
+            <div class="note">
+                <div class="note-header">
+                    <div class="page-bar">
+                        <div class="page-icon page1 fill"></div>
+                        <div class="page-icon page2"></div>
+                        <div class="page-icon page3"></div>
+                        <div class="page-icon page4"></div>
+                        <div class="page-icon page5"></div>
+                    </div>
+                </div>
+                <div class="note-body">
+                    <div class="title">
+                        <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
+                        <span class="title-font">[[${diary.member.nickname}]]의 일기</span>
+                        <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
+                    </div>
+                    <div class="image no-image">
+                        <img class="image-size"/>
+                    </div>
+                    <div class="diary-content-area">
+                        <p class="diary-content">[[${diary.content}]]</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -39,7 +51,7 @@
     <script th:inline="javascript">
         const photo = [[${diary.uploadImage}]];
     </script>
-    <script src="/js/diary/view-diary/draw-diary.js"></script>
+    <script src="/js/diary/view-diary/view-diary.js"></script>
 </th:block>
 
 </html>
