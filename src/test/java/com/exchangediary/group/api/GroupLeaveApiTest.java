@@ -152,12 +152,14 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     }
 
     private Group createGroup(int currentOrder) {
-        return Group.builder()
+        Group group = Group.builder()
                 .name(GROUP_NAME)
                 .currentOrder(currentOrder)
                 .code("code")
                 .lastSkipOrderDate(LocalDate.now())
                 .build();
+        groupRepository.save(group);
+        return group;
     }
 
     private Member createMemberInGroup(Group group, int orderInGroup) {

@@ -30,37 +30,27 @@ public class GroupLeaveService {
         diaryRepository.deleteByMemberId(memberId);
         member.updateMemberGroupInfo(null, null, 0, null, null);
         updateOrderOfMembers(group, orderInGroup);
+        updateCurrentOrder(group, orderInGroup);
         memberRepository.save(member);
     }
 
     private void updateOrderOfMembers(Group group, int orderInGroup) {
-        List<Member> members = group.getMembers();
-        List<Member> largerOrderMembers =  getMembersLargerOrder(members, orderInGroup);
+        group.getMembers().stream()
+                .filter(member -> member.getOrderInGroup() > orderInGroup)
+                .forEach(member -> member.updateOrderInGroup(member.getOrderInGroup() - 1));
+        memberRepository.saveAll(group.getMembers());
+    }
 
-        if (largerOrderMembers.isEmpty() && group.getCurrentOrder().equals(orderInGroup)) {
-            group.updateCurrentOrder(1);
+    private void updateCurrentOrder(Group group, int orderInGroup) {
+        List<Member> members = group.getMembers();
+        int currentOrder = group.getCurrentOrder();
+
+        if (orderInGroup < currentOrder) {
+            group.updateCurrentOrder(currentOrder - 1, members.size());
         }
         else {
-            updateLargerOrderMembers(largerOrderMembers, group, orderInGroup);
+            group.updateCurrentOrder(currentOrder,members.size() - 1);
         }
-        memberRepository.saveAll(members);
         groupRepository.save(group);
-    }
-
-    private List<Member> getMembersLargerOrder(List<Member> members, int orderInGroup) {
-        return members.stream()
-                .filter(member -> member.getOrderInGroup() > orderInGroup)
-                .toList();
-    }
-
-    private void updateLargerOrderMembers(
-            List<Member> largerOrderMembers,
-            Group group,
-            int orderInGroup
-    ) {
-        largerOrderMembers.forEach(member -> member.updateOrderInGroup(member.getOrderInGroup() - 1));
-        if (group.getCurrentOrder() > orderInGroup) {
-            group.updateCurrentOrder(group.getCurrentOrder() - 1);
-        }
     }
 }
