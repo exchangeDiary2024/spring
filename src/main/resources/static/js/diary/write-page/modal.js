@@ -47,5 +47,6 @@ function openModal() {
 function changeMood(event) {
     const moodBtn = document.querySelector(".mood-btn");
     moodBtn.children[0].src = event.target.src;
+    moodBtn.children[0].classList.add("emoji-icon");
     closeModal();
 }
