@@ -2,6 +2,7 @@ package com.exchangediary.group.ui;
 
 import com.exchangediary.group.service.GroupCodeService;
 import com.exchangediary.group.service.GroupJoinService;
+import com.exchangediary.group.service.GroupLeaveService;
 import com.exchangediary.group.service.GroupQueryService;
 import com.exchangediary.group.service.GroupCreateService;
 import com.exchangediary.group.ui.dto.request.GroupCodeRequest;
@@ -37,6 +38,7 @@ public class ApiGroupController {
     private final GroupJoinService groupJoinService;
     private final GroupCodeService groupCodeService;
     private final GroupQueryService groupQueryService;
+    private final GroupLeaveService groupLeaveService;
 
     @PostMapping
     public ResponseEntity<GroupCreateResponse> createGroup(
@@ -103,5 +105,16 @@ public class ApiGroupController {
         return ResponseEntity
                 .ok()
                 .body(response);
+    }
+
+    @PatchMapping("{groupId}/leave")
+    public ResponseEntity<Void> leaveGroup(
+            @PathVariable Long groupId,
+            @RequestAttribute Long memberId
+    ) {
+        groupLeaveService.leaveGroup(groupId, memberId);
+        return ResponseEntity
+                .ok()
+                .build();
     }
 }
