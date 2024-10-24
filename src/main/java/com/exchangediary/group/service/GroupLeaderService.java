@@ -15,11 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class GroupLeaderService {
     private final GroupQueryService groupQueryService;
+    private final GroupMemberService groupMemberService;
     private final GroupValidationService groupValidationService;
 
     public void handOverGroupLeader(Long groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
-        Member currentLeader = groupQueryService.findSelfInGroup(group, memberId);
+        Member currentLeader = groupMemberService.findSelfInGroup(group, memberId);
         Member newLeader = findGroupMemberByIndex(group, request.nextLeaderIndex());
 
         currentLeader.changeGroupRole(GroupRole.GROUP_MEMBER);

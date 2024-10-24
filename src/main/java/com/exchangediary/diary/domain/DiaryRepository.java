@@ -18,4 +18,5 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
             "FROM Member m JOIN Diary d " +
             "ON m.id = :memberId AND d.id = :diaryId")
     Boolean isViewableDiary(Long memberId,  Long diaryId);
+    void deleteByMemberId(Long memberId);
 }
