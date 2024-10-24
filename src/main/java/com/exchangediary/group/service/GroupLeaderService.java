@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -51,7 +53,7 @@ public class GroupLeaderService {
     }
 
     public void kickOutMember(Long groupId, GroupKickOutRequest request) {
-        Member member = memberRepository.findByNickname(request.nickname());
-        groupLeaveService.leaveGroup(groupId, member.getId());
+        Optional<Member> member = memberRepository.findByNickname(request.nickname());
+        groupLeaveService.leaveGroup(groupId, member.get().getId());
     }
 }

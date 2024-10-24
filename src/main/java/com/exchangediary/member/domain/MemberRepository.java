@@ -12,5 +12,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBykakaoId(Long kakaoId);
     List<Member> findAllByGroupOrderByOrderInGroup(Group group);
     Optional<GroupId> findGroupIdById(Long memberId);
-    Member findByNickname(String nickname);
+    Optional<Member> findByNickname(String nickname);
 }
