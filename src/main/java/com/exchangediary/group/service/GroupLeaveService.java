@@ -29,19 +29,19 @@ public class GroupLeaveService {
 
         diaryRepository.deleteByMemberId(memberId);
         member.updateMemberGroupInfo(null, null, 0, null, null);
-        updateOrderOfMembers(group, orderInGroup);
-        updateCurrentOrder(group, orderInGroup);
+        updateGroupMembersOrder(group, orderInGroup);
+        updateGroupCurrentOrder(group, orderInGroup);
         memberRepository.save(member);
     }
 
-    private void updateOrderOfMembers(Group group, int orderInGroup) {
+    private void updateGroupMembersOrder(Group group, int orderInGroup) {
         group.getMembers().stream()
                 .filter(member -> member.getOrderInGroup() > orderInGroup)
                 .forEach(member -> member.updateOrderInGroup(member.getOrderInGroup() - 1));
         memberRepository.saveAll(group.getMembers());
     }
 
-    private void updateCurrentOrder(Group group, int orderInGroup) {
+    private void updateGroupCurrentOrder(Group group, int orderInGroup) {
         List<Member> members = group.getMembers();
         int currentOrder = group.getCurrentOrder();
 
@@ -49,7 +49,7 @@ public class GroupLeaveService {
             group.updateCurrentOrder(currentOrder - 1, members.size());
         }
         else {
-            group.updateCurrentOrder(currentOrder,members.size() - 1);
+            group.updateCurrentOrder(currentOrder, members.size() - 1);
         }
         groupRepository.save(group);
     }
