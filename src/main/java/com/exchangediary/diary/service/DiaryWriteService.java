@@ -35,7 +35,6 @@ public class DiaryWriteService {
         Group group = groupQueryService.findGroup(groupId);
         diaryValidationService.checkTodayDiaryExistent(groupId);
 
-
         try {
             Diary diary = Diary.from(diaryRequest, member, group);
             uploadImage(file, diary);
