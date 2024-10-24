@@ -39,28 +39,24 @@ public class Diary extends BaseEntity {
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
-    private String content;
+    private final String content;
     @NotNull
-    private String moodLocation;
+    private final String moodLocation;
     @OneToOne(mappedBy = "diary", cascade = CascadeType.ALL)
-    private UploadImage uploadImage;
+    private final UploadImage uploadImage;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private final Member member;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
-    private Group group;
+    private final Group group;
 
-    public static Diary of(DiaryRequest diaryRequest, UploadImage uploadImage) {
+    public static Diary from(DiaryRequest diaryRequest, Member member, Group group) {
         return Diary.builder()
                 .content(diaryRequest.content())
                 .moodLocation(diaryRequest.moodLocation())
-                .uploadImage(uploadImage)
+                .member(member)
+                .group(group)
                 .build();
-    }
-
-    public void addMemberAndGroup(Member member, Group group) {
-        this.member = member;
-        this.group = group;
     }
 }

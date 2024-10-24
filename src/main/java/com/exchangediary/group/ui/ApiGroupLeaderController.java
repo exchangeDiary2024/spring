@@ -30,6 +30,13 @@ public class ApiGroupLeaderController {
                 .build();
     }
 
+    @PatchMapping("/skip-order")
+    public ResponseEntity<Void> skipDiaryOrder(@PathVariable Long groupId) {
+        groupLeaderService.skipDiaryOrder(groupId);
+        return ResponseEntity
+                .ok()
+                .build();
+    }
     @PatchMapping("/leave")
     public ResponseEntity<Void> kickOutMember(
             @PathVariable Long groupId,

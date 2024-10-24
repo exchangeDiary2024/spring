@@ -78,5 +78,4 @@ public class Member extends BaseEntity {
     }
 
     public void updateOrderInGroup(Integer orderInGroup) { this.orderInGroup = orderInGroup; }
-
 }

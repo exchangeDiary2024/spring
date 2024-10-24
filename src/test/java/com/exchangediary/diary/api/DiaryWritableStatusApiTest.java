@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -156,6 +157,7 @@ public class DiaryWritableStatusApiTest extends ApiBaseTest {
                 .name("버니즈")
                 .currentOrder(currentOrder)
                 .code("code")
+                .lastSkipOrderDate(LocalDate.now())
                 .build();
     }
 

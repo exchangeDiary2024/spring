@@ -19,14 +19,23 @@ public class GroupLeaderService {
     private final GroupQueryService groupQueryService;
     private final MemberRepository memberRepository;
     private final GroupLeaveService groupLeaveService;
+    private final GroupMemberService groupMemberService;
+    private final GroupValidationService groupValidationService;
 
     public void handOverGroupLeader(Long groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
-        Member currentLeader = groupQueryService.findSelfInGroup(group, memberId);
+        Member currentLeader = groupMemberService.findSelfInGroup(group, memberId);
         Member newLeader = findGroupMemberByIndex(group, request.nextLeaderIndex());
 
         currentLeader.changeGroupRole(GroupRole.GROUP_MEMBER);
         newLeader.changeGroupRole(GroupRole.GROUP_LEADER);
+    }
+
+    public void skipDiaryOrder(Long groupId) {
+        Group group = groupQueryService.findGroup(groupId);
+        groupValidationService.checkSkipOrderAuthority(group);
+        group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
+        group.updateLastSkipOrderDate();
     }
 
     private Member findGroupMemberByIndex(Group group, int index) {
