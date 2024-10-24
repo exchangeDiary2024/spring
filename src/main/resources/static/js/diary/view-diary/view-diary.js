@@ -1,4 +1,4 @@
-function drawDiary() {
+function viewDiary() {
     adjustCharacterSize();
     uploadImage();
 }
@@ -20,4 +20,4 @@ function adjustCharacterSize() {
     }
 }
 
-drawDiary();
+viewDiary();
