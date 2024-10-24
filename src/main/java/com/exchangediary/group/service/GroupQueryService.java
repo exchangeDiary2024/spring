@@ -64,4 +64,8 @@ public class GroupQueryService {
                         String.valueOf(memberId)
                 ));
     }
+
+    public boolean isSameWithGroupCurrentOrder(Long memberId) {
+        return groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
+    }
 }
