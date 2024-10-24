@@ -78,7 +78,7 @@ public class DiaryQueryService {
         return group.getCurrentOrder().equals(member.getOrderInGroup());
     }
 
-    private Optional<Diary> findTodayDiary(Long groupId) {
+    public Optional<Diary> findTodayDiary(Long groupId) {
         LocalDate today = LocalDate.now();
         Optional<Diary> todayDiary = diaryRepository.findByGroupAndDate(
                 groupId,
