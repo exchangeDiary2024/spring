@@ -2,7 +2,9 @@ package com.exchangediary.diary.api;
 
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.diary.domain.DiaryRepository;
+import com.exchangediary.diary.domain.UploadImageRepository;
 import com.exchangediary.diary.domain.entity.Diary;
+import com.exchangediary.diary.domain.entity.UploadImage;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,16 +34,16 @@ class DiaryCreateApiTest extends ApiBaseTest {
     private GroupRepository groupRepository;
     @Autowired
     private DiaryRepository diaryRepository;
+    @Autowired
+    private UploadImageRepository uploadImageRepository;
 
     @Test
-    void 일기_작성_성공() throws JsonProcessingException {
+    void 일기_작성_성공_사진포함() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
         member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -64,17 +67,17 @@ class DiaryCreateApiTest extends ApiBaseTest {
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
         assertThat(newDiary.getContent()).isEqualTo(data.get("content"));
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
+        UploadImage uploadImage = uploadImageRepository.findAll().getLast();
+        assertThat(uploadImage.getDiary().getId()).isEqualTo(newDiary.getId());
     }
 
     @Test
-    void 일기_작성_성공_내용만() throws JsonProcessingException {
+    void 일기_작성_성공_사진_미포함() throws JsonProcessingException {
         Group group = createGroup(1);
         groupRepository.save(group);
         member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
         memberRepository.save(member);
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -105,9 +108,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         groupRepository.save(group);
         Diary diary = createDiary(group);
         diaryRepository.save(diary);
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -132,9 +133,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -171,9 +170,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -210,9 +207,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
         Member groupMember = createMemberInGroup(group);
         Member groupMember2 = createMemberInGroup(group);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
-        data.put("moodLocation", "/images/sad.png");
+        Map<String, String> data = makeDiaryData();
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(data);
 
@@ -239,6 +234,28 @@ class DiaryCreateApiTest extends ApiBaseTest {
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
     }
 
+    @Test
+    void 일기_작성_실패_이미지_형식_실패() throws JsonProcessingException {
+        Group group = createGroup(1);
+        groupRepository.save(group);
+        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
+        memberRepository.save(member);
+        Map<String, String> data = makeDiaryData();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonData = objectMapper.writeValueAsString(data);
+
+        RestAssured
+                .given().log().all()
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("data", jsonData, "application/json")
+                .multiPart("file", new File("src/main/resources/static/images/character/red.svg"), "image/svg")
+                .cookie("token", token)
+                .when().post(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+                .body("message", equalTo(ErrorCode.INVALID_IMAGE_FORMAT.getMessage()));
+    }
+
     private Diary createDiary(Group group) {
         return Diary.builder()
                 .content("하이하이")
@@ -252,6 +269,7 @@ class DiaryCreateApiTest extends ApiBaseTest {
                 .name("버니즈")
                 .currentOrder(currentOrder)
                 .code("code")
+                .lastSkipOrderDate(LocalDate.now())
                 .build();
     }
 
@@ -261,5 +279,12 @@ class DiaryCreateApiTest extends ApiBaseTest {
                 .profileImage("red")
                 .group(group)
                 .build();
+    }
+
+    private Map<String, String> makeDiaryData() {
+        Map<String, String> data = new HashMap<>();
+        data.put("content", "buddies");
+        data.put("moodLocation", "/images/sad.png");
+        return data;
     }
 }

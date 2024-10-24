@@ -7,6 +7,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
+import com.exchangediary.group.ui.dto.response.GroupMonthlyResponse;
 import com.exchangediary.member.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class GroupQueryService {
     private final GroupValidationService groupValidationService;
+    private final GroupMemberService groupMemberService;
     private final GroupRepository groupRepository;
 
     public GroupProfileResponse viewSelectableProfileImage(Long groupId) {
@@ -42,21 +44,25 @@ public class GroupQueryService {
                 ));
     }
 
-    public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
+    public GroupMonthlyResponse getGroupMonthlyInfo(Long groupId) {
         Group group = findGroup(groupId);
-        List<Member> members = group.getMembers();
-        Member self = findSelf(members, memberId);
-        return GroupMembersResponse.of(members, self.getOrderInGroup() - 1);
+        return GroupMonthlyResponse.of(group);
     }
 
-    private Member findSelf(List<Member> members, Long memberId) {
-        return members.stream()
-                .filter(member -> memberId.equals(member.getId()))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.GROUP_NOT_FOUND,
-                        "",
-                        String.valueOf(memberId)
-                ));
+    public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
+        Group group = findGroup(groupId);
+        Member self = groupMemberService.findSelfInGroup(group, memberId);
+        Member leader = groupMemberService.findGroupLeader(group);
+        Member currentWriter = groupMemberService.findMemberHasWriteAuthority(group);
+        return GroupMembersResponse.of(
+                group.getMembers(),
+                self.getOrderInGroup() - 1,
+                leader.getOrderInGroup() - 1,
+                currentWriter.getOrderInGroup() - 1
+        );
+    }
+
+    public boolean isSameWithGroupCurrentOrder(Long memberId) {
+        return groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
     }
 }
