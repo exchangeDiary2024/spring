@@ -20,6 +20,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class GroupQueryService {
     private final GroupValidationService groupValidationService;
+    private final GroupMemberService groupMemberService;
     private final GroupRepository groupRepository;
 
     public GroupProfileResponse viewSelectableProfileImage(Long groupId) {
@@ -50,18 +51,18 @@ public class GroupQueryService {
 
     public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
         Group group = findGroup(groupId);
-        Member self = findSelfInGroup(group, memberId);
-        return GroupMembersResponse.of(group.getMembers(), self.getOrderInGroup() - 1);
+        Member self = groupMemberService.findSelfInGroup(group, memberId);
+        Member leader = groupMemberService.findGroupLeader(group);
+        Member currentWriter = groupMemberService.findMemberHasWriteAuthority(group);
+        return GroupMembersResponse.of(
+                group.getMembers(),
+                self.getOrderInGroup() - 1,
+                leader.getOrderInGroup() - 1,
+                currentWriter.getOrderInGroup() - 1
+        );
     }
 
-    public Member findSelfInGroup(Group group, Long memberId) {
-        return group.getMembers().stream()
-                .filter(member -> memberId.equals(member.getId()))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.MEMBER_NOT_FOUND,
-                        "",
-                        String.valueOf(memberId)
-                ));
+    public boolean isSameWithGroupCurrentOrder(Long memberId) {
+        return groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
     }
 }

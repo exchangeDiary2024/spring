@@ -76,4 +76,6 @@ public class Member extends BaseEntity {
     public void updateRefreshToken(RefreshToken refreshToken) {
         this.refreshToken = refreshToken;
     }
+
+    public void updateOrderInGroup(Integer orderInGroup) { this.orderInGroup = orderInGroup; }
 }

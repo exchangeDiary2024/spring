@@ -23,9 +23,11 @@ public enum ErrorCode {
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "일기를 찾을 수 없습니다."),
     UPLOAD_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "일기 업로드 이미지를 찾을 수 없습니다."),
     GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "그룹을 찾을 수 없습니다."),
+    GROUP_LEADER_NOT_FOUND(HttpStatus.NOT_FOUND, "그룹장을 찾을 수 없습니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "멤버를 찾을 수 없습니다."),
 
     FULL_MEMBERS_OF_GROUP(HttpStatus.CONFLICT, "그룹원이 꽉 차\n해당 그룹에 들어갈 수 없습니다."),
+    ALREADY_SKIP_ORDER_TODAY(HttpStatus.CONFLICT, "이미 한 번 건너뛰었어요!\n내일 다시 건너뛸 수 있어요."),
 
     INVALID_IMAGE_FORMAT(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 파일 형식입니다."),
 

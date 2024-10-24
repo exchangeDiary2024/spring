@@ -7,7 +7,6 @@ import com.exchangediary.diary.domain.entity.UploadImage;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.FailedImageUploadException;
-import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.service.GroupQueryService;
@@ -23,7 +22,7 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class DiaryCommandService {
+public class DiaryWriteService {
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
     private final DiaryValidationService diaryValidationService;
@@ -31,18 +30,10 @@ public class DiaryCommandService {
     private final GroupRepository groupRepository;
     private final UploadImageRepository uploadImageRepository;
 
-    public Long createDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
+    public Long writeDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
         Group group = groupQueryService.findGroup(groupId);
         diaryValidationService.checkTodayDiaryExistent(groupId);
-        //Todo: 일기 작성 인가 후 삭제
-        if (!member.getOrderInGroup().equals(group.getCurrentOrder())) {
-            throw new ForbiddenException(
-                    ErrorCode.DIARY_WRITE_FORBIDDEN,
-                    "",
-                    String.valueOf(group.getCurrentOrder())
-            );
-        }
 
         try {
             Diary diary = Diary.from(diaryRequest, member, group);
@@ -72,9 +63,7 @@ public class DiaryCommandService {
 
     private void changeCurrentOrderOfGroup(Group group) {
         int currentOrder = group.getCurrentOrder() + 1;
-        if (group.getMembers().size() < currentOrder)
-            currentOrder = 1;
-        group.updateCurrentOrder(currentOrder);
+        group.updateCurrentOrder(currentOrder, group.getMembers().size());
         groupRepository.save(group);
     }
 }

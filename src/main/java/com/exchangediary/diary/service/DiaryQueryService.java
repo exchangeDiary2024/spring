@@ -8,10 +8,7 @@ import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
-import com.exchangediary.group.domain.entity.Group;
-import com.exchangediary.group.service.GroupQueryService;
-import com.exchangediary.member.domain.entity.Member;
-import com.exchangediary.member.service.MemberQueryService;
+import com.exchangediary.group.domain.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +21,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DiaryQueryService {
-    private final GroupQueryService groupQueryService;
-    private final MemberQueryService memberQueryService;
     private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
+    private final GroupRepository groupRepository;
 
     public DiaryResponse viewDiary(Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
@@ -41,7 +37,7 @@ public class DiaryQueryService {
 
     public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId) {
         diaryValidationService.validateYearMonthFormat(year, month);
-        groupQueryService.findGroup(groupId); //Todo: 그룹 인가 구현 후 삭제 될 코드
+//        groupQueryService.findGroup(groupId); //Todo: 그룹 인가 구현 후 삭제 될 코드
         List<Diary> diaries = diaryRepository.findAllByGroupYearAndMonth(groupId, year, month);
         return DiaryMonthlyResponse.of(year, month, diaries);
     }
@@ -63,7 +59,7 @@ public class DiaryQueryService {
         boolean writtenTodayDiary = false;
         Long diaryId = null;
 
-        Boolean isMyOrder = isCurrentOrder(groupId, memberId);
+        Boolean isMyOrder = groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
         Optional<Diary> todayDiary = findTodayDiary(groupId);
         if (todayDiary.isPresent()) {
             writtenTodayDiary = true;
@@ -72,13 +68,7 @@ public class DiaryQueryService {
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
     }
 
-    private Boolean isCurrentOrder(Long groupId, Long memberId) {
-        Group group = groupQueryService.findGroup(groupId);
-        Member member = memberQueryService.findMember(memberId);
-        return group.getCurrentOrder().equals(member.getOrderInGroup());
-    }
-
-    private Optional<Diary> findTodayDiary(Long groupId) {
+    public Optional<Diary> findTodayDiary(Long groupId) {
         LocalDate today = LocalDate.now();
         Optional<Diary> todayDiary = diaryRepository.findByGroupAndDate(
                 groupId,
