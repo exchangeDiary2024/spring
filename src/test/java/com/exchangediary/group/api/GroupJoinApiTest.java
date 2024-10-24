@@ -6,6 +6,7 @@ import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.request.GroupJoinRequest;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ class GroupJoinApiTest extends ApiBaseTest {
         assertThat(updatedMember.getProfileImage()).isEqualTo("orange");
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(2);
         assertThat(updatedMember.getGroup().getId()).isEqualTo(group.getId());
+        assertThat(updatedMember.getGroupRole()).isEqualTo(GroupRole.GROUP_MEMBER);
     }
 
     @Test
@@ -67,11 +69,7 @@ class GroupJoinApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.builder()
-                .name(GROUP_NAME)
-                .currentOrder(0)
-                .code("code")
-                .build();
+        return Group.of(GROUP_NAME, "code");
     }
 
     private Member createMemberInGroup(Group group) {

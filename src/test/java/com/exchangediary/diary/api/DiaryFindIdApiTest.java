@@ -110,11 +110,7 @@ class DiaryFindIdApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.builder()
-                .name("버니즈")
-                .currentOrder(0)
-                .code("code")
-                .build();
+        return Group.of("버니즈", "code");
     }
 
     private Diary createDiary(Group group) {

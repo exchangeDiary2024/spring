@@ -1,30 +1,30 @@
 @charset "utf-8";
 
-#red {
+.red {
     content: url("/images/character/red.svg")
 }
 
-#orange {
+.orange {
     content: url("/images/character/orange.svg")
 }
 
-#yellow {
+.yellow {
     content: url("/images/character/yellow.svg")
 }
 
-#green {
+.green {
     content: url("/images/character/green.svg")
 }
 
-#blue {
+.blue {
     content: url("/images/character/blue.svg")
 }
 
-#navy {
+.navy {
     content: url("/images/character/navy.svg")
 }
 
-#purple {
+.purple {
     content: url("/images/character/purple.svg")
 }
 

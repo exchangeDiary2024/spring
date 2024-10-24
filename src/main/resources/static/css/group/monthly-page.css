@@ -140,17 +140,12 @@ th,td {
     transform: rotate(45deg); /* 각도 */
 }
 
-.diary {
-    background-color: #FFCC00;
-}
-
 .today {
     color: rgba(0, 0, 0, 1);
     border-width: 2px;
 }
 
 .highlight {
-    color: rgba(0, 0, 0, 1);
     width: 36px;
     height: 36px;
 }
@@ -210,4 +205,20 @@ th,td {
     font-weight: 700;
     line-height: 28px; /* 140% */
     letter-spacing: 0.2px;
+}
+
+.profile-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.blue-icon {
+    height: auto;
+    position: relative;
+    bottom: 3px;
+}
+
+.green-icon {
+    width: auto;
 }
