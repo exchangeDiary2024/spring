@@ -9,7 +9,6 @@ import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
 import com.exchangediary.group.ui.dto.response.GroupMonthlyResponse;
 import com.exchangediary.member.domain.entity.Member;
-import com.exchangediary.member.domain.enums.GroupRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +20,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class GroupQueryService {
     private final GroupValidationService groupValidationService;
+    private final GroupMemberService groupMemberService;
     private final GroupRepository groupRepository;
 
     public GroupProfileResponse viewSelectableProfileImage(Long groupId) {
@@ -51,37 +51,15 @@ public class GroupQueryService {
 
     public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
         Group group = findGroup(groupId);
-        Member self = findSelfInGroup(group, memberId);
-        Member leader = findGroupLeader(group);
-        Member currentWriter = group.getMembers().get(group.getCurrentOrder() - 1);
+        Member self = groupMemberService.findSelfInGroup(group, memberId);
+        Member leader = groupMemberService.findGroupLeader(group);
+        Member currentWriter = groupMemberService.findMemberHasWriteAuthority(group);
         return GroupMembersResponse.of(
                 group.getMembers(),
                 self.getOrderInGroup() - 1,
                 leader.getOrderInGroup() - 1,
                 currentWriter.getOrderInGroup() - 1
         );
-    }
-
-    public Member findSelfInGroup(Group group, Long memberId) {
-        return group.getMembers().stream()
-                .filter(member -> memberId.equals(member.getId()))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.MEMBER_NOT_FOUND,
-                        "",
-                        String.valueOf(memberId)
-                ));
-    }
-
-    private Member findGroupLeader(Group group) {
-        return group.getMembers().stream()
-                .filter(member -> GroupRole.GROUP_LEADER.equals(member.getGroupRole()))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.GROUP_LEADER_NOT_FOUND,
-                        "",
-                        String.valueOf(group.getId())
-                ));
     }
 
     public boolean isSameWithGroupCurrentOrder(Long memberId) {
