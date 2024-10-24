@@ -6,6 +6,13 @@
 
     <link rel="stylesheet" href="/css/group/monthly-page.css" type="text/css">
     <link rel="stylesheet" href="/css/group/group-menu.css" type="text/css">
+
+    <script>
+        const groupId = [[${group.id}]];
+
+        const groupCreatedYear = [[${group.createdYear}]];
+        const groupCreatedMonth = [[${group.createdMonth}]];
+    </script>
 </th:block>
 
 <th:block layout:fragment="content">
@@ -121,12 +128,6 @@
 </th:block>
 
 <th:block layout:fragment="script">
-    <script>
-        const groupId = [[${group.id}]];
-
-        const groupCreatedYear = [[${group.createdYear}]];
-        const groupCreatedMonth = [[${group.createdMonth}]];
-    </script>
     <script src="/js/group/monthly/draw-calendar.js"></script>
     <script src="/js/group/monthly/draw-bottom.js"></script>
     <script src="/js/group/monthly/calendar-arrow.js"></script>

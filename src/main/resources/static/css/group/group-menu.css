@@ -98,7 +98,7 @@
     color: var(--kakao-logo, #000);
     text-align: center;
     font-variant-numeric: lining-nums tabular-nums;
-    font-family: "SOYOMaple TTF";
+    font-family: "SOYOMaple";
     font-size: 8px;
     font-style: normal;
     font-weight: 400;
@@ -109,7 +109,7 @@
 .group-size .group-number {
     color: var(--kakao-logo, #000);
     font-variant-numeric: lining-nums tabular-nums;
-    font-family: "SOYO Maple TTF";
+    font-family: "SOYOMapleBold";
     font-size: 8px;
     font-style: normal;
     font-weight: 700;
@@ -190,7 +190,7 @@
 
     color: var(--kakao-logo, #000);
     text-align: center;
-    font-family: "SOYO Maple TTF";
+    font-family: "SOYOMaple";
     font-size: 8px;
     font-style: normal;
     font-weight: 400;
@@ -206,7 +206,7 @@
     color: var(--kakao-logo, #000);
     text-align: center;
     font-variant-numeric: lining-nums proportional-nums;
-    font-family: "SOYOMaple TTF";
+    font-family: "SOYOMapleBold";
     font-size: 18.951px;
     font-style: normal;
     font-weight: 700;

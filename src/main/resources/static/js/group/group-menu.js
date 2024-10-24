@@ -1,11 +1,15 @@
 const menuBtn = document.querySelector(".menu-btn");
 const groupMenu = document.querySelector(".group-menu");
 const menu = groupMenu.querySelector(".menu");
+const groupSize = menu.querySelector(".group-size .size");
 const groupMembers = menu.querySelector(".group-members");
 
 menuBtn.addEventListener("click", openMenu);
 groupMenu.addEventListener("click", closeMenu);
-drawMembers(6);
+
+fetch(`/api/groups/${groupId}/members`)
+    .then(response => response.json())
+    .then(data => drawMenu(data));
 
 function openMenu() {
     groupMenu.style.display = "block";
@@ -21,23 +25,36 @@ function closeMenu(event) {
     }
 }
 
-function drawMembers(memberSize) {
+function drawMenu(data) {
+    groupSize.innerText = data.members.length;
+    drawMembers(data.members);
+    const members = groupMembers.querySelectorAll(".group-member");
+
+    members[data.selfIndex].innerHTML = makeMyHtml() + members[data.selfIndex].innerHTML;
+    members[data.leaderIndex].querySelector(".profile-image").innerHTML += makeLeaderHtml();
+    members[data.currentWriterIndex].classList.add("order");
+    if (data.selfIndex === data.leaderIndex) {
+        groupMembers.classList.add("leader");
+    }
+}
+
+function drawMembers(members) {
     const centerX = 88;
     const centerY = 119;
     const r = 79;
+    const memberSize = members.length;
+    var index = 0;
 
-    // 테스트를 위한 코드 입니다.
-    const testCharacters = ["red", "orange", "yellow", "green", "blue", "navy", "purple"];
-    const testNicknames = ["하니", "민지", "해린", "해린", "다니엘", "버니", "혜인"];
-    for (number = 0; number < memberSize; number++) {
+    members.forEach(member => {
         const groupMember = document.createElement("div");
-        const radian = getRadian(getAngle(number, memberSize));
+        const radian = getRadian(getAngle(index, memberSize));
         groupMember.classList.add("group-member");
-        groupMember.innerHTML = makeMemberHtml(testCharacters[number], testNicknames[number]);
+        groupMember.innerHTML = makeMemberHtml(member.profileImage, member.nickname);
         groupMember.style.left = `${centerX - r * Math.cos(radian)}px`;
         groupMember.style.top = `${centerY - r * Math.sin(radian)}px`;
         groupMembers.appendChild(groupMember);
-    }
+        index++;
+    });
 }
 
 function getRadian(angle) {
@@ -53,10 +70,18 @@ function getAngle(number, memberSize) {
 }
 
 function makeMemberHtml(characterName, memberName) {
-    return `<div class="my"><span style='color: #FFF; text-align: center; font-family: "SOYOMaple"; font-size: 6px; font-style: normal; font-weight: 700; line-height: 100%; letter-spacing: 0.06px;'>나</span></div>
-            <a class="profile-image" href="#">
-                <img class="crown" />
+    return `<a class="profile-image" href="#">
                 <img class="${characterName} character-icon" />
             </a>
             <span class="profile-nickname">${memberName}</span>`
+}
+
+function makeMyHtml() {
+    return `<div class="my">
+                <span style='color: #FFF; text-align: center; font-family: "SOYOMaple"; font-size: 6px; font-style: normal; font-weight: 700; line-height: 100%; letter-spacing: 0.06px;'>나</span>
+            </div>`
+}
+
+function makeLeaderHtml() {
+    return '<img class="crown" />'
 }
