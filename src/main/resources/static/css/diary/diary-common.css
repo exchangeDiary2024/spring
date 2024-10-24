@@ -84,6 +84,7 @@ a {
     border: none;
     outline: none;
     white-space: pre-line;
+    text-align: center;
 
     color: var(--kakao-logo, #000);
     font-variant-numeric: lining-nums proportional-nums;
