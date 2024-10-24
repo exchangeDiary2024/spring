@@ -37,7 +37,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new WriteDiaryAuthorizationInterceptor(diaryAuthorizationService))
                 .addPathPatterns("/group/*/diary", "/api/groups/*/diaries");
         registry.addInterceptor(new ViewDiaryAuthorizationInterceptor(diaryAuthorizationService))
-                .addPathPatterns("/group/*/diary/*", "/api/groups/*/diaries/*")
-                .excludePathPatterns("/api/groups/*/diaries/*/**");
+                .addPathPatterns("/group/*/diary/*");
     }
 }
