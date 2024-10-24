@@ -7,6 +7,7 @@ import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
+import com.exchangediary.group.ui.dto.response.GroupMonthlyResponse;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.enums.GroupRole;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,11 @@ public class GroupQueryService {
                 ));
     }
 
+    public GroupMonthlyResponse getGroupMonthlyInfo(Long groupId) {
+        Group group = findGroup(groupId);
+        return GroupMonthlyResponse.of(group);
+    }
+
     public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
         Group group = findGroup(groupId);
         Member self = findSelfInGroup(group, memberId);
@@ -76,5 +82,9 @@ public class GroupQueryService {
                         "",
                         String.valueOf(group.getId())
                 ));
+    }
+
+    public boolean isSameWithGroupCurrentOrder(Long memberId) {
+        return groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
     }
 }

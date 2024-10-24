@@ -131,11 +131,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.builder()
-                .name("groupname")
-                .currentOrder(1)
-                .code("code")
-                .build();
+        return Group.of("GROUP_NAME", "code");
     }
 
     private Member createMember(Group group, int index, String profileImage) {
