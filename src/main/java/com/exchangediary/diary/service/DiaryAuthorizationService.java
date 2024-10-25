@@ -24,4 +24,11 @@ public class DiaryAuthorizationService {
         }
         return true;
     }
+
+    public boolean canViewDiary(Long memberId, Long diaryId) {
+        if (!diaryRepository.isViewableDiary(memberId, diaryId)) {
+            throw new ForbiddenException(ErrorCode.DIARY_VIEW_FORBIDDEN, "", "");
+        }
+        return true;
+    }
 }

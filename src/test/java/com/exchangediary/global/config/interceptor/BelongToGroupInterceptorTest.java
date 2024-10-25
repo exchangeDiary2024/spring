@@ -82,7 +82,7 @@ public class BelongToGroupInterceptorTest extends ApiBaseTest {
     }
 
     private void updateSelf(Group group, int order) {
-        this.member.updateMemberGroupInfo(
+        this.member.joinGroup(
                 "me",
                 "red",
                 order,

@@ -44,4 +44,16 @@ public class GroupMemberService {
         }
         return group.getMembers().get(group.getCurrentOrder() - 1);
     }
+
+    public Member findMemberByNickname(Group group, String nickname) {
+        return group.getMembers().stream()
+                .filter(member -> member.getNickname().equals(nickname))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.MEMBER_NOT_FOUND,
+                        "",
+                        nickname
+                ));
+
+    }
 }
