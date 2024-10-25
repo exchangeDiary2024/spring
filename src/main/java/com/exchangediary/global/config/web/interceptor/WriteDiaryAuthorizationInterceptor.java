@@ -31,7 +31,7 @@ public class WriteDiaryAuthorizationInterceptor implements HandlerInterceptor {
         Long groupId = Long.valueOf(String.valueOf(pathVariables.get("groupId")));
 
         try {
-            diaryAuthorizationService.canWriteDiary(memberId, groupId);
+            return diaryAuthorizationService.canWriteDiary(memberId, groupId);
         } catch (ForbiddenException exception) {
             if (request.getRequestURI().contains("/api")) {
                 throw exception;
@@ -39,6 +39,5 @@ public class WriteDiaryAuthorizationInterceptor implements HandlerInterceptor {
             response.sendRedirect("/group/" + groupId);
             return false;
         }
-        return true;
     }
 }

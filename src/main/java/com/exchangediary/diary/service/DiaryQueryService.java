@@ -10,7 +10,7 @@ import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
-import com.exchangediary.group.domain.GroupRepository;
+import com.exchangediary.group.service.GroupQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +25,8 @@ import java.util.Optional;
 public class DiaryQueryService {
     private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
-    private final GroupRepository groupRepository;
     private final UploadImageRepository uploadImageRepository;
+    private final GroupQueryService groupQueryService;
 
     public DiaryResponse viewDiary(Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
@@ -49,7 +49,7 @@ public class DiaryQueryService {
 
     public DiaryIdResponse findDiaryIdByDate(int year, int month, int day, Long groupId) {
         diaryValidationService.validateDateFormat(year, month, day);
-        Long diaryId = diaryRepository.findIdByGroupAndDate(groupId, year, month, day)
+        Long diaryId = diaryRepository.findIdByGroupAndDate(groupId, LocalDate.of(year, month, day))
                 .orElseThrow(() -> new NotFoundException(
                         ErrorCode.DIARY_NOT_FOUND,
                         "",
@@ -60,28 +60,17 @@ public class DiaryQueryService {
                 .build();
     }
 
-    public DiaryWritableStatusResponse getDiaryWritableStatus(Long groupId, Long memberId) {
+    public DiaryWritableStatusResponse getMembersDiaryAuthorization(Long groupId, Long memberId) {
         boolean writtenTodayDiary = false;
         Long diaryId = null;
 
-        Boolean isMyOrder = groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
-        Optional<Diary> todayDiary = findTodayDiary(groupId);
+        Boolean isMyOrder = groupQueryService.isMyOrderInGroup(memberId);
+        Optional<Diary> todayDiary = diaryRepository.findTodayDiaryInGroup(groupId);
         if (todayDiary.isPresent()) {
             writtenTodayDiary = true;
             diaryId = getTodayDiaryId(isMyOrder, memberId, todayDiary.get());
         }
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
-    }
-
-    public Optional<Diary> findTodayDiary(Long groupId) {
-        LocalDate today = LocalDate.now();
-        Optional<Diary> todayDiary = diaryRepository.findByGroupAndDate(
-                groupId,
-                today.getYear(),
-                today.getMonthValue(),
-                today.getDayOfMonth()
-        );
-        return todayDiary;
     }
 
     private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary) {
