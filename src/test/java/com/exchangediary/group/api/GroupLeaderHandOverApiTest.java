@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GroupLeaderHandOverApiTest extends ApiBaseTest {
@@ -33,7 +31,7 @@ public class GroupLeaderHandOverApiTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .body(new GroupLeaderHandOverRequest(member.getOrderInGroup() - 1))
+                .body(new GroupLeaderHandOverRequest("group-member"))
                 .when().patch(String.format("/api/groups/%s/leader/hand-over", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
@@ -53,7 +51,7 @@ public class GroupLeaderHandOverApiTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .body(new GroupLeaderHandOverRequest(1))
+                .body(new GroupLeaderHandOverRequest("invalid-nickname"))
                 .when().patch(String.format("/api/groups/%s/leader/hand-over", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.NOT_FOUND.value());
