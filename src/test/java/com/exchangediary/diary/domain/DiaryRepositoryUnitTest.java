@@ -2,6 +2,7 @@ package com.exchangediary.diary.domain;
 
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.entity.UploadImage;
+import com.exchangediary.group.domain.entity.Group;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,5 +69,31 @@ public class DiaryRepositoryUnitTest {
 
         boolean exist = uploadImageRepository.findById(uploadImage.getId()).isPresent();
         assertThat(exist).isFalse();
+    }
+
+    @Test
+    void 오늘_일기_있는_경우_조회() {
+        Group group = Group.of("group-name", "code");
+        Diary diary = Diary.builder()
+                .content("하이하이")
+                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .group(group)
+                .build();
+        entityManager.persist(group);
+        entityManager.persist(diary);
+
+        Optional<Diary> result = diaryRepository.findTodayDiaryInGroup(group.getId());
+
+        assertThat(result.isPresent()).isTrue();
+    }
+
+    @Test
+    void 오늘_일기_없는_경우_조회() {
+        Group group = Group.of("group-name", "code");
+        entityManager.persist(group);
+
+        Optional<Diary> result = diaryRepository.findTodayDiaryInGroup(group.getId());
+
+        assertThat(result.isPresent()).isFalse();
     }
 }
