@@ -28,10 +28,9 @@ public class GroupRepositoryUnitTest {
         entityManager.persist(group);
         entityManager.persist(member);
 
-        Optional<Long> groupId = groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(member.getId());
+        boolean result = groupRepository.isEqualsToGroupCurrentOrder(member.getId());
 
-        assertThat(groupId.isPresent()).isTrue();
-        assertThat(groupId.get()).isEqualTo(group.getId());
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -42,8 +41,8 @@ public class GroupRepositoryUnitTest {
         entityManager.persist(group);
         entityManager.persist(member);
 
-        Optional<Long> groupId = groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(member.getId());
+        boolean result = groupRepository.isEqualsToGroupCurrentOrder(member.getId());
 
-        assertThat(groupId.isPresent()).isFalse();
+        assertThat(result).isFalse();
     }
 }
