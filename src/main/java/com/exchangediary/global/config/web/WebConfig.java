@@ -2,10 +2,13 @@ package com.exchangediary.global.config.web;
 
 import com.exchangediary.diary.service.DiaryAuthorizationService;
 import com.exchangediary.global.config.web.interceptor.BelongToGroupInterceptor;
+import com.exchangediary.global.config.web.interceptor.GroupMemberAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.JwtAuthenticationInterceptor;
 import com.exchangediary.global.config.web.interceptor.LoginInterceptor;
 import com.exchangediary.global.config.web.interceptor.ViewDiaryAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.WriteDiaryAuthorizationInterceptor;
+import com.exchangediary.group.service.GroupMemberService;
+import com.exchangediary.group.service.GroupQueryService;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
@@ -23,6 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
     private final MemberQueryService memberQueryService;
     private final MemberRepository memberRepository;
     private final DiaryAuthorizationService diaryAuthorizationService;
+    private final GroupMemberService groupMemberService;
+    private final GroupQueryService groupQueryService;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -33,6 +38,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/group", "/group/*");
         registry.addInterceptor(new LoginInterceptor(jwtService, cookieService))
                 .addPathPatterns("/login");
+        registry.addInterceptor(new GroupMemberAuthorizationInterceptor(
+                groupMemberService, groupQueryService, memberQueryService
+                ))
+                .addPathPatterns("/group/**", "api/groups/**");
 
         registry.addInterceptor(new WriteDiaryAuthorizationInterceptor(diaryAuthorizationService))
                 .addPathPatterns("/group/*/diary", "/api/groups/*/diaries");
