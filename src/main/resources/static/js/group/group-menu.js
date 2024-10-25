@@ -18,11 +18,10 @@ groupCodeBtn.addEventListener("click", () => {
     }
 });
 
-fetch(`/api/groups/${groupId}/members`)
-    .then(response => response.json())
-    .then(data => drawMenu(data));
-
 function openMenu() {
+    fetch(`/api/groups/${groupId}/members`)
+        .then(response => response.json())
+        .then(data => drawMenu(data));
     groupMenu.style.display = "block";
     groupMenu.classList.add("blur");
     setTimeout(() => menu.style.transform = "translateX(0)", 10);
@@ -33,6 +32,7 @@ function closeMenu(event) {
         menu.style.transform = "translateX(100%)"
         groupMenu.classList.remove("blur");
         setTimeout(() => groupMenu.style.display = "none", 300);
+        removeMembers();
     }
 }
 
@@ -96,6 +96,13 @@ function makeMyHtml() {
 
 function makeLeaderHtml() {
     return '<img class="crown" />'
+}
+
+function removeMembers() {
+    const members = groupMembers.querySelectorAll(".group-member");
+    Array.from(members).forEach(member => {
+        member.remove();
+    })
 }
 
 async function groupLeave(event) {
