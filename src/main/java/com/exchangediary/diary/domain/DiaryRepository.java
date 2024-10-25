@@ -15,5 +15,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Optional<Long> findIdByGroupAndDate(Long groupId, LocalDate date);
     @Query("SELECT d FROM Diary d WHERE d.group.id = :groupId AND CAST(d.createdAt AS DATE) = CURRENT_DATE")
     Optional<Diary> findTodayDiaryInGroup(Long groupId);
+    @Query("SELECT count(d.id) > 0 FROM Diary d WHERE d.group.id = :groupId AND CAST(d.createdAt AS DATE) = CURRENT_DATE")
+    Boolean existsTodayDiaryInGroup(Long groupId);
     void deleteByMemberId(Long memberId);
 }
