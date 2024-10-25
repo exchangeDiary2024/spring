@@ -30,7 +30,7 @@ public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .body(new GroupLeaderHandOverRequest(groupMember.getOrderInGroup() - 1))
+                .body(new GroupLeaderHandOverRequest("api요청멤버"))
                 .when().patch(String.format(API_PATH + "/hand-over", group.getId()))
                 .then()
                 .log().all()
@@ -74,7 +74,7 @@ public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .body(new GroupLeaderHandOverRequest(member.getOrderInGroup() - 1))
+                .body(new GroupLeaderHandOverRequest("api요청멤버"))
                 .when().patch(String.format(API_PATH + "/hand-over", group.getId()))
                 .then()
                 .log().all()
@@ -98,7 +98,7 @@ public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
     }
 
     private Member updateSelfInfo(Member member, GroupRole role, Group group) {
-        member.updateMemberGroupInfo(
+        member.joinGroup(
                 "api요청멤버",
                 "orange",
                 1,

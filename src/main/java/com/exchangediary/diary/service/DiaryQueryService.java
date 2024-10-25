@@ -9,6 +9,7 @@ import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.service.GroupQueryService;
+import com.exchangediary.member.service.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class DiaryQueryService {
     private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
     private final GroupQueryService groupQueryService;
+    private final MemberQueryService memberQueryService;
 
     public DiaryResponse viewDiary(Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
@@ -35,11 +37,11 @@ public class DiaryQueryService {
         return DiaryResponse.of(diary);
     }
 
-    public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId) {
+    public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId, Long memberId) {
         diaryValidationService.validateYearMonthFormat(year, month);
-//        groupQueryService.findGroup(groupId); //Todo: 그룹 인가 구현 후 삭제 될 코드
         List<Diary> diaries = diaryRepository.findAllByGroupYearAndMonth(groupId, year, month);
-        return DiaryMonthlyResponse.of(year, month, diaries);
+        LocalDate lastViewableDiaryDate = memberQueryService.getLastViewableDiaryDate(memberId);
+        return DiaryMonthlyResponse.of(diaries, lastViewableDiaryDate);
     }
 
     public DiaryIdResponse findDiaryIdByDate(int year, int month, int day, Long groupId) {
