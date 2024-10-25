@@ -20,6 +20,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -38,6 +40,7 @@ public class Member extends BaseEntity {
     private String nickname;
     private String profileImage;
     private Integer orderInGroup;
+    private LocalDate lastViewableDiaryDate;
     @Enumerated(EnumType.STRING)
     private GroupRole groupRole;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,7 +54,7 @@ public class Member extends BaseEntity {
                 .build();
     }
 
-    public void updateMemberGroupInfo(
+    public void joinGroup(
             String nickname,
             String profileImage,
             int orderInGroup,
@@ -61,12 +64,17 @@ public class Member extends BaseEntity {
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.orderInGroup = orderInGroup;
+        this.lastViewableDiaryDate = LocalDate.now();
         this.groupRole = groupRole;
         this.group = group;
     }
 
     public void changeGroupRole(GroupRole groupRole) {
         this.groupRole = groupRole;
+    }
+
+    public void updateLastViewableDiaryDate(LocalDate lastViewableDiaryDate) {
+        this.lastViewableDiaryDate = lastViewableDiaryDate;
     }
 
     public void updateOrderInGroup(Integer orderInGroup) { this.orderInGroup = orderInGroup; }
