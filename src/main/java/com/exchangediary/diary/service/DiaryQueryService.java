@@ -44,7 +44,7 @@ public class DiaryQueryService {
 
     public DiaryIdResponse findDiaryIdByDate(int year, int month, int day, Long groupId) {
         diaryValidationService.validateDateFormat(year, month, day);
-        Long diaryId = diaryRepository.findIdByGroupAndDate(groupId, year, month, day)
+        Long diaryId = diaryRepository.findIdByGroupAndDate(groupId, LocalDate.of(year, month, day))
                 .orElseThrow(() -> new NotFoundException(
                         ErrorCode.DIARY_NOT_FOUND,
                         "",
@@ -60,23 +60,15 @@ public class DiaryQueryService {
         Long diaryId = null;
 
         Boolean isMyOrder = groupRepository.isEqualsToGroupCurrentOrder(memberId);
-        Optional<Diary> todayDiary = findTodayDiary(groupId);
+        Optional<Diary> todayDiary = diaryRepository.findTodayDiaryInGroup(groupId);
         if (todayDiary.isPresent()) {
             writtenTodayDiary = true;
             diaryId = getTodayDiaryId(isMyOrder, memberId, todayDiary.get());
         }
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
     }
-
     public Optional<Diary> findTodayDiary(Long groupId) {
-        LocalDate today = LocalDate.now();
-        Optional<Diary> todayDiary = diaryRepository.findByGroupAndDate(
-                groupId,
-                today.getYear(),
-                today.getMonthValue(),
-                today.getDayOfMonth()
-        );
-        return todayDiary;
+        return diaryRepository.findTodayDiaryInGroup(groupId);
     }
 
     private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary) {

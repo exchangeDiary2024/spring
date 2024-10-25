@@ -1,6 +1,7 @@
 package com.exchangediary.diary.service;
 
 import com.exchangediary.diary.domain.DiaryRepository;
+import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.DuplicateException;
 import com.exchangediary.global.exception.serviceexception.FailedImageUploadException;
@@ -54,19 +55,13 @@ public class DiaryValidationService {
     }
 
     public void checkTodayDiaryExistent(Long groupId) {
-        LocalDate today = LocalDate.now();
-        Optional<Long> todayDiary = diaryRepository.findIdByGroupAndDate(
-                groupId,
-                today.getYear(),
-                today.getMonthValue(),
-                today.getDayOfMonth()
-        );
+        Optional<Diary> todayDiary = diaryRepository.findTodayDiaryInGroup(groupId);
 
         if (todayDiary.isPresent()) {
             throw new DuplicateException(
                     ErrorCode.DIARY_DUPLICATED,
                     "",
-                    today.toString()
+                    LocalDate.now().toString()
             );
         }
     }
