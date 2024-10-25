@@ -52,7 +52,7 @@ async function clickSkipBtn(event) {
         })
         .then(response => {
             if (response.status === 200) {
-                openNotificationModal("success", ["순서를 건너뛰었어요."], 2000);
+                openNotificationModal("success", ["순서를 건너뛰었어요."], 2000, () => location.reload());
             } else {
                 openNotificationModal("error", ["이미 한 번 건너뛰었어요!", "내일 다시 건너뛸 수 있어요."], 2000);
             }
@@ -78,7 +78,7 @@ async function clickExitBtn(event) {
         })
         .then(response => {
             if (response.status === 200) {
-                openNotificationModal("success", ["내보내기를 완료했어요."], 2000);
+                openNotificationModal("success", ["내보내기를 완료했어요."], 2000, () => location.reload());
             } else {
                 openNotificationModal("error", ["오류가 발생했습니다."], 2000);
             }
@@ -103,7 +103,7 @@ async function clickDelegationBtn(event) {
         })
         .then(response => {
             if (response.status === 200) {
-                openNotificationModal("success", ["방장을 넘겼습니다."], 2000);
+                openNotificationModal("success", ["방장을 넘겼습니다."], 2000, () => location.reload());
             } else {
                 openNotificationModal("error", ["오류가 발생했습니다."], 2000);
             }

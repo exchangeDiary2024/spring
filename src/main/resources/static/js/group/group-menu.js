@@ -3,9 +3,20 @@ const groupMenu = document.querySelector(".group-menu");
 const menu = groupMenu.querySelector(".menu");
 const groupMembers = menu.querySelector(".group-members");
 const groupSize = menu.querySelector(".group-size .size");
+const groupLeaveBtn = menu.querySelector(".group-leave");
+const groupCodeBtn = menu.querySelector(".group-code");
 
 menuBtn.addEventListener("click", openMenu);
 groupMenu.addEventListener("click", closeMenu);
+groupLeaveBtn.addEventListener("click", groupLeave);
+groupCodeBtn.addEventListener("click", () => {
+    try {
+        navigator.clipboard.writeText(groupCodeBtn.getAttribute("data-code"))
+        openNotificationModal("success", ["코드 복사에 성공했습니다."], 500);
+    } catch {
+        openNotificationModal("error", ["오류가 발생했습니다."], 2000);
+    }
+});
 
 fetch(`/api/groups/${groupId}/members`)
     .then(response => response.json())
@@ -85,4 +96,24 @@ function makeMyHtml() {
 
 function makeLeaderHtml() {
     return '<img class="crown" />'
+}
+
+async function groupLeave(event) {
+    event.preventDefault();
+    const result = await openConfirmModal("정말 탈퇴하시겠어요?", "탈퇴할 시 모든 데이터가 영구적으로 삭제됩니다.");
+
+    if (result) {
+        const url = event.target.closest("a").href;
+
+        fetch(url, {
+            method: "PATCH"
+        })
+        .then(response => {
+             if (response.status === 200) {
+                 openNotificationModal("success", ["탈퇴를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
+             } else {
+                 openNotificationModal("error", ["오류가 발생했습니다."], 2000);
+             }
+        })
+    }
 }
