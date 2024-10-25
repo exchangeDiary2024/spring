@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -36,6 +38,8 @@ public class GroupLeaderService {
         groupValidationService.checkSkipOrderAuthority(group);
         group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
         group.updateLastSkipOrderDate();
+        Member currentWriter = groupMemberService.findCurrentOrderMember(group);
+        currentWriter.updateLastViewableDiaryDate(LocalDate.now());
     }
 
     public void kickOutMember(Long groupId, GroupKickOutRequest request) {

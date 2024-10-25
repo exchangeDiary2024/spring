@@ -54,6 +54,16 @@ public class GroupMemberService {
                         "",
                         nickname
                 ));
+    }
 
+    public Member findCurrentOrderMember(Group group) {
+        return group.getMembers().stream()
+                .filter(member -> group.getCurrentOrder().equals(member.getOrderInGroup()))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.MEMBER_NOT_FOUND,
+                        "",
+                        String.valueOf(group.getCurrentOrder())
+                ));
     }
 }
