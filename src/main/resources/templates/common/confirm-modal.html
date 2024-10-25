@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="modal">
+<div class="confirm-modal">
+    <div class="modal-popup">
+        <div class="modal-head">
+            <div class="modal-icon">
+                <img class="warning" />
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="modal-content">
+                <span class="modal-text"></span>
+                <span class="modal-warning-text"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="cancel-btn" href="#">
+                <span>아니요</span>
+            </a>
+            <a class="confirm-btn" href="#">
+                <span>네</span>
+            </a>
+        </div>
+    </div>
+</div>
+<script src="/js/common/modal/confirm-modal.js"></script>
+</th:block>
+
+</html>
