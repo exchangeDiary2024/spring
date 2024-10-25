@@ -1,15 +1,16 @@
 package com.exchangediary.group.service;
 
+import com.exchangediary.global.exception.ErrorCode;
+import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.request.GroupKickOutRequest;
 import com.exchangediary.group.ui.dto.request.GroupLeaderHandOverRequest;
+import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.enums.GroupRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class GroupLeaderService {
     private final GroupLeaveService groupLeaveService;
     private final GroupMemberService groupMemberService;
     private final GroupValidationService groupValidationService;
+    private final MemberRepository memberRepository;
 
     public void handOverGroupLeader(Long groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
@@ -40,5 +42,12 @@ public class GroupLeaderService {
         Group group = groupQueryService.findGroup(groupId);
         Member kickMember = groupMemberService.findMemberByNickname(group, request.nickname());
         groupLeaveService.leaveGroup(groupId, kickMember.getId());
+    }
+
+    public boolean isGroupLeader(Long memberId) {
+        if (!memberRepository.isGroupLeader(memberId)) {
+            throw new ForbiddenException(ErrorCode.GROUP_LEADER_FORBIDDEN, "", "");
+        }
+        return true;
     }
 }
