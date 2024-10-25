@@ -48,7 +48,9 @@ public class BelongToGroupInterceptorTest extends ApiBaseTest {
                 .cookie("token", token)
                 .redirects().follow(false)
                 .when().get("/group")
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value())
                 .extract()
                 .header("location");
@@ -65,7 +67,9 @@ public class BelongToGroupInterceptorTest extends ApiBaseTest {
                 .cookie("token", token)
                 .redirects().follow(false)
                 .when().get("/group/" + group.getId())
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value())
                 .extract()
                 .header("location");

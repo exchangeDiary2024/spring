@@ -29,9 +29,7 @@ public class WriteDiaryAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .when().get(String.format("/group/%d/diary", group.getId()))
-                .then()
-                .log().status()
-                .log().headers()
+                .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
     
@@ -77,9 +75,7 @@ public class WriteDiaryAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .when().get(String.format("/api/groups/%d/diaries", group.getId()))
-                .then()
-                .log().status()
-                .log().headers()
+                .then().log().all()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
@@ -93,9 +89,7 @@ public class WriteDiaryAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .when().get(String.format("/api/groups/%d/diaries", group.getId()))
-                .then()
-                .log().status()
-                .log().headers()
+                .then().log().all()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
@@ -110,9 +104,7 @@ public class WriteDiaryAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .when().get(String.format("/group/%d/diary?year=%d&month=%d&day=%d", group.getId(), today.getYear(), today.getMonthValue(), today.getDayOfMonth()))
-                .then()
-                .log().status()
-                .log().headers()
+                .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
 
