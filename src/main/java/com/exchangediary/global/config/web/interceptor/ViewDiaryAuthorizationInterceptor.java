@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class WriteDiaryAuthorizationInterceptor implements HandlerInterceptor {
+public class ViewDiaryAuthorizationInterceptor implements HandlerInterceptor {
     private final DiaryAuthorizationService diaryAuthorizationService;
 
     @Override
@@ -21,21 +21,17 @@ public class WriteDiaryAuthorizationInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) throws IOException {
-        if (!request.getParameterMap().isEmpty()) {
-            return true;
-        }
-
         Long memberId = (Long) request.getAttribute("memberId");
-//        Long groupId = (Long) request.getAttribute("groupId"); todo: 그룹 인가 구현 후 주석 제거 & 아래 코드 제거
         Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-        Long groupId = Long.valueOf(String.valueOf(pathVariables.get("groupId")));
+        Long diaryId = Long.valueOf(String.valueOf(pathVariables.get("diaryId")));
 
         try {
-            return diaryAuthorizationService.canWriteDiary(memberId, groupId);
+            return diaryAuthorizationService.canViewDiary(memberId, diaryId);
         } catch (ForbiddenException exception) {
             if (request.getRequestURI().contains("/api")) {
                 throw exception;
             }
+            long groupId = Long.parseLong(String.valueOf(pathVariables.get("groupId")));
             response.sendRedirect("/group/" + groupId);
             return false;
         }

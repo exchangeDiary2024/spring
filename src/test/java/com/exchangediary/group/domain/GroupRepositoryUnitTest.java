@@ -24,26 +24,25 @@ public class GroupRepositoryUnitTest {
     void 내_그룹순서가_현재_그룹순서와_일치하는지_확인() {
         Group group = Group.of("버니즈", "code");
         Member member = Member.from(1L);
-        member.updateMemberGroupInfo("nickname", "red", 1, GroupRole.GROUP_MEMBER, group);
+        member.joinGroup("nickname", "red", 1, GroupRole.GROUP_MEMBER, group);
         entityManager.persist(group);
         entityManager.persist(member);
 
-        Optional<Long> groupId = groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(member.getId());
+        boolean result = groupRepository.isEqualsToGroupCurrentOrder(member.getId());
 
-        assertThat(groupId.isPresent()).isTrue();
-        assertThat(groupId.get()).isEqualTo(group.getId());
+        assertThat(result).isTrue();
     }
 
     @Test
     void 내_그룹순서가_현재_그룹순서와_일치_안함() {
         Group group = Group.of("버니즈", "code");
         Member member = Member.from(1L);
-        member.updateMemberGroupInfo("nickname", "red", 2, GroupRole.GROUP_MEMBER, group);
+        member.joinGroup("nickname", "red", 2, GroupRole.GROUP_MEMBER, group);
         entityManager.persist(group);
         entityManager.persist(member);
 
-        Optional<Long> groupId = groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(member.getId());
+        boolean result = groupRepository.isEqualsToGroupCurrentOrder(member.getId());
 
-        assertThat(groupId.isPresent()).isFalse();
+        assertThat(result).isFalse();
     }
 }
