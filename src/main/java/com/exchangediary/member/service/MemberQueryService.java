@@ -42,13 +42,13 @@ public class MemberQueryService {
                 ));
     }
 
-    public boolean isMemberinGroup(Long memberId, Long groupId) {
-        Optional<GroupId> optionalGroupId = memberRepository.findGroupIdById(memberId);
-        if (optionalGroupId.isEmpty() ||
-                optionalGroupId.get().groupId() == null ||
-                !optionalGroupId.get().groupId().equals(groupId)) {
+    public void checkMemberOfGroup(Long memberId, Long groupId) {
+        Long groupIdOfMember = memberRepository.findGroupIdById(memberId)
+                .map(GroupId::groupId)
+                .orElse(null);
+
+        if (groupIdOfMember == null || !groupIdOfMember.equals(groupId)) {
             throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "", "");
         }
-        return true;
     }
 }
