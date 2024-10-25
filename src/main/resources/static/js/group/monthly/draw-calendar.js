@@ -41,7 +41,7 @@ function clearDate() {
 }
 
 function makeCircle(date, writtenDiaryDays) {
-    const index = writtenDiaryDays.findIndex((day) => day.date === date);
+    const index = writtenDiaryDays.findIndex((day) => day.day === date);
     if (index !== -1) {
         return getProfileImageHtml(writtenDiaryDays[index].profileImage, date);
     }
