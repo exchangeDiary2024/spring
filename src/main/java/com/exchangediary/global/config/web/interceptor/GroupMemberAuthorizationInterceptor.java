@@ -33,10 +33,11 @@ public class GroupMemberAuthorizationInterceptor implements HandlerInterceptor {
             memberQueryService.isMemberinGroup(memberId, groupId);
             request.setAttribute("groupId", groupId);
         } catch (NotFoundException exception) {
-            if (request.getRequestURI().startsWith("/group")) {
-                Optional<Long> authorizedGroupId = memberQueryService.findGroupBelongTo(memberId);
-                response.sendRedirect("/group/" + authorizedGroupId.get());
+            if (request.getRequestURI().startsWith("/api")) {
+                throw exception;
             }
+            Optional<Long> authorizedGroupId = memberQueryService.findGroupBelongTo(memberId);
+            response.sendRedirect("/group/" + authorizedGroupId.get());
             return false;
         }
         return true;
