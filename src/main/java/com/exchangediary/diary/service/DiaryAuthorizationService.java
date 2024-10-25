@@ -13,14 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class DiaryAuthorizationService {
     private final GroupQueryService groupQueryService;
-    private final DiaryQueryService diaryQueryService;
     private final DiaryRepository diaryRepository;
 
     public boolean canWriteDiary(Long memberId, Long groupId) {
-        if (!groupQueryService.isSameWithGroupCurrentOrder(memberId)) {
+        if (!groupQueryService.isMyOrderInGroup(memberId)) {
             throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
         }
-        if (diaryQueryService.findTodayDiary(groupId).isPresent()) {
+        if (diaryRepository.existsTodayDiaryInGroup(groupId)) {
             throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
         }
         return true;

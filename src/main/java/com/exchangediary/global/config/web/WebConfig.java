@@ -2,11 +2,13 @@ package com.exchangediary.global.config.web;
 
 import com.exchangediary.diary.service.DiaryAuthorizationService;
 import com.exchangediary.global.config.web.interceptor.BelongToGroupInterceptor;
+import com.exchangediary.global.config.web.interceptor.GroupLeaderAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.GroupMemberAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.JwtAuthenticationInterceptor;
 import com.exchangediary.global.config.web.interceptor.LoginInterceptor;
 import com.exchangediary.global.config.web.interceptor.ViewDiaryAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.WriteDiaryAuthorizationInterceptor;
+import com.exchangediary.group.service.GroupLeaderService;
 import com.exchangediary.group.service.GroupMemberService;
 import com.exchangediary.group.service.GroupQueryService;
 import com.exchangediary.member.domain.MemberRepository;
@@ -24,18 +26,18 @@ public class WebConfig implements WebMvcConfigurer {
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final MemberQueryService memberQueryService;
-    private final MemberRepository memberRepository;
     private final DiaryAuthorizationService diaryAuthorizationService;
     private final GroupMemberService groupMemberService;
     private final GroupQueryService groupQueryService;
+    private final GroupLeaderService groupLeaderService;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JwtAuthenticationInterceptor(jwtService, cookieService, memberRepository))
+        registry.addInterceptor(new JwtAuthenticationInterceptor(jwtService, cookieService, memberQueryService))
                 .addPathPatterns("/group", "/diary/**", "/group/**", "/api/**")
                 .excludePathPatterns("/api/kakao/callback");
         registry.addInterceptor(new BelongToGroupInterceptor(memberQueryService))
-                .addPathPatterns("/group", "/group/*");
+                .addPathPatterns("/group", "/group/**");
         registry.addInterceptor(new LoginInterceptor(jwtService, cookieService))
                 .addPathPatterns("/login");
         registry.addInterceptor(new GroupMemberAuthorizationInterceptor(
@@ -47,5 +49,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/group/*/diary", "/api/groups/*/diaries");
         registry.addInterceptor(new ViewDiaryAuthorizationInterceptor(diaryAuthorizationService))
                 .addPathPatterns("/group/*/diary/*");
+
+        registry.addInterceptor(new GroupLeaderAuthorizationInterceptor(groupLeaderService))
+                .addPathPatterns("/api/groups/*/leader/*");
     }
 }

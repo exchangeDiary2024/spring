@@ -62,7 +62,7 @@ public class GroupQueryService {
         );
     }
 
-    public boolean isSameWithGroupCurrentOrder(Long memberId) {
-        return groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
+    public boolean isMyOrderInGroup(Long memberId) {
+        return groupRepository.isEqualsToGroupCurrentOrder(memberId);
     }
 }
