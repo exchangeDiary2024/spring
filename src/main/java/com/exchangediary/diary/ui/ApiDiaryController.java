@@ -71,7 +71,7 @@ public class ApiDiaryController {
             @PathVariable Long groupId,
             @RequestAttribute Long memberId
     ) {
-        DiaryWritableStatusResponse response = diaryQueryService.getDiaryWritableStatus(groupId, memberId);
+        DiaryWritableStatusResponse response = diaryQueryService.getMembersDiaryAuthorization(groupId, memberId);
         return ResponseEntity
                 .ok()
                 .body(response);

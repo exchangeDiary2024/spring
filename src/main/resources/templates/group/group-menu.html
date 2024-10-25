@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="menu">
+  <div class="group-menu">
+    <div class="menu">
+      <div class="menu-main">
+        <img class="background-icons" src="/images/group/menu/background-icons.svg">
+        <div class="menu-body">
+          <div class="menu-content">
+            <div class="group-members">
+              <img class="circle" src="/images/group/menu/members-circle.svg">
+              <div class="circle-center group-size">
+                <div class="group-size">
+                  <span>그룹 멤버</span>
+                  <span class="group-number"><span class="size">7</span>/7</span>
+                </div>
+                <div class="leader-btns">
+                  <div class="skip-partition">
+                    <a class="btn skip-btn" th:href="@{/api/groups/{groupId}/leader/skip-order(groupId=${group.id})}"><img src="/images/group/menu/skip.svg" /></a>
+                    <img class="partition-line" />
+                  </div>
+                  <a class="btn exit-btn" th:href="@{/api/groups/{groupId}/leader/leave(groupId=${group.id})}"><img src="/images/group/menu/exit.svg" /></a>
+                  <img class="partition-line" />
+                  <a class="btn delegation-btn" th:href="@{/api/groups/{groupId}/leader/hand-over(groupId=${group.id})}"><img src="/images/group/menu/white-crown.svg" /></a>
+                </div>
+              </div>
+            </div>
+            <div class="group-name">
+              <span>[[${group.name}]]</span>
+            </div>
+          </div>
+        </div>
+        <div class="menu-footer">
+          <div class="menu-btns">
+            <a class="btn group-leave" th:href="@{/api/groups/{groupId}/leave(groupId=${group.id})}">탈퇴하기</a>
+            <a class="btn group-code" href="#" th:data-code="${group.code}">코드 복사</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/group/group-menu.js"></script>
+  <script src="/js/group/leader.js"></script>
+</th:block>
+
+</html>

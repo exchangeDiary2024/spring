@@ -3,10 +3,10 @@ function drawBottom() {
 
     fetch(`/api/groups/${groupId}/diaries/status`)
         .then(response => response.json())
-        .then(async data => calendarBottom.innerHTML = await getCalendarBottomHtml(data));
+        .then(data => calendarBottom.innerHTML = getCalendarBottomHtml(data));
 }
 
-async function getCalendarBottomHtml(diaryStatus) {
+function getCalendarBottomHtml(diaryStatus) {
     console.log(diaryStatus);
     if (diaryStatus.viewableDiaryId != null) {
         return `<a href="/group/${groupId}/diary/${diaryStatus.viewableDiaryId}" class="bottom-font">

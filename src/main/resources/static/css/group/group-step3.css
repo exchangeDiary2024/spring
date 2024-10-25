@@ -36,7 +36,7 @@
 }
 
 a.gray {
-    pointer-events: none
+    pointer-events: none;
 }
 
 .red.gray.character-icon {

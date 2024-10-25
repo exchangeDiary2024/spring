@@ -8,7 +8,8 @@ public record GroupMonthlyResponse(
         Long id,
         String name,
         int createdYear,
-        int createdMonth
+        int createdMonth,
+        String code
 ) {
     public static GroupMonthlyResponse of(Group group) {
         return GroupMonthlyResponse.builder()
@@ -16,6 +17,7 @@ public record GroupMonthlyResponse(
                 .name(group.getName())
                 .createdYear(group.getCreatedAt().getYear())
                 .createdMonth(group.getCreatedAt().getMonthValue())
+                .code(group.getCode())
                 .build();
     }
 }

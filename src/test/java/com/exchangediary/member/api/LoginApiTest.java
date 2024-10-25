@@ -51,7 +51,9 @@ public class LoginApiTest {
                 .given().log().all()
                 .redirects().follow(false)
                 .when().get("/api/kakao/callback?code="+mockCode)
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value())
                 .extract();
 
@@ -75,7 +77,9 @@ public class LoginApiTest {
                 .given().log().all()
                 .redirects().follow(false)
                 .when().get("/api/kakao/callback?code="+mockCode)
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value())
                 .extract();
 

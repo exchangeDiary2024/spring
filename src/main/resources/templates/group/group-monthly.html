@@ -3,11 +3,27 @@
 
 <th:block layout:fragment="header">
     <title>스프링 - 달력형</title>
+
     <link rel="stylesheet" href="/css/group/monthly-page.css" type="text/css">
+    <link rel="stylesheet" href="/css/group/group-menu.css" type="text/css">
+
+    <script>
+        const groupId = [[${group.id}]];
+
+        const groupCreatedYear = [[${group.createdYear}]];
+        const groupCreatedMonth = [[${group.createdMonth}]];
+    </script>
 </th:block>
 
 <th:block layout:fragment="content">
     <div class="background" style="background-image: url('/images/group/monthly-page/background.svg');">
+        <div class="calendar-top">
+            <div class="menu-bar">
+                <a href="#" class="menu-btn">
+                    <img src="/images/monthly-page/menu-icon.svg">
+                </a>
+            </div>
+        </div>
         <div class="calendar-main">
             <div style="height: 50px;">
                 <span class="group-name">[[${group.name}]]‘s</span>
@@ -107,12 +123,11 @@
     </div>
 </th:block>
 
+<th:block layout:fragment="body">
+    <div th:replace="~{group/group-menu :: menu}"></div>
+</th:block>
+
 <th:block layout:fragment="script">
-    <script>
-        const groupId = [[${group.id}]];
-        const groupCreatedYear = [[${group.createdYear}]];
-        const groupCreatedMonth = [[${group.createdMonth}]];
-    </script>
     <script src="/js/group/monthly/draw-calendar.js"></script>
     <script src="/js/group/monthly/draw-bottom.js"></script>
     <script src="/js/group/monthly/calendar-arrow.js"></script>
