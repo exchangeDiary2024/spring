@@ -23,9 +23,8 @@ public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
     @Test
     void 방장_권한_성공_방장넘기기 () {
         Group group = createGroup();
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_LEADER, group);
+        updateSelfInfo(member, GroupRole.GROUP_LEADER, group);
         Member groupMember = createMember(group, 2, GroupRole.GROUP_MEMBER);
-        memberRepository.save(member);
 
         RestAssured
                 .given().log().all()
@@ -34,48 +33,42 @@ public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
                 .body(new GroupLeaderHandOverRequest(groupMember.getOrderInGroup() - 1))
                 .when().patch(String.format(API_PATH + "/hand-over", group.getId()))
                 .then()
-                .log().status()
-                .log().headers()
+                .log().all()
                 .statusCode(HttpStatus.OK.value());
     }
 
     @Test
     void 방장_권한_성공_순서넘기기 () {
         Group group = createGroup();
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_LEADER, group);
-        memberRepository.save(member);
+        updateSelfInfo(member, GroupRole.GROUP_LEADER, group);
 
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
                 .when().patch(String.format(API_PATH + "/skip-order", group.getId()))
                 .then()
-                .log().status()
-                .log().headers()
+                .log().all()
                 .statusCode(HttpStatus.OK.value());
     }
 
     @Test
     void 방장_권한_실패_순서넘기기 () {
         Group group = createGroup();
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
-        memberRepository.save(member);
+        updateSelfInfo(member, GroupRole.GROUP_MEMBER, group);
 
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
                 .when().patch(String.format(API_PATH + "/skip-order", group.getId()))
                 .then()
-                .log().status()
-                .log().headers()
+                .log().all()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @Test
     void 방장_권한_실패_방장넘기기 () {
         Group group = createGroup();
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
-        memberRepository.save(member);
+        updateSelfInfo(member, GroupRole.GROUP_MEMBER, group);
 
         RestAssured
                 .given().log().all()
@@ -84,8 +77,7 @@ public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
                 .body(new GroupLeaderHandOverRequest(member.getOrderInGroup() - 1))
                 .when().patch(String.format(API_PATH + "/hand-over", group.getId()))
                 .then()
-                .log().status()
-                .log().headers()
+                .log().all()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
@@ -105,4 +97,14 @@ public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
         );
     }
 
+    private Member updateSelfInfo(Member member, GroupRole role, Group group) {
+        member.updateMemberGroupInfo(
+                "api요청멤버",
+                "orange",
+                1,
+                role,
+                group);
+        memberRepository.save(member);
+        return member;
+    }
 }

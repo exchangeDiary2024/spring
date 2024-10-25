@@ -1,6 +1,5 @@
 package com.exchangediary.global.config.web.interceptor;
 
-import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.group.service.GroupLeaderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +17,6 @@ public class GroupLeaderAuthorizationInterceptor implements HandlerInterceptor {
             Object handler
     ) {
         Long memberId = (Long) request.getAttribute("memberId");
-        groupLeaderService.isGroupLeader(memberId);
-        return true;
+        return groupLeaderService.isGroupLeader(memberId);
     }
 }
