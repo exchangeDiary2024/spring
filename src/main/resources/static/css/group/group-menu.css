@@ -81,16 +81,25 @@
     transform: translate(-50%, -50%);
 }
 
-.group-members .group-size {
-    width: 45px;
-    height: 22px;
+.group-members .circle-center {
+    width: auto;
 
-    position:absolute;
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
     display: flex;
+    justify-content: center;
+
+    z-index: 1;
+}
+
+.group-members .circle-center .group-size {
+    width: 45px;
+    height: 22px;
+
+    display: none;
     flex-direction: column;
     justify-content: center;
     flex-shrink: 0;
@@ -106,6 +115,10 @@
     letter-spacing: 0.08px;
 }
 
+.circle-center.group-size .group-size {
+    display: flex;
+}
+
 .group-size .group-number {
     color: var(--kakao-logo, #000);
     font-variant-numeric: lining-nums tabular-nums;
@@ -115,6 +128,43 @@
     font-weight: 700;
     line-height: normal;
     letter-spacing: 0.08px;
+}
+
+.circle-center .leader-btns {
+    width: auto;
+    height: 28px;
+    border-radius: 20px;
+    background-color: #5A402A;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-center.leader-btns .leader-btns {
+    display: flex;
+}
+
+.leader-btns .btn {
+    margin-left: 7px;
+    margin-right: 7px;
+
+    width: 16px;
+    height: 16px;
+}
+
+.leader-btns .skip-partition {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.leader-btns.order .skip-partition {
+    display: flex;
+}
+
+.partition-line {
+    content: url("/images/group/menu/partition-line.svg");
 }
 
 .group-member {
@@ -143,8 +193,8 @@
     border: 2px solid #FC0;
 }
 
-.group-member.order.highlight .profile-image {
-    border: 2px solid #E84D59;
+.group-member.selected .profile-image {
+    border: 2px solid #5A402A;
 }
 
 .group-member .my {
@@ -242,8 +292,26 @@
 
 .btn.group-leave {
     margin-left: 20px;
+
+    color: var(--kakao-logo, #000);
+    text-align: center;
+    font-family: "SOYOMaple";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26.847px; /* 223.725% */
+    letter-spacing: -0.3px;
 }
 
 .btn.group-code {
     margin-left: 18px;
+
+    color: var(--kakao-logo, #000);
+    text-align: center;
+    font-family: "SOYOMaple";
+    font-size: 12.634px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26.847px; /* 212.5% */
+    letter-spacing: -0.316px;
 }

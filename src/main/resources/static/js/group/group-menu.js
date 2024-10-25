@@ -1,8 +1,8 @@
 const menuBtn = document.querySelector(".menu-btn");
 const groupMenu = document.querySelector(".group-menu");
 const menu = groupMenu.querySelector(".menu");
-const groupSize = menu.querySelector(".group-size .size");
 const groupMembers = menu.querySelector(".group-members");
+const groupSize = menu.querySelector(".group-size .size");
 
 menuBtn.addEventListener("click", openMenu);
 groupMenu.addEventListener("click", closeMenu);
@@ -35,6 +35,7 @@ function drawMenu(data) {
     members[data.currentWriterIndex].classList.add("order");
     if (data.selfIndex === data.leaderIndex) {
         groupMembers.classList.add("leader");
+        members.forEach(member => member.addEventListener("click", selectGroupMember));
     }
 }
 
