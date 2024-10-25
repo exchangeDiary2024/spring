@@ -151,6 +151,24 @@ public class GroupLeaveApiTest extends ApiBaseTest {
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
     }
 
+    @Test
+    public void 그룹_나가기_방장_나갈수없음() {
+        Group group = createGroup(2);
+        groupRepository.save(group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_LEADER, group);
+        Member groupMember = createMemberInGroup(group, 2);
+        memberRepository.saveAll(Arrays.asList(member, groupMember));
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .when()
+                .patch(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
     private Group createGroup(int currentOrder) {
         Group group = Group.builder()
                 .name(GROUP_NAME)
