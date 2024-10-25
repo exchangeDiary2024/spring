@@ -7,6 +7,7 @@ import com.exchangediary.diary.ui.dto.response.DiaryIdResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
+import com.exchangediary.member.domain.enums.GroupRole;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ class DiaryFindIdApiTest extends ApiBaseTest {
     void 일기_id_조회_성공() {
         Group group = createGroup();
         groupRepository.save(group);
+        updateSelf(group, 1);
         Diary diary = createDiary(group);
         diaryRepository.save(diary);
         Long diaryId = RestAssured
@@ -49,6 +51,7 @@ class DiaryFindIdApiTest extends ApiBaseTest {
     void 일기_id_조회_실패_일기_없음() {
         Group group = createGroup();
         groupRepository.save(group);
+        updateSelf(group, 1);
         RestAssured
                 .given().log().all()
                 .queryParam("year", "2024")
@@ -66,6 +69,7 @@ class DiaryFindIdApiTest extends ApiBaseTest {
     void 일기_id_조회_실패_빈_형식() {
         Group group = createGroup();
         groupRepository.save(group);
+        updateSelf(group, 1);
         RestAssured
                 .given().log().all()
                 .queryParam("year", "2024")
@@ -81,6 +85,7 @@ class DiaryFindIdApiTest extends ApiBaseTest {
     void 일기_id_조회_실패_빈_값() {
         Group group = createGroup();
         groupRepository.save(group);
+        updateSelf(group, 1);
         RestAssured
                 .given().log().all()
                 .queryParam("year", "")
@@ -97,6 +102,7 @@ class DiaryFindIdApiTest extends ApiBaseTest {
     void 일기_id_조회_실패_날짜_유효성_검사() {
         Group group = createGroup();
         groupRepository.save(group);
+        updateSelf(group, 1);
         RestAssured
                 .given().log().all()
                 .queryParam("year", "2024")
@@ -120,6 +126,11 @@ class DiaryFindIdApiTest extends ApiBaseTest {
                 .group(group)
                 .member(member)
                 .build();
+    }
+
+    private void updateSelf(Group group, int order) {
+        member.joinGroup("api요청멤버", "orange", order, GroupRole.GROUP_MEMBER, group);
+        memberRepository.save(member);
     }
 
 }

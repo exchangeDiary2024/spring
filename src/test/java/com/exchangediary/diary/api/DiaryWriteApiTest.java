@@ -98,6 +98,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
     void 일기_작성_실패_오늘작성완료() throws JsonProcessingException {
         Group group = createGroup(1);
         createDiary(group);
+        updateSelf(group, 1);
         Map<String, String> data = makeDiaryData();
 
         RestAssured

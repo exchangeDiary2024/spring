@@ -44,7 +44,9 @@ public class MemberQueryService {
 
     public boolean isMemberinGroup(Long memberId, Long groupId) {
         Optional<GroupId> optionalGroupId = memberRepository.findGroupIdById(memberId);
-        if (optionalGroupId.isEmpty() || !optionalGroupId.get().groupId().equals(groupId)) {
+        if (optionalGroupId.isEmpty() ||
+                optionalGroupId.get().groupId() == null ||
+                !optionalGroupId.get().groupId().equals(groupId)) {
             throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "", "");
         }
         return true;
