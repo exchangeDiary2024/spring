@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/base.css" type="text/css">
     <link rel="stylesheet" href="/css/character.css" type="text/css">
     <link rel="stylesheet" href="/css/notification-modal.css" type="text/css">
+    <link rel="stylesheet" href="/css/confirm-modal.css" type="text/css">
 
     <script src="/js/common/image-preloading.js"></script>
     <script src="/js/common/base.js"></script>
@@ -25,6 +26,7 @@
     </div>
 
     <div th:replace="~{common/notification-modal :: modal}"></div>
+    <div th:replace="~{common/confirm-modal :: modal}"></div>
 
     <th:block layout:fragment="body"></th:block>
 </body>
