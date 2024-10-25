@@ -37,7 +37,9 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .redirects().follow(false)
                 .when().get("/group")
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value());
     }
 
@@ -49,7 +51,9 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .cookie("token", token)
                 .redirects().follow(false)
                 .when().get("/group")
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value());
     }
 
@@ -59,7 +63,6 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", this.token)
-                .redirects().follow(false)
                 .when().get("/group")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
@@ -95,7 +98,9 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .cookie("token", this.token)
                 .redirects().follow(false)
                 .when().get("/group")
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value());
     }
 
@@ -111,7 +116,9 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .cookie("token", this.token)
                 .redirects().follow(false)
                 .when().get("/group")
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value());
 
         Optional<RefreshToken> result = refreshTokenRepository.findByMemberId(member.getId());
@@ -127,8 +134,22 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .cookie("token", this.token)
                 .redirects().follow(false)
                 .when().get("/group")
-                .then().log().all()
+                .then()
+                .log().status()
+                .log().headers()
                 .statusCode(HttpStatus.FOUND.value());
+    }
+
+    @Test
+    void API_요청_인증_실패시_401_응답() {
+        this.token = buildExpiredAccessToken();
+
+        RestAssured
+                .given().log().all()
+                .cookie("token", this.token)
+                .when().post("/api/groups")
+                .then().log().all()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     private String buildExpiredAccessToken() {
