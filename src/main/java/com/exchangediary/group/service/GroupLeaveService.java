@@ -29,9 +29,10 @@ public class GroupLeaveService {
 
         diaryRepository.deleteByMemberId(memberId);
         member.joinGroup(null, null, 0, null, null);
+        memberRepository.save(member);
         updateGroupMembersOrder(group, orderInGroup);
         updateGroupCurrentOrder(group, orderInGroup);
-        memberRepository.save(member);
+        deleteGroup(group);
     }
 
     private void updateGroupMembersOrder(Group group, int orderInGroup) {
@@ -52,5 +53,12 @@ public class GroupLeaveService {
             group.updateCurrentOrder(currentOrder, members.size() - 1);
         }
         groupRepository.save(group);
+    }
+
+    private void deleteGroup(Group group) {
+        int sizeMembersOfGroup = group.getMembers().size();
+        if (sizeMembersOfGroup - 1 == 0) {
+            groupRepository.delete(group);
+        }
     }
 }
