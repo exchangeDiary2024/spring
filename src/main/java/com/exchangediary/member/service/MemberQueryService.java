@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,14 @@ public class MemberQueryService {
     public Optional<Long> findGroupBelongTo(Long memberId) {
         return memberRepository.findGroupIdById(memberId)
                 .map(GroupId::groupId);
+    }
+
+    public LocalDate getLastViewableDiaryDate(Long memberId) {
+        return memberRepository.findLastViewableDiaryDateById(memberId)
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.MEMBER_NOT_FOUND,
+                        "",
+                        String.valueOf(memberId)
+                ));
     }
 }
