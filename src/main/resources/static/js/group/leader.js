@@ -10,6 +10,9 @@ exitBtn.addEventListener("click", clickExitBtn);
 delegationBtn.addEventListener("click", clickDelegationBtn);
 
 function selectGroupMember(event) {
+    if (selectedMember !== null) {
+        selectedMember.classList.remove("selected");
+    }
     const member = event.target.closest(".group-member");
     selectedMember = member;
     member.classList.add("selected");
