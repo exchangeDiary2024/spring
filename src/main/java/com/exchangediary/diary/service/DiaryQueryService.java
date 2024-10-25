@@ -59,7 +59,7 @@ public class DiaryQueryService {
         boolean writtenTodayDiary = false;
         Long diaryId = null;
 
-        Boolean isMyOrder = groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
+        Boolean isMyOrder = groupRepository.isEqualsToGroupCurrentOrder(memberId);
         Optional<Diary> todayDiary = findTodayDiary(groupId);
         if (todayDiary.isPresent()) {
             writtenTodayDiary = true;

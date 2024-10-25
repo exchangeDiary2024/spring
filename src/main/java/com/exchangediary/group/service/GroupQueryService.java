@@ -61,8 +61,4 @@ public class GroupQueryService {
                 currentWriter.getOrderInGroup() - 1
         );
     }
-
-    public boolean isSameWithGroupCurrentOrder(Long memberId) {
-        return groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
-    }
 }
