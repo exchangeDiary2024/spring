@@ -222,3 +222,7 @@ th,td {
 .green-icon {
     width: auto;
 }
+
+.cannot-view {
+    pointer-events: none;
+}
