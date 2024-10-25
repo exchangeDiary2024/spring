@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import java.io.IOException;
-
 @RequiredArgsConstructor
 public class GroupLeaderAuthorizationInterceptor implements HandlerInterceptor {
     private final GroupLeaderService groupLeaderService;
@@ -18,13 +16,9 @@ public class GroupLeaderAuthorizationInterceptor implements HandlerInterceptor {
             HttpServletRequest request,
             HttpServletResponse response,
             Object handler
-    ) throws IOException {
+    ) {
         Long memberId = (Long) request.getAttribute("memberId");
-        try {
-            groupLeaderService.isGroupLeader(memberId);
-        } catch (ForbiddenException e) {
-            return false;
-        }
+        groupLeaderService.isGroupLeader(memberId);
         return true;
     }
 }

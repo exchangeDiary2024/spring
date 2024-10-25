@@ -40,6 +40,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/group/*/diary", "/api/groups/*/diaries");
 
         registry.addInterceptor(new GroupLeaderAuthorizationInterceptor(groupLeaderService))
-                .addPathPatterns("/api/groups/*/leader");
+                .addPathPatterns("/api/groups/*/leader/*");
     }
 }
