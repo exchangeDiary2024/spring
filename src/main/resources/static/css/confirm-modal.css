@@ -8,6 +8,8 @@
     overflow: hidden;
     background: rgba(118, 118, 118, 0.70);
     backdrop-filter: blur(2px);
+
+    z-index: 10;
 }
 
 .confirm-modal .modal-popup {

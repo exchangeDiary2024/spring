@@ -10,9 +10,6 @@ const confirm_images = [
 
 preLoadImgage(confirm_images);
 
-openConfirmModal("TEST", "TEST")
-.then(result => console.log(result))
-
 function openConfirmModal(message, warning_message=null) {
     confirm_modal_text.innerText = message;
     if (warning_message !== null) {

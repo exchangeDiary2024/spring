@@ -17,12 +17,12 @@
                 </div>
                 <div class="leader-btns">
                   <div class="skip-partition">
-                    <a class="btn skip-btn" href="#"><img src="/images/group/menu/skip.svg" /></a>
+                    <a class="btn skip-btn" th:href="@{/api/groups/{groupId}/leader/skip-order(groupId=${group.id})}"><img src="/images/group/menu/skip.svg" /></a>
                     <img class="partition-line" />
                   </div>
-                  <a class="btn exit-btn" href="#"><img src="/images/group/menu/exit.svg" /></a>
+                  <a class="btn exit-btn" th:href="@{/api/groups/{groupId}/leader/leave(groupId=${group.id})}"><img src="/images/group/menu/exit.svg" /></a>
                   <img class="partition-line" />
-                  <a class="btn delegation-btn" href="#"><img src="/images/group/menu/white-crown.svg" /></a>
+                  <a class="btn delegation-btn" th:href="@{/api/groups/{groupId}/leader/hand-over(groupId=${group.id})}"><img src="/images/group/menu/white-crown.svg" /></a>
                 </div>
               </div>
             </div>
@@ -33,8 +33,8 @@
         </div>
         <div class="menu-footer">
           <div class="menu-btns">
-            <a class="btn group-leave" href="#">탈퇴하기</a>
-            <a class="btn group-code" href="#">코드 복사</a>
+            <a class="btn group-leave" th:href="@{/api/groups/{groupId}/leave(groupId=${group.id})}">탈퇴하기</a>
+            <a class="btn group-code" href="#" th:data-code="${group.id}">코드 복사</a>
           </div>
         </div>
       </div>
