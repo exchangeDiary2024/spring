@@ -27,7 +27,7 @@ public class GroupLeaderService {
     public void handOverGroupLeader(Long groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
         Member currentLeader = groupMemberService.findSelfInGroup(group, memberId);
-        Member newLeader = findGroupMemberByIndex(group, request.nextLeaderIndex());
+        Member newLeader = groupMemberService.findMemberByNickname(group, request.nickname());
 
         currentLeader.changeGroupRole(GroupRole.GROUP_MEMBER);
         newLeader.changeGroupRole(GroupRole.GROUP_LEADER);
@@ -38,18 +38,6 @@ public class GroupLeaderService {
         groupValidationService.checkSkipOrderAuthority(group);
         group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
         group.updateLastSkipOrderDate();
-    }
-
-    private Member findGroupMemberByIndex(Group group, int index) {
-        try {
-            return group.getMembers().get(index);
-        } catch (RuntimeException exception) {
-            throw new NotFoundException(
-                    ErrorCode.MEMBER_NOT_FOUND,
-                    "",
-                    String.valueOf(index)
-            );
-        }
     }
 
     public void kickOutMember(Long groupId, GroupKickOutRequest request) {
