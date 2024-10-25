@@ -11,7 +11,6 @@ import com.exchangediary.global.config.web.interceptor.WriteDiaryAuthorizationIn
 import com.exchangediary.group.service.GroupLeaderService;
 import com.exchangediary.group.service.GroupMemberService;
 import com.exchangediary.group.service.GroupQueryService;
-import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
 import com.exchangediary.member.service.MemberQueryService;
