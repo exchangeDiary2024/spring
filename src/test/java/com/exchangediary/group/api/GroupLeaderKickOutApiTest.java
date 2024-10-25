@@ -25,10 +25,10 @@ public class GroupLeaderKickOutApiTest extends ApiBaseTest {
     GroupRepository groupRepository;
 
     @Test
-    @DisplayName("중간 사람 강퇴, 그룹 현재 순서 나간 사람보다 후")
+    @DisplayName("중간 사람 강퇴 성공, 그룹 현재 순서 나간 사람보다 후")
     public void 그룹_강퇴() {
         Group group = createGroup(3);
-        member.updateMemberGroupInfo("api요청멤버", "orange", 1, GroupRole.GROUP_LEADER, group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_LEADER, group);
         Member kickOutMember = createMemberInGroup(group,2, "하니");
         Member groupMember = createMemberInGroup(group,3, "민지");
         memberRepository.saveAll(Arrays.asList(member, kickOutMember, groupMember));
@@ -53,6 +53,24 @@ public class GroupLeaderKickOutApiTest extends ApiBaseTest {
         assertThat(updatedKickOutMember.getOrderInGroup()).isEqualTo(0);
         assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(2);
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("강퇴 실패, 요청 닉네임에 해당하는 멤버가 그룹에 없을 경우")
+    public void 그룹_강퇴_실패_() {
+        Group group = createGroup(3);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_LEADER, group);
+        memberRepository.save(member);
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .body(new GroupKickOutRequest("하니"))
+                .when()
+                .patch(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     private Group createGroup(int currentOrder) {

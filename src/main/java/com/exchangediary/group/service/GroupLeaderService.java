@@ -1,11 +1,8 @@
 package com.exchangediary.group.service;
 
-import com.exchangediary.global.exception.ErrorCode;
-import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.ui.dto.request.GroupKickOutRequest;
 import com.exchangediary.group.ui.dto.request.GroupLeaderHandOverRequest;
-import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.enums.GroupRole;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +16,6 @@ import java.util.Optional;
 @Transactional
 public class GroupLeaderService {
     private final GroupQueryService groupQueryService;
-    private final MemberRepository memberRepository;
     private final GroupLeaveService groupLeaveService;
     private final GroupMemberService groupMemberService;
     private final GroupValidationService groupValidationService;
@@ -41,7 +37,8 @@ public class GroupLeaderService {
     }
 
     public void kickOutMember(Long groupId, GroupKickOutRequest request) {
-        Optional<Member> member = memberRepository.findByNickname(request.nickname());
-        groupLeaveService.leaveGroup(groupId, member.get().getId());
+        Group group = groupQueryService.findGroup(groupId);
+        Member kickMember = groupMemberService.findMemberByNickname(group, request.nickname());
+        groupLeaveService.leaveGroup(groupId, kickMember.getId());
     }
 }
