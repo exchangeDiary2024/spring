@@ -39,6 +39,9 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             checkMemberExists(memberId);
             request.setAttribute("memberId", memberId);
         } catch (UnauthorizedException exception) {
+            if (request.getRequestURI().contains("/api")) {
+                throw exception;
+            }
             response.sendRedirect(request.getContextPath()+ "/");
             return false;
         }
