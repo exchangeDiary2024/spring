@@ -131,6 +131,18 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .statusCode(HttpStatus.FOUND.value());
     }
 
+    @Test
+    void API_요청_인증_실패시_401_응답() {
+        this.token = buildExpiredAccessToken();
+
+        RestAssured
+                .given().log().all()
+                .cookie("token", this.token)
+                .when().post("/api/groups")
+                .then().log().all()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+
     private String buildExpiredAccessToken() {
         Date now = new Date(System.currentTimeMillis());
         Date expiration = new Date(now.getTime() - 1000);
