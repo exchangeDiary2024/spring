@@ -17,8 +17,6 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class GroupMemberAuthorizationInterceptor implements HandlerInterceptor {
-    private final GroupMemberService groupMemberService;
-    private final GroupQueryService groupQueryService;
     private final MemberQueryService memberQueryService;
 
     @Override
@@ -29,18 +27,15 @@ public class GroupMemberAuthorizationInterceptor implements HandlerInterceptor {
     ) throws IOException {
         Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Long groupId = Long.valueOf(String.valueOf(pathVariables.get("groupId")));
-        Group group = groupQueryService.findGroup(groupId);
         Long memberId = (Long) request.getAttribute("memberId");
 
         try {
-            groupMemberService.findSelfInGroup(group, memberId);
+            memberQueryService.isMemberinGroup(memberId, groupId);
             request.setAttribute("groupId", groupId);
         } catch (NotFoundException exception) {
             if (request.getRequestURI().startsWith("/group")) {
                 Optional<Long> authorizedGroupId = memberQueryService.findGroupBelongTo(memberId);
-                String updatedUri = request.getRequestURI()
-                        .replace("/group/" + groupId, "/group/" + authorizedGroupId);
-                response.sendRedirect(updatedUri);
+                response.sendRedirect("/group/" + authorizedGroupId.get());
             }
             return false;
         }
