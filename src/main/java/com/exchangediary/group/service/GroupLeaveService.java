@@ -1,10 +1,13 @@
 package com.exchangediary.group.service;
 
 import com.exchangediary.diary.domain.DiaryRepository;
+import com.exchangediary.global.exception.ErrorCode;
+import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import com.exchangediary.member.service.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,7 @@ public class GroupLeaveService {
         Group group = groupQueryService.findGroup(groupId);
         int orderInGroup = member.getOrderInGroup();
 
+        checkGroupLeaderLeave(member);
         diaryRepository.deleteByMemberId(memberId);
         member.joinGroup(null, null, 0, null, null);
         memberRepository.save(member);
@@ -59,6 +63,12 @@ public class GroupLeaveService {
         int sizeMembersOfGroup = group.getMembers().size();
         if (sizeMembersOfGroup - 1 == 0) {
             groupRepository.delete(group);
+        }
+    }
+
+    private void checkGroupLeaderLeave(Member member) {
+        if (member.getGroupRole() == GroupRole.GROUP_LEADER) {
+            throw new ForbiddenException(ErrorCode.GROUP_LEADER_LEAVE_FORBIDDEN, "", "");
         }
     }
 }
