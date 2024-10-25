@@ -16,4 +16,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<GroupId> findGroupIdById(Long memberId);
     @Query("SELECT m.lastViewableDiaryDate FROM Member m WHERE m.id = :memberId")
     Optional<LocalDate> findLastViewableDiaryDateById(Long memberId);
+    @Query("SELECT COUNT(g.id) > 0 FROM Group g JOIN g.members m WHERE m.id = :memberId AND m.groupRole = 'GROUP_LEADER'")
+    boolean isGroupLeader(Long memberId);
 }
