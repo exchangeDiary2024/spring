@@ -26,9 +26,7 @@ public class WriteDiaryAuthorizationInterceptor implements HandlerInterceptor {
         }
 
         Long memberId = (Long) request.getAttribute("memberId");
-//        Long groupId = (Long) request.getAttribute("groupId"); todo: 그룹 인가 구현 후 주석 제거 & 아래 코드 제거
-        Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-        Long groupId = Long.valueOf(String.valueOf(pathVariables.get("groupId")));
+        Long groupId = (Long) request.getAttribute("groupId");
 
         try {
             return diaryAuthorizationService.canWriteDiary(memberId, groupId);
