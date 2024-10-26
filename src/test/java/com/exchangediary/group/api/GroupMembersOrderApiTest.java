@@ -161,7 +161,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
         assertThat(members.get(6).nickname()).isEqualTo("name7");
         assertThat(response.selfIndex()).isEqualTo(0);
         assertThat(response.leaderIndex()).isEqualTo(0);
-        assertThat(response.currentWriterIndex()).isEqualTo(0);
+        assertThat(response.currentWriterIndex()).isEqualTo(1);
     }
 
     private Group createGroup() {

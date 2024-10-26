@@ -119,7 +119,7 @@ async function groupLeave(event) {
              if (response.status === 200) {
                  openNotificationModal("success", ["탈퇴를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
              } else {
-                 openNotificationModal("error", ["오류가 발생했습니다."], 2000);
+                 openNotificationModal("error", ["방장은 탈퇴할 수 없습니다.", "방장 권한을 넘기고 탈퇴해주세요."], 2000);
              }
         })
     }

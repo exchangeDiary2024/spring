@@ -1,14 +1,5 @@
 @charset "utf-8";
 
-.page-bar {
-    width: calc(100vw * 0.624);
-    height: calc(100vh * 0.067);
-    flex-shrink: 0;
-    position: relative;
-    top: -9px;
-    margin-bottom: 17px;
-}
-
 .mood {
     width: 24px;
     height: 24px;
@@ -20,12 +11,137 @@
     right: 20px;
 }
 
-.mood-icon {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
+.note {
+    position: relative;
+    top: 23px;
+    width:375px;
+    height: 514px;
+
+    background-image: url('/images/group/create-join-page/note.svg');
 }
 
+.note-header {
+    width: 375px;
+    height: 45px;
+}
+
+.note-body {
+    width: 375px;
+    height: 450px;
+}
+
+.page-bar {
+    clear: both;
+
+    width: 234px;
+    height: 45px;
+    flex-shrink: 0;
+    position: relative;
+    top: -24px;
+}
+
+.page-icon {
+    width: 22px;
+    height: 44px;
+
+    box-sizing: border-box;
+    float:left;
+
+    position: relative;
+
+    background: #FFFFFF;
+    border: 1px solid #5A402A;
+    border-radius: 20px;
+}
+
+.page-icon.fill {
+    background: #5A402A;
+}
+
+.page-icon.page1 {
+    left: 0;
+}
+
+.page-icon.page2 {
+    left: 31px;
+}
+
+.page-icon.page3 {
+    left: 62px;
+}
+
+.page-icon.page4 {
+    left: 93px;
+}
+
+.page-icon.page5 {
+    left: 124px;
+}
+
+.title {
+    width: 375px;
+    height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.character {
+    width: 20px;
+    height: 20px;
+
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.character-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.character-icon.green-icon {
+    width: auto;
+}
+
+.character-icon.blue-icon {
+    height: auto;
+    /*margin-bottom: 13px;*/
+}
+
+.title-font {
+    float: left;
+    margin: 0 8px 3px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--kakao-logo, #000);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-feature-settings: 'dlig' on;
+    font-family: "SOYOMapleBold";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px; /* 70% */
+    letter-spacing: 0.2px;
+}
+
+.image {
+    width: 215px;
+    height: 215px;
+    flex-shrink: 0;
+
+    position: relative;
+    top: 14px;
+}
+
+.diary-content-area {
+    position: relative;
+    top: 10px;
+}
 
 .no-image {
     display: none;

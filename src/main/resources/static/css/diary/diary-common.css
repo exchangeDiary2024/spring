@@ -36,10 +36,10 @@ a {
     height: 38px; 
     flex-shrink: 0; 
     border-radius: 100px; 
-    border: 0.5px solid #767676; 
+    border: 1px solid #767676;
     float: left; 
     margin: 7px 10px 7px 10px; 
-    position: relative; 
+    position: relative;
     left: 9px;
 }
 
@@ -96,15 +96,14 @@ a {
     line-height: 16.65px; /* 100% */
 }
 
-.image {
+.mood-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.image-size {
     width: 215px;
     height: 215px;
     flex-shrink: 0;
-
-    position: relative;
-}
-
-.diary-content-area {
-    position: relative; 
-    top: 22px;
 }

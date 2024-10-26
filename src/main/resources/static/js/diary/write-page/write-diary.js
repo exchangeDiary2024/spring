@@ -11,6 +11,7 @@ function addEventToTextArea() {
     const textArea = document.querySelector("textarea");
 
     textArea.addEventListener("click", closeModal);
+    textArea.addEventListener("focusout", () => window.scrollTo({left: 0, top: 0}));
 }
 
 function addEventToWriteBtn() {

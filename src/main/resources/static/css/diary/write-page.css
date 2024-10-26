@@ -10,6 +10,14 @@
     left: 140px;
 }
 
+.upload-photo {
+    width: 215px;
+    height: 215px;
+    flex-shrink: 0;
+
+    position: relative;
+}
+
 .photo-btn {
     border-radius: 20px;
     border: 1px dashed #767676;
@@ -36,7 +44,6 @@
     flex-shrink: 0;
 }
 
-
 .bar-write {
     width: 38px; 
     height: 38px;
@@ -54,7 +61,7 @@
     height: 38px;
     flex-shrink: 0;
     border-radius: 50%;
-    border: 0.5px solid #767676;
+    border: 1px solid #767676;
 
     display: flex;
     justify-content: center;
@@ -72,4 +79,9 @@
     font-weight: 600;
     line-height: 34px;
     letter-spacing: -0.4px;
+}
+
+.diary-content-area {
+    position: relative;
+    top: 24px;
 }

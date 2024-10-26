@@ -30,6 +30,6 @@ public class DiaryController {
         DiaryResponse diary = diaryQueryService.viewDiary(diaryId);
         model.addAttribute("groupId", groupId);
         model.addAttribute("diary", diary);
-        return "diary/view-diary";
+        return "diary/view-page";
     }
 }

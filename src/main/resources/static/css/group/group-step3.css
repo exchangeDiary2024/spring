@@ -28,6 +28,8 @@
 
 .character-icon.green-icon {
     width: auto;
+    position: absolute;
+    margin-left: 3px;
 }
 
 .character-icon.blue-icon {
