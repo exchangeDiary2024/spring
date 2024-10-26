@@ -1,6 +1,5 @@
 package com.exchangediary.group.service;
 
-import com.exchangediary.diary.domain.DiaryRepository;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.domain.entity.Group;
@@ -14,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class GroupMemberService {
-    private final DiaryRepository diaryRepository;
-
     public Member findSelfInGroup(Group group, Long memberId) {
         return group.getMembers().stream()
                 .filter(member -> memberId.equals(member.getId()))
@@ -36,13 +33,6 @@ public class GroupMemberService {
                         "",
                         String.valueOf(group.getId())
                 ));
-    }
-
-    public Member findMemberHasWriteAuthority(Group group) {
-        if (diaryRepository.existsTodayDiaryInGroup(group.getId())) {
-            return group.getMembers().get(group.getCurrentOrder() - 2);
-        }
-        return group.getMembers().get(group.getCurrentOrder() - 1);
     }
 
     public Member findMemberByNickname(Group group, String nickname) {
