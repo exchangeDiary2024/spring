@@ -180,7 +180,7 @@
     height: 40px;
     box-sizing: border-box;
     border-radius: 50px;
-    border: 0.5px solid #767676;
+    border: 1px solid #767676;
     background-color: #FFF;
 
     display: flex;
