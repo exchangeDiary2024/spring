@@ -16,7 +16,7 @@
     width: 326px;
     height: 185px;
     position: absolute;
-    top: 50%;
+    top: calc(100vw * 1.778 / 2);
     left: 50%;
     transform: translate(-50%, -50%);
     background-image: url('/images/common/confirm-modal/background.svg');

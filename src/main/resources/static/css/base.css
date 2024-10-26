@@ -21,10 +21,8 @@ html, body {
 
 .main-screen {
     position:absolute; 
-    bottom:0; 
-    width: 100%; 
-    height: calc(100vw * 1.778); 
-    bottom: 0;
+    width: 100%;
+    height: calc(100vw * 1.778);
 }
 
 .background {
