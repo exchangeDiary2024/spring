@@ -1,9 +1,6 @@
 package com.exchangediary.global.config.web.interceptor;
 
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
-import com.exchangediary.group.domain.entity.Group;
-import com.exchangediary.group.service.GroupMemberService;
-import com.exchangediary.group.service.GroupQueryService;
 import com.exchangediary.member.service.MemberQueryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

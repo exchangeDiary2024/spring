@@ -1,7 +1,6 @@
 package com.exchangediary.member.service;
 
 import com.exchangediary.global.exception.ErrorCode;
-import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.member.domain.dto.GroupId;
 import com.exchangediary.member.domain.MemberRepository;
@@ -47,7 +46,7 @@ public class MemberQueryService {
                 .map(GroupId::groupId)
                 .orElse(null);
 
-        if (groupIdOfMember == null || !groupIdOfMember.equals(groupId)) {
+        if (!groupId.equals(groupIdOfMember)) {
             throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "", "");
         }
     }
