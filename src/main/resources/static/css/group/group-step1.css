@@ -42,19 +42,19 @@
 }
 
 .join .group-icon {
-    content: url("/images/group/group_join.svg");
+    content: url("/images/group/create-join-page/group_join.svg");
 }
 
 .join.selected .group-icon {
-    content: url("/images/group/group_join_white.svg");
+    content: url("/images/group/create-join-page/group_join_white.svg");
 }
 
 .create .group-icon {
-    content: url("/images/group/group_create.svg");
+    content: url("/images/group/create-join-page/group_create.svg");
 }
 
 .create.selected .group-icon {
-    content: url("/images/group/group_create_white.svg");
+    content: url("/images/group/create-join-page/group_create_white.svg");
 }
 
 .text {
