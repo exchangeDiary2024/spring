@@ -8,14 +8,14 @@
 </th:block>
 
 <th:block layout:fragment="content">
-    <div class="background" style="background-image: url('/images/group/background.svg');">
+    <div class="background" style="background-image: url('/images/group/create-join-page/background.svg');">
         <div class="top-bar">
             <div class="bar-back">
                 <a th:href="@{/group/{groupId}(groupId=${groupId})}" class="back-btn"><img class="bar-icon" src="/images/common/back_icon.svg"/></a>
             </div>
             <div class="bar-main">
                 <span class="date">[[${diary.createdAt}]]</span>
-                <div class="mood"><img th:src="${diary.moodLocation}"></div>
+                <div class="mood"><img class="mood-icon" th:src="${diary.moodLocation}"></div>
             </div>
         </div>
         <div class="content">

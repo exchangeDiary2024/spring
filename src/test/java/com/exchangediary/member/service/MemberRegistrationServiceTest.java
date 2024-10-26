@@ -1,6 +1,7 @@
 package com.exchangediary.member.service;
 
 import com.exchangediary.member.domain.MemberRepository;
+import com.exchangediary.member.domain.RefreshTokenRepository;
 import com.exchangediary.member.domain.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,8 @@ public class MemberRegistrationServiceTest {
     private MemberRepository memberRepository;
     @Mock
     private JwtService jwtService;
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Test
     void 새로운_회원_생성() {

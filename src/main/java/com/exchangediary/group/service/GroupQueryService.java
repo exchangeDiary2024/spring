@@ -53,16 +53,15 @@ public class GroupQueryService {
         Group group = findGroup(groupId);
         Member self = groupMemberService.findSelfInGroup(group, memberId);
         Member leader = groupMemberService.findGroupLeader(group);
-        Member currentWriter = groupMemberService.findMemberHasWriteAuthority(group);
         return GroupMembersResponse.of(
                 group.getMembers(),
                 self.getOrderInGroup() - 1,
                 leader.getOrderInGroup() - 1,
-                currentWriter.getOrderInGroup() - 1
+                group.getCurrentOrder() - 1
         );
     }
 
-    public boolean isSameWithGroupCurrentOrder(Long memberId) {
-        return groupRepository.findGroupIdCurrentOrderEqualsMemberOrder(memberId).isPresent();
+    public boolean isMyOrderInGroup(Long memberId) {
+        return groupRepository.isEqualsToGroupCurrentOrder(memberId);
     }
 }

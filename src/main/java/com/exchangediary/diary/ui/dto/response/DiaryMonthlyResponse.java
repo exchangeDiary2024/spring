@@ -3,35 +3,19 @@ package com.exchangediary.diary.ui.dto.response;
 import com.exchangediary.diary.domain.entity.Diary;
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
 public record DiaryMonthlyResponse(
-        int year,
-        int month,
-        List<DiaryInfo> days
+        List<DiaryDayResponse> days
 ) {
-    public static DiaryMonthlyResponse of(int year, int month, List<Diary> diaries) {
-        List<DiaryInfo> diaryInfos = diaries.stream()
-                .map(DiaryInfo::of)
+    public static DiaryMonthlyResponse of(List<Diary> diaries, LocalDate lastViewableDiaryDate) {
+        List<DiaryDayResponse> days = diaries.stream()
+                .map(diary -> DiaryDayResponse.of(diary, lastViewableDiaryDate))
                 .toList();
         return DiaryMonthlyResponse.builder()
-                .year(year)
-                .month(month)
-                .days(diaryInfos)
+                .days(days)
                 .build();
-    }
-
-    @Builder
-    private record DiaryInfo(
-            int date,
-            String profileImage
-    ) {
-        public static DiaryInfo of(Diary diary) {
-            return DiaryInfo.builder()
-                    .date(diary.getCreatedAt().getDayOfMonth())
-                    .profileImage(diary.getMember().getProfileImage())
-                    .build();
-        }
     }
 }

@@ -32,6 +32,7 @@ async function drawDateOfCalendar() {
             column++;
         }
     }
+    changeGrayProfile(writtenDiaryDays);
     addBorderToday();
     addEvents();
 }
@@ -41,7 +42,7 @@ function clearDate() {
 }
 
 function makeCircle(date, writtenDiaryDays) {
-    const index = writtenDiaryDays.findIndex((day) => day.date === date);
+    const index = writtenDiaryDays.findIndex((day) => day.day === date);
     if (index !== -1) {
         return getProfileImageHtml(writtenDiaryDays[index].profileImage, date);
     }
@@ -72,6 +73,27 @@ function isToday(date) {
     return today.getDate() === date;
 }
 
+function changeGrayProfile(days) {
+    days.forEach(day => {
+       if (!day.canView) {
+           const dayBtn = document.querySelector(`.day${day.day}`);
+
+           dayBtn.classList.add("cannot-view");
+           dayBtn.children[0].classList.add("gray");
+       }
+    });
+}
+
+function addBorderToday() {
+    if (isToday(today.getDate())) {
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay() - 1;
+        const todayDate = today.getDate();
+        const column = Math.floor((todayDate + firstDay) / 7);
+        const row = (todayDate + firstDay) % 7;
+        trs[column].children[row].querySelector("a").classList.add("today");
+    }
+}
+
 function addEvents() {
     const diaryDays = document.querySelectorAll("a.written");
     Array.from(diaryDays).forEach( date => {
@@ -87,16 +109,6 @@ function showDiary(event) {
     fetch(`${url}?year=${year.innerText}&month=${month.innerText}&day=${day}`)
         .then(response => response.json())
         .then(data => window.location.href = `/group/${groupId}/diary/${data.diaryId}`);
-}
-
-function addBorderToday() {
-    if (isToday(today.getDate())) {
-        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay() - 1;
-        const todayDate = today.getDate();
-        const column = Math.floor((todayDate + firstDay) / 7);
-        const row = (todayDate + firstDay) % 7;
-        trs[column].children[row].querySelector("a").classList.add("today");
-    }
 }
 
 init();

@@ -1,12 +1,23 @@
 @charset "utf-8";
 
+.mood {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+
+    float: right;
+    position: relative;
+    top: 7px;
+    right: 20px;
+}
+
 .note {
     position: relative;
     top: 23px;
     width:375px;
     height: 514px;
 
-    background-image: url('/images/group/note.svg');
+    background-image: url('/images/group/create-join-page/note.svg');
 }
 
 .note-header {
@@ -130,4 +141,8 @@
 .diary-content-area {
     position: relative;
     top: 10px;
+}
+
+.no-image {
+    display: none;
 }

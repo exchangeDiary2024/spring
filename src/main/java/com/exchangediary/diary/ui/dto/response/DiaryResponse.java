@@ -16,13 +16,13 @@ public record DiaryResponse(
         byte[] uploadImage,
         DiaryMemberResponse member
 ) {
-    public static DiaryResponse from(Diary diary) {
+    public static DiaryResponse of(Diary diary, UploadImage uploadImage) {
         return DiaryResponse.builder()
                 .diaryId(diary.getId())
                 .createdAt(diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                 .content(diary.getContent())
                 .moodLocation(diary.getMoodLocation())
-                .uploadImage(getUploadImage(diary.getUploadImage()))
+                .uploadImage(getUploadImage(uploadImage))
                 .member(DiaryMemberResponse.from(diary.getMember()))
                 .build();
     }

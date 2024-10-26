@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 td {
     width: 26px;
     height: 26px;
@@ -38,10 +40,6 @@ td {
     font-weight: 400;
     line-height: 34px; /* 170% */
     letter-spacing: 0.2px;
-}
-
-.emojies {
-    display: none;
 }
 
 .modal .modal-title {

@@ -58,9 +58,10 @@ public class ApiDiaryController {
     public ResponseEntity<DiaryMonthlyResponse> viewMonthlyDiary(
             @RequestParam int year,
             @RequestParam int month,
-            @PathVariable Long groupId
+            @PathVariable Long groupId,
+            @RequestAttribute Long memberId
     ) {
-        DiaryMonthlyResponse diaryMonthlyResponse = diaryQueryService.viewMonthlyDiary(year, month, groupId);
+        DiaryMonthlyResponse diaryMonthlyResponse = diaryQueryService.viewMonthlyDiary(year, month, groupId, memberId);
         return ResponseEntity
                 .ok()
                 .body(diaryMonthlyResponse);
@@ -71,7 +72,7 @@ public class ApiDiaryController {
             @PathVariable Long groupId,
             @RequestAttribute Long memberId
     ) {
-        DiaryWritableStatusResponse response = diaryQueryService.getDiaryWritableStatus(groupId, memberId);
+        DiaryWritableStatusResponse response = diaryQueryService.getMembersDiaryAuthorization(groupId, memberId);
         return ResponseEntity
                 .ok()
                 .body(response);

@@ -1,6 +1,7 @@
 package com.exchangediary.member.service;
 
 import com.exchangediary.member.domain.MemberRepository;
+import com.exchangediary.member.domain.RefreshTokenRepository;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.entity.RefreshToken;
 import com.exchangediary.member.ui.dto.response.MemberIdResponse;
@@ -14,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberRegistrationService {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public MemberIdResponse getOrCreateMember(Long kakaoId) {
         Member member = memberRepository.findBykakaoId(kakaoId)
                 .orElseGet(() -> signUp(kakaoId));
-        RefreshToken refreshToken = issueRefreshToken(member);
-        member.updateRefreshToken(refreshToken);
+        issueRefreshToken(member);
         return MemberIdResponse.from(member.getId());
     }
 
@@ -28,12 +29,17 @@ public class MemberRegistrationService {
         return memberRepository.save(newMember);
     }
 
-    private RefreshToken issueRefreshToken(Member member) {
-        if (member.getRefreshToken() != null) {
-            RefreshToken refreshToken = member.getRefreshToken();
-            refreshToken.reissueToken(jwtService.generateRefreshToken());
-            return refreshToken;
-        }
-        return RefreshToken.of(jwtService.generateRefreshToken(), member);
+    private void issueRefreshToken(Member member) {
+        refreshTokenRepository.findByMemberId(member.getId())
+                .ifPresentOrElse(
+                        refreshToken -> {
+                            refreshToken.reissueToken(jwtService.generateRefreshToken());
+                            refreshTokenRepository.save(refreshToken);
+                        },
+                        () -> {
+                            RefreshToken refreshToken = RefreshToken.of(jwtService.generateRefreshToken(), member);
+                            refreshTokenRepository.save(refreshToken);
+                        }
+                );
     }
 }
