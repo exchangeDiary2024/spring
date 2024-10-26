@@ -11,7 +11,7 @@ td {
     display: none;
     position: fixed;
     left: 0;
-    bottom: 24px;
+    top: calc(100vw * 1.778 - 305px);
     width: 100%;
     height: 265px;
     transition: transform 0.3s ease-out;

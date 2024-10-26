@@ -36,10 +36,10 @@ a {
     height: 38px; 
     flex-shrink: 0; 
     border-radius: 100px; 
-    border: 0.5px solid #767676; 
+    border: 1px solid #767676;
     float: left; 
     margin: 7px 10px 7px 10px; 
-    position: relative; 
+    position: relative;
     left: 9px;
 }
 
