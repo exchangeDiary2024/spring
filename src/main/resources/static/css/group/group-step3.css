@@ -28,6 +28,7 @@
 
 .character-icon.green-icon {
     width: auto;
+    position: absolute;
 }
 
 .character-icon.blue-icon {
