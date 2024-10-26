@@ -40,4 +40,14 @@ public class MemberQueryService {
                         String.valueOf(memberId)
                 ));
     }
+
+    public void checkMemberOfGroup(Long memberId, Long groupId) {
+        Long groupIdOfMember = memberRepository.findGroupIdById(memberId)
+                .map(GroupId::groupId)
+                .orElse(null);
+
+        if (!groupId.equals(groupIdOfMember)) {
+            throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "", "");
+        }
+    }
 }

@@ -16,7 +16,7 @@
     width: 326px;
     height: 185px;
     position: absolute;
-    top: 50%;
+    top: calc(100vw * 1.778 / 2);
     left: 50%;
     transform: translate(-50%, -50%);
     background-image: url('/images/common/confirm-modal/background.svg');
@@ -102,7 +102,7 @@
     width: 114px;
     height: 38px;
     border-radius: 20px;
-    border: 0.5px solid var(--kakao-logo, #000);
+    border: 1px solid var(--kakao-logo, #000);
     background-color: #FFF;
     margin-right: 15px;
 
@@ -127,7 +127,7 @@
     height: 38px;
     background-color: #000000;
     border-radius: 20px;
-    border: 0.5px solid var(--kakao-logo, #000);
+    border: 1px solid var(--kakao-logo, #000);
     margin-left: 15px;
 
     display: flex;

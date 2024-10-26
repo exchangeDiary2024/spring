@@ -1,6 +1,5 @@
 package com.exchangediary.group.service;
 
-import com.exchangediary.diary.domain.DiaryRepository;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.domain.entity.Group;
@@ -14,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class GroupMemberService {
-    private final DiaryRepository diaryRepository;
-
     public Member findSelfInGroup(Group group, Long memberId) {
         return group.getMembers().stream()
                 .filter(member -> memberId.equals(member.getId()))
@@ -38,13 +35,6 @@ public class GroupMemberService {
                 ));
     }
 
-    public Member findMemberHasWriteAuthority(Group group) {
-        if (diaryRepository.existsTodayDiaryInGroup(group.getId())) {
-            return group.getMembers().get(group.getCurrentOrder() - 2);
-        }
-        return group.getMembers().get(group.getCurrentOrder() - 1);
-    }
-
     public Member findMemberByNickname(Group group, String nickname) {
         return group.getMembers().stream()
                 .filter(member -> member.getNickname().equals(nickname))
@@ -54,6 +44,16 @@ public class GroupMemberService {
                         "",
                         nickname
                 ));
+    }
 
+    public Member findCurrentOrderMember(Group group) {
+        return group.getMembers().stream()
+                .filter(member -> group.getCurrentOrder().equals(member.getOrderInGroup()))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.MEMBER_NOT_FOUND,
+                        "",
+                        String.valueOf(group.getCurrentOrder())
+                ));
     }
 }

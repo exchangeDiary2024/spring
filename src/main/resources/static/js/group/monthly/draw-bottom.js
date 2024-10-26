@@ -3,11 +3,17 @@ function drawBottom() {
 
     fetch(`/api/groups/${groupId}/diaries/status`)
         .then(response => response.json())
-        .then(data => calendarBottom.innerHTML = getCalendarBottomHtml(data));
+        .then(data => {
+            calendarBottom.innerHTML = getCalendarBottomHtml(data);
+
+            if (!data.isMyOrder && data.viewableDiaryId == null) {
+                const today = document.querySelector(".today");
+                today.classList.add("cannot-view");
+            }
+        });
 }
 
 function getCalendarBottomHtml(diaryStatus) {
-    console.log(diaryStatus);
     if (diaryStatus.viewableDiaryId != null) {
         return `<a href="/group/${groupId}/diary/${diaryStatus.viewableDiaryId}" class="bottom-font">
                         <span class="font-bold">오늘 일기가 업로드 되었어요.</span><br>
@@ -32,4 +38,3 @@ function getCalendarBottomHtml(diaryStatus) {
             </div>`;
 }
 
-drawBottom();

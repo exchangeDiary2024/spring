@@ -2,7 +2,6 @@ package com.exchangediary.member.domain.entity;
 
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.group.domain.entity.Group;
-import jakarta.persistence.CascadeType;
 import com.exchangediary.member.domain.enums.GroupRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,8 +46,6 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", foreignKey = @ForeignKey(name = "member_group_id_fkey"))
     private Group group;
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
-    private RefreshToken refreshToken;
 
     public static Member from(Long kakaoId) {
         return Member.builder()
@@ -88,10 +84,6 @@ public class Member extends BaseEntity {
 
     public void updateLastViewableDiaryDate(LocalDate lastViewableDiaryDate) {
         this.lastViewableDiaryDate = lastViewableDiaryDate;
-    }
-
-    public void issueRefreshToken(RefreshToken refreshToken) {
-        this.refreshToken = refreshToken;
     }
 
     public void updateOrderInGroup(Integer orderInGroup) { this.orderInGroup = orderInGroup; }
