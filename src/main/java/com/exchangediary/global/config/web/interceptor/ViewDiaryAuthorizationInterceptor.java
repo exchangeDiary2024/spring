@@ -21,9 +21,9 @@ public class ViewDiaryAuthorizationInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) throws IOException {
-        Long memberId = (Long) request.getAttribute("memberId");
-        Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Long diaryId = Long.valueOf(String.valueOf(pathVariables.get("diaryId")));
+        Long memberId = (Long) request.getAttribute("memberId");
 
         try {
             return diaryAuthorizationService.canViewDiary(memberId, diaryId);

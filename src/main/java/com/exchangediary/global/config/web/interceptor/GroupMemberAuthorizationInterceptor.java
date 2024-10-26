@@ -25,7 +25,7 @@ public class GroupMemberAuthorizationInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) throws IOException {
-        Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Long groupId = Long.valueOf(String.valueOf(pathVariables.get("groupId")));
         Long memberId = (Long) request.getAttribute("memberId");
 
