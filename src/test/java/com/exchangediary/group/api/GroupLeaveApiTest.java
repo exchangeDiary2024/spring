@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -28,7 +29,7 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     private MemberRepository memberRepository;
 
     @Test
-    @DisplayName("마지막 사람 나감, 그룹 현재 순서 나간 사람보다 전")
+    @DisplayName("마지막사람 나감. 그룹현재순서 나간사람보다 앞. - currentOrder: 1, leveMemberOrder: 3. Then currentOrder: 1")
     public void 그룹_나가기_마지막_사람() {
         Group group = createGroup(1);
         groupRepository.save(group);
@@ -57,7 +58,7 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     }
 
     @Test
-    @DisplayName("마지막 사람 나감, 그룹 현재 순서 나간 사람")
+    @DisplayName("마지막사람 나감. 그룹현재순서 나간사람과 동일. - currentOrder: 3, leveMemberOrder: 3. Then currentOrder: 1")
     public void 그룹_나가기_마지막_사람_현재순서변경() {
         Group group = createGroup(3);
         groupRepository.save(group);
@@ -86,12 +87,12 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     }
 
     @Test
-    @DisplayName("중간 사람 나감, 그룹 현재 순서 나간 사람보다 전")
+    @DisplayName("중간 순서 나감. 그룹현재순서 나간사람보다 앞. - currentOrder: 1, leveMemberOrder: 2. Then currentOrder: 1")
     public void 그룹_나가기_중간_사람() {
         Group group = createGroup(1);
         groupRepository.save(group);
-        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
-        Member groupMember = createMemberInGroup(group,2);
+        member.joinGroup("api요청멤버", "orange", 2, GroupRole.GROUP_MEMBER, group);
+        Member groupMember = createMemberInGroup(group,1);
         Member groupMember2 = createMemberInGroup(group,3);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
 
@@ -119,12 +120,12 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     }
 
     @Test
-    @DisplayName("중간 사람 나감, 그룹 현재 순서 나간 사람보다 후")
+    @DisplayName("중간 순서 나감. 그룹현재순서 나간사람보다 뒤. - currentOrder: 3, leveMemberOrder: 2. Then currentOrder: 2")
     public void 그룹_나가기_중간_사람_현재순서변경() {
         Group group = createGroup(3);
         groupRepository.save(group);
-        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
-        Member groupMember = createMemberInGroup(group,2);
+        member.joinGroup("api요청멤버", "orange", 2, GroupRole.GROUP_MEMBER, group);
+        Member groupMember = createMemberInGroup(group,1);
         Member groupMember2 = createMemberInGroup(group,3);
         memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
 
@@ -149,6 +150,77 @@ public class GroupLeaveApiTest extends ApiBaseTest {
         assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
         assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("중간 순서 나감. 그룹현재순서 나간사람. - currentOrder: 2, leveMemberOrder: 2. Then currentOrder: 2")
+    public void 그룹_나가기_현재순서_중간사람() {
+        Group group = createGroup(2);
+        groupRepository.save(group);
+        member.joinGroup("api요청멤버", "orange", 2, GroupRole.GROUP_MEMBER, group);
+        Member groupMember = createMemberInGroup(group,1);
+        Member groupMember2 = createMemberInGroup(group,3);
+        memberRepository.saveAll(Arrays.asList(member, groupMember, groupMember2));
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .when()
+                .patch(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+
+        Member updatedMember = memberRepository.findById(member.getId()).get();
+        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
+        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
+        assertThat(updatedMember.getGroup()).isEqualTo(null);
+        assertThat(updatedMember.getNickname()).isEqualTo(null);
+        assertThat(updatedMember.getGroupRole()).isEqualTo(null);
+        assertThat(updatedMember.getProfileImage()).isEqualTo(null);
+        assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+        assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
+        assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
+        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
+    }
+
+    @Test
+    public void 그룹_나가기_방장_나갈수없음() {
+        Group group = createGroup(2);
+        groupRepository.save(group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_LEADER, group);
+        Member groupMember = createMemberInGroup(group, 2);
+        memberRepository.saveAll(Arrays.asList(member, groupMember));
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .when()
+                .patch(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    public void 그룹_나가기_마지막_사람_방장_나갈수있음() {
+        Group group = createGroup(1);
+        groupRepository.save(group);
+        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_LEADER, group);
+        memberRepository.save(member);
+
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .when()
+                .patch(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+
+        Optional<Group> updatedGroup = groupRepository.findById(group.getId());
+        assertThat(updatedGroup.isEmpty()).isTrue();
     }
 
     private Group createGroup(int currentOrder) {

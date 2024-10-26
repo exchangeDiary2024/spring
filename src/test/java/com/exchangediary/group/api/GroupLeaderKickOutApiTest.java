@@ -90,6 +90,7 @@ public class GroupLeaderKickOutApiTest extends ApiBaseTest {
                 .nickname(nickname)
                 .orderInGroup(orderInGroup)
                 .profileImage("red")
+                .groupRole(GroupRole.GROUP_MEMBER)
                 .group(group)
                 .build();
     }
