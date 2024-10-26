@@ -14,13 +14,13 @@ public record DiaryResponse(
         String moodLocation,
         byte[] uploadImage
 ) {
-    public static DiaryResponse of(Diary diary) {
+    public static DiaryResponse of(Diary diary, UploadImage uploadImage) {
         return DiaryResponse.builder()
                 .diaryId(diary.getId())
                 .createdAt(diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                 .content(diary.getContent())
                 .moodLocation(diary.getMoodLocation())
-                .uploadImage(getUploadImage(diary.getUploadImage()))
+                .uploadImage(getUploadImage(uploadImage))
                 .build();
     }
 
