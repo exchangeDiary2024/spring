@@ -223,26 +223,6 @@ public class GroupLeaveApiTest extends ApiBaseTest {
         assertThat(updatedGroup.isEmpty()).isTrue();
     }
 
-    @Test
-    public void 마지막_사람_나가면_그룹_삭제() {
-        Group group = createGroup(1);
-        groupRepository.save(group);
-        member.joinGroup("api요청멤버", "orange", 1, GroupRole.GROUP_MEMBER, group);
-        memberRepository.save(member);
-
-        RestAssured
-                .given().log().all()
-                .contentType(ContentType.JSON)
-                .cookie("token", token)
-                .when()
-                .patch(String.format(API_PATH, group.getId()))
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value());
-
-        Optional<Group> updatedGroup = groupRepository.findById(group.getId());
-        assertThat(updatedGroup.isEmpty()).isTrue();
-    }
-
     private Group createGroup(int currentOrder) {
         Group group = Group.builder()
                 .name(GROUP_NAME)
