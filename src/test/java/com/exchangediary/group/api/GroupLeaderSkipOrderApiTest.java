@@ -22,9 +22,9 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
 
     @Test
     void 일기_건너뛰기_성공() {
-        Group group = createGroup(2);
+        Group group = createGroup(1);
         updateSelf(group, 1, GroupRole.GROUP_LEADER);
-        createMember(group, 2, GroupRole.GROUP_MEMBER);
+        Member member = createMember(group, 2, GroupRole.GROUP_MEMBER);
 
         RestAssured
                 .given().log().all()
@@ -34,8 +34,10 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
                 .statusCode(HttpStatus.OK.value());
 
         Group updatedGroup = groupRepository.findById(group.getId()).get();
-        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(1);
+        assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
         assertThat(updatedGroup.getLastSkipOrderDate()).isEqualTo(LocalDate.now());
+        Member currentWriter = memberRepository.findById(member.getId()).get();
+        assertThat(currentWriter.getLastViewableDiaryDate()).isEqualTo(LocalDate.now());
     }
 
     @Test
@@ -86,6 +88,7 @@ public class GroupLeaderSkipOrderApiTest extends ApiBaseTest {
                 .nickname("group-member")
                 .profileImage("orange")
                 .orderInGroup(order)
+                .lastViewableDiaryDate(LocalDate.now().minusMonths(1))
                 .group(group)
                 .groupRole(role)
                 .build()
