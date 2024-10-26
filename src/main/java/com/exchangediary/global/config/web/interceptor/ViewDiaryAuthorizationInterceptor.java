@@ -31,7 +31,7 @@ public class ViewDiaryAuthorizationInterceptor implements HandlerInterceptor {
             if (request.getRequestURI().contains("/api")) {
                 throw exception;
             }
-            long groupId = Long.parseLong(String.valueOf(pathVariables.get("groupId")));
+            Long groupId = (Long) request.getAttribute("groupId");
             response.sendRedirect("/group/" + groupId);
             return false;
         }
