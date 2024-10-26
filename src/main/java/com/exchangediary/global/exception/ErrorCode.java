@@ -21,6 +21,7 @@ public enum ErrorCode {
     DIARY_WRITE_FORBIDDEN(HttpStatus.FORBIDDEN, "일기 작성 권한이 없습니다."),
     DIARY_VIEW_FORBIDDEN(HttpStatus.FORBIDDEN, "일기 조회 권한이 없습니다."),
     GROUP_LEADER_FORBIDDEN(HttpStatus.FORBIDDEN, "방장 권한이 없습니다."),
+    GROUP_LEADER_LEAVE_FORBIDDEN(HttpStatus.FORBIDDEN, "그룹 리더는 방을 나갈 수 없습니다."),
 
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "일기를 찾을 수 없습니다."),
     UPLOAD_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "일기 업로드 이미지를 찾을 수 없습니다."),
