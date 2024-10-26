@@ -4,11 +4,12 @@ const month = document.querySelector(".month");
 const trs = Array.from(table.children[0].children).slice(3);
 const today = new Date();
 
-function init() {
+async function init() {
     year.innerText = today.getFullYear();
     month.innerText = today.getMonth() + 1;
 
-    drawDateOfCalendar();
+    await drawDateOfCalendar();
+    drawBottom();
 }
 
 async function drawDateOfCalendar() {
