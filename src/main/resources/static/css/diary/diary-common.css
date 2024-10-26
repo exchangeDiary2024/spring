@@ -96,15 +96,14 @@ a {
     line-height: 16.65px; /* 100% */
 }
 
-.image {
+.mood-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.image-size {
     width: 215px;
     height: 215px;
     flex-shrink: 0;
-
-    position: relative;
-}
-
-.diary-content-area {
-    position: relative; 
-    top: 22px;
 }

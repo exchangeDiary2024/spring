@@ -2,6 +2,7 @@ package com.exchangediary.diary.ui.dto.response;
 
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.entity.UploadImage;
+import com.exchangediary.member.domain.entity.Member;
 import lombok.Builder;
 
 import java.time.format.DateTimeFormatter;
@@ -12,7 +13,8 @@ public record DiaryResponse(
         String createdAt,
         String content,
         String moodLocation,
-        byte[] uploadImage
+        byte[] uploadImage,
+        DiaryMemberResponse member
 ) {
     public static DiaryResponse of(Diary diary, UploadImage uploadImage) {
         return DiaryResponse.builder()
@@ -21,6 +23,7 @@ public record DiaryResponse(
                 .content(diary.getContent())
                 .moodLocation(diary.getMoodLocation())
                 .uploadImage(getUploadImage(uploadImage))
+                .member(DiaryMemberResponse.from(diary.getMember()))
                 .build();
     }
 
@@ -29,5 +32,18 @@ public record DiaryResponse(
             return null;
         }
         return uploadImage.getImage();
+    }
+
+    @Builder
+    private record DiaryMemberResponse(
+            String nickname,
+            String profileImage
+    ) {
+        public static DiaryMemberResponse from(Member member) {
+            return DiaryMemberResponse.builder()
+                    .nickname(member.getNickname())
+                    .profileImage(member.getProfileImage())
+                    .build();
+        }
     }
 }

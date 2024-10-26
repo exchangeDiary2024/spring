@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 td {
     width: 26px;
     height: 26px;
@@ -53,15 +55,6 @@ td {
 .emoji {
     width: 26px; 
     height: 26px; 
-    flex-shrink: 0;
-}
-
-.emoji-icon {
-    display: flex;
-    width: 24px;
-    height: 24px;
-    justify-content: center;
-    align-items: center;
     flex-shrink: 0;
 }
 
