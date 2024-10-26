@@ -26,25 +26,24 @@ public class GroupLeaveService {
     private final DiaryRepository diaryRepository;
 
     public void leaveGroup(Long groupId, Long memberId) {
-        int leaveMemberOrder = processMemberLeave(memberId);
+        Group group = groupQueryService.findGroup(groupId);
 
-        updateGroupAfterMemberLeave(groupId, leaveMemberOrder);
+        int leaveMemberOrder = processMemberLeave(memberId, group.getMembers().size());
+        updateGroupAfterMemberLeave(group, leaveMemberOrder);
     }
 
-    private int processMemberLeave(Long memberId) {
+    private int processMemberLeave(Long memberId, int numOfGroupMembers) {
         Member member = memberQueryService.findMember(memberId);
         int orderInGroup = member.getOrderInGroup();
 
-        checkGroupLeaderLeave(member);
-        diaryRepository.deleteByMemberId(memberId);
+        checkGroupLeaderLeave(member, numOfGroupMembers);
+        diaryRepository.deleteByMemberId(member.getId());
         member.leaveGroup();
         memberRepository.save(member);
         return orderInGroup;
     }
 
-    private void updateGroupAfterMemberLeave(Long groupId, int leaveMemberOrder) {
-        Group group = groupQueryService.findGroup(groupId);
-
+    private void updateGroupAfterMemberLeave(Group group, int leaveMemberOrder) {
         if (group.getMembers().size() == 1) {
             groupRepository.delete(group);
         } else {
@@ -53,8 +52,10 @@ public class GroupLeaveService {
         }
     }
 
-    private void checkGroupLeaderLeave(Member member) {
-        if (GroupRole.GROUP_LEADER.equals(member.getGroupRole())) {
+    private void checkGroupLeaderLeave(Member member, int numOfGroupMembers) {
+        if (GroupRole.GROUP_LEADER.equals(member.getGroupRole())
+            && numOfGroupMembers != 1
+        ) {
             throw new ForbiddenException(ErrorCode.GROUP_LEADER_LEAVE_FORBIDDEN, "", "");
         }
     }
