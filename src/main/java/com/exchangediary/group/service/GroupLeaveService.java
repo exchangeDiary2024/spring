@@ -26,43 +26,30 @@ public class GroupLeaveService {
     private final DiaryRepository diaryRepository;
 
     public void leaveGroup(Long groupId, Long memberId) {
+        int leaveMemberOrder = processMemberLeave(memberId);
+
+        updateGroupAfterMemberLeave(groupId, leaveMemberOrder);
+    }
+
+    private int processMemberLeave(Long memberId) {
         Member member = memberQueryService.findMember(memberId);
-        Group group = groupQueryService.findGroup(groupId);
         int orderInGroup = member.getOrderInGroup();
 
         checkGroupLeaderLeave(member);
         diaryRepository.deleteByMemberId(memberId);
-        member.joinGroup(null, null, 0, null, null);
+        member.leaveGroup();
         memberRepository.save(member);
-        updateGroupMembersOrder(group, orderInGroup);
-        updateGroupCurrentOrder(group, orderInGroup);
-        deleteGroup(group);
+        return orderInGroup;
     }
 
-    private void updateGroupMembersOrder(Group group, int orderInGroup) {
-        group.getMembers().stream()
-                .filter(member -> member.getOrderInGroup() > orderInGroup)
-                .forEach(member -> member.updateOrderInGroup(member.getOrderInGroup() - 1));
-        memberRepository.saveAll(group.getMembers());
-    }
+    private void updateGroupAfterMemberLeave(Long groupId, int leaveMemberOrder) {
+        Group group = groupQueryService.findGroup(groupId);
 
-    private void updateGroupCurrentOrder(Group group, int orderInGroup) {
-        List<Member> members = group.getMembers();
-        int currentOrder = group.getCurrentOrder();
-
-        if (orderInGroup < currentOrder) {
-            group.updateCurrentOrder(currentOrder - 1, members.size());
-        }
-        else {
-            group.updateCurrentOrder(currentOrder, members.size() - 1);
-        }
-        groupRepository.save(group);
-    }
-
-    private void deleteGroup(Group group) {
-        int sizeMembersOfGroup = group.getMembers().size();
-        if (sizeMembersOfGroup - 1 == 0) {
+        if (group.getMembers().size() == 1) {
             groupRepository.delete(group);
+        } else {
+            updateGroupMembersOrder(group, leaveMemberOrder);
+            updateGroupCurrentOrder(group, leaveMemberOrder);
         }
     }
 
@@ -70,5 +57,25 @@ public class GroupLeaveService {
         if (member.getGroupRole() == GroupRole.GROUP_LEADER) {
             throw new ForbiddenException(ErrorCode.GROUP_LEADER_LEAVE_FORBIDDEN, "", "");
         }
+    }
+
+    private void updateGroupMembersOrder(Group group, int leaveMemberOrder) {
+        group.getMembers().stream()
+                .filter(member -> member.getOrderInGroup() > leaveMemberOrder)
+                .forEach(member -> member.updateOrderInGroup(member.getOrderInGroup() - 1));
+        memberRepository.saveAll(group.getMembers());
+    }
+
+    private void updateGroupCurrentOrder(Group group, int leaveMemberOrder) {
+        List<Member> members = group.getMembers();
+        int currentOrder = group.getCurrentOrder();
+        int numberOfGroupMember = members.size() - 1;
+
+        if (leaveMemberOrder < currentOrder) {
+            group.updateCurrentOrder(currentOrder - 1, numberOfGroupMember);
+        } else {
+            group.updateCurrentOrder(currentOrder, numberOfGroupMember);
+        }
+        groupRepository.save(group);
     }
 }

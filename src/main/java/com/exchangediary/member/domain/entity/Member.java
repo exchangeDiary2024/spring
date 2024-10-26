@@ -73,6 +73,15 @@ public class Member extends BaseEntity {
         this.group = group;
     }
 
+    public void leaveGroup() {
+        this.nickname = null;
+        this.profileImage = null;
+        this.orderInGroup = 0;
+        this.lastViewableDiaryDate = null;
+        this.groupRole = null;
+        this.group = null;
+    }
+
     public void changeGroupRole(GroupRole groupRole) {
         this.groupRole = groupRole;
     }
