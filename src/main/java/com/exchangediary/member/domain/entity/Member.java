@@ -64,7 +64,7 @@ public class Member extends BaseEntity {
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.orderInGroup = orderInGroup;
-        this.lastViewableDiaryDate = LocalDate.now();
+        this.lastViewableDiaryDate = group.getCreatedAt().toLocalDate().minusDays(1);
         this.groupRole = groupRole;
         this.group = group;
     }
