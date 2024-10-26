@@ -32,20 +32,23 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/group", "/diary/**", "/group/**", "/api/**")
                 .excludePathPatterns("/api/kakao/callback");
         registry.addInterceptor(new BelongToGroupInterceptor(memberQueryService))
-                .addPathPatterns("/group", "/group/**");
+                .addPathPatterns("/group/**");
         registry.addInterceptor(new LoginInterceptor(jwtService, cookieService))
                 .addPathPatterns("/login");
         registry.addInterceptor(new GroupMemberAuthorizationInterceptor(memberQueryService))
-                .addPathPatterns("/group/**", "/api/groups/**")
-                .excludePathPatterns("/group", "/api/groups/*/profile-image", "/api/groups/*/nickname/verify",
-                "/api/groups/{groupId}/join", "/api/groups/code/verify", "/api/groups");
+                .addPathPatterns("/group/*/**", "/api/groups/*/**")
+                .excludePathPatterns(
+                        "/api/groups/*/profile-image",
+                        "/api/groups/*/nickname/verify",
+                        "/api/groups/*/join",
+                        "/api/groups/code/verify"
+                );
 
         registry.addInterceptor(new WriteDiaryAuthorizationInterceptor(diaryAuthorizationService))
                 .addPathPatterns("/group/*/diary", "/api/groups/*/diaries");
         registry.addInterceptor(new ViewDiaryAuthorizationInterceptor(diaryAuthorizationService))
-                .addPathPatterns("/group/*/diary/*");
-
+                .addPathPatterns("/group/*/diary/*/**");
         registry.addInterceptor(new GroupLeaderAuthorizationInterceptor(groupLeaderService))
-                .addPathPatterns("/api/groups/*/leader/*");
+                .addPathPatterns("/api/groups/*/leader/**");
     }
 }
