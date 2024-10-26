@@ -54,7 +54,7 @@ public class GroupLeaveService {
     }
 
     private void checkGroupLeaderLeave(Member member) {
-        if (member.getGroupRole() == GroupRole.GROUP_LEADER) {
+        if (GroupRole.GROUP_LEADER.equals(member.getGroupRole())) {
             throw new ForbiddenException(ErrorCode.GROUP_LEADER_LEAVE_FORBIDDEN, "", "");
         }
     }
