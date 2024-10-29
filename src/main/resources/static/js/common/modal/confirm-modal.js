@@ -12,6 +12,8 @@ preLoadImgage(confirm_images);
 
 function openConfirmModal(message, warning_message=null) {
     confirm_modal_text.innerText = message;
+    confirm_modal_popup.classList.remove("big");
+    confirm_modal_warning_text.innerText = "";
     if (warning_message !== null) {
         confirm_modal_popup.classList.add("big");
         confirm_modal_warning_text.innerText = `(${warning_message})`;
