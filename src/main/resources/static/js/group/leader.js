@@ -69,7 +69,7 @@ function clickExitBtn(event) {
         const url = event.target.closest("a").href;
         exitByMember(url);
     }
-    openNotificationModal("error", ["방장은 탈퇴할 수 없습니다.", "방장 권한을 넘기고 탈퇴해주세요."], 2000);
+    openNotificationModal("error", ["방장은 나갈 수 없습니다."], 2000);
 }
 
 function isLeaderByGroupMember(groupMember) {
