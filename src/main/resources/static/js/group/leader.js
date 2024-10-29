@@ -63,13 +63,24 @@ async function clickSkipBtn(event) {
     }
 }
 
-async function clickExitBtn(event) {
+function clickExitBtn(event) {
     event.preventDefault();
+    if (!isLeaderByGroupMember(selectedMember)) {
+        const url = event.target.closest("a").href;
+        exitByMember(url);
+    }
+    openNotificationModal("error", ["방장은 탈퇴할 수 없습니다.", "방장 권한을 넘기고 탈퇴해주세요."], 2000);
+}
+
+function isLeaderByGroupMember(groupMember) {
+    return groupMember.querySelector(".crown") !== null;
+}
+
+async function exitByMember(url) {
     const selectedMemberNickname = selectedMember.querySelector(".profile-nickname").innerText
     const result = await openConfirmModal(`${selectedMemberNickname}을 정말 내보낼까요?`, "내보내기 시 모든 데이터가 영구적으로 삭제됩니다.");
 
     if (result) {
-        const url = event.target.closest("a").href;
         const body = { "nickname": selectedMemberNickname };
 
         fetch(url, {
@@ -89,12 +100,19 @@ async function clickExitBtn(event) {
     }
 }
 
-async function clickDelegationBtn(event) {
+function clickDelegationBtn(event) {
     event.preventDefault();
-    const result = await openConfirmModal("방장을 넘길까요?");
-
-    if (result) {
+    if (!isLeaderByGroupMember(selectedMember)) {
         const url = event.target.closest("a").href;
+        delegationByMember(url);
+    }
+    openNotificationModal("error", ["이미 방장 입니다!"], 2000);
+}
+
+async function delegationByMember(url) {
+    const result = await openConfirmModal("방장을 넘길까요?");
+    
+    if (result) {
         const body = { "nickname": selectedMember.querySelector(".profile-nickname").innerText };
 
         fetch(url, {
