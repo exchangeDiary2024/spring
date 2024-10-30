@@ -2,26 +2,26 @@
 <configuration>
     <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight([%-3level]) %logger{5} : %msg%n" />
 
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <Pattern>${CONSOLE_PATTERN}</Pattern>
         </encoder>
     </appender>
 
     <logger name="jdbc" level="OFF" additivity="false">
-        <appender-ref ref="console"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
     <logger name="jdbc.sqlonly" level="DEBUG" additivity="false">
-        <appender-ref ref="console"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
     <logger name="jdbc.sqltiming" level="OFF" additivity="false">
-        <appender-ref ref="console"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
     <logger name="org.hibernate.SQL" level="OFF" additivity="false">
-        <appender-ref ref="console"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
-    <root level="info">
-        <appender-ref ref="console" />
-    </root>
 
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
 </configuration>
