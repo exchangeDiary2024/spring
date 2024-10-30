@@ -252,6 +252,29 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(nextWriter.getLastViewableDiaryDate()).isEqualTo(LocalDate.now());
     }
 
+    @Test
+    void 마지막_순서_그룹원이_일기_작성_성공시_조회가능한_마지막_일기_날짜_업데이트_확인() throws JsonProcessingException {
+        Group group = createGroup(2);
+        updateSelf(group, 2);
+        member.updateLastViewableDiaryDate(LocalDate.now().minusMonths(1));
+        Member nextMember = createMember(group, 1);
+        Map<String, String> data = makeDiaryData();
+
+        RestAssured
+                .given().log().all()
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
+                .cookie("token", token)
+                .when().post(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value());
+
+        Member writer = memberRepository.findById(this.member.getId()).get();
+        Member nextWriter = memberRepository.findById(nextMember.getId()).get();
+        assertThat(writer.getLastViewableDiaryDate()).isEqualTo(LocalDate.now());
+        assertThat(nextWriter.getLastViewableDiaryDate()).isEqualTo(LocalDate.now());
+    }
+
     private Diary createDiary(Group group) {
         Diary diary = Diary.builder()
                 .content("하이하이")
