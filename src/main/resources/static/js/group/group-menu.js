@@ -51,6 +51,16 @@ function drawMenu(data) {
         groupMembers.classList.add("leader");
         members.forEach(member => member.addEventListener("click", selectGroupMember));
     }
+
+    if (data.members.length === 1) {
+        groupLeaveBtn.innerText = "그룹 삭제";
+        groupLeaveBtn.removeEventListener("click", leaveGroup);
+        groupLeaveBtn.addEventListener("click", deleteGroup);
+    } else {
+        groupLeaveBtn.innerText = "탈퇴하기";
+        groupLeaveBtn.removeEventListener("click", deleteGroup);
+        groupLeaveBtn.addEventListener("click", leaveGroup);
+    }
 }
 
 function drawMembers(members) {
@@ -110,7 +120,7 @@ function removeMembers() {
 
 function leaveGroup(event) {
     event.preventDefault();
-    if (!isLeader || groupSize.innerText === "1") {
+    if (!isLeader) {
         const url = event.target.closest("a").href;
         leaveGroupByMember(url);
     } else {
@@ -128,6 +138,25 @@ async function leaveGroupByMember(url) {
         .then(response => {
             if (response.status === 200) {
                 openNotificationModal("success", ["탈퇴를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
+            } else {
+                openNotificationModal("error", ["오류가 발생했습니다."], 2000);
+            }
+        })
+    }
+}
+
+async function deleteGroup(event) {
+    event.preventDefault();
+    const result = await openConfirmModal("정말 삭제하시겠어요?", "삭제할 시 모든 데이터가 영구적으로 삭제됩니다.");
+    const url = event.target.closest("a").href;
+
+    if (result) {
+        fetch(url, {
+            method: "PATCH"
+        })
+        .then(response => {
+            if (response.status === 200) {
+                openNotificationModal("success", ["삭제를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
             } else {
                 openNotificationModal("error", ["오류가 발생했습니다."], 2000);
             }
