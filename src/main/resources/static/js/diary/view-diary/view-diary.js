@@ -6,13 +6,22 @@ const testDiaryData = {
         },
         {
             content: "두번째 페이지"
+        },
+        {
+            content: "세번째 페이지"
+        },
+        {
+            content: "네번째 페이지"
+        },
+        {
+            content: "다섯번째 페이지"
         }
     ]
 }
 
 const noteBody = document.querySelector(".note-body");
 const pageBar = document.querySelector(".page-bar");
-const pageData = [
+const pages = [
     {
         index: 0,
         html: ""
@@ -34,7 +43,7 @@ const pageData = [
         html: ""
     }
 ]
-var currentPage = pageData[0];
+var currentPage = pages[0];
 
 function viewDiary() {
     drawPageBar();
@@ -49,23 +58,43 @@ function drawPageBar() {
     var index = 0;
     if (testDiaryData.image !== null) {
         pageBtns[index].classList.add("active");
-        pageData[index].html = makeDiaryPageHTMLContainsImage(testDiaryData.image, contents[index].content);
+        pageBtns[index].addEventListener("click", changePage);
+        pages[index].html = makeDiaryPageHTMLContainsImage(testDiaryData.image, contents[index].content);
         index++;
     }
 
     for (index; index < contents.length; index++) {
         pageBtns[index].classList.add("active");
-        pageData[index].html = makeDiaryPageHTML(contents[index].content);
+        pageBtns[index].addEventListener("click", changePage);
+        pages[index].html = makeDiaryPageHTML(contents[index].content);
     }
 
     pageBtns[0].classList.add("fill");
 }
 
+function changePage(event) {
+    event.preventDefault();
+    const pageIndex = event.target.getAttribute("data-index");
+    const page = pages[pageIndex];
+
+    removeDiaryPage();
+    drawDiaryPage(page.html, "stop");
+    pageBar.children[currentPage.index].classList.remove("fill");
+    event.target.classList.add("fill");
+
+    currentPage = page;
+}
+
+function removeDiaryPage() {
+    const noteContent = document.querySelector(".note-content");
+    noteContent.remove();
+}
+
 function drawDiaryPage(html, direction) {
-    const note_content = document.createElement("div");
-    note_content.classList.add("note-content", direction);
-    note_content.innerHTML = html;
-    noteBody.appendChild(note_content);
+    const noteContent = document.createElement("div");
+    noteContent.classList.add("note-content", direction);
+    noteContent.innerHTML = html;
+    noteBody.appendChild(noteContent);
 }
 
 function makeDiaryPageHTML(content) {
