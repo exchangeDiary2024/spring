@@ -68,8 +68,9 @@ function clickExitBtn(event) {
     if (!isLeaderByGroupMember(selectedMember)) {
         const url = event.target.closest("a").href;
         exitByMember(url);
+    } else {
+        openNotificationModal("error", ["방장은 나갈 수 없습니다."], 2000);
     }
-    openNotificationModal("error", ["방장은 나갈 수 없습니다."], 2000);
 }
 
 function isLeaderByGroupMember(groupMember) {
@@ -105,8 +106,9 @@ function clickDelegationBtn(event) {
     if (!isLeaderByGroupMember(selectedMember)) {
         const url = event.target.closest("a").href;
         delegationByMember(url);
+    } else {
+        openNotificationModal("error", ["이미 방장 입니다!"], 2000);
     }
-    openNotificationModal("error", ["이미 방장 입니다!"], 2000);
 }
 
 async function delegationByMember(url) {
