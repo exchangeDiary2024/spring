@@ -43,3 +43,5 @@ out/
 
 application.yml
 application.properties
+
+/log
