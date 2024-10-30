@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDate;
-
 public class ViewDiaryAuthorizationInterceptorTest extends ApiBaseTest {
     @Autowired
     private DiaryRepository diaryRepository;
@@ -24,12 +22,13 @@ public class ViewDiaryAuthorizationInterceptorTest extends ApiBaseTest {
     @Test
     void 일기_조회_성공() {
         Group group = createGroup();
-        updateSelf(group, LocalDate.now());
+        updateSelf(group, true);
         Diary diary = createDiary(this.member, group);
 
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
+                .redirects().follow(false)
                 .when().get(String.format("/group/%d/diary/%d", group.getId(), diary.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
@@ -38,7 +37,7 @@ public class ViewDiaryAuthorizationInterceptorTest extends ApiBaseTest {
     @Test
     void 일기_조회_실패() {
         Group group = createGroup();
-        updateSelf(group, LocalDate.now().minusDays(1));
+        updateSelf(group, false);
         Diary diary = createDiary(this.member, group);
 
         RestAssured
@@ -55,9 +54,11 @@ public class ViewDiaryAuthorizationInterceptorTest extends ApiBaseTest {
         return groupRepository.save(group);
     }
 
-    private void updateSelf(Group group, LocalDate lastViewableDiaryDate) {
+    private void updateSelf(Group group, boolean canViewToday) {
         this.member.joinGroup("nickname", "red", 1, GroupRole.GROUP_MEMBER, group);
-        this.member.updateLastViewableDiaryDate(lastViewableDiaryDate);
+        if (canViewToday) {
+            member.updateLastViewableDiaryDate();
+        }
         memberRepository.save(this.member);
     }
 

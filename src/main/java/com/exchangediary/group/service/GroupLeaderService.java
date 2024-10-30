@@ -39,7 +39,7 @@ public class GroupLeaderService {
         group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
         group.updateLastSkipOrderDate();
         Member currentWriter = groupMemberService.findCurrentOrderMember(group);
-        currentWriter.updateLastViewableDiaryDate(LocalDate.now());
+        currentWriter.updateLastViewableDiaryDate();
     }
 
     public void kickOutMember(Long groupId, GroupKickOutRequest request) {

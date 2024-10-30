@@ -82,8 +82,8 @@ public class Member extends BaseEntity {
         this.groupRole = groupRole;
     }
 
-    public void updateLastViewableDiaryDate(LocalDate lastViewableDiaryDate) {
-        this.lastViewableDiaryDate = lastViewableDiaryDate;
+    public void updateLastViewableDiaryDate() {
+        this.lastViewableDiaryDate = LocalDate.now();
     }
 
     public void updateOrderInGroup(Integer orderInGroup) { this.orderInGroup = orderInGroup; }

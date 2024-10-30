@@ -233,7 +233,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
     void 일기_작성_성공시_조회가능한_마지막_일기_날짜_업데이트_확인() throws JsonProcessingException {
         Group group = createGroup(1);
         updateSelf(group, 1);
-        member.updateLastViewableDiaryDate(LocalDate.now().minusMonths(1));
         Member nextMember = createMember(group, 2);
         Map<String, String> data = makeDiaryData();
 
@@ -256,7 +255,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
     void 마지막_순서_그룹원이_일기_작성_성공시_조회가능한_마지막_일기_날짜_업데이트_확인() throws JsonProcessingException {
         Group group = createGroup(2);
         updateSelf(group, 2);
-        member.updateLastViewableDiaryDate(LocalDate.now().minusMonths(1));
         Member nextMember = createMember(group, 1);
         Map<String, String> data = makeDiaryData();
 
