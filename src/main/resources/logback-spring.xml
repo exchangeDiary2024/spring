@@ -1,59 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight([%-3level]) %logger{5}: %msg%n" />
+    <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight([%-3level]) %green(%logger{5}): %msg%n"/>
+    <property name="JDBC_CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight([%-3level]) %yellow(%logger{5}):%msg"/>
     <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-3level] %logger{5}: %msg%n"/>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <Pattern>${CONSOLE_PATTERN}</Pattern>
-        </encoder>
-    </appender>
+    <!--local-->
+    <springProfile name="local">
+        <include resource="console-appender.xml"/>
+        <include resource="jdbc-appender.xml"/>
+        <include resource="jdbc-loggers.xml"/>
 
-    <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/buddies-spring-info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>50MB</maxFileSize>
-            <maxHistory>10</maxHistory>
-            <totalSizeCap>1GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
 
-    <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/buddies-spring-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>50MB</maxFileSize>
-            <maxHistory>30</maxHistory>
-            <totalSizeCap>3GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
+    <!--dev-->
+    <springProfile name="dev">
+        <include resource="file-info-appender.xml"/>
+        <include resource="jdbc-appender.xml"/>
+        <include resource="jdbc-loggers.xml"/>
 
-    <logger name="jdbc" level="OFF" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="jdbc.sqlonly" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="jdbc.sqltiming" level="OFF" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="org.hibernate.SQL" level="OFF" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
+        <root level="INFO">
+            <appender-ref ref="FILE-INFO"/>
+        </root>
+    </springProfile>
 
-    <root level="info">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE-INFO"/>
-        <appender-ref ref="FILE-ERROR"/>
-    </root>
+    <!--prod-->
+    <springProfile name="prod">
+        <include resource="file-info-appender.xml"/>
+        <include resource="file-error-appender.xml"/>
+
+        <root level="ERROR">
+            <appender-ref ref="FILE-ERROR"/>
+        </root>
+    </springProfile>
 </configuration>
