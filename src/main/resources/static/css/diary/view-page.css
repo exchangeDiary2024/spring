@@ -38,6 +38,8 @@
     flex-shrink: 0;
     position: relative;
     top: -24px;
+
+    pointer-events: none;
 }
 
 .page-icon {
@@ -50,12 +52,18 @@
     position: relative;
 
     background: #FFFFFF;
-    border: 1px solid #5A402A;
+    border: 1px solid #E2E2E2;
     border-radius: 20px;
 }
 
-.page-icon.fill {
+.page-icon.active {
+    border-color: #5A402A;
+    pointer-events: auto;
+}
+
+.page-icon.active.fill {
     background: #5A402A;
+    pointer-events: none;
 }
 
 .page-icon.page1 {
@@ -78,8 +86,8 @@
     left: 124px;
 }
 
-.title {
-    width: 375px;
+.note-title {
+    width: 304px;
     height: 24px;
 
     display: flex;
@@ -129,20 +137,36 @@
     letter-spacing: 0.2px;
 }
 
+.note-content {
+    width: 304px;
+    height: auto;
+    position: relative;
+    top: 10px;
+
+    transition: transform 0.3s ease-out;
+}
+
+.note-content.next {
+    transform: translateX(100%);
+}
+
+.note-content.prev {
+    transform: translateX(-100%);
+}
+
+.note-content.stop {
+    transform: translateX(0);
+}
+
 .image {
     width: 215px;
     height: 215px;
     flex-shrink: 0;
 
     position: relative;
-    top: 14px;
+    top: 4px;
 }
 
 .diary-content-area {
-    position: relative;
-    top: 10px;
-}
-
-.no-image {
-    display: none;
+    width: 304px;
 }

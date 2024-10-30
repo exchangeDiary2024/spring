@@ -22,24 +22,18 @@
             <div class="note">
                 <div class="note-header">
                     <div class="page-bar">
-                        <div class="page-icon page1 fill"></div>
-                        <div class="page-icon page2"></div>
-                        <div class="page-icon page3"></div>
-                        <div class="page-icon page4"></div>
-                        <div class="page-icon page5"></div>
+                        <a class="page-icon page1" href="#" data-index="0"></a>
+                        <a class="page-icon page2" href="#" data-index="1"></a>
+                        <a class="page-icon page3" href="#" data-index="2"></a>
+                        <a class="page-icon page4" href="#" data-index="3"></a>
+                        <a class="page-icon page5" href="#" data-index="4"></a>
                     </div>
                 </div>
                 <div class="note-body">
-                    <div class="title">
+                    <div class="note-title">
                         <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
                         <span class="title-font">[[${diary.member.nickname}]]의 일기</span>
                         <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
-                    </div>
-                    <div class="image no-image">
-                        <img class="image-size"/>
-                    </div>
-                    <div class="diary-content-area">
-                        <p class="diary-content">[[${diary.content}]]</p>
                     </div>
                 </div>
             </div>
