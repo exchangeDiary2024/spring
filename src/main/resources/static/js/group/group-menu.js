@@ -5,10 +5,11 @@ const groupMembers = menu.querySelector(".group-members");
 const groupSize = menu.querySelector(".group-size .size");
 const groupLeaveBtn = menu.querySelector(".group-leave");
 const groupCodeBtn = menu.querySelector(".group-code");
+var isLeader = false;
 
 menuBtn.addEventListener("click", openMenu);
 groupMenu.addEventListener("click", closeMenu);
-groupLeaveBtn.addEventListener("click", groupLeave);
+groupLeaveBtn.addEventListener("click", leaveGroup);
 groupCodeBtn.addEventListener("click", () => {
     try {
         navigator.clipboard.writeText(groupCodeBtn.getAttribute("data-code"))
@@ -40,13 +41,25 @@ function drawMenu(data) {
     groupSize.innerText = data.members.length;
     drawMembers(data.members);
     const members = groupMembers.querySelectorAll(".group-member");
+    isLeader = false;
 
     members[data.selfIndex].innerHTML = makeMyHtml() + members[data.selfIndex].innerHTML;
     members[data.leaderIndex].querySelector(".profile-image").innerHTML += makeLeaderHtml();
     members[data.currentWriterIndex].classList.add("order");
     if (data.selfIndex === data.leaderIndex) {
+        isLeader = true;
         groupMembers.classList.add("leader");
         members.forEach(member => member.addEventListener("click", selectGroupMember));
+    }
+
+    if (data.members.length === 1) {
+        groupLeaveBtn.innerText = "그룹 삭제";
+        groupLeaveBtn.removeEventListener("click", leaveGroup);
+        groupLeaveBtn.addEventListener("click", deleteGroup);
+    } else {
+        groupLeaveBtn.innerText = "탈퇴하기";
+        groupLeaveBtn.removeEventListener("click", deleteGroup);
+        groupLeaveBtn.addEventListener("click", leaveGroup);
     }
 }
 
@@ -105,22 +118,48 @@ function removeMembers() {
     })
 }
 
-async function groupLeave(event) {
+function leaveGroup(event) {
     event.preventDefault();
+    if (!isLeader) {
+        const url = event.target.closest("a").href;
+        leaveGroupByMember(url);
+    } else {
+        openNotificationModal("error", ["방장은 탈퇴할 수 없습니다.", "방장 권한을 넘기고 탈퇴해주세요."], 2000);
+    }
+}
+
+async function leaveGroupByMember(url) {
     const result = await openConfirmModal("정말 탈퇴하시겠어요?", "탈퇴할 시 모든 데이터가 영구적으로 삭제됩니다.");
 
     if (result) {
-        const url = event.target.closest("a").href;
-
         fetch(url, {
             method: "PATCH"
         })
         .then(response => {
-             if (response.status === 200) {
-                 openNotificationModal("success", ["탈퇴를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
-             } else {
-                 openNotificationModal("error", ["방장은 탈퇴할 수 없습니다.", "방장 권한을 넘기고 탈퇴해주세요."], 2000);
-             }
+            if (response.status === 200) {
+                openNotificationModal("success", ["탈퇴를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
+            } else {
+                openNotificationModal("error", ["오류가 발생했습니다."], 2000);
+            }
+        })
+    }
+}
+
+async function deleteGroup(event) {
+    event.preventDefault();
+    const result = await openConfirmModal("정말 삭제하시겠어요?", "삭제할 시 모든 데이터가 영구적으로 삭제됩니다.");
+    const url = event.target.closest("a").href;
+
+    if (result) {
+        fetch(url, {
+            method: "PATCH"
+        })
+        .then(response => {
+            if (response.status === 200) {
+                openNotificationModal("success", ["삭제를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
+            } else {
+                openNotificationModal("error", ["오류가 발생했습니다."], 2000);
+            }
         })
     }
 }
