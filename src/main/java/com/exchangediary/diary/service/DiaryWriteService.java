@@ -1,8 +1,9 @@
 package com.exchangediary.diary.service;
 
+import com.exchangediary.diary.domain.DiaryContentRepository;
 import com.exchangediary.diary.domain.DiaryRepository;
-import com.exchangediary.diary.domain.UploadImageRepository;
 import com.exchangediary.diary.domain.entity.Diary;
+import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.FailedImageUploadException;
@@ -12,7 +13,6 @@ import com.exchangediary.group.service.GroupQueryService;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.MemberQueryService;
-import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class DiaryWriteService {
     private final DiaryRepository diaryRepository;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
+    private final DiaryContentRepository diaryContentRepository;
 
     public Long writeDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
@@ -42,6 +45,7 @@ public class DiaryWriteService {
 
         try {
             Diary diary = Diary.from(diaryRequest, member, group);
+            createDairyContent(diaryRequest, diary);
 
             uploadImage(file, diary);
             updateGroupCurrentOrder(group);
@@ -57,6 +61,18 @@ public class DiaryWriteService {
                     file.getOriginalFilename()
             );
         }
+    }
+
+    private void createDairyContent(DiaryRequest diaryRequest, Diary diary) {
+        List<DiaryContent> diaryContents = IntStream.range(0, diaryRequest.contents().size())
+                .mapToObj(index -> DiaryContent.from(
+                            index + 1,
+                            diaryRequest.contents().get(index),
+                            diary
+                        )
+                )
+                .toList();
+        diaryContentRepository.saveAll(diaryContents);
     }
 
     private void uploadImage(MultipartFile file, Diary diary) throws IOException{

@@ -40,8 +40,6 @@ public class Diary extends BaseEntity {
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
-    private final String content;
-    @NotNull
     private final String moodLocation;
     private String imageFileName;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -55,7 +53,6 @@ public class Diary extends BaseEntity {
 
     public static Diary from(DiaryRequest diaryRequest, Member member, Group group) {
         return Diary.builder()
-                .content(diaryRequest.contents())
                 .moodLocation(diaryRequest.moodLocation())
                 .member(member)
                 .group(group)

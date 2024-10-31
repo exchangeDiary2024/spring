@@ -1,5 +1,6 @@
 package com.exchangediary.diary.domain.entity;
 
+import com.exchangediary.diary.domain.dto.DiaryContentDto;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,15 +10,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.descriptor.jdbc.LongVarcharJdbcType;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -40,4 +38,12 @@ public class DiaryContent extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dairy_id", foreignKey = @ForeignKey(name = "content_diary_id_fkey"))
     private final Diary diary;
+
+    public static DiaryContent from(int page, DiaryContentDto diaryContentDto, Diary diary) {
+        return DiaryContent.builder()
+                .page(page)
+                .content(diaryContentDto.content())
+                .diary(diary)
+                .build();
+    }
 }
