@@ -23,26 +23,41 @@ public class GroupAuthorizationInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) throws IOException {
+        Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Long memberId = (Long) request.getAttribute("memberId");
         Optional<Long> memberGroupId = memberQueryService.findGroupBelongTo(memberId);
 
-        Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-        if (!pathVariables.containsKey("groupId")) {
-            if (memberGroupId.isEmpty()) {
-                return true;
-            }
-            response.sendRedirect(request.getContextPath()+ "/group/" + memberGroupId.get());
-            return false;
+        if (isGroupCreatePageRequest(pathVariables)) {
+            return processGroupCreatePageRequest(memberGroupId.orElse(null), response);
         }
 
         Long groupId = Long.valueOf(String.valueOf(pathVariables.get("groupId")));
-
         if (memberGroupId.isEmpty()) {
-            response.sendRedirect(request.getContextPath()+ "/group");
+            response.sendRedirect("/group");
             return false;
         }
+        return processGroupAuthorization(groupId, memberGroupId.get(), request, response);
+    }
 
-        if (groupId.equals(memberGroupId.get())) {
+    private boolean isGroupCreatePageRequest(Map<String, String> pathVariables) {
+        return !pathVariables.containsKey("groupId");
+    }
+
+    private boolean processGroupCreatePageRequest(Long memberGroupId, HttpServletResponse response) throws IOException {
+        if (memberGroupId == null) {
+            return true;
+        }
+        response.sendRedirect("/group/" + memberGroupId);
+        return false;
+    }
+
+    private boolean processGroupAuthorization(
+            Long groupId,
+            Long memberGroupId,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        if (groupId.equals(memberGroupId)) {
             request.setAttribute("groupId", groupId);
             return true;
         }
@@ -54,7 +69,7 @@ public class GroupAuthorizationInterceptor implements HandlerInterceptor {
                     String.valueOf(groupId)
             );
         }
-        response.sendRedirect("/group/" + memberGroupId.get());
+        response.sendRedirect("/group/" + memberGroupId);
         return false;
     }
 }
