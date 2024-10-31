@@ -11,6 +11,7 @@ import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.service.GroupQueryService;
+import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,19 +25,28 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DiaryQueryService {
+    private final DiaryAuthorizationService diaryAuthorizationService;
     private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
     private final UploadImageRepository uploadImageRepository;
     private final GroupQueryService groupQueryService;
     private final MemberQueryService memberQueryService;
 
-    public DiaryResponse viewDiary(Long diaryId) {
-        Diary diary = diaryRepository.findById(diaryId)
+    public Diary findDiary(Long diaryId) {
+        return diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new NotFoundException(
                         ErrorCode.DIARY_NOT_FOUND,
                         "",
                         String.valueOf(diaryId))
                 );
+    }
+
+    public DiaryResponse viewDiary(Long memberId, Long diaryId) {
+        Member member = memberQueryService.findMember(memberId);
+        Diary diary = findDiary(diaryId);
+
+        diaryAuthorizationService.checkViewableDiary(member, diary);
+
         UploadImage uploadImage = uploadImageRepository.findByDiary(diary)
                 .orElse(null);
         return DiaryResponse.of(diary, uploadImage);

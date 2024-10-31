@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -25,9 +26,10 @@ public class DiaryController {
     public String viewDiary(
             Model model,
             @PathVariable Long groupId,
-            @PathVariable Long diaryId
+            @PathVariable Long diaryId,
+            @RequestAttribute Long memberId
     ) {
-        DiaryResponse diary = diaryQueryService.viewDiary(diaryId);
+        DiaryResponse diary = diaryQueryService.viewDiary(memberId, diaryId);
         model.addAttribute("groupId", groupId);
         model.addAttribute("diary", diary);
         return "diary/view-page";
