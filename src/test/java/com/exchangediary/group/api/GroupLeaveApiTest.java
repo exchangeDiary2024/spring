@@ -48,12 +48,20 @@ public class GroupLeaveApiTest extends ApiBaseTest {
                 .statusCode(HttpStatus.OK.value());
 
         Member updatedMember = memberRepository.findById(member.getId()).get();
-        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedMember.getGroup()).isEqualTo(null);
         assertThat(updatedMember.getNickname()).isEqualTo(null);
         assertThat(updatedMember.getGroupRole()).isEqualTo(null);
         assertThat(updatedMember.getProfileImage()).isEqualTo(null);
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+
+        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
+        assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
+        assertThat(updatedGroupMember.getLastViewableDiaryDate()).isEqualTo(groupMember.getLastViewableDiaryDate());
+        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
+        assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
+        assertThat(updatedGroupMember2.getLastViewableDiaryDate()).isEqualTo(groupMember2.getLastViewableDiaryDate());
+
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(group.getCurrentOrder());
     }
 
@@ -77,12 +85,20 @@ public class GroupLeaveApiTest extends ApiBaseTest {
                 .statusCode(HttpStatus.OK.value());
 
         Member updatedMember = memberRepository.findById(member.getId()).get();
-        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedMember.getGroup()).isEqualTo(null);
         assertThat(updatedMember.getNickname()).isEqualTo(null);
         assertThat(updatedMember.getGroupRole()).isEqualTo(null);
         assertThat(updatedMember.getProfileImage()).isEqualTo(null);
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+
+        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
+        assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
+        assertThat(updatedGroupMember.getLastViewableDiaryDate()).isEqualTo(LocalDate.now());
+        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
+        assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
+        assertThat(updatedGroupMember2.getLastViewableDiaryDate()).isEqualTo(groupMember2.getLastViewableDiaryDate());
+
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(1);
     }
 
@@ -106,16 +122,20 @@ public class GroupLeaveApiTest extends ApiBaseTest {
                 .statusCode(HttpStatus.OK.value());
 
         Member updatedMember = memberRepository.findById(member.getId()).get();
-        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
-        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
-        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedMember.getGroup()).isEqualTo(null);
         assertThat(updatedMember.getNickname()).isEqualTo(null);
         assertThat(updatedMember.getGroupRole()).isEqualTo(null);
         assertThat(updatedMember.getProfileImage()).isEqualTo(null);
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+
+        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
         assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
+        assertThat(updatedGroupMember.getLastViewableDiaryDate()).isEqualTo(groupMember.getLastViewableDiaryDate());
+        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
         assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
+        assertThat(updatedGroupMember2.getLastViewableDiaryDate()).isEqualTo(groupMember2.getLastViewableDiaryDate());
+
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(group.getCurrentOrder());
     }
 
@@ -139,16 +159,20 @@ public class GroupLeaveApiTest extends ApiBaseTest {
                 .statusCode(HttpStatus.OK.value());
 
         Member updatedMember = memberRepository.findById(member.getId()).get();
-        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
-        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
-        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedMember.getGroup()).isEqualTo(null);
         assertThat(updatedMember.getNickname()).isEqualTo(null);
         assertThat(updatedMember.getGroupRole()).isEqualTo(null);
         assertThat(updatedMember.getProfileImage()).isEqualTo(null);
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+
+        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
         assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
+        assertThat(updatedGroupMember.getLastViewableDiaryDate()).isEqualTo(groupMember.getLastViewableDiaryDate());
+        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
         assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
+        assertThat(updatedGroupMember2.getLastViewableDiaryDate()).isEqualTo(groupMember2.getLastViewableDiaryDate());
+
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
     }
 
@@ -172,16 +196,21 @@ public class GroupLeaveApiTest extends ApiBaseTest {
                 .statusCode(HttpStatus.OK.value());
 
         Member updatedMember = memberRepository.findById(member.getId()).get();
-        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
-        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
-        Group updatedGroup = groupRepository.findById(group.getId()).get();
+
         assertThat(updatedMember.getGroup()).isEqualTo(null);
         assertThat(updatedMember.getNickname()).isEqualTo(null);
         assertThat(updatedMember.getGroupRole()).isEqualTo(null);
         assertThat(updatedMember.getProfileImage()).isEqualTo(null);
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(0);
+
+        Member updatedGroupMember = memberRepository.findById(groupMember.getId()).get();
         assertThat(updatedGroupMember.getOrderInGroup()).isEqualTo(1);
+        assertThat(updatedGroupMember.getLastViewableDiaryDate()).isEqualTo(groupMember.getLastViewableDiaryDate());
+        Member updatedGroupMember2 = memberRepository.findById(groupMember2.getId()).get();
         assertThat(updatedGroupMember2.getOrderInGroup()).isEqualTo(2);
+        assertThat(updatedGroupMember2.getLastViewableDiaryDate()).isEqualTo(LocalDate.now());
+
+        Group updatedGroup = groupRepository.findById(group.getId()).get();
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
     }
 
@@ -204,6 +233,7 @@ public class GroupLeaveApiTest extends ApiBaseTest {
     }
 
     @Test
+    @DisplayName("그룹에 방장만 남은 경우, 방장 나가기 가능. 그리고 그룹 삭제됨")
     public void 그룹_나가기_마지막_사람_방장_나갈수있음() {
         Group group = createGroup(1);
         groupRepository.save(group);
@@ -239,6 +269,7 @@ public class GroupLeaveApiTest extends ApiBaseTest {
                 .kakaoId(12345L)
                 .orderInGroup(orderInGroup)
                 .profileImage("red")
+                .lastViewableDiaryDate(LocalDate.now().minusDays(1))
                 .group(group)
                 .build();
     }

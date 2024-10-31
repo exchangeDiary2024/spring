@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Arrays;
 
 @Service
@@ -45,7 +44,7 @@ public class DiaryWriteService {
             uploadImage(file, diary);
             updateGroupCurrentOrder(group);
             updateViewableDiaryDate(member, group);
-            member.updateLastViewableDiaryDate(LocalDate.now());
+            member.updateLastViewableDiaryDate();
 
             Diary savedDiary = diaryRepository.save(diary);
             return savedDiary.getId();
@@ -81,8 +80,8 @@ public class DiaryWriteService {
                         .findFirst()
                         .get();
 
-        nextWriter.updateLastViewableDiaryDate(LocalDate.now());
-        currentWriter.updateLastViewableDiaryDate(LocalDate.now());
+        nextWriter.updateLastViewableDiaryDate();
+        currentWriter.updateLastViewableDiaryDate();
         memberRepository.saveAll(Arrays.asList(currentWriter, nextWriter));
     }
 }
