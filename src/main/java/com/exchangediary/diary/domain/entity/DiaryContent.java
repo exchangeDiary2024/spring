@@ -33,12 +33,11 @@ public class DiaryContent extends BaseEntity {
     @Column(name = "diary_content_id")
     private Long id;
     @NotNull
-    private Integer page;
-    @Lob
-    @JdbcType(LongVarcharJdbcType.class)
+    private final Integer page;
     @NotNull
     private final String content;
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dairy_id", foreignKey = @ForeignKey(name = "content_diary_id_fkey"))
-    private Diary diary;
+    private final Diary diary;
 }
