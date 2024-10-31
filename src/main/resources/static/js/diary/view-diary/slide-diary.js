@@ -4,23 +4,23 @@ var slideType = "stop";
 function addSlideEventByNoteContent(noteContent) {
     noteContent.addEventListener("touchstart", slidePage);
     noteContent.addEventListener("touchmove", movePage);
-    noteContent.addEventListener("touchend", changePageBySlide);
+    noteContent.addEventListener("touchend", () => changePageBySlide(slideType, "0.3s"));
 }
 
 function slidePage(event) {
     startX = event.touches[0].pageX;
     slideType = "stop";
-    removePageTransform(prevPage);
-    removePageTransform(nextPage);
-    removePageTransform(currentPage);
+    changeTransformTime(prevPage, "0s");
+    changeTransformTime(nextPage, "0s");
+    changeTransformTime(currentPage, "0s");
 }
 
 function movePage(event) {
     const changedX = -(startX - event.touches[0].pageX);
 
-    movepageTransform(prevPage, -window.innerWidth + changedX);
-    movepageTransform(nextPage, window.innerWidth + changedX);
-    movepageTransform(currentPage, changedX);
+    changeTransformX(prevPage, -window.innerWidth + changedX);
+    changeTransformX(nextPage, window.innerWidth + changedX);
+    changeTransformX(currentPage, changedX);
 
     slideType = "stop";
     if (changedX <= -100 && nextPage !== null) {
@@ -31,29 +31,29 @@ function movePage(event) {
     }
 }
 
-function changePageBySlide() {
+function changePageBySlide(slideType, time) {
     changePage(getPageBySlideType(slideType));
-    addPageTransform(prevPage, "-100%");
-    addPageTransform(nextPage, "100%");
-    addPageTransform(currentPage, "0%");
+    changeTransform(prevPage, time, "-100%");
+    changeTransform(nextPage, time, "100%");
+    changeTransform(currentPage, time, "0%");
 }
 
-function removePageTransform(page) {
+function changeTransformTime(page, time) {
     if (page !== null) {
-        page.noteContent.style.transition = "ease-out";
+        page.noteContent.style.transition = `transform ${time} ease-out`;
     }
 }
 
-function movepageTransform(page, changedX) {
+function changeTransformX(page, changedX) {
     if (page !== null) {
         page.noteContent.style.transform = `translateX(${changedX}px)`;
     }
 }
 
-function addPageTransform(page, percentage) {
+function changeTransform(page, time, changedX) {
     if (page !== null) {
-        page.noteContent.style.transition = "transform 0.3s ease-out";
-        page.noteContent.style.transform = `translateX(${percentage})`;
+        page.noteContent.style.transition = `transform ${time} ease-out`;
+        page.noteContent.style.transform = `translateX(${changedX})`;
     }
 }
 

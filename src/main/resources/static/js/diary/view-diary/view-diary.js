@@ -23,31 +23,10 @@ const testDiaryData = {
 
 const noteBody = document.querySelector(".note-body");
 const pageBar = document.querySelector(".page-bar");
-const pages = [
-    {
-        index: 0,
-        noteContent: null
-    },
-    {
-        index: 1,
-        noteContent: null
-    },
-    {
-        index: 2,
-        noteContent: null
-    },
-    {
-        index: 3,
-        noteContent: null
-    },
-    {
-        index: 4,
-        noteContent: null
-    }
-]
-var currentPage = pages[0];
+const pages = []
+var currentPage = null;
 var prevPage = null;
-var nextPage = pages[1];
+var nextPage = null;
 
 function viewDiary() {
     drawPageBar();
@@ -57,43 +36,43 @@ function drawPageBar() {
     const pageBtns = pageBar.children;
     const contents = testDiaryData.contents;
     const html = makeDiaryTitleHTML(testDiaryData.profileImage, testDiaryData.nickname) + makeDiaryPageHTMLContainsImage(testDiaryData.image, contents[0].content);
+    const page = { index: 0, noteContent: makeNoteContent(html) };
+    pages.push(page);
+    noteBody.appendChild(page.noteContent);
     pageBtns[0].classList.add("active");
-    // pageBtns[0].addEventListener("click", changePage);
+    pageBtns[0].addEventListener("click", changePageByBtn);
     pageBtns[0].classList.add("fill");
-    pages[0].noteContent = makeNoteContent(html);
-    noteBody.appendChild(pages[0].noteContent);
+    currentPage = page;
 
     for (var index = 1; index < contents.length; index++) {
         pageBtns[index].classList.add("active");
-        // pageBtns[index].addEventListener("click", changePage);
+        pageBtns[index].addEventListener("click", changePageByBtn);
         const noteContent = makeNoteContent(makeDiaryPageHTML(contents[index].content));
-        pages[index].noteContent = noteContent
-        undisplayPage(pages[index]);
+        noteContent.style.transform = "translateX(100%)";
         noteBody.appendChild(noteContent);
+        const page = { index: index, noteContent: noteContent };
+        pages.push(page);
     }
+    changePage(page);
 }
 
-function displayPage(page) {
-    page.noteContent.style.display = "block";
-}
-
-function undisplayPage(page) {
-    page.noteContent.style.transform = "translateX(100%)";
-}
-
-function changePageTest(event) {
+function changePageByBtn(event) {
     event.preventDefault();
-
-    pageBar.children[currentPage.index].classList.remove("fill");
-    undisplayPage(currentPage);
-
     const pageIndex = event.target.getAttribute("data-index");
-    const page = pages[pageIndex];
-    event.target.classList.add("fill");
-    currentPage = page;
-    prevPage = getPrevPage();
-    nextPage = getNextPage();
-    displayPage(currentPage);
+    const targetPage = pages[pageIndex];
+    const skipSize = currentPage.index - pageIndex;
+    const time = 0.3 / skipSize;
+
+    if (skipSize < 0) {
+        for (var index=-1; index >= skipSize; index--) {
+            changePageBySlide("next", `${time * index}s`);
+        }
+    } else {
+        for (var index=1; index <= skipSize; index++) {
+            changePageBySlide("prev", `${time * index}s`);
+        }
+    }
+    changePage(targetPage);
 }
 
 function changePage(targetPage) {
@@ -105,14 +84,14 @@ function changePage(targetPage) {
 }
 
 function getNextPage() {
-    if (pages[currentPage.index + 1] === undefined) {
+    if (currentPage.index === pages.length - 1) {
         return null
     }
     return pages[currentPage.index + 1];
 }
 
 function getPrevPage() {
-    if (pages[currentPage.index - 1] === undefined) {
+    if (currentPage.index === 0) {
         return null
     }
     return pages[currentPage.index - 1];
