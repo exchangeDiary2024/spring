@@ -28,14 +28,12 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @Transactional
 public class DiaryWriteService {
-    ServletContext servletContext;
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
     private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
-    private final UploadImageRepository uploadImageRepository;
 
     public Long writeDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
