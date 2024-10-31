@@ -3,15 +3,20 @@ package com.exchangediary.diary.ui.dto.response;
 import com.exchangediary.diary.domain.dto.DiaryDay;
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
 public record DiaryMonthlyResponse(
-        List<DiaryDay> days
+        List<DiaryDayResponse> days
 ) {
-    public static DiaryMonthlyResponse from(List<DiaryDay> diaries) {
+    public static DiaryMonthlyResponse of(List<DiaryDay> diaries, LocalDate lastViewableDiaryDate) {
+        List<DiaryDayResponse> days = diaries.stream()
+                .map(day -> DiaryDayResponse.of(day, lastViewableDiaryDate))
+                .toList();
+
         return DiaryMonthlyResponse.builder()
-                .days(diaries)
+                .days(days)
                 .build();
     }
 }

@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
-    @Query("SELECT new com.exchangediary.diary.domain.dto.DiaryDay(DAY(d.createdAt), m.profileImage, (m.lastViewableDiaryDate >= CAST(d.createdAt AS DATE))) "+
+    @Query("SELECT new com.exchangediary.diary.domain.dto.DiaryDay(d.id, d.createdAt, m.profileImage) "+
             "FROM Diary d JOIN d.member m " +
-            "ON d.group.id = :groupId AND d.member.id = m.id " +
-            "WHERE YEAR(d.createdAt) = :year AND MONTH(d.createdAt) = :month " +
+            "WHERE d.group.id = :groupId AND YEAR(d.createdAt) = :year AND MONTH(d.createdAt) = :month " +
             "ORDER BY d.createdAt")
     List<DiaryDay> findAllByGroupAndYearAndMonth(Long groupId, int year, int month);
     @Query("SELECT d.id FROM Diary d WHERE d.group.id = :groupId AND CAST(d.createdAt AS DATE) = :date")
