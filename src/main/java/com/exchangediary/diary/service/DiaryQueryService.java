@@ -45,7 +45,7 @@ public class DiaryQueryService {
         Member member = memberQueryService.findMember(memberId);
         Diary diary = findDiary(diaryId);
 
-        diaryAuthorizationService.checkViewableDiary(member, diary);
+        diaryAuthorizationService.checkDiaryViewable(member, diary);
 
         UploadImage uploadImage = uploadImageRepository.findByDiary(diary)
                 .orElse(null);

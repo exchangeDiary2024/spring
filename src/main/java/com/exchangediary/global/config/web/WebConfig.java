@@ -6,7 +6,6 @@ import com.exchangediary.global.config.web.interceptor.GroupLeaderAuthorizationI
 import com.exchangediary.global.config.web.interceptor.GroupMemberAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.JwtAuthenticationInterceptor;
 import com.exchangediary.global.config.web.interceptor.LoginInterceptor;
-import com.exchangediary.global.config.web.interceptor.WriteDiaryAuthorizationInterceptor;
 import com.exchangediary.group.service.GroupLeaderService;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
@@ -30,10 +29,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new JwtAuthenticationInterceptor(jwtService, cookieService, memberQueryService))
                 .addPathPatterns("/group", "/diary/**", "/group/**", "/api/**")
                 .excludePathPatterns("/api/kakao/callback");
-        registry.addInterceptor(new BelongToGroupInterceptor(memberQueryService))
-                .addPathPatterns("/group/**");
         registry.addInterceptor(new LoginInterceptor(jwtService, cookieService))
                 .addPathPatterns("/login");
+        registry.addInterceptor(new BelongToGroupInterceptor(memberQueryService))
+                .addPathPatterns("/group/**");
         registry.addInterceptor(new GroupMemberAuthorizationInterceptor(memberQueryService))
                 .addPathPatterns("/group/*/**", "/api/groups/*/**")
                 .excludePathPatterns(
@@ -43,10 +42,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/groups/code/verify"
                 );
 
-        registry.addInterceptor(new WriteDiaryAuthorizationInterceptor(diaryAuthorizationService))
-                .addPathPatterns("/group/*/diary", "/api/groups/*/diaries");
-//        registry.addInterceptor(new ViewDiaryAuthorizationInterceptor(diaryAuthorizationService))
-//                .addPathPatterns("/group/*/diary/*/**");
+//        registry.addInterceptor(new WriteDiaryAuthorizationInterceptor(diaryAuthorizationService))
+//                .addPathPatterns("/group/*/diary", "/api/groups/*/diaries");
         registry.addInterceptor(new GroupLeaderAuthorizationInterceptor(groupLeaderService))
                 .addPathPatterns("/api/groups/*/leader/**");
     }
