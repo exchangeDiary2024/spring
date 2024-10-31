@@ -72,7 +72,7 @@ public class DiaryWriteService {
             String fileExtension = getFileExtension(file.getOriginalFilename());
             String imageLocation = imagePath + "/" + date + fileExtension;
             file.transferTo(new File(imageLocation));
-            diary.updateImageLocation(imageLocation);
+            diary.updateImageFileName(date + fileExtension);
         }
     }
 
