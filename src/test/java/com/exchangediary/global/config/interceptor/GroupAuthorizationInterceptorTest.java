@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-public class GroupMemberAuthorizationInterceptorTest extends ApiBaseTest {
+public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -27,6 +27,7 @@ public class GroupMemberAuthorizationInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
+                .redirects().follow(false)
                 .when().get(String.format("api/groups/%d/diaries/status", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
@@ -43,7 +44,7 @@ public class GroupMemberAuthorizationInterceptorTest extends ApiBaseTest {
                 .cookie("token", token)
                 .when().get(String.format("api/groups/%d/diaries/status", otherGroup.getId()))
                 .then().log().all()
-                .statusCode(HttpStatus.NOT_FOUND.value());
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @Test
@@ -54,6 +55,7 @@ public class GroupMemberAuthorizationInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
+                .redirects().follow(false)
                 .when().get(String.format("/group/%d/diary", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
@@ -88,6 +90,7 @@ public class GroupMemberAuthorizationInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
+                .redirects().follow(false)
                 .when().get("/group/" + group.getId())
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());

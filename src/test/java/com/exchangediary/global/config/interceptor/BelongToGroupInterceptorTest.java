@@ -20,6 +20,7 @@ public class BelongToGroupInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
+                .redirects().follow(false)
                 .when().get("/group")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
@@ -33,6 +34,7 @@ public class BelongToGroupInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
+                .redirects().follow(false)
                 .when().get("/group/" + group.getId())
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
