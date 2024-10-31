@@ -30,11 +30,6 @@
                     </div>
                 </div>
                 <div class="note-body">
-                    <div class="note-title">
-                        <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
-                        <span class="title-font">[[${diary.member.nickname}]]의 일기</span>
-                        <div class="character"><img th:class="${diary.member.profileImage} + ' character-icon'"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -42,9 +37,6 @@
 </th:block>
 
 <th:block layout:fragment="script">
-    <script th:inline="javascript">
-        const photo = [[${diary.uploadImage}]];
-    </script>
     <script src="/js/diary/view-diary/slide-diary.js"></script>
     <script src="/js/diary/view-diary/view-diary.js"></script>
 </th:block>

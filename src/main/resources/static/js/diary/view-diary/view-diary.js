@@ -1,4 +1,6 @@
 const testDiaryData = {
+    profileImage: "blue",
+    nickname: "주한핑",
     image: null,
     contents: [
         {
@@ -44,25 +46,26 @@ const pages = [
     }
 ]
 var currentPage = pages[0];
+var prevPage = null;
+var nextPage = pages[1];
 
 function viewDiary() {
     drawPageBar();
-    adjustCharacterSize();
 }
 
 function drawPageBar() {
     const pageBtns = pageBar.children;
     const contents = testDiaryData.contents;
-    const html = makeDiaryPageHTMLContainsImage(testDiaryData.image, contents[0].content);
+    const html = makeDiaryTitleHTML(testDiaryData.profileImage, testDiaryData.nickname) + makeDiaryPageHTMLContainsImage(testDiaryData.image, contents[0].content);
     pageBtns[0].classList.add("active");
-    pageBtns[0].addEventListener("click", changePage);
+    // pageBtns[0].addEventListener("click", changePage);
     pageBtns[0].classList.add("fill");
     pages[0].noteContent = makeNoteContent(html);
     noteBody.appendChild(pages[0].noteContent);
 
     for (var index = 1; index < contents.length; index++) {
         pageBtns[index].classList.add("active");
-        pageBtns[index].addEventListener("click", changePage);
+        // pageBtns[index].addEventListener("click", changePage);
         const noteContent = makeNoteContent(makeDiaryPageHTML(contents[index].content));
         pages[index].noteContent = noteContent
         undisplayPage(pages[index]);
@@ -75,10 +78,10 @@ function displayPage(page) {
 }
 
 function undisplayPage(page) {
-    page.noteContent.style.display = "none";
+    page.noteContent.style.transform = "translateX(100%)";
 }
 
-function changePage(event) {
+function changePageTest(event) {
     event.preventDefault();
 
     pageBar.children[currentPage.index].classList.remove("fill");
@@ -88,7 +91,31 @@ function changePage(event) {
     const page = pages[pageIndex];
     event.target.classList.add("fill");
     currentPage = page;
+    prevPage = getPrevPage();
+    nextPage = getNextPage();
     displayPage(currentPage);
+}
+
+function changePage(targetPage) {
+    pageBar.children[currentPage.index].classList.remove("fill");
+    currentPage = targetPage;
+    prevPage = getPrevPage();
+    nextPage = getNextPage();
+    pageBar.children[currentPage.index].classList.add("fill");
+}
+
+function getNextPage() {
+    if (pages[currentPage.index + 1] === undefined) {
+        return null
+    }
+    return pages[currentPage.index + 1];
+}
+
+function getPrevPage() {
+    if (pages[currentPage.index - 1] === undefined) {
+        return null
+    }
+    return pages[currentPage.index - 1];
 }
 
 function makeNoteContent(html) {
@@ -107,6 +134,18 @@ function makeDiaryPageHTML(content) {
     `;
 }
 
+function makeDiaryTitleHTML(profileImage, name) {
+    if (profileImage === "green" || profileImage === "blue") {
+        profileImage = `${profileImage} ${profileImage}-icon`
+    }
+    return `
+    <div class="note-title">
+        <div class="character"><img class="${profileImage} character-icon"></div>
+        <span class="title-font">${name}의 일기</span>
+        <div class="character"><img class="${profileImage} character-icon"></div>
+    </div>`
+}
+
 function makeDiaryPageHTMLContainsImage(image, content) {
     if (image === null) {
         return makeDiaryPageHTML(content);
@@ -119,14 +158,6 @@ function makeDiaryPageHTMLContainsImage(image, content) {
         <p class="diary-content">${content}</p>
     </div>
     `;
-}
-
-function adjustCharacterSize() {
-    const characters = document.querySelectorAll(".character-icon");
-
-    if (characters[0].classList.contains("green") || characters[0].classList.contains("blue")) {
-        characters.forEach(character => character.classList.add(`${characters[0].classList[0]}-icon`));
-    }
 }
 
 viewDiary();

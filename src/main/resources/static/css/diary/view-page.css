@@ -27,7 +27,8 @@
 
 .note-body {
     width: 375px;
-    height: 450px;
+    height: 470px;
+    position: relative;
 }
 
 .page-bar {
@@ -138,10 +139,11 @@
 }
 
 .note-content {
-    width: 304px;
-    height: 400px;
-    position: relative;
+    width: 375px;
+    height: 450px;
+    position: absolute;
     top: 10px;
+
 
     transition: transform 0.3s ease-out;
 }

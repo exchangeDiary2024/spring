@@ -2,7 +2,7 @@
 
 html, body {
     margin: 0px;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .drag-prevent{
@@ -20,7 +20,7 @@ html, body {
 }
 
 .main-screen {
-    position:absolute; 
+    position:absolute;
     width: 100%;
     height: calc(100vw * 1.778);
 }
