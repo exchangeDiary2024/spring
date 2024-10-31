@@ -1,6 +1,7 @@
 package com.exchangediary.diary.service;
 
 import com.exchangediary.diary.domain.UploadImageRepository;
+import com.exchangediary.diary.domain.dto.DiaryDay;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.DiaryRepository;
 import com.exchangediary.diary.domain.entity.UploadImage;
@@ -52,11 +53,10 @@ public class DiaryQueryService {
         return DiaryResponse.of(diary, uploadImage);
     }
 
-    public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId, Long memberId) {
+    public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId) {
         diaryValidationService.validateYearMonthFormat(year, month);
-        List<Diary> diaries = diaryRepository.findAllByGroupYearAndMonth(groupId, year, month);
-        LocalDate lastViewableDiaryDate = memberQueryService.getLastViewableDiaryDate(memberId);
-        return DiaryMonthlyResponse.of(diaries, lastViewableDiaryDate);
+        List<DiaryDay> diaries = diaryRepository.findAllByGroupAndYearAndMonth(groupId, year, month);
+        return DiaryMonthlyResponse.from(diaries);
     }
 
     public DiaryIdResponse findDiaryIdByDate(int year, int month, int day, Long groupId) {

@@ -1,21 +1,17 @@
 package com.exchangediary.diary.ui.dto.response;
 
-import com.exchangediary.diary.domain.entity.Diary;
+import com.exchangediary.diary.domain.dto.DiaryDay;
 import lombok.Builder;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Builder
 public record DiaryMonthlyResponse(
-        List<DiaryDayResponse> days
+        List<DiaryDay> days
 ) {
-    public static DiaryMonthlyResponse of(List<Diary> diaries, LocalDate lastViewableDiaryDate) {
-        List<DiaryDayResponse> days = diaries.stream()
-                .map(diary -> DiaryDayResponse.of(diary, lastViewableDiaryDate))
-                .toList();
+    public static DiaryMonthlyResponse from(List<DiaryDay> diaries) {
         return DiaryMonthlyResponse.builder()
-                .days(days)
+                .days(diaries)
                 .build();
     }
 }
