@@ -40,6 +40,7 @@ public class Diary extends BaseEntity {
     private final String content;
     @NotNull
     private final String moodLocation;
+    private String imageLocation;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private final Member member;
@@ -54,5 +55,9 @@ public class Diary extends BaseEntity {
                 .member(member)
                 .group(group)
                 .build();
+    }
+
+    public void updateImageLocation(String imageLocation) {
+        this.imageLocation = imageLocation;
     }
 }
