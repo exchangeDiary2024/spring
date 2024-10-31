@@ -2,8 +2,8 @@ package com.exchangediary.diary.api;
 
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.diary.domain.DiaryRepository;
+import com.exchangediary.diary.domain.dto.DiaryDay;
 import com.exchangediary.diary.domain.entity.Diary;
-import com.exchangediary.diary.ui.dto.response.DiaryDayResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.group.domain.GroupRepository;
@@ -47,7 +47,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
                 .extract().as(DiaryMonthlyResponse.class);
 
         assertThat(response.days()).hasSize(1);
-        DiaryDayResponse day = response.days().get(0);
+        DiaryDay day = response.days().get(0);
         assertThat(day.canView()).isTrue();
         assertThat(day.day()).isEqualTo(diary.getCreatedAt().getDayOfMonth());
         assertThat(day.profileImage()).isEqualTo(this.member.getProfileImage());
@@ -72,7 +72,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
                 .extract().as(DiaryMonthlyResponse.class);
 
         assertThat(response.days()).hasSize(1);
-        DiaryDayResponse day = response.days().get(0);
+        DiaryDay day = response.days().get(0);
         assertThat(day.canView()).isFalse();
         assertThat(day.day()).isEqualTo(diary.getCreatedAt().getDayOfMonth());
         assertThat(day.profileImage()).isEqualTo(this.member.getProfileImage());

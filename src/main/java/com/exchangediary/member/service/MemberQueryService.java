@@ -27,18 +27,13 @@ public class MemberQueryService {
                 ));
     }
 
+    public boolean existMember(Long memberId) {
+        return memberRepository.existsById(memberId);
+    }
+
     public Optional<Long> findGroupBelongTo(Long memberId) {
         return memberRepository.findGroupIdById(memberId)
                 .map(GroupId::groupId);
-    }
-
-    public LocalDate getLastViewableDiaryDate(Long memberId) {
-        return memberRepository.findLastViewableDiaryDateById(memberId)
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.MEMBER_NOT_FOUND,
-                        "",
-                        String.valueOf(memberId)
-                ));
     }
 
     public void checkMemberOfGroup(Long memberId, Long groupId) {
