@@ -45,4 +45,13 @@ public class MemberQueryService {
             throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "", "");
         }
     }
+
+    public LocalDate getLastViewableDiaryDate(Long memberId) {
+        return memberRepository.findLastViewableDiaryDateById(memberId)
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.MEMBER_NOT_FOUND,
+                        "",
+                        String.valueOf(memberId)
+                ));
+    }
 }

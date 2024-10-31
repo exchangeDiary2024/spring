@@ -1,8 +1,10 @@
 package com.exchangediary.diary.domain.dto;
 
+import java.time.LocalDateTime;
+
 public record DiaryDay(
-        int day,
-        String profileImage,
-        boolean canView
+        Long id,
+        LocalDateTime createdAt,
+        String profileImage
 ) {
 }
