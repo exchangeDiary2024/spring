@@ -139,23 +139,11 @@
 
 .note-content {
     width: 304px;
-    height: auto;
+    height: 400px;
     position: relative;
     top: 10px;
 
     transition: transform 0.3s ease-out;
-}
-
-.note-content.next {
-    transform: translateX(100%);
-}
-
-.note-content.prev {
-    transform: translateX(-100%);
-}
-
-.note-content.stop {
-    transform: translateX(0);
 }
 
 .image {
