@@ -43,10 +43,11 @@ public class DiaryQueryService {
         return DiaryResponse.of(diary, uploadImage);
     }
 
-    public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId) {
+    public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId, Long memberId) {
         diaryValidationService.validateYearMonthFormat(year, month);
         List<DiaryDay> diaries = diaryRepository.findAllByGroupAndYearAndMonth(groupId, year, month);
-        return DiaryMonthlyResponse.from(diaries);
+        LocalDate lastViewableDiaryDate = memberQueryService.getLastViewableDiaryDate(memberId);
+        return DiaryMonthlyResponse.of(diaries, lastViewableDiaryDate);
     }
 
     public DiaryIdResponse findDiaryIdByDate(int year, int month, int day, Long groupId) {
