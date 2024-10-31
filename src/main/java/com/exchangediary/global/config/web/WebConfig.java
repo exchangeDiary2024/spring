@@ -1,6 +1,5 @@
 package com.exchangediary.global.config.web;
 
-import com.exchangediary.diary.service.DiaryAuthorizationService;
 import com.exchangediary.global.config.web.interceptor.BelongToGroupInterceptor;
 import com.exchangediary.global.config.web.interceptor.GroupLeaderAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.GroupMemberAuthorizationInterceptor;
@@ -21,7 +20,6 @@ public class WebConfig implements WebMvcConfigurer {
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final MemberQueryService memberQueryService;
-    private final DiaryAuthorizationService diaryAuthorizationService;
     private final GroupLeaderService groupLeaderService;
 
     @Override
@@ -41,9 +39,6 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/groups/*/join",
                         "/api/groups/code/verify"
                 );
-
-//        registry.addInterceptor(new WriteDiaryAuthorizationInterceptor(diaryAuthorizationService))
-//                .addPathPatterns("/group/*/diary", "/api/groups/*/diaries");
         registry.addInterceptor(new GroupLeaderAuthorizationInterceptor(groupLeaderService))
                 .addPathPatterns("/api/groups/*/leader/**");
     }

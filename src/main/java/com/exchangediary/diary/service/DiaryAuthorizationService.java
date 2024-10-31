@@ -27,6 +27,15 @@ public class DiaryAuthorizationService {
         }
     }
 
+    public void checkDiaryWritable(Long groupId, Long memberId) {
+        if (!groupQueryService.isMyOrderInGroup(memberId)) {
+            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
+        }
+        if (diaryRepository.existsTodayDiaryInGroup(groupId)) {
+            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
+        }
+    }
+
     public void checkDiaryViewable(Member member, Diary diary) {
         if (member.getLastViewableDiaryDate().isBefore(diary.getCreatedAt().toLocalDate())) {
             throw new ForbiddenException(ErrorCode.DIARY_VIEW_FORBIDDEN, "", "");
