@@ -47,6 +47,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
         assertThat(response.days()).hasSize(1);
         DiaryDayResponse day = response.days().get(0);
         assertThat(day.canView()).isTrue();
+        assertThat(day.id()).isEqualTo(diary.getId());
         assertThat(day.day()).isEqualTo(diary.getCreatedAt().getDayOfMonth());
         assertThat(day.profileImage()).isEqualTo(this.member.getProfileImage());
     }
@@ -72,6 +73,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
         assertThat(response.days()).hasSize(1);
         DiaryDayResponse day = response.days().get(0);
         assertThat(day.canView()).isFalse();
+        assertThat(day.id()).isEqualTo(diary.getId());
         assertThat(day.day()).isEqualTo(diary.getCreatedAt().getDayOfMonth());
         assertThat(day.profileImage()).isEqualTo(this.member.getProfileImage());
     }
