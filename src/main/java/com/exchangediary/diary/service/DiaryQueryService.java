@@ -1,11 +1,9 @@
 package com.exchangediary.diary.service;
 
-import com.exchangediary.diary.domain.DiaryContentRepository;
 import com.exchangediary.diary.domain.dto.DiaryDay;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.DiaryRepository;
 import com.exchangediary.diary.ui.dto.response.DiaryWritableStatusResponse;
-import com.exchangediary.diary.ui.dto.response.DiaryIdResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.global.exception.ErrorCode;

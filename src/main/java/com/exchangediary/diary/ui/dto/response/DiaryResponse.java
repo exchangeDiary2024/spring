@@ -14,7 +14,8 @@ public record DiaryResponse(
         String createdAt,
         String moodLocation,
         String imageFileName,
-        DiaryMemberResponse member,
+        String nickname,
+        String profileImage,
         List<DiaryContentDto> contents
 ) {
     public static DiaryResponse of(Diary diary) {
@@ -23,7 +24,8 @@ public record DiaryResponse(
                 .moodLocation(diary.getMoodLocation())
                 .imageFileName(diary.getImageFileName())
                 .contents(getDiaryContent(diary.getContents()))
-                .member(DiaryMemberResponse.from(diary.getMember()))
+                .nickname(diary.getMember().getNickname())
+                .profileImage(diary.getMember().getProfileImage())
                 .build();
     }
 
@@ -33,18 +35,5 @@ public record DiaryResponse(
                 .toList();
 
         return diaryContentsList;
-    }
-
-    @Builder
-    private record DiaryMemberResponse(
-            String nickname,
-            String profileImage
-    ) {
-        public static DiaryMemberResponse from(Member member) {
-            return DiaryMemberResponse.builder()
-                    .nickname(member.getNickname())
-                    .profileImage(member.getProfileImage())
-                    .build();
-        }
     }
 }
