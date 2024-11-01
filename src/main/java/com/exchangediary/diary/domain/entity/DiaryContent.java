@@ -39,7 +39,7 @@ public class DiaryContent extends BaseEntity {
     @JoinColumn(name = "dairy_id", foreignKey = @ForeignKey(name = "content_diary_id_fkey"))
     private final Diary diary;
 
-    public static DiaryContent from(int page, DiaryContentDto diaryContentDto, Diary diary) {
+    public static DiaryContent of(int page, DiaryContentDto diaryContentDto, Diary diary) {
         return DiaryContent.builder()
                 .page(page)
                 .content(diaryContentDto.content())

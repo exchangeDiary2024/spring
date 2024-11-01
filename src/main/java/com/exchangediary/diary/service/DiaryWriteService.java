@@ -23,9 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class DiaryWriteService {
         diaryAuthorizationService.checkDiaryWritable(group, member);
 
         try {
-            Diary diary = Diary.from(diaryRequest, member, group);
+            Diary diary = Diary.of(diaryRequest, member, group);
             Diary savedDiary = diaryRepository.save(diary);
             createDairyContent(diaryRequest.contents(), diary);
 
@@ -67,22 +67,20 @@ public class DiaryWriteService {
     }
 
     private void createDairyContent(List<DiaryContentDto> contents, Diary diary) {
-        List<DiaryContent> diaryContents = IntStream.range(0, contents.size())
-                .mapToObj(index -> DiaryContent.from(
-                            index + 1,
-                            contents.get(index),
-                            diary
-                        )
-                )
-                .toList();
+        List<DiaryContent> diaryContents = new ArrayList<>();
+        int index = 0;
+
+        while (index < contents.size()) {
+            diaryContents.add(DiaryContent.of(index + 1, contents.get(index), diary));
+            index++;
+        }
         diaryContentRepository.saveAll(diaryContents);
     }
 
     private void uploadImage(MultipartFile file, Diary diary) throws IOException{
         if (!isEmptyFile(file)) {
             diaryValidationService.validateImageType(file);
-            String imagePath = System.getProperty("user.dir") + "/src/main/resources/static/images/upload/groups/"
-                    + diary.getGroup().getId();
+            String imagePath = System.getProperty("user.dir") + "/src/main/resources/static/images/upload/groups/" + diary.getGroup().getId();
             File directory = new File(imagePath);
             if (!directory.exists()) {
                 directory.mkdirs();

@@ -124,7 +124,7 @@ public class DiaryViewApiTest extends ApiBaseTest {
     private void createDiaryContent(Diary diary) {
         DiaryContentDto diaryContent = DiaryContentDto.from("hi");
         List<DiaryContent> diaryContents = IntStream.rangeClosed(1, 3)
-                .mapToObj(page -> DiaryContent.from(page, diaryContent, diary))
+                .mapToObj(page -> DiaryContent.of(page, diaryContent, diary))
                 .toList();
         diaryContentRepository.saveAll(diaryContents);
     }

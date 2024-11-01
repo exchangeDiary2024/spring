@@ -53,7 +53,7 @@ public class Diary extends BaseEntity {
     @OrderBy("page ASC")
     private List<DiaryContent> contents;
 
-    public static Diary from(DiaryRequest diaryRequest, Member member, Group group) {
+    public static Diary of(DiaryRequest diaryRequest, Member member, Group group) {
         return Diary.builder()
                 .moodLocation(diaryRequest.moodLocation())
                 .member(member)
