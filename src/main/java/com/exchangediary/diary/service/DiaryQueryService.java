@@ -9,6 +9,7 @@ import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.service.GroupQueryService;
+import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,18 +23,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DiaryQueryService {
+    private final DiaryAuthorizationService diaryAuthorizationService;
     private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
     private final GroupQueryService groupQueryService;
     private final MemberQueryService memberQueryService;
 
-    public DiaryResponse viewDiary(Long diaryId) {
-        Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.DIARY_NOT_FOUND,
-                        "",
-                        String.valueOf(diaryId))
-                );
+    public DiaryResponse viewDiary(Long memberId, Long diaryId) {
+        Member member = memberQueryService.findMember(memberId);
+        Diary diary = findDiary(diaryId);
+
+        diaryAuthorizationService.checkDiaryViewable(member, diary);
+
         return DiaryResponse.of(diary);
     }
 
@@ -55,6 +56,15 @@ public class DiaryQueryService {
             diaryId = getTodayDiaryId(isMyOrder, memberId, todayDiary.get());
         }
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
+    }
+
+    private Diary findDiary(Long diaryId) {
+        return diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.DIARY_NOT_FOUND,
+                        "",
+                        String.valueOf(diaryId))
+                );
     }
 
     private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary) {

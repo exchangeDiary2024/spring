@@ -18,6 +18,7 @@ public enum ErrorCode {
     NOT_EXIST_MEMBER_TOKEN(HttpStatus.UNAUTHORIZED, "존재하지 않는 사용자의 토큰입니다."),
     JWT_TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "jwt 토큰 인증에 실패했습니다."),
 
+    GROUP_FORBIDDEN(HttpStatus.FORBIDDEN, "그룹 접근 권한이 없습니다."),
     DIARY_WRITE_FORBIDDEN(HttpStatus.FORBIDDEN, "일기 작성 권한이 없습니다."),
     DIARY_VIEW_FORBIDDEN(HttpStatus.FORBIDDEN, "일기 조회 권한이 없습니다."),
     GROUP_LEADER_FORBIDDEN(HttpStatus.FORBIDDEN, "방장 권한이 없습니다."),

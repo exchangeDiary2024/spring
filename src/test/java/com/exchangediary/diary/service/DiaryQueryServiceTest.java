@@ -4,10 +4,13 @@ import com.exchangediary.ApiBaseTest;
 import com.exchangediary.diary.domain.DiaryRepository;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
+import com.exchangediary.global.exception.ErrorCode;
+import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.member.domain.enums.GroupRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,30 +26,65 @@ public class DiaryQueryServiceTest extends ApiBaseTest {
     @Autowired
     private DiaryQueryService diaryQueryService;
     @Autowired
+    private DiaryRepository diaryRepository;
+    @Autowired
     private GroupRepository groupRepository;
+
+//    @Test
+//    void 일기_조회_성공() {
+//        Group group = createGroup();
+//        updateSelf(group, true);
+//        Diary diary = createDiary(this.member, group);
+//
+//        DiaryResponse response = diaryQueryService.viewDiary(member.getId(), diary.getId());
+//
+//        assertThat(response.diaryId()).isEqualTo(diary.getId());
+//    }
 
     @Test
     void 일기_조회_실패_일기_없음() {
-        Group group = createGroup();
-        groupRepository.save(group);
+        createGroup();
         Long diaryId = 1L;
 
         NotFoundException exception = assertThrows(NotFoundException.class, () ->
-                diaryQueryService.viewDiary(diaryId)
+                diaryQueryService.viewDiary(member.getId(), diaryId)
         );
 
         assertThat(exception.getValue()).isEqualTo(diaryId.toString());
     }
 
+    @Test
+    void 일기_조회_인가_실패() {
+        Group group = createGroup();
+        updateSelf(group, false);
+        Diary diary = createDiary(this.member, group);
+
+        ForbiddenException exception = assertThrows(ForbiddenException.class, () ->
+                diaryQueryService.viewDiary(member.getId(), diary.getId())
+        );
+
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.DIARY_VIEW_FORBIDDEN.getMessage());
+    }
+
     private Group createGroup() {
-        return Group.of("버니즈", "code");
+        Group group = Group.of("버니즈", "code");
+        return groupRepository.save(group);
+    }
+
+    private void updateSelf(Group group, boolean canViewToday) {
+        this.member.joinGroup("nickname", "red", 1, GroupRole.GROUP_MEMBER, group);
+        if (canViewToday) {
+            member.updateLastViewableDiaryDate();
+        }
+        memberRepository.save(this.member);
     }
 
     private Diary createDiary(Member member, Group group) {
-        return Diary.builder()
+        Diary diary = Diary.builder()
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .group(group)
                 .member(member)
                 .build();
+        return diaryRepository.save(diary);
     }
 }

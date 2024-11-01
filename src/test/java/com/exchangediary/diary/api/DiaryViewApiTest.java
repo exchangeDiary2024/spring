@@ -62,12 +62,12 @@ public class DiaryViewApiTest extends ApiBaseTest {
     @Test
     void 일기_조회_실패_일기_없음 () {
         Group group = createGroup();
-        groupRepository.save(group);
         Long diaryId = 1L;
 
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
+                .redirects().follow(false)
                 .when()
                 .get(String.format(API_PATH, group.getId()) + "/" + diaryId)
                 .then().log().all()

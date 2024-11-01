@@ -67,11 +67,10 @@ public class ApiDiaryController {
 
     @GetMapping("/{diaryId}")
     public ResponseEntity<DiaryResponse> viewDiary(
-            @PathVariable Long groupId,
             @PathVariable Long diaryId,
             @RequestAttribute Long memberId
     ) {
-        DiaryResponse diaryResponse = diaryQueryService.viewDiary(diaryId);
+        DiaryResponse diaryResponse = diaryQueryService.viewDiary(memberId, diaryId);
         return ResponseEntity
                 .ok()
                 .body(diaryResponse);
