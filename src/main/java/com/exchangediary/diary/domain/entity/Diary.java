@@ -61,7 +61,7 @@ public class Diary extends BaseEntity {
                 .build();
     }
 
-    public void updateImageFileName(String imageFileName) {
+    public void uploadImageFileName(String imageFileName) {
         this.imageFileName = imageFileName;
     }
 }

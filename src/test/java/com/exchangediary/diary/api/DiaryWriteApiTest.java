@@ -64,7 +64,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
-        assertThat(newDiary.getImageFileName()).isEqualTo("20241101.jpg");
+        assertThat(newDiary.getImageFileName()).isEqualTo("20241102.jpg");
 
         List<DiaryContent> diaryContents = diaryContentRepository.findAllByDiaryId(newDiary.getId());
         assertThat(diaryContents.size()).isEqualTo(3);
@@ -122,7 +122,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
                 .given().log().all()
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/jpeg")
                 .cookie("token", token)
                 .when().post(String.format(API_PATH, group.getId()))
                 .then().log().all()
@@ -141,7 +140,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
                 .given().log().all()
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/png")
                 .cookie("token", token)
                 .when().post(String.format(API_PATH, group.getId()))
                 .then().log().all()
@@ -163,7 +161,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
                         .given().log().all()
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/jpeg")
                         .cookie("token", token)
                         .when().post(String.format(API_PATH, group.getId()))
                         .then().log().all()
@@ -195,7 +192,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
                         .given().log().all()
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/jpeg")
                         .cookie("token", token)
                         .when().post(String.format(API_PATH, group.getId()))
                         .then().log().all()

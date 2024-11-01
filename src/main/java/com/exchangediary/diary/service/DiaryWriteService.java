@@ -51,7 +51,7 @@ public class DiaryWriteService {
             Diary savedDiary = diaryRepository.save(diary);
             createDairyContent(diaryRequest.contents(), diary);
 
-            uploadImage(file, diary);
+            saveImage(file, diary, group.getId());
             updateGroupCurrentOrder(group);
             updateViewableDiaryDate(member, group);
             member.updateLastViewableDiaryDate();
@@ -77,19 +77,18 @@ public class DiaryWriteService {
         diaryContentRepository.saveAll(diaryContents);
     }
 
-    private void uploadImage(MultipartFile file, Diary diary) throws IOException{
+    private void saveImage(MultipartFile file, Diary diary, Long groupId) throws IOException{
         if (!isEmptyFile(file)) {
             diaryValidationService.validateImageType(file);
-            String imagePath = System.getProperty("user.dir") + "/src/main/resources/static/images/upload/groups/" + diary.getGroup().getId();
+            String imagePath = System.getProperty("user.dir") + "/src/main/resources/static/images/upload/groups/" + groupId;
             File directory = new File(imagePath);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
             String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             String fileExtension = getFileExtension(file.getOriginalFilename());
-            String imageLocation = imagePath + "/" + date + fileExtension;
-            file.transferTo(new File(imageLocation));
-            diary.updateImageFileName(date + fileExtension);
+            file.transferTo(new File(imagePath + "/" + date + fileExtension));
+            diary.uploadImageFileName(date + fileExtension);
         }
     }
 
