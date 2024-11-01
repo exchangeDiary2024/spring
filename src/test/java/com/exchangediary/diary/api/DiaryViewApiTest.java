@@ -34,6 +34,7 @@ public class DiaryViewApiTest extends ApiBaseTest {
     void 일기_조회_성공() {
         Group group = createGroup();
         this.member.joinGroup("self", "red", 1, GroupRole.GROUP_MEMBER, group);
+        this.member.updateLastViewableDiaryDate();
         memberRepository.save(member);
         Member diaryCreator = createMember(group);
         Diary diary = createDiary(diaryCreator, group);
@@ -62,6 +63,9 @@ public class DiaryViewApiTest extends ApiBaseTest {
     @Test
     void 일기_조회_실패_일기_없음 () {
         Group group = createGroup();
+        this.member.joinGroup("self", "red", 1, GroupRole.GROUP_MEMBER, group);
+        this.member.updateLastViewableDiaryDate();
+        memberRepository.save(member);
         Long diaryId = 1L;
 
         RestAssured
