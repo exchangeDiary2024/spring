@@ -125,7 +125,6 @@ public class WriteDiaryAuthorizationInterceptorTest extends ApiBaseTest {
 
     private void createDiary(Group group) {
         Diary diary = Diary.builder()
-                .content("내용")
                 .moodLocation("happy")
                 .member(this.member)
                 .group(group)

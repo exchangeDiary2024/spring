@@ -121,7 +121,6 @@ class DiaryFindIdApiTest extends ApiBaseTest {
 
     private Diary createDiary(Group group) {
         return Diary.builder()
-                .content("내용")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .group(group)
                 .member(member)

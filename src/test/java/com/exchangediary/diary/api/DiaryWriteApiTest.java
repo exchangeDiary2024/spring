@@ -1,10 +1,10 @@
 package com.exchangediary.diary.api;
 
 import com.exchangediary.ApiBaseTest;
+import com.exchangediary.diary.domain.DiaryContentRepository;
 import com.exchangediary.diary.domain.DiaryRepository;
-import com.exchangediary.diary.domain.UploadImageRepository;
 import com.exchangediary.diary.domain.entity.Diary;
-import com.exchangediary.diary.domain.entity.UploadImage;
+import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
@@ -21,7 +21,9 @@ import org.springframework.http.MediaType;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -34,21 +36,21 @@ class DiaryWriteApiTest extends ApiBaseTest {
     @Autowired
     private DiaryRepository diaryRepository;
     @Autowired
-    private UploadImageRepository uploadImageRepository;
+    private DiaryContentRepository diaryContentRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void 일기_작성_성공_사진포함() throws JsonProcessingException {
         Group group = createGroup(1);
         updateSelf(group, 1);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         Long diaryId = Long.parseLong(
                 RestAssured
                         .given().log().all()
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/png")
+                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/jpeg")
                         .cookie("token", token)
                         .when().post(String.format(API_PATH, group.getId()))
                         .then().log().all()
@@ -61,17 +63,24 @@ class DiaryWriteApiTest extends ApiBaseTest {
         Diary newDiary = diaryRepository.findById(diaryId).get();
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getContent()).isEqualTo(data.get("content"));
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
-        UploadImage uploadImage = uploadImageRepository.findAll().getLast();
-        assertThat(uploadImage.getDiary().getId()).isEqualTo(newDiary.getId());
+        assertThat(newDiary.getImageFileName()).isEqualTo("20241101.jpg");
+
+        List<DiaryContent> diaryContents = diaryContentRepository.findAllByDiaryId(newDiary.getId());
+        assertThat(diaryContents.size()).isEqualTo(3);
+        assertThat(diaryContents.get(0).getPage()).isEqualTo(1);
+        assertThat(diaryContents.get(0).getContent()).isEqualTo("hi");
+        assertThat(diaryContents.get(1).getPage()).isEqualTo(2);
+        assertThat(diaryContents.get(1).getContent()).isEqualTo("");
+        assertThat(diaryContents.get(2).getPage()).isEqualTo(3);
+        assertThat(diaryContents.get(2).getContent()).isEqualTo("hi3");
     }
 
     @Test
     void 일기_작성_성공_사진_미포함() throws JsonProcessingException {
         Group group = createGroup(1);
         updateSelf(group, 1);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         Long diaryId = Long.parseLong(
                 RestAssured
@@ -90,8 +99,16 @@ class DiaryWriteApiTest extends ApiBaseTest {
         Diary newDiary = diaryRepository.findById(diaryId).get();
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getContent()).isEqualTo(data.get("content"));
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
+
+        List<DiaryContent> diaryContents = diaryContentRepository.findAllByDiaryId(newDiary.getId());
+        assertThat(diaryContents.size()).isEqualTo(3);
+        assertThat(diaryContents.get(0).getPage()).isEqualTo(1);
+        assertThat(diaryContents.get(0).getContent()).isEqualTo("hi");
+        assertThat(diaryContents.get(1).getPage()).isEqualTo(2);
+        assertThat(diaryContents.get(1).getContent()).isEqualTo("");
+        assertThat(diaryContents.get(2).getPage()).isEqualTo(3);
+        assertThat(diaryContents.get(2).getContent()).isEqualTo("hi3");
     }
 
     @Test
@@ -99,13 +116,13 @@ class DiaryWriteApiTest extends ApiBaseTest {
         Group group = createGroup(1);
         createDiary(group);
         updateSelf(group, 1);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         RestAssured
                 .given().log().all()
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/png")
+                .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/jpeg")
                 .cookie("token", token)
                 .when().post(String.format(API_PATH, group.getId()))
                 .then().log().all()
@@ -120,14 +137,14 @@ class DiaryWriteApiTest extends ApiBaseTest {
         updateSelf(group, 1);
         createMember(group, 2);
         createMember(group, 3);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         Long diaryId = Long.parseLong(
                 RestAssured
                         .given().log().all()
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/png")
+                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/jpeg")
                         .cookie("token", token)
                         .when().post(String.format(API_PATH, group.getId()))
                         .then().log().all()
@@ -142,7 +159,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getContent()).isEqualTo(data.get("content"));
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
     }
 
@@ -153,14 +169,14 @@ class DiaryWriteApiTest extends ApiBaseTest {
         updateSelf(group, 3);
         createMember(group, 1);
         createMember(group, 2);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         Long diaryId = Long.parseLong(
                 RestAssured
                         .given().log().all()
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/png")
+                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/jpeg")
                         .cookie("token", token)
                         .when().post(String.format(API_PATH, group.getId()))
                         .then().log().all()
@@ -175,7 +191,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(1);
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getContent()).isEqualTo(data.get("content"));
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
     }
 
@@ -186,7 +201,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
         updateSelf(group, 1);
         createMember(group, 2);
         createMember(group, 3);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         Long diaryId = Long.parseLong(
                 RestAssured
@@ -207,7 +222,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getContent()).isEqualTo(data.get("content"));
         assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
     }
 
@@ -215,7 +229,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
     void 일기_작성_실패_이미지_형식_실패() throws JsonProcessingException {
         Group group = createGroup(1);
         updateSelf(group, 1);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         RestAssured
                 .given().log().all()
@@ -234,7 +248,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
         Group group = createGroup(1);
         updateSelf(group, 1);
         Member nextMember = createMember(group, 2);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         RestAssured
                 .given().log().all()
@@ -256,7 +270,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
         Group group = createGroup(2);
         updateSelf(group, 2);
         Member nextMember = createMember(group, 1);
-        Map<String, String> data = makeDiaryData();
+        Map<String, Object> data = makeDiaryData();
 
         RestAssured
                 .given().log().all()
@@ -275,7 +289,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
 
     private Diary createDiary(Group group) {
         Diary diary = Diary.builder()
-                .content("하이하이")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .group(group)
                 .build();
@@ -308,10 +321,15 @@ class DiaryWriteApiTest extends ApiBaseTest {
         return memberRepository.save(member);
     }
 
-    private Map<String, String> makeDiaryData() {
-        Map<String, String> data = new HashMap<>();
-        data.put("content", "buddies");
+    private Map<String, Object> makeDiaryData() {
+        Map<String, Object> data = new HashMap<>();
         data.put("moodLocation", "/images/sad.png");
+        List<Map<String, String>> contents = new ArrayList<>();
+        contents.add(Map.of("content", "hi"));
+        contents.add(Map.of("content", ""));
+        contents.add(Map.of("content", "hi3"));
+
+        data.put("contents", contents);
         return data;
     }
 }

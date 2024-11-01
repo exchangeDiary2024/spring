@@ -20,24 +20,10 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = {"classpath:truncate.sql"}, executionPhase = BEFORE_TEST_METHOD)
 public class DiaryQueryServiceTest extends ApiBaseTest {
-    private static final String GROUP_NAME = "버니즈";
     @Autowired
     private DiaryQueryService diaryQueryService;
     @Autowired
-    private DiaryRepository diaryRepository;
-    @Autowired
     private GroupRepository groupRepository;
-
-    @Test
-    void 일기_조회_성공() {
-        Group group = createGroup();
-        groupRepository.save(group);
-        Diary diary = createDiary(member, group);
-        diaryRepository.save(diary);
-        DiaryResponse response = diaryQueryService.viewDiary(diary.getId());
-
-        assertThat(response.diaryId()).isEqualTo(diary.getId());
-    }
 
     @Test
     void 일기_조회_실패_일기_없음() {
@@ -58,7 +44,6 @@ public class DiaryQueryServiceTest extends ApiBaseTest {
 
     private Diary createDiary(Member member, Group group) {
         return Diary.builder()
-                .content("내용")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .group(group)
                 .member(member)

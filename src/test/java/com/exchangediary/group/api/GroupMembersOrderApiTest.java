@@ -182,7 +182,6 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
 
     private void createDiary(Group group) {
         Diary diary = Diary.builder()
-                .content("내용")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .group(group)
                 .member(member)

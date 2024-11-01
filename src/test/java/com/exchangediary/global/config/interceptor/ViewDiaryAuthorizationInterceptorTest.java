@@ -64,7 +64,6 @@ public class ViewDiaryAuthorizationInterceptorTest extends ApiBaseTest {
 
     private Diary createDiary(Member member, Group group) {
         Diary diary = Diary.builder()
-                .content("content")
                 .moodLocation("mood-location")
                 .member(member)
                 .group(group)

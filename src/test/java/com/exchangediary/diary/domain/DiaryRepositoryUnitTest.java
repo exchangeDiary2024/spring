@@ -28,7 +28,6 @@ public class DiaryRepositoryUnitTest {
     void 오늘_일기_있는_경우_조회() {
         Group group = Group.of("group-name", "code");
         Diary diary = Diary.builder()
-                .content("하이하이")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .group(group)
                 .build();
@@ -53,7 +52,6 @@ public class DiaryRepositoryUnitTest {
     @Test
     void 일기_조회_가능() {
         Diary diary = Diary.builder()
-                .content("하이하이")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .build();
         diaryRepository.save(diary);
@@ -71,7 +69,6 @@ public class DiaryRepositoryUnitTest {
     @Test
     void 일기_조회_불가능() {
         Diary diary = Diary.builder()
-                .content("하이하이")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .build();
         diaryRepository.save(diary);

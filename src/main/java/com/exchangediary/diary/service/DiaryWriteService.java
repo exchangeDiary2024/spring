@@ -46,6 +46,7 @@ public class DiaryWriteService {
 
         try {
             Diary diary = Diary.from(diaryRequest, member, group);
+            Diary savedDiary = diaryRepository.save(diary);
             createDairyContent(diaryRequest.contents(), diary);
 
             uploadImage(file, diary);
@@ -53,7 +54,6 @@ public class DiaryWriteService {
             updateViewableDiaryDate(member, group);
             member.updateLastViewableDiaryDate();
 
-            Diary savedDiary = diaryRepository.save(diary);
             return savedDiary.getId();
         } catch (IOException e) {
             throw new FailedImageUploadException(
