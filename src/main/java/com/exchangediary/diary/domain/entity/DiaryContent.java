@@ -36,7 +36,7 @@ public class DiaryContent extends BaseEntity {
     private final String content;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dairy_id", foreignKey = @ForeignKey(name = "content_diary_id_fkey"))
+    @JoinColumn(name = "diary_id", foreignKey = @ForeignKey(name = "diary_content_diary_id_fkey"))
     private final Diary diary;
 
     public static DiaryContent of(int page, DiaryContentDto diaryContentDto, Diary diary) {
