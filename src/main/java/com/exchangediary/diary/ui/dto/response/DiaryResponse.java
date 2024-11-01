@@ -1,37 +1,38 @@
 package com.exchangediary.diary.ui.dto.response;
 
+import com.exchangediary.diary.domain.dto.DiaryContentDto;
 import com.exchangediary.diary.domain.entity.Diary;
-import com.exchangediary.diary.domain.entity.UploadImage;
+import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.member.domain.entity.Member;
 import lombok.Builder;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Builder
 public record DiaryResponse(
-        Long diaryId,
         String createdAt,
-        String content,
         String moodLocation,
-        byte[] uploadImage,
-        DiaryMemberResponse member
+        String imageFileName,
+        DiaryMemberResponse member,
+        List<DiaryContentDto> contents
 ) {
-    public static DiaryResponse of(Diary diary, UploadImage uploadImage) {
+    public static DiaryResponse of(Diary diary) {
         return DiaryResponse.builder()
-                .diaryId(diary.getId())
                 .createdAt(diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
-                .content(diary.getContent())
                 .moodLocation(diary.getMoodLocation())
-                .uploadImage(getUploadImage(uploadImage))
+                .imageFileName(diary.getImageFileName())
+                .contents(getDiaryContent(diary.getContents()))
                 .member(DiaryMemberResponse.from(diary.getMember()))
                 .build();
     }
 
-    private static byte[] getUploadImage(UploadImage uploadImage) {
-        if (uploadImage == null) {
-            return null;
-        }
-        return uploadImage.getImage();
+    private static List<DiaryContentDto> getDiaryContent(List<DiaryContent> diaryContents) {
+        List<DiaryContentDto> diaryContentsList = diaryContents.stream()
+                .map(diaryContent -> DiaryContentDto.from(diaryContent.getContent()))
+                .toList();
+
+        return diaryContentsList;
     }
 
     @Builder

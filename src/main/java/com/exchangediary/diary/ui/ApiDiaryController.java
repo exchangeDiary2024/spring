@@ -3,8 +3,8 @@ package com.exchangediary.diary.ui;
 import com.exchangediary.diary.service.DiaryWriteService;
 import com.exchangediary.diary.service.DiaryQueryService;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
+import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryWritableStatusResponse;
-import com.exchangediary.diary.ui.dto.response.DiaryIdResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,19 +41,6 @@ public class ApiDiaryController {
                 .build();
     }
 
-    @GetMapping
-    public ResponseEntity<DiaryIdResponse> findDiaryId(
-            @RequestParam int year,
-            @RequestParam int month,
-            @RequestParam int day,
-            @PathVariable Long groupId
-    ) {
-        DiaryIdResponse diaryIdResponse = diaryQueryService.findDiaryIdByDate(year, month, day, groupId);
-        return ResponseEntity
-                .ok()
-                .body(diaryIdResponse);
-    }
-
     @GetMapping("/monthly")
     public ResponseEntity<DiaryMonthlyResponse> viewMonthlyDiary(
             @RequestParam int year,
@@ -76,5 +63,17 @@ public class ApiDiaryController {
         return ResponseEntity
                 .ok()
                 .body(response);
+    }
+
+    @GetMapping("/{diaryId}")
+    public ResponseEntity<DiaryResponse> viewDiary(
+            @PathVariable Long groupId,
+            @PathVariable Long diaryId,
+            @RequestAttribute Long memberId
+    ) {
+        DiaryResponse diaryResponse = diaryQueryService.viewDiary(diaryId);
+        return ResponseEntity
+                .ok()
+                .body(diaryResponse);
     }
 }

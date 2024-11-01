@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,6 +50,7 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "group_id")
     private final Group group;
     @OneToMany(mappedBy = "diary")
+    @OrderBy("page ASC")
     private List<DiaryContent> contents;
 
     public static Diary from(DiaryRequest diaryRequest, Member member, Group group) {

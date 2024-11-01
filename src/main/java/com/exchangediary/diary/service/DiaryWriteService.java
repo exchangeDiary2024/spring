@@ -2,6 +2,7 @@ package com.exchangediary.diary.service;
 
 import com.exchangediary.diary.domain.DiaryContentRepository;
 import com.exchangediary.diary.domain.DiaryRepository;
+import com.exchangediary.diary.domain.dto.DiaryContentDto;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
@@ -45,7 +46,7 @@ public class DiaryWriteService {
 
         try {
             Diary diary = Diary.from(diaryRequest, member, group);
-            createDairyContent(diaryRequest, diary);
+            createDairyContent(diaryRequest.contents(), diary);
 
             uploadImage(file, diary);
             updateGroupCurrentOrder(group);
@@ -63,11 +64,11 @@ public class DiaryWriteService {
         }
     }
 
-    private void createDairyContent(DiaryRequest diaryRequest, Diary diary) {
-        List<DiaryContent> diaryContents = IntStream.range(0, diaryRequest.contents().size())
+    private void createDairyContent(List<DiaryContentDto> contents, Diary diary) {
+        List<DiaryContent> diaryContents = IntStream.range(0, contents.size())
                 .mapToObj(index -> DiaryContent.from(
                             index + 1,
-                            diaryRequest.contents().get(index),
+                            contents.get(index),
                             diary
                         )
                 )
