@@ -3,7 +3,6 @@ package com.exchangediary.diary.ui.dto.response;
 import com.exchangediary.diary.domain.dto.DiaryContentDto;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.entity.DiaryContent;
-import com.exchangediary.member.domain.entity.Member;
 import lombok.Builder;
 
 import java.time.format.DateTimeFormatter;
