@@ -3,7 +3,6 @@ package com.exchangediary.diary.api;
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.diary.domain.DiaryContentRepository;
 import com.exchangediary.diary.domain.DiaryRepository;
-import com.exchangediary.diary.domain.dto.DiaryContentDto;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
@@ -16,8 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -122,10 +121,13 @@ public class DiaryViewApiTest extends ApiBaseTest {
     }
 
     private void createDiaryContent(Diary diary) {
-        DiaryContentDto diaryContent = DiaryContentDto.from("hi");
-        List<DiaryContent> diaryContents = IntStream.rangeClosed(1, 3)
-                .mapToObj(page -> DiaryContent.of(page, diaryContent, diary))
-                .toList();
+        List<DiaryContent> diaryContents = new ArrayList<>();
+        int index = 0;
+
+        while (index < 3) {
+            diaryContents.add(DiaryContent.of(index + 1, "hi", diary));
+            index++;
+        }
         diaryContentRepository.saveAll(diaryContents);
     }
 }

@@ -1,6 +1,5 @@
 package com.exchangediary.diary.domain.entity;
 
-import com.exchangediary.diary.domain.dto.DiaryContentDto;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,10 +38,10 @@ public class DiaryContent extends BaseEntity {
     @JoinColumn(name = "diary_id", foreignKey = @ForeignKey(name = "diary_content_diary_id_fkey"))
     private final Diary diary;
 
-    public static DiaryContent of(int page, DiaryContentDto diaryContentDto, Diary diary) {
+    public static DiaryContent of(int page, String diaryContent, Diary diary) {
         return DiaryContent.builder()
                 .page(page)
-                .content(diaryContentDto.content())
+                .content(diaryContent)
                 .diary(diary)
                 .build();
     }

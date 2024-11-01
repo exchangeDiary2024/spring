@@ -2,7 +2,7 @@ package com.exchangediary.diary.service;
 
 import com.exchangediary.diary.domain.DiaryContentRepository;
 import com.exchangediary.diary.domain.DiaryRepository;
-import com.exchangediary.diary.domain.dto.DiaryContentDto;
+import com.exchangediary.diary.ui.dto.request.DiaryContentRequest;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
@@ -66,12 +66,12 @@ public class DiaryWriteService {
         }
     }
 
-    private void createDairyContent(List<DiaryContentDto> contents, Diary diary) {
+    private void createDairyContent(List<DiaryContentRequest> contents, Diary diary) {
         List<DiaryContent> diaryContents = new ArrayList<>();
         int index = 0;
 
         while (index < contents.size()) {
-            diaryContents.add(DiaryContent.of(index + 1, contents.get(index), diary));
+            diaryContents.add(DiaryContent.of(index + 1, contents.get(index).content(), diary));
             index++;
         }
         diaryContentRepository.saveAll(diaryContents);
