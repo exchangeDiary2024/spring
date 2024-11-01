@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DiaryViewApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/diaries";
+    private static final String API_PATH = "/api/groups/%d/diaries/%d";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -43,8 +43,7 @@ public class DiaryViewApiTest extends ApiBaseTest {
         var response = RestAssured
                 .given().log().all()
                 .cookie("token", token)
-                .when()
-                .get(String.format(API_PATH, group.getId()) + "/" + diary.getId())
+                .when().get(String.format(API_PATH, group.getId(), diary.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(DiaryResponse.class);
@@ -72,10 +71,27 @@ public class DiaryViewApiTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when()
-                .get(String.format(API_PATH, group.getId()) + "/" + diaryId)
+                .when().get(String.format(API_PATH, group.getId(), diaryId))
                 .then().log().all()
                 .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    void 일기_조회_인가_실패() {
+        Group group = createGroup();
+        this.member.joinGroup("self", "red", 1, GroupRole.GROUP_MEMBER, group);
+        memberRepository.save(member);
+        Member diaryCreator = createMember(group);
+        Diary diary = createDiary(diaryCreator, group);
+        createDiaryContent(diary);
+
+        RestAssured
+                .given().log().all()
+                .cookie("token", token)
+                .redirects().follow(false)
+                .when().get(String.format(API_PATH, group.getId(), diary.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     private Group createGroup() {
