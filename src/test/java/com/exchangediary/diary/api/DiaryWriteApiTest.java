@@ -95,7 +95,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
     }
 
     @Test
-    void 일기_작성_실패_오늘작성완료() throws JsonProcessingException {
+    void 일기_작성_인가_실패_오늘작성완료() throws JsonProcessingException {
         Group group = createGroup(1);
         createDiary(group);
         updateSelf(group, 1);
@@ -109,8 +109,27 @@ class DiaryWriteApiTest extends ApiBaseTest {
                 .cookie("token", token)
                 .when().post(String.format(API_PATH, group.getId()))
                 .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", equalTo(ErrorCode.DIARY_DUPLICATED.getMessage()));
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .body("message", equalTo(ErrorCode.DIARY_WRITE_FORBIDDEN.getMessage()));
+    }
+
+    @Test
+    void 일기_작성_인가_실패_내순서아님() throws JsonProcessingException {
+        Group group = createGroup(1);
+        createDiary(group);
+        updateSelf(group, 2);
+        Map<String, String> data = makeDiaryData();
+
+        RestAssured
+                .given().log().all()
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
+                .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/png")
+                .cookie("token", token)
+                .when().post(String.format(API_PATH, group.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .body("message", equalTo(ErrorCode.DIARY_WRITE_FORBIDDEN.getMessage()));
     }
 
     @Test

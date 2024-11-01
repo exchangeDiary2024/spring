@@ -28,6 +28,7 @@ public class DiaryWriteService {
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
     private final DiaryValidationService diaryValidationService;
+    private final DiaryAuthorizationService diaryAuthorizationService;
     private final DiaryRepository diaryRepository;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
@@ -36,7 +37,8 @@ public class DiaryWriteService {
     public Long writeDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
         Group group = groupQueryService.findGroup(groupId);
-        diaryValidationService.checkTodayDiaryExistent(groupId);
+
+        diaryAuthorizationService.checkDiaryWritable(group, member);
 
         try {
             Diary diary = Diary.from(diaryRequest, member, group);
