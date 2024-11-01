@@ -43,7 +43,7 @@ public class ExpiredJwtTest {
 
     @Test
     void 만료된_리프레쉬_토큰_검증() throws InterruptedException {
-        Member member = Member.from(1L);
+        Member member = Member.of(1L);
         memberRepository.save(member);
         RefreshToken refreshToken = RefreshToken.of(
                 jwtService.generateRefreshToken(),

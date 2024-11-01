@@ -114,7 +114,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
     @Test
     void 일기_작성_인가_실패_오늘작성완료() throws JsonProcessingException {
         Group group = createGroup(1);
-        createDiary(group);
+        createDiary(group, member);
         updateSelf(group, 1);
         Map<String, Object> data = makeDiaryData();
 
@@ -132,7 +132,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
     @Test
     void 일기_작성_인가_실패_내순서아님() throws JsonProcessingException {
         Group group = createGroup(1);
-        createDiary(group);
+        createDiary(group, member);
         updateSelf(group, 2);
         Map<String, Object> data = makeDiaryData();
 
@@ -302,9 +302,10 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(nextWriter.getLastViewableDiaryDate()).isEqualTo(LocalDate.now());
     }
 
-    private Diary createDiary(Group group) {
+    private Diary createDiary(Group group, Member member) {
         Diary diary = Diary.builder()
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .member(member)
                 .group(group)
                 .build();
         return diaryRepository.save(diary);

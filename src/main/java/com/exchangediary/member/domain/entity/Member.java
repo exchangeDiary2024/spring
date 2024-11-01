@@ -47,7 +47,7 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "group_id", foreignKey = @ForeignKey(name = "member_group_id_fkey"))
     private Group group;
 
-    public static Member from(Long kakaoId) {
+    public static Member of(Long kakaoId) {
         return Member.builder()
                 .kakaoId(kakaoId)
                 .orderInGroup(0)

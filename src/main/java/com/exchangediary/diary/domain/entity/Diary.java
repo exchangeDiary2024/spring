@@ -45,9 +45,11 @@ public class Diary extends BaseEntity {
     private String imageFileName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @NotNull
     private final Member member;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
+    @NotNull
     private final Group group;
     @OneToMany(mappedBy = "diary")
     @OrderBy("page ASC")
