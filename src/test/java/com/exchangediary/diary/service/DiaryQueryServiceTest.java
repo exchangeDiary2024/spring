@@ -3,7 +3,7 @@ package com.exchangediary.diary.service;
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.diary.domain.DiaryRepository;
 import com.exchangediary.diary.domain.entity.Diary;
-import com.exchangediary.diary.ui.dto.response.DiaryResponse;
+import com.exchangediary.diary.ui.dto.response.DiaryTopResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,16 +32,18 @@ public class DiaryQueryServiceTest extends ApiBaseTest {
     @Autowired
     private GroupRepository groupRepository;
 
-//    @Test
-//    void 일기_조회_성공() {
-//        Group group = createGroup();
-//        updateSelf(group, true);
-//        Diary diary = createDiary(this.member, group);
-//
-//        DiaryResponse response = diaryQueryService.viewDiary(member.getId(), diary.getId());
-//
-//        assertThat(response.diaryId()).isEqualTo(diary.getId());
-//    }
+    @Test
+    void 일기_조회_성공() {
+        Group group = createGroup();
+        updateSelf(group, true);
+        Diary diary = createDiary(this.member, group);
+
+        DiaryTopResponse response = diaryQueryService.viewDiaryTop(member.getId(), diary.getId());
+
+        assertThat(response.createdAt()).isEqualTo(
+                diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        assertThat(response.moodLocation()).isEqualTo(diary.getMoodLocation());
+    }
 
     @Test
     void 일기_조회_실패_일기_없음() {
@@ -47,7 +51,7 @@ public class DiaryQueryServiceTest extends ApiBaseTest {
         Long diaryId = 1L;
 
         NotFoundException exception = assertThrows(NotFoundException.class, () ->
-                diaryQueryService.viewDiary(member.getId(), diaryId)
+                diaryQueryService.viewDiaryTop(member.getId(), diaryId)
         );
 
         assertThat(exception.getValue()).isEqualTo(diaryId.toString());
@@ -60,7 +64,7 @@ public class DiaryQueryServiceTest extends ApiBaseTest {
         Diary diary = createDiary(this.member, group);
 
         ForbiddenException exception = assertThrows(ForbiddenException.class, () ->
-                diaryQueryService.viewDiary(member.getId(), diary.getId())
+                diaryQueryService.viewDiaryTop(member.getId(), diary.getId())
         );
 
         assertThat(exception.getMessage()).isEqualTo(ErrorCode.DIARY_VIEW_FORBIDDEN.getMessage());

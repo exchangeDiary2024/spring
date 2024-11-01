@@ -53,7 +53,6 @@ public class DiaryViewApiTest extends ApiBaseTest {
         assertThat(diaryContents.get(0).content()).isEqualTo("hi");
         assertThat(diaryContents.get(1).content()).isEqualTo("hi");
         assertThat(diaryContents.get(2).content()).isEqualTo("hi");
-        assertThat(response.moodLocation()).isEqualTo("/images/write-page/emoji/sleepy.svg");
         assertThat(response.imageFileName()).isEqualTo("20241101.jpeg");
         assertThat(response.nickname()).isEqualTo("하니");
         assertThat(response.profileImage()).isEqualTo("orange");
