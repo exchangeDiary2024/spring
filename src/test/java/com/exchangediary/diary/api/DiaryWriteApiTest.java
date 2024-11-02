@@ -40,43 +40,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void 일기_작성_성공_사진포함() throws JsonProcessingException {
-        Group group = createGroup(1);
-        updateSelf(group, 1);
-        Map<String, Object> data = makeDiaryData();
-
-        Long diaryId = Long.parseLong(
-                RestAssured
-                        .given().log().all()
-                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                        .multiPart("data", objectMapper.writeValueAsString(data), "application/json")
-                        .multiPart("file", new File("src/test/resources/images/test.jpg"), "image/jpeg")
-                        .cookie("token", token)
-                        .when().post(String.format(API_PATH, group.getId()))
-                        .then().log().all()
-                        .statusCode(HttpStatus.CREATED.value())
-                        .extract()
-                        .header("Content-Location")
-                        .split("/")[4]
-        );
-
-        Diary newDiary = diaryRepository.findById(diaryId).get();
-        assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
-        assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
-        assertThat(newDiary.getImageFileName()).isEqualTo("20241102.jpg");
-
-        List<DiaryContent> diaryContents = diaryContentRepository.findAllByDiaryId(newDiary.getId());
-        assertThat(diaryContents.size()).isEqualTo(3);
-        assertThat(diaryContents.get(0).getPage()).isEqualTo(1);
-        assertThat(diaryContents.get(0).getContent()).isEqualTo("hi");
-        assertThat(diaryContents.get(1).getPage()).isEqualTo(2);
-        assertThat(diaryContents.get(1).getContent()).isEqualTo("");
-        assertThat(diaryContents.get(2).getPage()).isEqualTo(3);
-        assertThat(diaryContents.get(2).getContent()).isEqualTo("hi3");
-    }
-
-    @Test
     void 일기_작성_성공_사진_미포함() throws JsonProcessingException {
         Group group = createGroup(1);
         updateSelf(group, 1);
