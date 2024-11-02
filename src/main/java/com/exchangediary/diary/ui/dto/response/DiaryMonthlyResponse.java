@@ -1,6 +1,6 @@
 package com.exchangediary.diary.ui.dto.response;
 
-import com.exchangediary.diary.domain.entity.Diary;
+import com.exchangediary.diary.domain.dto.DiaryDay;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -10,10 +10,11 @@ import java.util.List;
 public record DiaryMonthlyResponse(
         List<DiaryDayResponse> days
 ) {
-    public static DiaryMonthlyResponse of(List<Diary> diaries, LocalDate lastViewableDiaryDate) {
+    public static DiaryMonthlyResponse of(List<DiaryDay> diaries, LocalDate lastViewableDiaryDate) {
         List<DiaryDayResponse> days = diaries.stream()
-                .map(diary -> DiaryDayResponse.of(diary, lastViewableDiaryDate))
+                .map(day -> DiaryDayResponse.of(day, lastViewableDiaryDate))
                 .toList();
+
         return DiaryMonthlyResponse.builder()
                 .days(days)
                 .build();

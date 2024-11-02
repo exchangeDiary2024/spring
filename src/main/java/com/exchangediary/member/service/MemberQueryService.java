@@ -27,6 +27,10 @@ public class MemberQueryService {
                 ));
     }
 
+    public boolean existMember(Long memberId) {
+        return memberRepository.existsById(memberId);
+    }
+
     public Optional<Long> findGroupBelongTo(Long memberId) {
         return memberRepository.findGroupIdById(memberId)
                 .map(GroupId::groupId);
@@ -39,15 +43,5 @@ public class MemberQueryService {
                         "",
                         String.valueOf(memberId)
                 ));
-    }
-
-    public void checkMemberOfGroup(Long memberId, Long groupId) {
-        Long groupIdOfMember = memberRepository.findGroupIdById(memberId)
-                .map(GroupId::groupId)
-                .orElse(null);
-
-        if (!groupId.equals(groupIdOfMember)) {
-            throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "", "");
-        }
     }
 }

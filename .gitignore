@@ -43,3 +43,6 @@ out/
 
 application.yml
 application.properties
+
+/log
+**/static/images/upload

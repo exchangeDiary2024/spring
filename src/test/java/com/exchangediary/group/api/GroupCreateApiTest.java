@@ -46,6 +46,7 @@ public class GroupCreateApiTest extends ApiBaseTest {
         assertThat(groupCreator.getNickname()).isEqualTo(nickname);
         assertThat(groupCreator.getProfileImage()).isEqualTo(profileImage);
         assertThat(groupCreator.getGroupRole()).isEqualTo(GroupRole.GROUP_LEADER);
+        assertThat(groupCreator.getLastViewableDiaryDate()).isEqualTo(group.getCreatedAt().toLocalDate().minusDays(1));
     }
 
     @ParameterizedTest

@@ -46,6 +46,7 @@ class GroupJoinApiTest extends ApiBaseTest {
         assertThat(updatedMember.getOrderInGroup()).isEqualTo(2);
         assertThat(updatedMember.getGroup().getId()).isEqualTo(group.getId());
         assertThat(updatedMember.getGroupRole()).isEqualTo(GroupRole.GROUP_MEMBER);
+        assertThat(updatedMember.getLastViewableDiaryDate()).isEqualTo(group.getCreatedAt().toLocalDate().minusDays(1));
     }
 
     @Test

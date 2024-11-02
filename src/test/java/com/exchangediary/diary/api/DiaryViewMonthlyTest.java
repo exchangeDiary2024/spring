@@ -16,8 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -32,7 +30,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
     @DisplayName("사용자가 오늘 일기까지 조회 가능")
     void 달력형_일기_조회_성공_조회_가능한_일기() {
         Group group = createGroup();
-        updateSelf(group, LocalDate.now());
+        updateSelf(group, true);
         Diary diary = createDiary(group);
 
         DiaryMonthlyResponse response = RestAssured
@@ -49,6 +47,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
         assertThat(response.days()).hasSize(1);
         DiaryDayResponse day = response.days().get(0);
         assertThat(day.canView()).isTrue();
+        assertThat(day.id()).isEqualTo(diary.getId());
         assertThat(day.day()).isEqualTo(diary.getCreatedAt().getDayOfMonth());
         assertThat(day.profileImage()).isEqualTo(this.member.getProfileImage());
     }
@@ -57,7 +56,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
     @DisplayName("사용자가 어제 일기까지 조회 가능")
     void 달력형_일기_조회_성공_조회_불가능한_일기() {
         Group group = createGroup();
-        updateSelf(group, LocalDate.now().minusDays(1));
+        updateSelf(group, false);
         Diary diary = createDiary(group);
 
         DiaryMonthlyResponse response = RestAssured
@@ -74,6 +73,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
         assertThat(response.days()).hasSize(1);
         DiaryDayResponse day = response.days().get(0);
         assertThat(day.canView()).isFalse();
+        assertThat(day.id()).isEqualTo(diary.getId());
         assertThat(day.day()).isEqualTo(diary.getCreatedAt().getDayOfMonth());
         assertThat(day.profileImage()).isEqualTo(this.member.getProfileImage());
     }
@@ -81,7 +81,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
     @Test
     void 달력형_일기_조회_실패_날짜_유효성_검사() {
         Group group = createGroup();
-        updateSelf(group, LocalDate.now().minusDays(1));
+        updateSelf(group, true);
 
         RestAssured
                 .given().log().all()
@@ -99,15 +99,16 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
         return groupRepository.save(Group.of("버니즈", "code"));
     }
 
-    private void updateSelf(Group group, LocalDate lastViewableDiaryDate) {
+    private void updateSelf(Group group, boolean canViewToday) {
         this.member.joinGroup("nickname", "/image", 1, GroupRole.GROUP_LEADER, group);
-        this.member.updateLastViewableDiaryDate(lastViewableDiaryDate);
+        if (canViewToday) {
+            member.updateLastViewableDiaryDate();
+        }
         memberRepository.save(member);
     }
 
     private Diary createDiary(Group group) {
         Diary diary = Diary.builder()
-                .content("내용")
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
                 .group(group)
                 .member(member)

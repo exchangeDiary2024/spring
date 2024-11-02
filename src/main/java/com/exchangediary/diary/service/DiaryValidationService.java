@@ -54,18 +54,6 @@ public class DiaryValidationService {
         }
     }
 
-    public void checkTodayDiaryExistent(Long groupId) {
-        Optional<Diary> todayDiary = diaryRepository.findTodayDiaryInGroup(groupId);
-
-        if (todayDiary.isPresent()) {
-            throw new DuplicateException(
-                    ErrorCode.DIARY_DUPLICATED,
-                    "",
-                    LocalDate.now().toString()
-            );
-        }
-    }
-
     public void validateImageType(MultipartFile file) {
         String contentType = file.getContentType();
 

@@ -1,22 +1,23 @@
 package com.exchangediary.diary.ui.dto.response;
 
-import com.exchangediary.diary.domain.entity.Diary;
+import com.exchangediary.diary.domain.dto.DiaryDay;
 import lombok.Builder;
 
 import java.time.LocalDate;
 
 @Builder
 public record DiaryDayResponse(
+        Long id,
         int day,
         String profileImage,
         boolean canView
 ) {
-    public static DiaryDayResponse of(Diary diary, LocalDate lastViewableDiaryDate) {
+    public static DiaryDayResponse of(DiaryDay diary, LocalDate lastViewableDiaryDate) {
         return DiaryDayResponse.builder()
-                .day(diary.getCreatedAt().getDayOfMonth())
-                .profileImage(diary.getMember().getProfileImage())
-                .canView(!diary.getCreatedAt().toLocalDate().isAfter(lastViewableDiaryDate))
+                .id(diary.id())
+                .day(diary.createdAt().getDayOfMonth())
+                .profileImage(diary.profileImage())
+                .canView(!diary.createdAt().toLocalDate().isAfter(lastViewableDiaryDate))
                 .build();
-
     }
 }

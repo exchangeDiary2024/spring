@@ -13,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.LongVarcharJdbcType;
+
+import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -37,22 +41,29 @@ public class Diary extends BaseEntity {
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
-    private final String content;
-    @NotNull
     private final String moodLocation;
+    private String imageFileName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @NotNull
     private final Member member;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
+    @NotNull
     private final Group group;
+    @OneToMany(mappedBy = "diary")
+    @OrderBy("page ASC")
+    private List<DiaryContent> contents;
 
-    public static Diary from(DiaryRequest diaryRequest, Member member, Group group) {
+    public static Diary of(DiaryRequest diaryRequest, Member member, Group group) {
         return Diary.builder()
-                .content(diaryRequest.content())
                 .moodLocation(diaryRequest.moodLocation())
                 .member(member)
                 .group(group)
                 .build();
+    }
+
+    public void uploadImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

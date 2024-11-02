@@ -74,6 +74,19 @@ public class GroupLeaveService {
         } else {
             group.updateCurrentOrder(currentOrder, numberOfGroupMember);
         }
+
+        if (leaveMemberOrder == currentOrder) {
+            int index = getCurrentMemberIndex(group.getCurrentOrder());
+            group.getMembers().get(index).updateLastViewableDiaryDate();
+        }
+
         groupRepository.save(group);
+    }
+
+    private int getCurrentMemberIndex(int currentOrder) {
+        if (currentOrder == 1) {
+            return 0;
+        }
+        return currentOrder;
     }
 }

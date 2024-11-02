@@ -1,7 +1,6 @@
 package com.exchangediary.global.config.web.interceptor;
 
 import com.exchangediary.global.exception.ErrorCode;
-import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.global.exception.serviceexception.UnauthorizedException;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
@@ -76,14 +75,12 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     }
 
     private void checkMemberExists(Long memberId) {
-        try {
-            memberQueryService.findMember(memberId);
-        } catch (NotFoundException exception) {
+        if (!memberQueryService.existMember(memberId)) {
             throw new UnauthorizedException(
                     ErrorCode.NOT_EXIST_MEMBER_TOKEN,
                     "",
                     String.valueOf(memberId)
-                );
+            );
         }
     }
 }

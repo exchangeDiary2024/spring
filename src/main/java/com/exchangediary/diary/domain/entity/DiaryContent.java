@@ -9,15 +9,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.descriptor.jdbc.LongVarbinaryJdbcType;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -27,22 +24,24 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED, force = true)
 @AllArgsConstructor(access = PRIVATE)
-public class UploadImage extends BaseEntity {
+public class DiaryContent extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "upload_image_id")
+    @Column(name = "diary_content_id")
     private Long id;
-    @Lob
-    @JdbcType(LongVarbinaryJdbcType.class)
     @NotNull
-    private final byte[] image;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id", foreignKey = @ForeignKey(name = "upload_image_diary_id_fkey"))
+    private final Integer page;
+    @NotNull
+    private final String content;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diary_id", foreignKey = @ForeignKey(name = "diary_content_diary_id_fkey"))
     private final Diary diary;
 
-    public static UploadImage of(byte[] image, Diary diary) {
-        return UploadImage.builder()
-                .image(image)
+    public static DiaryContent of(int page, String diaryContent, Diary diary) {
+        return DiaryContent.builder()
+                .page(page)
+                .content(diaryContent)
                 .diary(diary)
                 .build();
     }
