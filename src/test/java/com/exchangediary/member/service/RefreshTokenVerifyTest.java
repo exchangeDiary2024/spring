@@ -25,7 +25,7 @@ public class RefreshTokenVerifyTest {
 
     @Test
     void 리프레쉬_토큰_검증_성공() {
-        Member member = Member.from(1L);
+        Member member = Member.of(1L);
         memberRepository.save(member);
         RefreshToken refreshToken = RefreshToken.of(
                 jwtService.generateRefreshToken(),

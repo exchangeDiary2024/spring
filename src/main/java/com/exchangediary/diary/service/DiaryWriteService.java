@@ -1,9 +1,10 @@
 package com.exchangediary.diary.service;
 
+import com.exchangediary.diary.domain.DiaryContentRepository;
 import com.exchangediary.diary.domain.DiaryRepository;
-import com.exchangediary.diary.domain.UploadImageRepository;
+import com.exchangediary.diary.ui.dto.request.DiaryContentRequest;
 import com.exchangediary.diary.domain.entity.Diary;
-import com.exchangediary.diary.domain.entity.UploadImage;
+import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.FailedImageUploadException;
@@ -18,8 +19,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +38,7 @@ public class DiaryWriteService {
     private final DiaryRepository diaryRepository;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
-    private final UploadImageRepository uploadImageRepository;
+    private final DiaryContentRepository diaryContentRepository;
 
     public Long writeDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
@@ -41,14 +47,15 @@ public class DiaryWriteService {
         diaryAuthorizationService.checkDiaryWritable(group, member);
 
         try {
-            Diary diary = Diary.from(diaryRequest, member, group);
+            Diary diary = Diary.of(diaryRequest, member, group);
+            Diary savedDiary = diaryRepository.save(diary);
+            createDairyContent(diaryRequest.contents(), diary);
 
-            uploadImage(file, diary);
+            saveImage(file, diary, group.getId());
             updateGroupCurrentOrder(group);
             updateViewableDiaryDate(member, group);
             member.updateLastViewableDiaryDate();
 
-            Diary savedDiary = diaryRepository.save(diary);
             return savedDiary.getId();
         } catch (IOException e) {
             throw new FailedImageUploadException(
@@ -59,11 +66,35 @@ public class DiaryWriteService {
         }
     }
 
-    private void uploadImage(MultipartFile file, Diary diary) throws IOException{
+    private void createDairyContent(List<DiaryContentRequest> contents, Diary diary) {
+        List<DiaryContent> diaryContents = new ArrayList<>();
+        int index = 0;
+
+        while (index < contents.size()) {
+            diaryContents.add(DiaryContent.of(index + 1, contents.get(index).content(), diary));
+            index++;
+        }
+        diaryContentRepository.saveAll(diaryContents);
+    }
+
+    private void saveImage(MultipartFile file, Diary diary, Long groupId) throws IOException{
         if (!isEmptyFile(file)) {
             diaryValidationService.validateImageType(file);
-            uploadImageRepository.save(UploadImage.of(file.getBytes(), diary));
+            String imagePath = System.getProperty("user.dir") + "/src/main/resources/static/images/upload/groups/" + groupId;
+            File directory = new File(imagePath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String fileExtension = getFileExtension(file.getOriginalFilename());
+            file.transferTo(new File(imagePath + "/" + date + fileExtension));
+            diary.uploadImageFileName(date + fileExtension);
         }
+    }
+
+    private String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        return fileName.substring(dotIndex);
     }
 
     private boolean isEmptyFile(MultipartFile file) {

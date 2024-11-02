@@ -1,12 +1,10 @@
 package com.exchangediary.diary.service;
 
-import com.exchangediary.diary.domain.UploadImageRepository;
 import com.exchangediary.diary.domain.dto.DiaryDay;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.domain.DiaryRepository;
-import com.exchangediary.diary.domain.entity.UploadImage;
+import com.exchangediary.diary.ui.dto.response.DiaryTopResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryWritableStatusResponse;
-import com.exchangediary.diary.ui.dto.response.DiaryIdResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.global.exception.ErrorCode;
@@ -29,18 +27,8 @@ public class DiaryQueryService {
     private final DiaryAuthorizationService diaryAuthorizationService;
     private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
-    private final UploadImageRepository uploadImageRepository;
     private final GroupQueryService groupQueryService;
     private final MemberQueryService memberQueryService;
-
-    public Diary findDiary(Long diaryId) {
-        return diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.DIARY_NOT_FOUND,
-                        "",
-                        String.valueOf(diaryId))
-                );
-    }
 
     public DiaryResponse viewDiary(Long memberId, Long diaryId) {
         Member member = memberQueryService.findMember(memberId);
@@ -48,9 +36,16 @@ public class DiaryQueryService {
 
         diaryAuthorizationService.checkDiaryViewable(member, diary);
 
-        UploadImage uploadImage = uploadImageRepository.findByDiary(diary)
-                .orElse(null);
-        return DiaryResponse.of(diary, uploadImage);
+        return DiaryResponse.of(diary);
+    }
+
+    public DiaryTopResponse viewDiaryTop(Long memberId, Long diaryId) {
+        Member member = memberQueryService.findMember(memberId);
+        Diary diary = findDiary(diaryId);
+
+        diaryAuthorizationService.checkDiaryViewable(member, diary);
+
+        return DiaryTopResponse.of(diary);
     }
 
     public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId, Long memberId) {
@@ -58,19 +53,6 @@ public class DiaryQueryService {
         List<DiaryDay> diaries = diaryRepository.findAllByGroupAndYearAndMonth(groupId, year, month);
         LocalDate lastViewableDiaryDate = memberQueryService.getLastViewableDiaryDate(memberId);
         return DiaryMonthlyResponse.of(diaries, lastViewableDiaryDate);
-    }
-
-    public DiaryIdResponse findDiaryIdByDate(int year, int month, int day, Long groupId) {
-        diaryValidationService.validateDateFormat(year, month, day);
-        Long diaryId = diaryRepository.findIdByGroupAndDate(groupId, LocalDate.of(year, month, day))
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.DIARY_NOT_FOUND,
-                        "",
-                        String.format("%d-%02d-%02d", year, month, day))
-                );
-        return DiaryIdResponse.builder()
-                .diaryId(diaryId)
-                .build();
     }
 
     public DiaryWritableStatusResponse getMembersDiaryAuthorization(Long groupId, Long memberId) {
@@ -84,6 +66,15 @@ public class DiaryQueryService {
             diaryId = getTodayDiaryId(isMyOrder, memberId, todayDiary.get());
         }
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
+    }
+
+    private Diary findDiary(Long diaryId) {
+        return diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.DIARY_NOT_FOUND,
+                        "",
+                        String.valueOf(diaryId))
+                );
     }
 
     private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary) {

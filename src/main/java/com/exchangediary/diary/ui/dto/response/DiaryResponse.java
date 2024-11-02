@@ -1,49 +1,30 @@
 package com.exchangediary.diary.ui.dto.response;
 
 import com.exchangediary.diary.domain.entity.Diary;
-import com.exchangediary.diary.domain.entity.UploadImage;
-import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.diary.domain.entity.DiaryContent;
 import lombok.Builder;
 
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Builder
 public record DiaryResponse(
-        Long diaryId,
-        String createdAt,
-        String content,
-        String moodLocation,
-        byte[] uploadImage,
-        DiaryMemberResponse member
+        String imageFileName,
+        String nickname,
+        String profileImage,
+        List<DiaryContentResponse> contents
 ) {
-    public static DiaryResponse of(Diary diary, UploadImage uploadImage) {
+    public static DiaryResponse of(Diary diary) {
         return DiaryResponse.builder()
-                .diaryId(diary.getId())
-                .createdAt(diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
-                .content(diary.getContent())
-                .moodLocation(diary.getMoodLocation())
-                .uploadImage(getUploadImage(uploadImage))
-                .member(DiaryMemberResponse.from(diary.getMember()))
+                .imageFileName(diary.getImageFileName())
+                .contents(getDiaryContent(diary.getContents()))
+                .nickname(diary.getMember().getNickname())
+                .profileImage(diary.getMember().getProfileImage())
                 .build();
     }
 
-    private static byte[] getUploadImage(UploadImage uploadImage) {
-        if (uploadImage == null) {
-            return null;
-        }
-        return uploadImage.getImage();
-    }
-
-    @Builder
-    private record DiaryMemberResponse(
-            String nickname,
-            String profileImage
-    ) {
-        public static DiaryMemberResponse from(Member member) {
-            return DiaryMemberResponse.builder()
-                    .nickname(member.getNickname())
-                    .profileImage(member.getProfileImage())
-                    .build();
-        }
+    private static List<DiaryContentResponse> getDiaryContent(List<DiaryContent> diaryContents) {
+        return diaryContents.stream()
+                .map(diaryContent -> DiaryContentResponse.from(diaryContent.getContent()))
+                .toList();
     }
 }
