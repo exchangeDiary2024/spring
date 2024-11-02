@@ -42,5 +42,5 @@ function initStep5() {
 }
 
 function confirmStep5() {
-    window.location.href = `/group/${groupData.groupId}`;
+    window.location.href = `/groups/${groupData.groupId}`;
 }

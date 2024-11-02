@@ -22,7 +22,7 @@ public class LoginInterceptorTest extends ApiBaseTest {
                 .extract()
                 .header("location");
 
-        assertThat(location.substring(location.indexOf("/group"))).isEqualTo("/group");
+        assertThat(location.substring(location.indexOf("/groups"))).isEqualTo("/groups");
     }
 
     @Test

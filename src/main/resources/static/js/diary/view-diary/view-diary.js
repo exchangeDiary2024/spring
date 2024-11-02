@@ -1,26 +1,3 @@
-const testDiaryData = {
-    profileImage: "blue",
-    nickname: "주한핑",
-    image: null,
-    contents: [
-        {
-            content: "첫번째 페이지"
-        },
-        {
-            content: "두번째 페이지"
-        },
-        {
-            content: "세번째 페이지"
-        },
-        {
-            content: "네번째 페이지"
-        },
-        {
-            content: "다섯번째 페이지"
-        }
-    ]
-}
-
 const noteBody = document.querySelector(".note-body");
 const pageBar = document.querySelector(".page-bar");
 const pages = []
@@ -29,13 +6,17 @@ var prevPage = null;
 var nextPage = null;
 
 function viewDiary() {
-    drawPageBar();
+    const url = window.location.pathname;
+
+    fetch(`/api${url}`)
+        .then(response => response.json())
+        .then(data => drawPageBar(data));
 }
 
-function drawPageBar() {
+function drawPageBar(diary) {
     const pageBtns = pageBar.children;
-    const contents = testDiaryData.contents;
-    const html = makeDiaryTitleHTML(testDiaryData.profileImage, testDiaryData.nickname) + makeDiaryPageHTMLContainsImage(testDiaryData.image, contents[0].content);
+    const contents = diary.contents;
+    const html = makeDiaryTitleHTML(diary.profileImage, diary.nickname) + makeDiaryPageHTMLContainsImage(diary.image, contents[0]);
     const page = { index: 0, noteContent: makeNoteContent(html) };
     pages.push(page);
     noteBody.appendChild(page.noteContent);

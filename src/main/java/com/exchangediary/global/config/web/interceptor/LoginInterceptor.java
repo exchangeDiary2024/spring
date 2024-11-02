@@ -37,7 +37,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         } catch (UnauthorizedException exception) {
             return true;
         }
-        response.sendRedirect(request.getContextPath()+ "/group");
+        response.sendRedirect(request.getContextPath()+ "/groups");
         return false;
     }
 

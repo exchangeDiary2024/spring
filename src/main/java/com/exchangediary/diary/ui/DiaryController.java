@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/group/{groupId}/diary")
+@RequestMapping("/groups/{groupId}/diaries")
 public class DiaryController {
     private final DiaryAuthorizationService diaryAuthorizationService;
     private final DiaryQueryService diaryQueryService;

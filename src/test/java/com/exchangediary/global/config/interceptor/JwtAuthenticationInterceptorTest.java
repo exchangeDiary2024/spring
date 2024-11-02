@@ -36,7 +36,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .redirects().follow(false)
-                .when().get("/group")
+                .when().get("/groups")
                 .then()
                 .log().status()
                 .log().headers()
@@ -50,7 +50,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get("/group")
+                .when().get("/groups")
                 .then()
                 .log().status()
                 .log().headers()
@@ -63,7 +63,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", this.token)
-                .when().get("/group")
+                .when().get("/groups")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -78,7 +78,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
         String token = RestAssured
                 .given().log().all()
                 .cookie("token", this.token)
-                .when().get("/group")
+                .when().get("/groups")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
@@ -97,7 +97,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", this.token)
                 .redirects().follow(false)
-                .when().get("/group")
+                .when().get("/groups")
                 .then()
                 .log().status()
                 .log().headers()
@@ -115,7 +115,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", this.token)
                 .redirects().follow(false)
-                .when().get("/group")
+                .when().get("/groups")
                 .then()
                 .log().status()
                 .log().headers()
@@ -133,7 +133,7 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", this.token)
                 .redirects().follow(false)
-                .when().get("/group")
+                .when().get("/groups")
                 .then()
                 .log().status()
                 .log().headers()
