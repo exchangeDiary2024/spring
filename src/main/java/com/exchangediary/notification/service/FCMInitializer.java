@@ -23,8 +23,13 @@ public class FCMInitializer {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(googleCredentials)
                     .build();
-            FirebaseApp.initializeApp(options);
-            log.info("FCM initialize");
+
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);
+                log.info("FCM initialize");
+            } else {
+                log.info("FCM has been already initialized");
+            }
         } catch (IOException exception) {
             log.error("{}", exception.getMessage());
         }
