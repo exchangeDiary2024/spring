@@ -24,23 +24,26 @@ async function handleNotificationPermission(messaging) {
     const permission = await Notification.requestPermission();
 
     if (permission === "granted") {
-        // Todo: API 요청 - 사용자가 토큰 가지고 있는지.
-        if (localStorage.getItem("token") !== null) {
-            return ;
+        if (sessionStorage.getItem("token") === null) {
+            messaging.getToken(messaging, {
+                vapidKey: vapidKey
+            })
+                .then(token => {
+                    fetch("/api/members/notifications/token", {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "token": token
+                        })
+                    });
+                    sessionStorage.setItem("token", token);
+                })
+                .catch(() => {
+                    console.log("푸시 토큰 가져오는 중에 에러 발생")
+                })
         }
-
-        messaging.getToken(messaging, {
-            vapidKey: vapidKey
-        })
-            .then(token => {
-                console.log(`푸시 토큰 발급 완료 : ${token}`);
-                localStorage.setItem("token", token);
-            })
-            .catch(() => {
-                console.log("푸시 토큰 가져오는 중에 에러 발생")
-            })
-    } else {
-        console.log("푸시 권한 차단")
     }
 }
 
