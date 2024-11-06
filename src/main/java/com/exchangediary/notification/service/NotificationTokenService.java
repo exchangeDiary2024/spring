@@ -9,13 +9,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class NotificationTokenService {
     private final NotificationRepository notificationRepository;
     private final MemberQueryService memberQueryService;
 
+    @Transactional(readOnly = true)
+    public List<String> findTokensByGroup(Long groupId) {
+        return notificationRepository.findAllTokenByGroupId(groupId);
+    }
+
+    @Transactional
     public void saveNotificationToken(NotificationTokenRequest notificationTokenRequest, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
 
