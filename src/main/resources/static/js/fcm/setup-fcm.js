@@ -7,15 +7,14 @@ function setupFCM() {
     registerServiceWorker();
     handleNotificationPermission(messaging);
 
-    messaging.onMessage((payload) => {
-        console.log("알림 도착 ", payload);
-        const notificationTitle = payload.notification.title;
-        const notificationOptions = {
-            body: payload.notification.body
-        };
-
+    messaging.onMessage(payload => {
         if (Notification.permission === "granted") {
-            new Notification(notificationTitle, notificationOptions);
+            const title = payload.notification.title;
+            const options = {
+                body: payload.notification.body
+            };
+
+            new Notification(title, options);
         }
     })
 }
