@@ -1,4 +1,4 @@
-package com.exchangediary.member.ui;
+package com.exchangediary.notification.ui;
 
 import com.exchangediary.notification.service.NotificationTokenService;
 import com.exchangediary.notification.ui.dto.request.NotificationTokenRequest;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
-public class ApiMemberController {
+public class ApiNotificationController {
     private final NotificationTokenService notificationTokenService;
 
     @PatchMapping("/notifications/token")

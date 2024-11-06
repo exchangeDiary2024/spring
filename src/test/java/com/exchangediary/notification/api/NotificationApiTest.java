@@ -1,4 +1,4 @@
-package com.exchangediary.member.api;
+package com.exchangediary.notification.api;
 
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.notification.domain.NotificationRepository;
