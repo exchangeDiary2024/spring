@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationService {
+public class MessageSendService {
     public void sendMessage(String token, String title, String body) {
         Notification notification = Notification.builder()
                 .setTitle(title)
