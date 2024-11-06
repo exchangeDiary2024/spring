@@ -40,7 +40,7 @@ async function handleNotificationPermission(messaging) {
                     sessionStorage.setItem("token", token);
                 })
                 .catch(() => {
-                    console.log("푸시 토큰 가져오는 중에 에러 발생")
+                    console.log("Fail to issue fcm token")
                 })
         }
     }
@@ -51,8 +51,7 @@ function registerServiceWorker() {
         window.addEventListener("load", function () {
             navigator.serviceWorker
                 .register("/firebase-messaging-sw.js")
-                .then(() => console.log("Service Worker가 scope에 등록되었습니다."))
-                .catch(() =>  console.log("Service Worker 등록 실패"));
+                .catch(() =>  console.log("Fail to register service worker"));
         });
     }
 }
