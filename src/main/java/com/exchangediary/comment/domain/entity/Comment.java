@@ -1,5 +1,6 @@
 package com.exchangediary.comment.domain.entity;
 
+import com.exchangediary.comment.ui.dto.request.CommentRequest;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.member.domain.entity.Member;
@@ -50,4 +51,14 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "comment_member_id_fkey"))
     @NotNull
     private final Member member;
+
+    public static Comment of(CommentRequest commentRequest, Member member, Diary diary) {
+        return Comment.builder()
+                .xPosition(commentRequest.xPosition())
+                .yPosition(commentRequest.yPosition())
+                .content(commentRequest.content())
+                .member(member)
+                .diary(diary)
+                .build();
+    }
 }
