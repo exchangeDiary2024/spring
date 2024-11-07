@@ -1,7 +1,8 @@
 package com.exchangediary.comment.ui;
 
 import com.exchangediary.comment.service.CommentService;
-import com.exchangediary.comment.ui.dto.request.CommentRequest;
+import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
+import com.exchangediary.comment.ui.dto.response.CommentCreateResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,14 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<Void> createComment(
+    public ResponseEntity<CommentCreateResponse> createComment(
             @PathVariable Long diaryId,
-            @RequestBody @Valid CommentRequest request,
+            @RequestBody @Valid CommentCreateRequest request,
             @RequestAttribute Long memberId
     ) {
-        commentService.createComment(request, diaryId, memberId);
+        CommentCreateResponse response = commentService.createComment(request, diaryId, memberId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .build();
+                .body(response);
     }
 }

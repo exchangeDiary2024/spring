@@ -1,6 +1,6 @@
 package com.exchangediary.comment.domain.entity;
 
-import com.exchangediary.comment.ui.dto.request.CommentRequest;
+import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.member.domain.entity.Member;
@@ -52,7 +52,7 @@ public class Comment extends BaseEntity {
     @NotNull
     private final Member member;
 
-    public static Comment of(CommentRequest commentRequest, Member member, Diary diary) {
+    public static Comment of(CommentCreateRequest commentRequest, Member member, Diary diary) {
         return Comment.builder()
                 .xPosition(commentRequest.xPosition())
                 .yPosition(commentRequest.yPosition())

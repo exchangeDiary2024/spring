@@ -1,10 +1,11 @@
 package com.exchangediary.comment.ui.dto.request;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public record CommentRequest(
+public record CommentCreateRequest(
         @NotNull Double xPosition,
         @NotNull Double yPosition,
-        @NotNull String content
+        @NotEmpty String content
 ) {
 }
