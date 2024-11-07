@@ -14,13 +14,14 @@ import java.util.Objects;
 
 @RestControllerAdvice
 @Slf4j
-public class GlobalExceptionHandler {
+public class ServiceExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ApiErrorResponse handleInvalidArgumentException(MethodArgumentNotValidException exception) {
         try {
+            ApiErrorResponse response = ApiErrorResponse.from(Objects.requireNonNull(exception.getFieldError()));
             log.error("{}", String.format("%s", exception.getFieldError().getDefaultMessage()));
-            return ApiErrorResponse.from(Objects.requireNonNull(exception.getFieldError()));
+            return response;
         } catch (NullPointerException e) {
             return ApiErrorResponse.from(HttpStatus.BAD_REQUEST);
         }
@@ -29,6 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ApiErrorResponse handleMissingParameterException(MissingServletRequestParameterException exception) {
+        log.error("{}", String.format("%s", exception.getMessage()));
         return ApiErrorResponse.from(exception);
     }
 
@@ -36,13 +38,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleServiceException(ServiceException exception) {
         log.error("{} caused by {}", exception.toString(), exception.getValue());
 
-        ApiErrorResponse body = ApiErrorResponse.from(
-                exception.getErrorCode(),
-                exception.getMessage(),
-                exception.getValue()
-        );
         return ResponseEntity
-                .status(exception.getErrorCode().getStatusCode())
-                .body(body);
+                .status(exception.getErrorCode().getStatusCode().value())
+                .body(ApiErrorResponse.from(exception));
     }
 }
