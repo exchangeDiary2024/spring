@@ -2,6 +2,7 @@ package com.exchangediary.reply.domain.entity;
 
 import com.exchangediary.comment.domain.entity.Comment;
 import com.exchangediary.member.domain.entity.Member;
+import com.exchangediary.reply.ui.dto.request.ReplyCreateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,7 +32,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "reply_id")
     private Long id;
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
@@ -45,4 +46,12 @@ public class Reply {
     @JoinColumn(name = "comment_id", foreignKey = @ForeignKey(name = "reply_comment_id_fkey"))
     @NotNull
     private final Comment comment;
+
+    public static Reply of(ReplyCreateRequest request, Member member, Comment comment) {
+        return Reply.builder()
+                .content(request.content())
+                .member(member)
+                .comment(comment)
+                .build();
+    }
 }
