@@ -1,5 +1,6 @@
 package com.exchangediary.notification.domain.entity;
 
+import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.member.domain.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +25,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED, force = true)
 @AllArgsConstructor(access = PRIVATE)
-public class Notification {
+public class Notification extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")
