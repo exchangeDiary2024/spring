@@ -1,9 +1,5 @@
 @charset "utf-8";
 
-.background {
-    background-image: url('/images/error/background403.png');
-}
-
 .error-body {
     width: 100%;
     height: 206px;
