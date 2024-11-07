@@ -1,5 +1,6 @@
 package com.exchangediary.global.exception;
 
+import com.exchangediary.global.exception.serviceexception.ServiceException;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -32,11 +33,11 @@ public record ApiErrorResponse(
                 .build();
     }
 
-    public static ApiErrorResponse from(ErrorCode errorCode, String message, String value) {
+    public static ApiErrorResponse from(ServiceException exception) {
         return ApiErrorResponse.builder()
-                .statusCode(errorCode.getStatusCode().value())
-                .message(message)
-                .value(value)
+                .statusCode(exception.getErrorCode().getStatusCode().value())
+                .message(exception.getMessage())
+                .value(exception.getValue())
                 .build();
     }
 }
