@@ -3,10 +3,12 @@ package com.exchangediary;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.JwtService;
+import com.exchangediary.notification.service.MessageSendService;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -21,6 +23,9 @@ public class ApiBaseTest {
     protected MemberRepository memberRepository;
     @Autowired
     private JwtService jwtService;
+    @MockBean
+    private MessageSendService messageSendService;
+
     protected Member member;
     protected String token;
 
