@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+
+<th:block layout:fragment="header">
+    <title>Forbidden</title>
+
+    <link rel="stylesheet" href="/css/error.css" type="text/css">
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="background">
+        <div class="error-body">
+            <span class="bold-font">잠깐!<br>권한이 없는 페이지에요.</span>
+            <div class="blank"></div>
+            <span class="normal-font">요청하신 페이지 접근이 거부되었어요.<br>권한이 없거나, 사용할 수 없는 페이지에요.</span>
+        </div>
+        <div class="error-footer">
+            <span class="bold-font">길을 잃은 당신, 우리 다시</span>
+            <a href="/" class="home-btn">
+                <span class="bold-font">홈으로!</span>
+            </a>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="script">
+</th:block>
+
+</html>
