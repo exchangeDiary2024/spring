@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class NotificationScheduler {
     private final NotificationService notificationService;
 
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 9,21 * * *")
     public void pushWriteDiaryNotification() {
         notificationService.pushWriteDiaryNotification();
     }
