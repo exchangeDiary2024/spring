@@ -68,7 +68,7 @@ public class DiaryQueryService {
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
     }
 
-    private Diary findDiary(Long diaryId) {
+    public Diary findDiary(Long diaryId) {
         return diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new NotFoundException(
                         ErrorCode.DIARY_NOT_FOUND,
