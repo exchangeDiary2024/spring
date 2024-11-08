@@ -20,4 +20,9 @@ public class NotificationService {
         List<String> tokens = notificationTokenService.findTokensByGroupExceptSelf(groupId, memberId);
         messageSendService.sendMulticastMessage(tokens, title, body);
     }
+
+    public void pushNotificationToCurrentOrderMember(Long groupId, String title, String body) {
+        String token = notificationTokenService.findTokenByCurrentOrder(groupId);
+        messageSendService.sendMessage(token, title, body);
+    }
 }
