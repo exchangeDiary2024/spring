@@ -35,10 +35,11 @@ public class CommentCreateApiTest extends ApiBaseTest {
         String content = "댓글";
 
         Group group = createGroup();
+        Member diaryCreator = createMember(group);
+        Diary diary = createDiary(group, diaryCreator);
         updateSelf(group, 1);
         this.member.updateLastViewableDiaryDate();
         memberRepository.save(member);
-        Diary diary = createDiary(group, member);
 
         var response = RestAssured
                 .given().log().all()
@@ -63,6 +64,29 @@ public class CommentCreateApiTest extends ApiBaseTest {
         String content = "";
 
         Group group = createGroup();
+        Member diaryCreator = createMember(group);
+        Diary diary = createDiary(group, diaryCreator);
+        updateSelf(group, 1);
+        this.member.updateLastViewableDiaryDate();
+        memberRepository.save(member);
+
+        RestAssured
+                .given().log().all()
+                .body(new CommentCreateRequest(xCoordinate, yCoordinate, content))
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .when().post(String.format(API_PATH, group.getId(), diary.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 댓글_작성_실패_일기작성자일경우() {
+        Double xCoordinate = 123.45;
+        Double yCoordinate= 456.78;
+        String content = "댓글";
+
+        Group group = createGroup();
         updateSelf(group, 1);
         this.member.updateLastViewableDiaryDate();
         memberRepository.save(member);
@@ -75,7 +99,31 @@ public class CommentCreateApiTest extends ApiBaseTest {
                 .contentType(ContentType.JSON)
                 .when().post(String.format(API_PATH, group.getId(), diary.getId()))
                 .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    void 댓글_작성_실패_이미작성() {
+        Double xCoordinate = 123.45;
+        Double yCoordinate= 456.78;
+        String content = "댓글";
+
+        Group group = createGroup();
+        Member diaryCreator = createMember(group);
+        Diary diary = createDiary(group, diaryCreator);
+        updateSelf(group, 1);
+        this.member.updateLastViewableDiaryDate();
+        memberRepository.save(member);
+        createComment(member, diary);
+
+        RestAssured
+                .given().log().all()
+                .body(new CommentCreateRequest(xCoordinate, yCoordinate, content))
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .when().post(String.format(API_PATH, group.getId(), diary.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     private Group createGroup() {
@@ -94,5 +142,30 @@ public class CommentCreateApiTest extends ApiBaseTest {
                 .member(member)
                 .build();
         return diaryRepository.save(diary);
+    }
+
+    private Member createMember(Group group) {
+        Member member = Member.builder()
+                .profileImage("orange")
+                .kakaoId(1234L)
+                .orderInGroup(2)
+                .nickname("하니")
+                .groupRole(GroupRole.GROUP_MEMBER)
+                .group(group)
+                .build();
+        memberRepository.save(member);
+        return member;
+    }
+
+    private void createComment(Member member, Diary diary) {
+        commentRepository.save(
+                Comment.builder()
+                        .xCoordinate(123.45)
+                        .yCoordinate(333.33)
+                        .content("댓글")
+                        .member(member)
+                        .diary(diary)
+                        .build()
+        );
     }
 }
