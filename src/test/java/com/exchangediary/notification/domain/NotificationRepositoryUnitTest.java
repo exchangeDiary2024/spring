@@ -69,7 +69,7 @@ public class NotificationRepositoryUnitTest {
 
         String token = notificationRepository.findCurrentOrderMemberByGroupId(group.getId());
 
-        assertThat(token).isEqualTo("1");
+        assertThat(token).isEqualTo("버니즈1");
     }
 
     @Test
