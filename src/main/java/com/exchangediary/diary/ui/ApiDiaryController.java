@@ -37,8 +37,8 @@ public class ApiDiaryController {
             @RequestAttribute Long memberId
     ) {
         Long diaryId = diaryWriteService.writeDiary(diaryRequest, file, groupId, memberId);
-        notificationService.pushNotificationToAllGroupMembersExceptSelf(groupId, memberId, "", "친구가 일기를 작성했어요!");
-        notificationService.pushNotificationToCurrentOrderMember(groupId, "", "일기 작성 차례가 되었어요!");
+        notificationService.pushToAllGroupMembersExceptSelf(groupId, memberId, "친구가 일기를 작성했어요!");
+        notificationService.pushDiaryOrderNotification(groupId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("Content-Location", "/group/" + groupId + "/diary/" + diaryId)

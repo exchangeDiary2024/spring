@@ -91,7 +91,7 @@ public class ApiGroupController {
             @RequestAttribute Long memberId
     ) {
         groupJoinService.joinGroup(groupId, request, memberId);
-        notificationService.pushNotificationToAllGroupMembers(groupId, "", "새로운 친구가 들어왔어요!");
+        notificationService.pushToAllGroupMembers(groupId, "새로운 친구가 들어왔어요!");
         return ResponseEntity
                 .ok()
                 .build();
