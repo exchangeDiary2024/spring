@@ -1,5 +1,6 @@
 package com.exchangediary.comment.domain.entity;
 
+import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.member.domain.entity.Member;
@@ -40,9 +41,9 @@ public class Comment extends BaseEntity {
     @Column(name = "comment_id")
     private Long id;
     @NotNull
-    private final Double xPosition;
+    private final Double xCoordinate;
     @NotNull
-    private final Double yPosition;
+    private final Double yCoordinate;
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
@@ -58,4 +59,14 @@ public class Comment extends BaseEntity {
     @OneToMany(mappedBy = "comment")
     @OrderBy("created_at ASC")
     private List<Reply> replys;
+
+    public static Comment of(CommentCreateRequest commentRequest, Member member, Diary diary) {
+        return Comment.builder()
+                .xCoordinate(commentRequest.xCoordinate())
+                .yCoordinate(commentRequest.yCoordinate())
+                .content(commentRequest.content())
+                .member(member)
+                .diary(diary)
+                .build();
+    }
 }

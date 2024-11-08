@@ -1,5 +1,6 @@
 package com.exchangediary.diary.domain.entity;
 
+import com.exchangediary.comment.domain.entity.Comment;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.group.domain.entity.Group;
@@ -54,6 +55,8 @@ public class Diary extends BaseEntity {
     @OneToMany(mappedBy = "diary")
     @OrderBy("page ASC")
     private List<DiaryContent> contents;
+    @OneToMany(mappedBy = "diary")
+    private List<Comment> comments;
 
     public static Diary of(DiaryRequest diaryRequest, Member member, Group group) {
         return Diary.builder()
