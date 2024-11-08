@@ -52,7 +52,7 @@ public class KakaoService {
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (request, response) -> {
                     throw new KakaoLoginFailureException(
-                            ErrorCode.FAILED_TO_ISSUE_TOKEN,
+                            ErrorCode.FAILED_TO_ISSUE_KAKAO_TOKEN,
                             "",
                             response.getBody().toString()
                     );

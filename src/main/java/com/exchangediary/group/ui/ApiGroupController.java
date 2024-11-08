@@ -14,6 +14,7 @@ import com.exchangediary.group.ui.dto.response.GroupIdResponse;
 import com.exchangediary.group.ui.dto.response.GroupMembersResponse;
 import com.exchangediary.group.ui.dto.response.GroupNicknameVerifyResponse;
 import com.exchangediary.group.ui.dto.response.GroupProfileResponse;
+import com.exchangediary.notification.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
@@ -39,6 +38,7 @@ public class ApiGroupController {
     private final GroupCodeService groupCodeService;
     private final GroupQueryService groupQueryService;
     private final GroupLeaveService groupLeaveService;
+    private final NotificationService notificationService;
 
     @PostMapping
     public ResponseEntity<GroupCreateResponse> createGroup(
@@ -91,6 +91,7 @@ public class ApiGroupController {
             @RequestAttribute Long memberId
     ) {
         groupJoinService.joinGroup(groupId, request, memberId);
+        notificationService.pushNotificationToAllGroupMembers(groupId, "", "새로운 친구가 들어왔어요!");
         return ResponseEntity
                 .ok()
                 .build();
