@@ -25,4 +25,9 @@ public class NotificationService {
         String token = notificationTokenService.findTokenByCurrentOrder(groupId);
         messageSendService.sendMessage(token, "일기 작성 차례가 되었어요!");
     }
+
+    public void pushWriteDiaryNotification() {
+        List<String> tokens = notificationTokenService.findTokensByCurrentOrderInAllGroup();
+        messageSendService.sendMulticastMessage(tokens, "기다리는 친구들을 위해 일기를 작성해주세요!");
+    }
 }

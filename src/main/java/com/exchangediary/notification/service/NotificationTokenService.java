@@ -32,6 +32,11 @@ public class NotificationTokenService {
         return notificationRepository.findCurrentOrderMemberByGroupId(groupId);
     }
 
+    @Transactional(readOnly = true)
+    public List<String> findTokensByCurrentOrderInAllGroup() {
+        return notificationRepository.findAllTokenNoDiaryToday();
+    }
+
     @Transactional
     public void saveNotificationToken(NotificationTokenRequest notificationTokenRequest, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
