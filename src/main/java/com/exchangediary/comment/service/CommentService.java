@@ -7,6 +7,8 @@ import com.exchangediary.comment.ui.dto.response.CommentCreateResponse;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.service.DiaryAuthorizationService;
 import com.exchangediary.diary.service.DiaryQueryService;
+import com.exchangediary.global.exception.ErrorCode;
+import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.MemberQueryService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +29,18 @@ public class CommentService {
         Diary diary = diaryQueryService.findDiary(diaryId);
 
         diaryAuthorizationService.checkDiaryViewable(member, diary);
+        checkCommentWritable(member, diary);
         Comment comment = Comment.of(request, member, diary);
         commentRepository.save(comment);
         return CommentCreateResponse.from(comment);
+    }
+
+    public void checkCommentWritable(Member member, Diary diary) {
+        if (member == diary.getMember()) {
+            throw new ForbiddenException(ErrorCode.COMMENT_WRITE_FORBIDDEN, "", "");
+        }
+        if (commentRepository.existsByDiaryAndMember(member.getId(), diary.getId())) {
+            throw new ForbiddenException(ErrorCode.COMMENT_WRITE_FORBIDDEN, "이미 댓글을 작성하였습니다.", "");
+        }
     }
 }
