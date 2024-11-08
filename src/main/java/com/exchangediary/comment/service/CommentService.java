@@ -39,7 +39,7 @@ public class CommentService {
         if (member == diary.getMember()) {
             throw new ForbiddenException(ErrorCode.COMMENT_WRITE_FORBIDDEN, "", "");
         }
-        if (commentRepository.existsByDiaryAndMember(member.getId(), diary.getId())) {
+        if (commentRepository.existsByDiaryIdAndMemberId(member.getId(), diary.getId())) {
             throw new ForbiddenException(ErrorCode.COMMENT_WRITE_FORBIDDEN, "이미 댓글을 작성하였습니다.", "");
         }
     }
