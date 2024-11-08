@@ -1,5 +1,7 @@
 package com.exchangediary.notification.domain;
 
+import com.exchangediary.diary.domain.entity.Diary;
+import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.enums.GroupRole;
@@ -70,16 +72,50 @@ public class NotificationRepositoryUnitTest {
         assertThat(token).isEqualTo("1");
     }
 
+    @Test
+    @DisplayName("findAllTokenNoDiaryToday 동작 확인")
+    void 오늘_일기_작성하지않은_모든_그룹원_토큰_가져오기() {
+        Group group1 = Group.of("그룹1", "code1");
+        entityManager.persist(group1);
+        Member member = createMember(1, group1);
+        createDiary(member, group1);
+        Group group2 = Group.of("그룹2", "code2");
+        entityManager.persist(group2);
+        createMember(1, group2);
+        Group group3 = Group.of("그룹3", "code3");
+        entityManager.persist(group3);
+        createMember(1, group3);
+        entityManager.flush();
+
+        List<String> tokens = notificationRepository.findAllTokenNoDiaryToday();
+
+        assertThat(tokens).hasSize(2);
+        assertThat(tokens.contains(group1.getName() + 1)).isFalse();
+        assertThat(tokens.contains(group2.getName() + 1)).isTrue();
+        assertThat(tokens.contains(group3.getName() + 1)).isTrue();
+    }
+
     private Member createMember(long num, Group group) {
         Member member = Member.of(num);
         member.joinGroup("one", "red", (int) num, GroupRole.GROUP_MEMBER, group);
         entityManager.persist(member);
         Notification notification = Notification.builder()
-                .token(String.valueOf(num))
+                .token(group.getName() + num)
                 .member(member)
                 .build();
         entityManager.persist(notification);
 
         return member;
+    }
+
+    private void createDiary(Member member, Group group) {
+        Diary diary = Diary.builder()
+                .member(member)
+                .group(group)
+                .moodLocation("sad.png")
+                .build();
+        entityManager.persist(diary);
+        DiaryContent diaryContent = DiaryContent.of(1, "content", diary);
+        entityManager.persist(diaryContent);
     }
 }
