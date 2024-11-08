@@ -54,6 +54,21 @@ public class NotificationRepositoryUnitTest {
         assertThat(tokens).hasSize(3);
     }
 
+    @Test
+    @DisplayName("findCurrentOrderMemberByGroupId 동작 확인")
+    void 현재_순서_그룹원_토큰_가져오기() {
+        Group group = Group.of("버니즈", "code");
+        entityManager.persist(group);
+        createMember(1, group);
+        createMember(2, group);
+        createMember(3, group);
+        createMember(4, group);
+        entityManager.flush();
+
+        String token = notificationRepository.findCurrentOrderMemberByGroupId(group.getId());
+
+        assertThat(token).isEqualTo("1");
+    }
 
     private Member createMember(long num, Group group) {
         Member member = Member.of(num);
@@ -67,8 +82,4 @@ public class NotificationRepositoryUnitTest {
 
         return member;
     }
-
-
 }
-
-
