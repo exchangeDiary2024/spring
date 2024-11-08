@@ -12,6 +12,24 @@
     <script src="/js/common/image-preloading.js"></script>
     <script src="/js/common/base.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-messaging.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "[[${apiKey}]]",
+            authDomain: "[[${authDomain}]]",
+            projectId: "[[${projectId}]]",
+            storageBucket: "[[${storageBucket}]]",
+            messagingSenderId: "[[${messagingSenderId}]]",
+            appId: "[[${appId}]]",
+            measurementId: "[[${measurementId}]]"
+        };
+        const vapidKey = "[[${vapidKey}]]";
+    </script>
+
+    <script src="/js/fcm/setup-fcm.js"></script>
+
     <th:block layout:fragment="header"></th:block>
 </head>
 <body>
