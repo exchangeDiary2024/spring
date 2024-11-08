@@ -1,45 +1,61 @@
 package com.exchangediary.global.exception;
 
+import com.exchangediary.global.exception.serviceexception.ForbiddenException;
+import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.global.exception.serviceexception.ServiceException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Objects;
-
-@RestControllerAdvice
+@ControllerAdvice
 @Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ServiceExceptionHandler {
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse handleInvalidArgumentException(MethodArgumentNotValidException exception) {
-        try {
-            ApiErrorResponse response = ApiErrorResponse.from(Objects.requireNonNull(exception.getFieldError()));
-            log.error("{}", String.format("%s", exception.getFieldError().getDefaultMessage()));
-            return response;
-        } catch (NullPointerException e) {
-            return ApiErrorResponse.from(HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Object handleForbiddenException(ForbiddenException exception, HttpServletRequest request) {
+        if (request.getRequestURI().contains("/api")) {
+            return makeApiErrorResponse(exception);
         }
+        return "error/403";
     }
 
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse handleMissingParameterException(MissingServletRequestParameterException exception) {
-        log.error("{}", String.format("%s", exception.getMessage()));
-        return ApiErrorResponse.from(exception);
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Object handleNotFoundException(NotFoundException exception, HttpServletRequest request) {
+        if (request.getRequestURI().contains("/api")) {
+            return makeApiErrorResponse(exception);
+        }
+        return "error/404";
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public String handleException() {
+        return "error/common";
     }
 
     @ExceptionHandler(ServiceException.class)
-    public ResponseEntity<ApiErrorResponse> handleServiceException(ServiceException exception) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Object handleServiceException(ServiceException exception, HttpServletRequest request) {
         log.error("{} caused by {}", exception.toString(), exception.getValue());
 
+        if (request.getRequestURI().contains("/api")) {
+            return makeApiErrorResponse(exception);
+        }
+        return "error/common";
+    }
+
+    private ResponseEntity<ApiErrorResponse> makeApiErrorResponse(ServiceException exception) {
         return ResponseEntity
-                .status(exception.getErrorCode().getStatusCode().value())
+                .status(exception.getErrorCode().getStatusCode())
                 .body(ApiErrorResponse.from(exception));
     }
 }
