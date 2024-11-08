@@ -6,6 +6,7 @@ import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryWritableStatusResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
+import com.exchangediary.notification.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ApiDiaryController {
     private final DiaryWriteService diaryWriteService;
     private final DiaryQueryService diaryQueryService;
+    private final NotificationService notificationService;
 
     @PostMapping
     public ResponseEntity<Void> writeDiary(
@@ -35,6 +37,7 @@ public class ApiDiaryController {
             @RequestAttribute Long memberId
     ) {
         Long diaryId = diaryWriteService.writeDiary(diaryRequest, file, groupId, memberId);
+        notificationService.pushNotificationToAllGroupMembersExceptSelf(groupId, memberId, "", "친구가 일기를 작성했어요!");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("Content-Location", "/group/" + groupId + "/diary/" + diaryId)

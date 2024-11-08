@@ -22,6 +22,11 @@ public class NotificationTokenService {
         return notificationRepository.findAllTokenByGroupId(groupId);
     }
 
+    @Transactional(readOnly = true)
+    public List<String> findTokensByGroupExceptSelf(Long groupId, Long memberId) {
+        return notificationRepository.findAllTokenByGroupIdExceptMemberId(groupId, memberId);
+    }
+
     @Transactional
     public void saveNotificationToken(NotificationTokenRequest notificationTokenRequest, Long memberId) {
         Member member = memberQueryService.findMember(memberId);

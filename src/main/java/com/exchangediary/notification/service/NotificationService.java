@@ -15,4 +15,9 @@ public class NotificationService {
         List<String> tokens = notificationTokenService.findTokensByGroup(groupId);
         messageSendService.sendMulticastMessage(tokens, title, body);
     }
+
+    public void pushNotificationToAllGroupMembersExceptSelf(Long groupId, Long memberId, String title, String body) {
+        List<String> tokens = notificationTokenService.findTokensByGroupExceptSelf(groupId, memberId);
+        messageSendService.sendMulticastMessage(tokens, title, body);
+    }
 }
