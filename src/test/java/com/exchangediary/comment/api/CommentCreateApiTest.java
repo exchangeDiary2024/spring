@@ -20,7 +20,7 @@ import org.springframework.http.HttpStatus;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class CommentCreateApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/diaries/%d/comment";
+    private static final String API_PATH = "/api/groups/%d/diaries/%d/comments";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -30,8 +30,8 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
     @Test
     void 댓글_작성_성공() {
-        Double xPosition = 123.45;
-        Double yPosition= 456.78;
+        Double xCoordinate = 123.45;
+        Double yCoordinate= 456.78;
         String content = "댓글";
 
         Group group = createGroup();
@@ -42,7 +42,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
         var response = RestAssured
                 .given().log().all()
-                .body(new CommentCreateRequest(xPosition, yPosition, content))
+                .body(new CommentCreateRequest(xCoordinate, yCoordinate, content))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(String.format(API_PATH, group.getId(), diary.getId()))
@@ -51,15 +51,15 @@ public class CommentCreateApiTest extends ApiBaseTest {
                 .extract().as(CommentCreateResponse.class);
 
         Comment comment = commentRepository.findById(response.commentId()).get();
-        assertThat(comment.getXPosition()).isEqualTo(xPosition);
-        assertThat(comment.getYPosition()).isEqualTo(yPosition);
+        assertThat(comment.getXCoordinate()).isEqualTo(xCoordinate);
+        assertThat(comment.getYCoordinate()).isEqualTo(yCoordinate);
         assertThat(comment.getContent()).isEqualTo(content);
     }
 
     @Test
     void 댓글_작성_실패_내용_없을_경우() {
-        Double xPosition = 123.45;
-        Double yPosition= 456.78;
+        Double xCoordinate = 123.45;
+        Double yCoordinate= 456.78;
         String content = "";
 
         Group group = createGroup();
@@ -70,7 +70,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
         RestAssured
                 .given().log().all()
-                .body(new CommentCreateRequest(xPosition, yPosition, content))
+                .body(new CommentCreateRequest(xCoordinate, yCoordinate, content))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(String.format(API_PATH, group.getId(), diary.getId()))

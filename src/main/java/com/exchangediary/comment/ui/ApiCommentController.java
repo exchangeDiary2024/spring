@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/groups/{groupId}/diaries/{diaryId}/comment")
-public class CommentController {
+@RequestMapping("/api/groups/{groupId}/diaries/{diaryId}/comments")
+public class ApiCommentController {
     private final CommentService commentService;
 
     @PostMapping

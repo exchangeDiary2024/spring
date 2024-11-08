@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record CommentCreateRequest(
-        @NotNull Double xPosition,
-        @NotNull Double yPosition,
+        @NotNull Double xCoordinate,
+        @NotNull Double yCoordinate,
         @NotEmpty String content
 ) {
 }

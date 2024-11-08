@@ -46,3 +46,5 @@ application.properties
 
 /log
 **/static/images/upload
+
+src/main/resources/buddies-spring-firebase-adminsdk-fadag-ba724eb696.json

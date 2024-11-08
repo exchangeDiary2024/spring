@@ -36,9 +36,9 @@ public class Comment extends BaseEntity {
     @Column(name = "comment_id")
     private Long id;
     @NotNull
-    private final Double xPosition;
+    private final Double xCoordinate;
     @NotNull
-    private final Double yPosition;
+    private final Double yCoordinate;
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
@@ -54,8 +54,8 @@ public class Comment extends BaseEntity {
 
     public static Comment of(CommentCreateRequest commentRequest, Member member, Diary diary) {
         return Comment.builder()
-                .xPosition(commentRequest.xPosition())
-                .yPosition(commentRequest.yPosition())
+                .xCoordinate(commentRequest.xCoordinate())
+                .yCoordinate(commentRequest.yCoordinate())
                 .content(commentRequest.content())
                 .member(member)
                 .diary(diary)
