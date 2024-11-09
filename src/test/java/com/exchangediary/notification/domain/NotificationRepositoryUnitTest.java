@@ -57,7 +57,7 @@ public class NotificationRepositoryUnitTest {
     }
 
     @Test
-    @DisplayName("findCurrentOrderMemberByGroupId 동작 확인")
+    @DisplayName("findByGroupIdAndCurrentOrder 동작 확인")
     void 현재_순서_그룹원_토큰_가져오기() {
         Group group = Group.of("버니즈", "code");
         entityManager.persist(group);
@@ -67,7 +67,7 @@ public class NotificationRepositoryUnitTest {
         createMember(4, group);
         entityManager.flush();
 
-        String token = notificationRepository.findCurrentOrderMemberByGroupId(group.getId());
+        String token = notificationRepository.findByGroupIdAndCurrentOrder(group.getId());
 
         assertThat(token).isEqualTo("버니즈1");
     }

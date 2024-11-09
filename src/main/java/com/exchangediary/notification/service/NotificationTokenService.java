@@ -29,7 +29,7 @@ public class NotificationTokenService {
 
     @Transactional(readOnly = true)
     public String findTokenByCurrentOrder(Long groupId) {
-        return notificationRepository.findCurrentOrderMemberByGroupId(groupId);
+        return notificationRepository.findByGroupIdAndCurrentOrder(groupId);
     }
 
     @Transactional(readOnly = true)
