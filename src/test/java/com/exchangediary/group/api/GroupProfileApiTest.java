@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GroupProfileApiTest extends ApiBaseTest {
     private static final String GROUP_NAME = "버니즈";
-    private static final String API_PATH = "/api/groups/%d/profile-image";
+    private static final String API_PATH = "/api/groups/%s/profile-image";
     @Autowired
     private GroupRepository groupRepository;
 
@@ -84,7 +84,7 @@ class GroupProfileApiTest extends ApiBaseTest {
 
     @Test
     void 프로필_이미지_선택_목록_조회_그룹없음() {
-        Long groupId = 100L;
+        String groupId = "qwer1234";
 
         RestAssured
                 .given().log().all()
@@ -104,6 +104,6 @@ class GroupProfileApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.of(GROUP_NAME, "code");
+        return Group.of(GROUP_NAME);
     }
 }

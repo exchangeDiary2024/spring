@@ -27,7 +27,7 @@ public class DiaryAuthorizationService {
         }
     }
 
-    public void checkDiaryWritable(Long groupId, Long memberId) {
+    public void checkDiaryWritable(String groupId, Long memberId) {
         if (!groupQueryService.isMyOrderInGroup(memberId)) {
             throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
         }

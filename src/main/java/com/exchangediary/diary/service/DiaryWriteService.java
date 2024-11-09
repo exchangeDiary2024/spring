@@ -40,7 +40,7 @@ public class DiaryWriteService {
     private final MemberRepository memberRepository;
     private final DiaryContentRepository diaryContentRepository;
 
-    public Long writeDiary(DiaryRequest diaryRequest, MultipartFile file, Long groupId, Long memberId) {
+    public Long writeDiary(DiaryRequest diaryRequest, MultipartFile file, String groupId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
         Group group = groupQueryService.findGroup(groupId);
 
@@ -77,7 +77,7 @@ public class DiaryWriteService {
         diaryContentRepository.saveAll(diaryContents);
     }
 
-    private void saveImage(MultipartFile file, Diary diary, Long groupId) throws IOException{
+    private void saveImage(MultipartFile file, Diary diary, String groupId) throws IOException{
         if (!isEmptyFile(file)) {
             diaryValidationService.validateImageType(file);
             String imagePath = System.getProperty("user.dir") + "/src/main/resources/static/images/upload/groups/" + groupId;

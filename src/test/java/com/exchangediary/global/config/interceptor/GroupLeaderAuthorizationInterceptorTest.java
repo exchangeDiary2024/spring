@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/leader";
+    private static final String API_PATH = "/api/groups/%s/leader";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -82,7 +82,7 @@ public class GroupLeaderAuthorizationInterceptorTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("group-name", "code"));
+        return groupRepository.save(Group.of("group-name"));
     }
 
     private Member createMember(Group group, int order, GroupRole role) {

@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     Optional<Notification> findByMemberId(Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId")
-    List<String> findAllTokenByGroupId(Long groupId);
+    List<String> findAllTokenByGroupId(String groupId);
 }

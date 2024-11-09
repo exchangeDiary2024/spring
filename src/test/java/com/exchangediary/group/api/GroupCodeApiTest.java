@@ -23,7 +23,7 @@ public class GroupCodeApiTest extends ApiBaseTest {
     void 그룹_코드_유효성_검증_성공() {
         Group group = createGroup();
         groupRepository.save(group);
-        GroupCodeRequest groupCodeRequest = new GroupCodeRequest(group.getCode());
+        GroupCodeRequest groupCodeRequest = new GroupCodeRequest(group.getId());
 
         GroupIdResponse response = RestAssured
                 .given().log().all()
@@ -68,6 +68,6 @@ public class GroupCodeApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.of(GROUP_NAME, "code");
+        return Group.of(GROUP_NAME);
     }
 }

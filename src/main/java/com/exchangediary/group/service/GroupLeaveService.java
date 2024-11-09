@@ -25,7 +25,7 @@ public class GroupLeaveService {
     private final GroupRepository groupRepository;
     private final DiaryRepository diaryRepository;
 
-    public void leaveGroup(Long groupId, Long memberId) {
+    public void leaveGroup(String groupId, Long memberId) {
         Group group = groupQueryService.findGroup(groupId);
         Member member = memberQueryService.findMember(memberId);
 

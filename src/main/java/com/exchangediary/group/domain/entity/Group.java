@@ -40,18 +40,15 @@ public class Group extends BaseEntity {
     @NotNull
     private Integer currentOrder;
     @NotNull
-    private String code;
-    @NotNull
     private LocalDate lastSkipOrderDate;
     @OneToMany(mappedBy = "group")
     @OrderBy("order_in_group ASC")
     private List<Member> members;
 
-    public static Group of(String groupName, String code) {
+    public static Group of(String groupName) {
         return Group.builder()
                 .name(groupName)
                 .currentOrder(1)
-                .code(code)
                 .lastSkipOrderDate(LocalDate.now().minusDays(1))
                 .build();
     }

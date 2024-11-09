@@ -20,7 +20,7 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    public String showCalendar(Model model, @PathVariable Long groupId) {
+    public String showCalendar(Model model, @PathVariable String groupId) {
         model.addAttribute("group", groupQueryService.getGroupMonthlyInfo(groupId));
         return "group/group-monthly";
     }

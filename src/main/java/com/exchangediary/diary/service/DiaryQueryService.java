@@ -48,14 +48,14 @@ public class DiaryQueryService {
         return DiaryTopResponse.of(diary);
     }
 
-    public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, Long groupId, Long memberId) {
+    public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, String groupId, Long memberId) {
         diaryValidationService.validateYearMonthFormat(year, month);
         List<DiaryDay> diaries = diaryRepository.findAllByGroupAndYearAndMonth(groupId, year, month);
         LocalDate lastViewableDiaryDate = memberQueryService.getLastViewableDiaryDate(memberId);
         return DiaryMonthlyResponse.of(diaries, lastViewableDiaryDate);
     }
 
-    public DiaryWritableStatusResponse getMembersDiaryAuthorization(Long groupId, Long memberId) {
+    public DiaryWritableStatusResponse getMembersDiaryAuthorization(String groupId, Long memberId) {
         boolean writtenTodayDiary = false;
         Long diaryId = null;
 

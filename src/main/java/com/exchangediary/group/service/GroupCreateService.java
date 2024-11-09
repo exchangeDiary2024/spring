@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class GroupCreateService {
-    private final GroupCodeService groupCodeService;
     private final GroupRepository groupRepository;
     private final MemberQueryService memberQueryService;
     private final MemberRepository memberRepository;
@@ -28,7 +27,7 @@ public class GroupCreateService {
     }
 
     private Group saveGroup(String groupName) {
-        Group group = Group.of(groupName, groupCodeService.generateCode(groupName));
+        Group group = Group.of(groupName);
         return groupRepository.save(group);
     }
 

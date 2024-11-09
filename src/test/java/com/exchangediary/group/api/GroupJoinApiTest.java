@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 class GroupJoinApiTest extends ApiBaseTest {
     private static final String GROUP_NAME = "버니즈";
-    private static final String API_PATH = "/api/groups/%d/join";
+    private static final String API_PATH = "/api/groups/%s/join";
     @Autowired
     private GroupRepository groupRepository;
 
@@ -70,7 +70,7 @@ class GroupJoinApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.of(GROUP_NAME, "code");
+        return Group.of(GROUP_NAME);
     }
 
     private Member createMemberInGroup(Group group) {

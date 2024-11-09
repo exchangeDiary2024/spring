@@ -11,7 +11,7 @@ public class NotificationService {
     private final MessageSendService messageSendService;
     private final NotificationTokenService notificationTokenService;
 
-    public void pushNotificationToAllGroupMembers(Long groupId, String title, String body) {
+    public void pushNotificationToAllGroupMembers(String groupId, String title, String body) {
         List<String> tokens = notificationTokenService.findTokensByGroup(groupId);
         messageSendService.sendMulticastMessage(tokens, title, body);
     }

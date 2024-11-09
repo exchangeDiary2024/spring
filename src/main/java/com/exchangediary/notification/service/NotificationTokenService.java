@@ -18,7 +18,7 @@ public class NotificationTokenService {
     private final MemberQueryService memberQueryService;
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroup(Long groupId) {
+    public List<String> findTokensByGroup(String groupId) {
         return notificationRepository.findAllTokenByGroupId(groupId);
     }
 

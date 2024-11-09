@@ -13,7 +13,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 class GroupNicknameApiTest extends ApiBaseTest {
     private static final String GROUP_NAME = "버니즈";
-    private static final String API_PATH = "/api/groups/%d/nickname/verify";
+    private static final String API_PATH = "/api/groups/%s/nickname/verify";
     @Autowired
     private GroupRepository groupRepository;
 
@@ -49,7 +49,7 @@ class GroupNicknameApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.of(GROUP_NAME, "code");
+        return Group.of(GROUP_NAME);
     }
 
     private Member createMember(Group group) {

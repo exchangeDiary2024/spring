@@ -90,7 +90,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get(String.format("api/groups/%d/diaries/status", group.getId()))
+                .when().get(String.format("api/groups/%s/diaries/status", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -104,7 +104,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
         RestAssured
                 .given().log().all()
                 .cookie("token", token)
-                .when().get(String.format("api/groups/%d/diaries/status", otherGroup.getId()))
+                .when().get(String.format("api/groups/%s/diaries/status", otherGroup.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
@@ -118,7 +118,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get(String.format("/group/%d/diary", group.getId()))
+                .when().get(String.format("/group/%s/diary", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -133,7 +133,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get(String.format("/group/%d/diary", otherGroup.getId()))
+                .when().get(String.format("/group/%s/diary", otherGroup.getId()))
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.FORBIDDEN.value());
@@ -170,7 +170,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("group-name", "code"));
+        return groupRepository.save(Group.of("group-name"));
     }
 
     private void updateSelf(Group group) {
