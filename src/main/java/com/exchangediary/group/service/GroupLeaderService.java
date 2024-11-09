@@ -43,10 +43,11 @@ public class GroupLeaderService {
         return groupOrder;
     }
 
-    public void kickOutMember(Long groupId, GroupKickOutRequest request) {
+    public long kickOutMember(Long groupId, GroupKickOutRequest request) {
         Group group = groupQueryService.findGroup(groupId);
         Member kickMember = groupMemberService.findMemberByNickname(group, request.nickname());
         groupLeaveService.leaveGroup(groupId, kickMember.getId());
+        return kickMember.getId();
     }
 
     public boolean isGroupLeader(Long memberId) {
