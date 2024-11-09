@@ -1,14 +1,13 @@
 const noteBody = document.querySelector(".note-body");
 const pageBar = document.querySelector(".page-bar");
 const pages = []
+const currentPathname = window.location.pathname
 var currentPage = null;
 var prevPage = null;
 var nextPage = null;
 
 function viewDiary() {
-    const url = window.location.pathname;
-
-    fetch(`/api${url}`)
+    fetch(`/api${currentPathname}`)
         .then(response => response.json())
         .then(data => drawPageBar(data));
 }
@@ -16,7 +15,7 @@ function viewDiary() {
 function drawPageBar(diary) {
     const pageBtns = pageBar.children;
     const contents = diary.contents;
-    const html = makeDiaryTitleHTML(diary.profileImage, diary.nickname) + makeDiaryPageHTMLContainsImage(diary.image, contents[0].content);
+    const html = makeDiaryTitleHTML(diary.profileImage, diary.nickname) + makeDiaryPageHTMLContainsImage(diary.imageFileName, contents[0].content);
     const page = { index: 0, noteContent: makeNoteContent(html) };
     pages.push(page);
     noteBody.appendChild(page.noteContent);
@@ -107,12 +106,13 @@ function makeDiaryTitleHTML(profileImage, name) {
 }
 
 function makeDiaryPageHTMLContainsImage(image, content) {
-    if (image === null) {
-        return makeDiaryPageHTML(content);
+    var imageUrl = "/images/diary/view-page/default-image.png"
+    if (image !== null) {
+        imageUrl = `/images/upload${currentPathname.split("/", 3).join("/")}/${image}`
     }
     return `
     <div class="image">
-        <img class="image-size" src='${image}' />
+        <img class="image-size" src='${imageUrl}' />
     </div>
     <div class="diary-content-area">
         <p class="diary-content">${content}</p>
