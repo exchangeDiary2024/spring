@@ -37,7 +37,7 @@ public class NotificationTokenService {
     @Transactional(readOnly = true)
     public String findTokenByMemberId(Long memberId) {
         return notificationRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "", String.valueOf(memberId)))
+                .orElseThrow(() -> new NotFoundException(ErrorCode.FCM_TOKEN_NOT_FOUND, "", String.valueOf(memberId)))
                 .getToken();
     }
 
