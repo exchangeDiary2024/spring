@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new JwtAuthenticationInterceptor(jwtService, cookieService, memberQueryService))
                 .addPathPatterns("/group", "/diary/**", "/group/**", "/api/**")
                 .excludePathPatterns("/api/kakao/callback");
-        registry.addInterceptor(new LoginInterceptor(jwtService, cookieService))
+        registry.addInterceptor(new LoginInterceptor(jwtService, cookieService, memberQueryService))
                 .addPathPatterns("/login");
         registry.addInterceptor(new GroupAuthorizationInterceptor(memberQueryService))
                 .addPathPatterns("/group/**", "/api/groups/*/**")

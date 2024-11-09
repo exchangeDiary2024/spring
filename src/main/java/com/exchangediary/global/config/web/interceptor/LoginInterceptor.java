@@ -4,6 +4,7 @@ import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.UnauthorizedException;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
+import com.exchangediary.member.service.MemberQueryService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private final JwtService jwtService;
     private final CookieService cookieService;
+    private final MemberQueryService memberQueryService;
 
     private String token;
 
@@ -33,6 +35,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             verifyAndReissueAccessToken(response);
 
             Long memberId = jwtService.extractMemberId(token);
+            checkMemberExists(memberId);
             request.setAttribute("memberId", memberId);
         } catch (UnauthorizedException exception) {
             return true;
@@ -65,6 +68,16 @@ public class LoginInterceptor implements HandlerInterceptor {
             token = jwtService.generateAccessToken(memberId);
             Cookie cookie = cookieService.createCookie(COOKIE_NAME, token);
             response.addCookie(cookie);
+        }
+    }
+
+    private void checkMemberExists(Long memberId) {
+        if (!memberQueryService.existMember(memberId)) {
+            throw new UnauthorizedException(
+                    ErrorCode.NOT_EXIST_MEMBER_TOKEN,
+                    "",
+                    String.valueOf(memberId)
+            );
         }
     }
 }
