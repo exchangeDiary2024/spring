@@ -15,9 +15,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MessageSendService {
-    public void sendMessage(String token, String title, String body) {
+    private static final String TITLE = "스프링";
+
+    public void sendMessage(String token, String body) {
         Notification notification = Notification.builder()
-                .setTitle(title)
+                .setTitle(TITLE)
                 .setBody(body)
                 .build();
 
@@ -33,9 +35,9 @@ public class MessageSendService {
         }
     }
 
-    public void sendMulticastMessage(List<String> tokens, String title, String body) {
+    public void sendMulticastMessage(List<String> tokens, String body) {
         Notification notification = Notification.builder()
-                .setTitle(title)
+                .setTitle(TITLE)
                 .setBody(body)
                 .build();
 
