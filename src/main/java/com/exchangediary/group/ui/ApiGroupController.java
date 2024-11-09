@@ -114,6 +114,7 @@ public class ApiGroupController {
             @RequestAttribute Long memberId
     ) {
         groupLeaveService.leaveGroup(groupId, memberId);
+        notificationService.pushToAllGroupMembersExceptMember(groupId, memberId, "친구가 그룹에서 나갔어요!");
         return ResponseEntity
                 .ok()
                 .build();
