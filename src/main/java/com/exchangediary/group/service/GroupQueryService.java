@@ -49,7 +49,7 @@ public class GroupQueryService {
         return GroupMonthlyResponse.of(group);
     }
 
-    public GroupMembersResponse listGroupMembersByOrder(Long memberId, Long groupId) {
+    public GroupMembersResponse listGroupMembersInformation(Long memberId, Long groupId) {
         Group group = findGroup(groupId);
         Member self = groupMemberService.findSelfInGroup(group, memberId);
         Member leader = groupMemberService.findGroupLeader(group);

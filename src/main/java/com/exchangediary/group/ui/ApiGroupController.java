@@ -98,11 +98,11 @@ public class ApiGroupController {
     }
 
     @GetMapping("/{groupId}/members")
-    public ResponseEntity<GroupMembersResponse> findGroupMembersBySelfOrder(
+    public ResponseEntity<GroupMembersResponse> listGroupMembersInformation(
             @PathVariable Long groupId,
             @RequestAttribute Long memberId
     ) {
-        GroupMembersResponse response = groupQueryService.listGroupMembersByOrder(memberId, groupId);
+        GroupMembersResponse response = groupQueryService.listGroupMembersInformation(memberId, groupId);
         return ResponseEntity
                 .ok()
                 .body(response);
