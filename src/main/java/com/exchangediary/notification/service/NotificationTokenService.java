@@ -1,5 +1,7 @@
 package com.exchangediary.notification.service;
 
+import com.exchangediary.global.exception.ErrorCode;
+import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.MemberQueryService;
 import com.exchangediary.notification.domain.NotificationRepository;
@@ -23,8 +25,20 @@ public class NotificationTokenService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroupExceptSelf(Long groupId, Long memberId) {
+    public List<String> findTokensByGroupExceptMember(Long groupId, Long memberId) {
         return notificationRepository.findAllTokenByGroupIdExceptMemberId(groupId, memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> findTokensByCurrentOrderInAllGroup() {
+        return notificationRepository.findAllTokenNoDiaryToday();
+    }
+
+    @Transactional(readOnly = true)
+    public String findTokenByMemberId(Long memberId) {
+        return notificationRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "", String.valueOf(memberId)))
+                .getToken();
     }
 
     @Transactional(readOnly = true)
@@ -35,11 +49,6 @@ public class NotificationTokenService {
     @Transactional(readOnly = true)
     public String findTokenByPreviousOrder(Long groupId, int previousOrder) {
         return notificationRepository.findByGroupIdAndOrder(groupId, previousOrder);
-    }
-
-    @Transactional(readOnly = true)
-    public List<String> findTokensByCurrentOrderInAllGroup() {
-        return notificationRepository.findAllTokenNoDiaryToday();
     }
 
     @Transactional

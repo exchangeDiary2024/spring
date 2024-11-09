@@ -11,13 +11,18 @@ public class NotificationService {
     private final MessageSendService messageSendService;
     private final NotificationTokenService notificationTokenService;
 
+    public void pushNotification(Long memberId, String body) {
+        String token = notificationTokenService.findTokenByMemberId(memberId);
+        messageSendService.sendMessage(token, body);
+    }
+
     public void pushToAllGroupMembers(Long groupId, String body) {
         List<String> tokens = notificationTokenService.findTokensByGroup(groupId);
         messageSendService.sendMulticastMessage(tokens, body);
     }
 
-    public void pushToAllGroupMembersExceptSelf(Long groupId, Long memberId, String body) {
-        List<String> tokens = notificationTokenService.findTokensByGroupExceptSelf(groupId, memberId);
+    public void pushToAllGroupMembersExceptMember(Long groupId, Long memberId, String body) {
+        List<String> tokens = notificationTokenService.findTokensByGroupExceptMember(groupId, memberId);
         messageSendService.sendMulticastMessage(tokens, body);
     }
 
