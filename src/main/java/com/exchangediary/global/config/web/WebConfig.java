@@ -3,7 +3,6 @@ package com.exchangediary.global.config.web;
 import com.exchangediary.global.config.web.interceptor.GroupLeaderAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.GroupAuthorizationInterceptor;
 import com.exchangediary.global.config.web.interceptor.JwtAuthenticationInterceptor;
-import com.exchangediary.global.config.web.interceptor.LoginInterceptor;
 import com.exchangediary.group.service.GroupLeaderService;
 import com.exchangediary.member.service.CookieService;
 import com.exchangediary.member.service.JwtService;
@@ -24,10 +23,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtAuthenticationInterceptor(jwtService, cookieService, memberQueryService))
-                .addPathPatterns("/group", "/diary/**", "/group/**", "/api/**")
+                .addPathPatterns("/login", "/group", "/diary/**", "/group/**", "/api/**")
                 .excludePathPatterns("/api/kakao/callback");
-        registry.addInterceptor(new LoginInterceptor(jwtService, cookieService, memberQueryService))
-                .addPathPatterns("/login");
         registry.addInterceptor(new GroupAuthorizationInterceptor(memberQueryService))
                 .addPathPatterns("/group/**", "/api/groups/*/**")
                 .excludePathPatterns(
