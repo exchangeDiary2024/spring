@@ -1,9 +1,8 @@
 package com.exchangediary.global.exception;
 
+import com.exchangediary.global.exception.serviceexception.ServiceException;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 
 @Builder
 public record ApiErrorResponse(
@@ -11,32 +10,17 @@ public record ApiErrorResponse(
         String message,
         String value
 ) {
-    public static ApiErrorResponse from(FieldError fieldError) {
-        return ApiErrorResponse.builder()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .message(String.format("%s", fieldError.getDefaultMessage()))
-                .value((String) fieldError.getRejectedValue())
-                .build();
-    }
-
     public static ApiErrorResponse from(HttpStatus status) {
         return ApiErrorResponse.builder()
                 .statusCode(status.value())
                 .build();
     }
 
-    public static ApiErrorResponse from(MissingServletRequestParameterException exception) {
+    public static ApiErrorResponse from(ServiceException exception) {
         return ApiErrorResponse.builder()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .statusCode(exception.getErrorCode().getStatusCode().value())
                 .message(exception.getMessage())
-                .build();
-    }
-
-    public static ApiErrorResponse from(ErrorCode errorCode, String message, String value) {
-        return ApiErrorResponse.builder()
-                .statusCode(errorCode.getStatusCode().value())
-                .message(message)
-                .value(value)
+                .value(exception.getValue())
                 .build();
     }
 }
