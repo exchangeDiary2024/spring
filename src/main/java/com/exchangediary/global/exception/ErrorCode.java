@@ -12,7 +12,7 @@ public enum ErrorCode {
     NICKNAME_DUPLICATED(HttpStatus.BAD_REQUEST, "이미 존재하는 이름입니다."),
     PROFILE_DUPLICATED(HttpStatus.BAD_REQUEST, "이미 선택된 캐릭터입니다."),
 
-    NEED_TO_REQUEST_TOKEN(HttpStatus.UNAUTHORIZED, "요청에서 토큰을 찾을 수 없습니다."),
+    NEED_TO_REQUEST_TOKEN(HttpStatus.UNAUTHORIZED, "쿠키에서 토큰을 찾을 수 없습니다."),
     INVALID_AUTHORIZATION_TYPE(HttpStatus.UNAUTHORIZED, "인증 타입이 유효하지 않습니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
     NOT_EXIST_MEMBER_TOKEN(HttpStatus.UNAUTHORIZED, "존재하지 않는 사용자의 토큰입니다."),
@@ -25,6 +25,7 @@ public enum ErrorCode {
     GROUP_LEADER_LEAVE_FORBIDDEN(HttpStatus.FORBIDDEN, "그룹 리더는 방을 나갈 수 없습니다."),
     COMMENT_WRITE_FORBIDDEN(HttpStatus.FORBIDDEN, "댓글 작성 권한이 없습니다."),
 
+    NOT_FOUND(HttpStatus.NOT_FOUND, "잘못된 경로입니다."),
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "일기를 찾을 수 없습니다."),
     UPLOAD_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "일기 업로드 이미지를 찾을 수 없습니다."),
     GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "그룹을 찾을 수 없습니다."),

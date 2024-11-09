@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-
 public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
     @Autowired
     private GroupRepository groupRepository;
@@ -131,19 +129,14 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
         Group otherGroup = createGroup();
         updateSelf(group);
 
-        String location = RestAssured
+        RestAssured
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
                 .when().get(String.format("/group/%d/diary", otherGroup.getId()))
                 .then()
-                .log().status()
-                .log().headers()
-                .statusCode(HttpStatus.FOUND.value())
-                .extract()
-                .header("Location");
-
-        assertThat(location.substring(location.indexOf("/group"))).isEqualTo("/group/" + group.getId());
+                .log().all()
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @Test
@@ -166,19 +159,14 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
         Group otherGroup = createGroup();
         updateSelf(group);
 
-        String location = RestAssured
+        RestAssured
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
                 .when().get("/group/" + otherGroup.getId())
                 .then()
-                .log().status()
-                .log().headers()
-                .statusCode(HttpStatus.FOUND.value())
-                .extract()
-                .header("Location");
-
-        assertThat(location.substring(location.indexOf("/group"))).isEqualTo("/group/" + group.getId());
+                .log().all()
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     private Group createGroup() {

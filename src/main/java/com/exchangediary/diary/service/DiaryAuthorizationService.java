@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,25 +22,25 @@ public class DiaryAuthorizationService {
 
     public void checkDiaryWritable(Group group, Member member) {
         if (!group.getCurrentOrder().equals(member.getOrderInGroup())) {
-            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
+            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", String.valueOf(member.getId()));
         }
         if (diaryRepository.existsTodayDiaryInGroup(group.getId())) {
-            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
+            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", LocalDate.now().toString());
         }
     }
 
     public void checkDiaryWritable(Long groupId, Long memberId) {
         if (!groupQueryService.isMyOrderInGroup(memberId)) {
-            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
+            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", String.valueOf(memberId));
         }
         if (diaryRepository.existsTodayDiaryInGroup(groupId)) {
-            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", "");
+            throw new ForbiddenException(ErrorCode.DIARY_WRITE_FORBIDDEN, "", LocalDate.now().toString());
         }
     }
 
     public void checkDiaryViewable(Member member, Diary diary) {
         if (member.getLastViewableDiaryDate().isBefore(diary.getCreatedAt().toLocalDate())) {
-            throw new ForbiddenException(ErrorCode.DIARY_VIEW_FORBIDDEN, "", "");
+            throw new ForbiddenException(ErrorCode.DIARY_VIEW_FORBIDDEN, "", member.getLastViewableDiaryDate().toString());
         }
     }
 }
