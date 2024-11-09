@@ -47,4 +47,15 @@ public class RequestValidationExceptionHandler {
                 .value((String) exception.getValue())
                 .build();
     }
+
+    @ExceptionHandler(NumberFormatException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handleInvalidNumberFormatException(NumberFormatException exception) {
+        log.error("{}", String.format("%s", exception.getMessage()));
+        return ApiErrorResponse.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(exception.getMessage())
+                .value(exception.getLocalizedMessage())
+                .build();
+    }
 }
