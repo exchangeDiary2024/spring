@@ -16,7 +16,7 @@ function viewDiary() {
 function drawPageBar(diary) {
     const pageBtns = pageBar.children;
     const contents = diary.contents;
-    const html = makeDiaryTitleHTML(diary.profileImage, diary.nickname) + makeDiaryPageHTMLContainsImage(diary.image, contents[0]);
+    const html = makeDiaryTitleHTML(diary.profileImage, diary.nickname) + makeDiaryPageHTMLContainsImage(diary.image, contents[0].content);
     const page = { index: 0, noteContent: makeNoteContent(html) };
     pages.push(page);
     noteBody.appendChild(page.noteContent);

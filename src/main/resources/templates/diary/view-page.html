@@ -8,10 +8,10 @@
 </th:block>
 
 <th:block layout:fragment="content">
-    <div class="background" style="background-image: url('/images/group/create-join-page/background.svg');">
+    <div class="background" style="background-color: #FCF9D1">
         <div class="top-bar">
             <div class="bar-back">
-                <a th:href="@{/groups/{groupId}(groupId=${groupId})}" class="back-btn"><img class="bar-icon" src="/images/common/back_icon.svg"/></a>
+                <a href="javascript:history.back();" class="back-btn"><img class="bar-icon" src="/images/common/back_icon.svg"/></a>
             </div>
             <div class="bar-main">
                 <span class="date">[[${diary.createdAt}]]</span>
@@ -19,6 +19,8 @@
             </div>
         </div>
         <div class="content">
+            <div class="left-margin"></div>
+            <div class="right-margin"></div>
             <div class="note">
                 <div class="note-header">
                     <div class="page-bar">
