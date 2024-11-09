@@ -30,11 +30,15 @@ function drawTodayDate() {
 }
 
 function writeDiary() {
-    var formData = new FormData();
+    const formData = new FormData();
+    
     const json = JSON.stringify({
-        content: document.querySelector(".diary-content").value,
+        contents: [ 
+            { content: document.querySelector(".diary-content").value }
+        ],
         moodLocation: getMoodLocation()
     });
+    console.log(json);
 
     formData.append("data", new Blob([json], {type: "application/json"}));
     formData.append("file", getUploadImage());
