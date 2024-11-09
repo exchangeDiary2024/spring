@@ -32,6 +32,33 @@ public class JwtAuthenticationInterceptorTest extends ApiBaseTest {
     private RefreshTokenRepository refreshTokenRepository;
 
     @Test
+    void 토큰_발급받은_사용자가_로그인_페이지_접근() {
+        String location = RestAssured
+                .given().log().all()
+                .cookie("token", token)
+                .redirects().follow(false)
+                .when().get("/login")
+                .then()
+                .log().status()
+                .log().headers()
+                .statusCode(HttpStatus.FOUND.value())
+                .extract()
+                .header("location");
+
+        assertThat(location.substring(location.indexOf("/group"))).isEqualTo("/group");
+    }
+
+    @Test
+    void 토큰_발급받지않은_사용자가_로그인_페이지_접근() {
+        RestAssured
+                .given().log().all()
+                .cookie("token", token)
+                .when().get("/login")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
     void 인증_실패_쿠키에_토큰없음() {
         RestAssured
                 .given().log().all()
