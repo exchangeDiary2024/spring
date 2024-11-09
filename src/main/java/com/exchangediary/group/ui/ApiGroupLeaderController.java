@@ -27,6 +27,7 @@ public class ApiGroupLeaderController {
             @RequestBody GroupLeaderHandOverRequest request
     ) {
         groupLeaderService.handOverGroupLeader(groupId, memberId, request);
+        notificationService.pushToAllGroupMembersExceptSelf(groupId, memberId, "방장이 다른 친구에게 방장 역할을 넘겨줬어요!");
         return ResponseEntity
                 .ok()
                 .build();
@@ -40,6 +41,7 @@ public class ApiGroupLeaderController {
                 .ok()
                 .build();
     }
+
     @PatchMapping("/leave")
     public ResponseEntity<Void> kickOutMember(
             @PathVariable Long groupId,
