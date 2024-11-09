@@ -31,13 +31,16 @@ public class GroupLeaderService {
         newLeader.changeGroupRole(GroupRole.GROUP_LEADER);
     }
 
-    public void skipDiaryOrder(Long groupId) {
+    public int skipDiaryOrder(Long groupId) {
         Group group = groupQueryService.findGroup(groupId);
         groupValidationService.checkSkipOrderAuthority(group);
-        group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
+
+        int groupOrder = group.getCurrentOrder();
+        group.updateCurrentOrder(groupOrder + 1, group.getMembers().size());
         group.updateLastSkipOrderDate();
         Member currentWriter = groupMemberService.findCurrentOrderMember(group);
         currentWriter.updateLastViewableDiaryDate();
+        return groupOrder;
     }
 
     public void kickOutMember(Long groupId, GroupKickOutRequest request) {

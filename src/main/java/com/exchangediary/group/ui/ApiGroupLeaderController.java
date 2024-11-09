@@ -35,7 +35,8 @@ public class ApiGroupLeaderController {
 
     @PatchMapping("/skip-order")
     public ResponseEntity<Void> skipDiaryOrder(@PathVariable Long groupId) {
-        groupLeaderService.skipDiaryOrder(groupId);
+        int previousOrder = groupLeaderService.skipDiaryOrder(groupId);
+        notificationService.pushSkipOverDiaryNotification(groupId, previousOrder);
         notificationService.pushDiaryOrderNotification(groupId);
         return ResponseEntity
                 .ok()

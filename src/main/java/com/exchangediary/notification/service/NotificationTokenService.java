@@ -33,6 +33,11 @@ public class NotificationTokenService {
     }
 
     @Transactional(readOnly = true)
+    public String findTokenByPreviousOrder(Long groupId, int previousOrder) {
+        return notificationRepository.findByGroupIdAndOrder(groupId, previousOrder);
+    }
+
+    @Transactional(readOnly = true)
     public List<String> findTokensByCurrentOrderInAllGroup() {
         return notificationRepository.findAllTokenNoDiaryToday();
     }

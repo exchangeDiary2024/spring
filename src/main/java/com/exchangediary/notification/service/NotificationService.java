@@ -26,6 +26,11 @@ public class NotificationService {
         messageSendService.sendMessage(token, "일기 작성 차례가 되었어요!");
     }
 
+    public void pushSkipOverDiaryNotification(Long groupId, int previousOrder) {
+        String token = notificationTokenService.findTokenByPreviousOrder(groupId, previousOrder);
+        messageSendService.sendMessage(token, "방장이 일기 순서를 건너뛰었어요.\n다음 순서를 기다려주세요!");
+    }
+
     public void pushWriteDiaryNotification() {
         List<String> tokens = notificationTokenService.findTokensByCurrentOrderInAllGroup();
         messageSendService.sendMulticastMessage(tokens, "기다리는 친구들을 위해 일기를 작성해주세요!");
