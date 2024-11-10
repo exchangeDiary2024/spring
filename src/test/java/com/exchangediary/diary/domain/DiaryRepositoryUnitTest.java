@@ -29,7 +29,7 @@ public class DiaryRepositoryUnitTest {
 
     @Test
     void 오늘_일기_있는_경우_조회() {
-        Group group = Group.of("group-name");
+        Group group = Group.from("group-name");
         Member member = Member.of(1234L);
         Diary diary = Diary.builder()
                 .moodLocation("/images/write-page/emoji/sleepy.svg")
@@ -47,7 +47,7 @@ public class DiaryRepositoryUnitTest {
 
     @Test
     void 오늘_일기_없는_경우_조회() {
-        Group group = Group.of("group-name");
+        Group group = Group.from("group-name");
         entityManager.persist(group);
 
         Optional<Diary> result = diaryRepository.findTodayDiaryInGroup(group.getId());
@@ -57,7 +57,7 @@ public class DiaryRepositoryUnitTest {
 
     @Test
     void 일기_조회_가능() {
-        Group group = Group.of("group-name");
+        Group group = Group.from("group-name");
         entityManager.persist(group);
         Member diaryCreator = Member.of(1235L);
         entityManager.persist(diaryCreator);
@@ -80,7 +80,7 @@ public class DiaryRepositoryUnitTest {
 
     @Test
     void 일기_조회_불가능() {
-        Group group = Group.of("group-name");
+        Group group = Group.from("group-name");
         entityManager.persist(group);
         Member diaryCreator = Member.of(1235L);
         entityManager.persist(diaryCreator);

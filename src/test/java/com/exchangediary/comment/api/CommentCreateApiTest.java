@@ -127,7 +127,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("GROUP_NAME"));
+        return groupRepository.save(Group.from("GROUP_NAME"));
     }
 
     private void updateSelf(Group group, int order) {

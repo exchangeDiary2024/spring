@@ -170,7 +170,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("group-name"));
+        return groupRepository.save(Group.from("group-name"));
     }
 
     private void updateSelf(Group group) {

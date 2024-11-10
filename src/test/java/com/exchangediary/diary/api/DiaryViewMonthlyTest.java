@@ -96,7 +96,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("버니즈"));
+        return groupRepository.save(Group.from("버니즈"));
     }
 
     private void updateSelf(Group group, boolean canViewToday) {

@@ -7,7 +7,7 @@ import lombok.Builder;
 public record GroupCreateResponse(
         String groupId
 ) {
-    public static GroupCreateResponse of(Group group) {
+    public static GroupCreateResponse from(Group group) {
         return GroupCreateResponse.builder()
                 .groupId(group.getId())
                 .build();

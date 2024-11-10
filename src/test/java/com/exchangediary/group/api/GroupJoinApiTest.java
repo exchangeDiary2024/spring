@@ -70,7 +70,7 @@ class GroupJoinApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return Group.of(GROUP_NAME);
+        return Group.from(GROUP_NAME);
     }
 
     private Member createMemberInGroup(Group group) {

@@ -23,11 +23,11 @@ public class GroupCreateService {
     public GroupCreateResponse createGroup(GroupCreateRequest request, Long memberId) {
         Group group = saveGroup(request.groupName());
         updateMember(memberId, request, group);
-        return GroupCreateResponse.of(group);
+        return GroupCreateResponse.from(group);
     }
 
     private Group saveGroup(String groupName) {
-        Group group = Group.of(groupName);
+        Group group = Group.from(groupName);
         return groupRepository.save(group);
     }
 

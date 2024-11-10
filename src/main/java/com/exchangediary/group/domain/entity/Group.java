@@ -45,7 +45,7 @@ public class Group extends BaseEntity {
     @OrderBy("order_in_group ASC")
     private List<Member> members;
 
-    public static Group of(String groupName) {
+    public static Group from(String groupName) {
         return Group.builder()
                 .name(groupName)
                 .currentOrder(1)

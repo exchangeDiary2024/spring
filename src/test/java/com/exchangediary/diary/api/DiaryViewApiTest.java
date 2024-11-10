@@ -93,7 +93,7 @@ public class DiaryViewApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("GROUP_NAME"));
+        return groupRepository.save(Group.from("GROUP_NAME"));
     }
 
     private Diary createDiary(Member member, Group group) {

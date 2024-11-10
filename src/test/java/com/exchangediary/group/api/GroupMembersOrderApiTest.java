@@ -165,7 +165,7 @@ public class GroupMembersOrderApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("GROUP_NAME"));
+        return groupRepository.save(Group.from("GROUP_NAME"));
     }
 
     private void createMember(Group group, int index, String profileImage) {
