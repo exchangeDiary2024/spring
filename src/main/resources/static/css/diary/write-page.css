@@ -81,7 +81,42 @@
     letter-spacing: -0.4px;
 }
 
+.note-content {
+    width: 100%;
+    height: 500px;
+
+    transition: transform 0.3s ease-out;
+}
+
 .diary-content-area {
     position: relative;
     top: 24px;
+}
+
+textarea.diary-content {
+    resize: none;
+}
+
+.main .diary-content-area .diary-content {
+    height: ;
+}
+
+.bottom {
+    width: 100%;
+    height: 10px;
+
+    position: absolute;
+    bottom: 30px;
+}
+
+.page-circle {
+    width: 8px;
+    height: 8px;
+
+    border: 1px solid #5A402A;
+    border-radius: 50%;
+}
+
+.page-circle.current {
+    background-color: #5A402A;
 }

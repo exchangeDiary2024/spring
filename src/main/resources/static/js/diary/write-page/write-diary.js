@@ -1,3 +1,5 @@
+const content = document.querySelector(".content");
+
 init();
 
 function init() {
@@ -5,19 +7,6 @@ function init() {
 
     addEventToTextArea();
     addEventToWriteBtn();
-}
-
-function addEventToTextArea() {
-    const textArea = document.querySelector("textarea");
-
-    textArea.addEventListener("click", closeModal);
-    textArea.addEventListener("focusout", () => window.scrollTo({left: 0, top: 0}));
-}
-
-function addEventToWriteBtn() {
-    const writeBtn = document.querySelector(".write-btn")
-
-    writeBtn.addEventListener("click", writeDiary);
 }
 
 function drawTodayDate() {
@@ -29,16 +18,25 @@ function drawTodayDate() {
         `${today.getDate() < 10 ? "0" + today.getDate(): today.getDate()}`;
 }
 
+function addEventToTextArea() {
+    const textareas = document.querySelectorAll("textarea");
+
+    Array.from(textareas).forEach(textarea => textarea.addEventListener("click", closeModal));
+}
+
+function addEventToWriteBtn() {
+    const writeBtn = document.querySelector(".write-btn")
+
+    writeBtn.addEventListener("click", writeDiary);
+}
+
 function writeDiary() {
     const formData = new FormData();
-    
+    const contents = Array.from(content.querySelectorAll(".diary-content")).map(diary => { return { content: diary.value } });
     const json = JSON.stringify({
-        contents: [ 
-            { content: document.querySelector(".diary-content").value }
-        ],
+        contents: contents,
         moodLocation: getMoodLocation()
     });
-    console.log(json);
 
     formData.append("data", new Blob([json], {type: "application/json"}));
     formData.append("file", getUploadImage());
@@ -86,4 +84,17 @@ function getUploadImage() {
         return photo.files[0];
     }
     return null;
+}
+
+function makeNewPage() {
+    const div = document.createElement("div");
+
+    div.classList.add("note-content");
+    div.innerHTML = `
+    <div class="diary-content-area">
+        <textarea class="diary-content only-text" placeholder="이곳을 클릭해 일기를 작성하세요."></textarea>
+    </div>
+    `
+    div.style.transform = "translateX(100%)";
+    return div;
 }
