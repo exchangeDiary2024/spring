@@ -178,3 +178,27 @@ a {
     line-height: 34px; /* 212.5% */
     letter-spacing: -0.4px;
 }
+
+.left-margin {
+    width: calc((100vw - 375px) / 2);
+    height: 514px;
+    background-color: #FCF9D1;
+
+    position: absolute;
+    top: 23px;
+    left: 0;
+
+    z-index: 1;
+}
+
+.right-margin {
+    width: calc((100vw - 375px) / 2);
+    height: 514px;
+    background-color: #FCF9D1;
+
+    position: absolute;
+    top: 23px;
+    right: 0;
+
+    z-index: 1;
+}

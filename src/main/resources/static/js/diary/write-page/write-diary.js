@@ -90,7 +90,8 @@ function makePages() {
         const page = {
             index: index,
             noteContent: noteContents[index],
-            pageCircle: pageCircles[index]
+            pageCircle: pageCircles[index],
+            diaryContent: noteContents[index].querySelector(".diary-content")
         }
         pages.push(page);
     }
@@ -102,7 +103,7 @@ function addEventSlide() {
 }
 
 function changePage(targetPage) {
-    test(targetPage);
+    drawPages(targetPage);
     currentPage.pageCircle.classList.remove("current");
     currentPage = targetPage;
     prevPage = getPrevPage();
@@ -110,7 +111,7 @@ function changePage(targetPage) {
     currentPage.pageCircle.classList.add("current");
 }
 
-function test(targetPage) {
+function drawPages(targetPage) {
     if (currentPage.index < targetPage.index) {
         targetPage.noteContent.classList.add("active");
         targetPage.pageCircle.classList.add("active");
@@ -125,9 +126,11 @@ function test(targetPage) {
 }
 
 function isDeleted(page) {
-    const isEmpty = page.noteContent.querySelector(".diary-content").value === "";
-    const isEmptyAfterPage = pages.slice(0, page.index).every(page => !page.noteContent.classList.contains("active"));
-    return isEmpty && isEmptyAfterPage;
+    const isEmptyAfterPage = pages.slice(page.index + 1).every(page => page.diaryContent.value === "");
+    if (isEmptyAfterPage) {
+        return page.diaryContent.value === "";
+    }
+    return false;
 }
 
 function getNextPage() {
