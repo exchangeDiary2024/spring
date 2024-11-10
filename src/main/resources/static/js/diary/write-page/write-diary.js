@@ -96,10 +96,19 @@ function makePages() {
         pages.push(page);
     }
     currentPage = pages[0];
+    nextPage = pages[1];
 }
 
 function addEventSlide() {
-    pages.forEach(page => addSlideEventByNoteContent(page.noteContent));
+    pages.forEach(page => {
+        addSlideEventByNoteContent(page.noteContent);
+        page.noteContent.addEventListener("touchstart", () => page.diaryContent.blur());
+    });
+    content.addEventListener("transitionend", (event) => {
+        if (event.target === currentPage.noteContent) {
+            currentPage.diaryContent.focus();
+        }
+    });
 }
 
 function changePage(targetPage) {
