@@ -79,8 +79,8 @@ async function verifyNickname() {
     if (whiteSpace.test(nickname.value)) {
         return "공백을 포함할 수 없습니다.";
     }
-    if (nickname.value.length > 5) {
-        return "최대 5자까지 입력 가능합니다.";
+    if (nickname.value.length > 4) {
+        return "최대 4자까지 입력 가능합니다.";
     }
     return await isDuplicateNickname();
 }
