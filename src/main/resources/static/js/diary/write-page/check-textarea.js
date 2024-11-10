@@ -1,16 +1,24 @@
-const textarea = document.querySelector(".diary-content");
-var changed = false;
+const textareas = document.querySelectorAll("textarea");
+const textareaValues = Array.from(textareas).reduce((object, textarea) => {
+    object[textarea] = textarea.value;
+    return object
+})
 
-textarea.addEventListener("scroll", checkHeight);
+addEventTextareas();
+
+function addEventTextareas() {
+    Array.from(textareas).forEach(textarea => {
+        textarea.addEventListener("input", checkHeight);
+        textarea.addEventListener("click", closeModal);
+    });
+}
 
 function checkHeight(event) {
-    
-    if (changed) {
-        changed = false;
-    } else {
-        const textarea = event.target;
-        textarea.value.split("\n");
-        textarea.value = textarea.value.slice(0, -1);
-        changed = true;
+    const textarea = event.target;
+
+    if (textarea.scrollHeight !== textarea.offsetHeight) {
+        textarea.value = textareaValues[textarea];
     }
+
+    textareaValues[textarea] = textarea.value;
 }

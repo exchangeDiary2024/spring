@@ -1,3 +1,6 @@
+var currentPage = null;
+var prevPage = null;
+var nextPage = null;
 var startX = 0;
 var slideType = "stop";
 

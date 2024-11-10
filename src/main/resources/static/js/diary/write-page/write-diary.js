@@ -1,12 +1,14 @@
 const content = document.querySelector(".content");
+const bottom = document.querySelector(".bottom");
+const pages = [];
 
 init();
 
 function init() {
     drawTodayDate();
-
-    addEventToTextArea();
     addEventToWriteBtn();
+    makePages();
+    addEventSlide();
 }
 
 function drawTodayDate() {
@@ -18,12 +20,6 @@ function drawTodayDate() {
         `${today.getDate() < 10 ? "0" + today.getDate(): today.getDate()}`;
 }
 
-function addEventToTextArea() {
-    const textareas = document.querySelectorAll("textarea");
-
-    Array.from(textareas).forEach(textarea => textarea.addEventListener("click", closeModal));
-}
-
 function addEventToWriteBtn() {
     const writeBtn = document.querySelector(".write-btn")
 
@@ -32,7 +28,8 @@ function addEventToWriteBtn() {
 
 function writeDiary() {
     const formData = new FormData();
-    const contents = Array.from(content.querySelectorAll(".diary-content")).map(diary => { return { content: diary.value } });
+    const activeContents = Array.from(content.querySelectorAll(".active .diary-content"));
+    const contents = activeContents.map(content => { return { content: content.value } });
     const json = JSON.stringify({
         contents: contents,
         moodLocation: getMoodLocation()
@@ -86,15 +83,42 @@ function getUploadImage() {
     return null;
 }
 
-function makeNewPage() {
-    const div = document.createElement("div");
+function makePages() {
+    const noteContents = content.children;
+    const pageCircles = bottom.children;
+    for (var index = 0; index < 5; index++) {
+        const page = {
+            index: index,
+            noteContent: noteContents[index],
+            pageCircle: pageCircles[index]
+        }
+        pages.push(page);
+    }
+    currentPage = pages[0];
+}
 
-    div.classList.add("note-content");
-    div.innerHTML = `
-    <div class="diary-content-area">
-        <textarea class="diary-content only-text" placeholder="이곳을 클릭해 일기를 작성하세요."></textarea>
-    </div>
-    `
-    div.style.transform = "translateX(100%)";
-    return div;
+function addEventSlide() {
+    pages.forEach(page => addSlideEventByNoteContent(page.noteContent));
+}
+
+function changePage(targetPage) {
+    targetPage.pageCircle.classList.remove("current");
+    currentPage = targetPage;
+    prevPage = getPrevPage();
+    nextPage = getNextPage();
+    currentPage.pageCircle.classList.add("current");
+}
+
+function getNextPage() {
+    if (currentPage.index === pages.length - 1) {
+        return null
+    }
+    return pages[currentPage.index + 1];
+}
+
+function getPrevPage() {
+    if (currentPage.index === 0) {
+        return null
+    }
+    return pages[currentPage.index - 1];
 }

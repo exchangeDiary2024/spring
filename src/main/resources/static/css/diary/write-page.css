@@ -84,7 +84,7 @@
 .note-content {
     width: 100%;
     height: 500px;
-
+    position: absolute;
     transition: transform 0.3s ease-out;
 }
 
@@ -97,16 +97,15 @@ textarea.diary-content {
     resize: none;
 }
 
-.main .diary-content-area .diary-content {
-    height: ;
-}
-
 .bottom {
     width: 100%;
     height: 10px;
 
     position: absolute;
     bottom: 30px;
+
+    display: flex;
+    justify-content: center;
 }
 
 .page-circle {
@@ -115,6 +114,15 @@ textarea.diary-content {
 
     border: 1px solid #5A402A;
     border-radius: 50%;
+
+    margin-left: 3px;
+    margin-right: 3px;
+
+    display: none;
+}
+
+.page-circle.active {
+    display: block;
 }
 
 .page-circle.current {

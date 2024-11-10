@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="content">
-            <div class="note-content">
+            <div class="note-content active">
                 <a class="upload-photo photo-btn">
                     <img class="photo-icon">
                 </a>
@@ -32,9 +32,33 @@
                     <textarea class="diary-content" placeholder="이곳을 클릭해 일기를 작성하세요."></textarea>
                 </div>
             </div>
+            <div class="note-content" style="transform: translateX(100%);">
+                <div class="diary-content-area">
+                    <textarea class="diary-content only-text" placeholder="이곳을 클릭해 일기를 작성하세요."></textarea>
+                </div>
+            </div>
+            <div class="note-content" style="transform: translateX(100%);">
+                <div class="diary-content-area">
+                    <textarea class="diary-content only-text" placeholder="이곳을 클릭해 일기를 작성하세요."></textarea>
+                </div>
+            </div>
+            <div class="note-content" style="transform: translateX(100%);">
+                <div class="diary-content-area">
+                    <textarea class="diary-content only-text" placeholder="이곳을 클릭해 일기를 작성하세요."></textarea>
+                </div>
+            </div>
+            <div class="note-content" style="transform: translateX(100%);">
+                <div class="diary-content-area">
+                    <textarea class="diary-content only-text" placeholder="이곳을 클릭해 일기를 작성하세요."></textarea>
+                </div>
+            </div>
         </div>
         <div class="bottom">
-            <div class="page-circle current"></div>
+            <div class="page-circle active current"></div>
+            <div class="page-circle"></div>
+            <div class="page-circle"></div>
+            <div class="page-circle"></div>
+            <div class="page-circle"></div>
         </div>
     </div>
 </th:block>
@@ -85,8 +109,8 @@
     <script src="/js/diary/write-page/modal.js"></script>
     <script src="/js/diary/write-page/photo.js"></script>
     <script src="/js/diary/write-page/check-textarea.js"></script>
-    <script src="/js/diary/write-page/write-diary.js"></script>
     <script src="/js/diary/view-diary/slide-diary.js"></script>
+    <script src="/js/diary/write-page/write-diary.js"></script>
 </th:block>
 
 </html>

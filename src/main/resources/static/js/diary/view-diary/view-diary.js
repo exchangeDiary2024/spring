@@ -2,9 +2,6 @@ const noteBody = document.querySelector(".note-body");
 const pageBar = document.querySelector(".page-bar");
 const pages = []
 const currentPathname = window.location.pathname
-var currentPage = null;
-var prevPage = null;
-var nextPage = null;
 
 function viewDiary() {
     fetch(`/api${currentPathname}`)
@@ -88,7 +85,7 @@ function makeNoteContent(html) {
 function makeDiaryPageHTML(content) {
     return `
     <div class="diary-content-area">
-        <p class="diary-content">${content}</p>
+        <p class="diary-content only-text">${content}</p>
     </div>
     `;
 }
