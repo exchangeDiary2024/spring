@@ -17,6 +17,7 @@ function checkPrevPage(event) {
         const index = textareas.indexOf(textarea);
 
         if (index > 0) {
+            textarea.blur();
             changePageBySlide("prev", "0.3s");
         }
     }
