@@ -102,11 +102,32 @@ function addEventSlide() {
 }
 
 function changePage(targetPage) {
-    targetPage.pageCircle.classList.remove("current");
+    test(targetPage);
+    currentPage.pageCircle.classList.remove("current");
     currentPage = targetPage;
     prevPage = getPrevPage();
     nextPage = getNextPage();
     currentPage.pageCircle.classList.add("current");
+}
+
+function test(targetPage) {
+    if (currentPage.index < targetPage.index) {
+        targetPage.noteContent.classList.add("active");
+        targetPage.pageCircle.classList.add("active");
+    }
+
+    if (currentPage.index > targetPage.index) {
+        if (isDeleted(currentPage)) {
+            currentPage.noteContent.classList.remove("active");
+            currentPage.pageCircle.classList.remove("active");
+        }
+    }
+}
+
+function isDeleted(page) {
+    const isEmpty = page.noteContent.querySelector(".diary-content").value === "";
+    const isEmptyAfterPage = pages.slice(0, page.index).every(page => !page.noteContent.classList.contains("active"));
+    return isEmpty && isEmptyAfterPage;
 }
 
 function getNextPage() {
