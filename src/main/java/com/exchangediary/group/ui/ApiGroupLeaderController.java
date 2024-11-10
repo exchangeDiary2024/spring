@@ -3,6 +3,7 @@ package com.exchangediary.group.ui;
 import com.exchangediary.group.service.GroupLeaderService;
 import com.exchangediary.group.ui.dto.request.GroupKickOutRequest;
 import com.exchangediary.group.ui.dto.request.GroupLeaderHandOverRequest;
+import com.exchangediary.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ApiGroupLeaderController {
     private final GroupLeaderService groupLeaderService;
+    private final NotificationService notificationService;
 
     @PatchMapping("/hand-over")
     public ResponseEntity<Void> handOverGroupLeader(
@@ -33,6 +35,7 @@ public class ApiGroupLeaderController {
     @PatchMapping("/skip-order")
     public ResponseEntity<Void> skipDiaryOrder(@PathVariable String groupId) {
         groupLeaderService.skipDiaryOrder(groupId);
+        notificationService.pushDiaryOrderNotification(groupId);
         return ResponseEntity
                 .ok()
                 .build();
