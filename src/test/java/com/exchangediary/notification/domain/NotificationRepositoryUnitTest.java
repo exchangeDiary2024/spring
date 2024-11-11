@@ -57,7 +57,24 @@ public class NotificationRepositoryUnitTest {
     }
 
     @Test
-    @DisplayName("findByGroupIdAndCurrentOrder 동작 확인")
+    @DisplayName("findAllTokenByGroupIdExceptMemberIdAndLeader 동작 확인")
+    void 본인과_방장_제외한_그룹원_토큰_가져오기() {
+        Group group = Group.from("버니즈");
+        entityManager.persist(group);
+        Member self = createMember(1, group);
+        createMember(2, group);
+        createMember(3, group);
+        createMember(4, group);
+        createLeader(5, group);
+        entityManager.flush();
+
+        List<String> tokens = notificationRepository.findAllTokenByGroupIdExceptMemberIdAndLeader(group.getId(), self.getId());
+
+        assertThat(tokens).hasSize(3);
+    }
+
+    @Test
+    @DisplayName("findAllTokenByGroupIdExceptMemberIdAndLeader 동작 확인")
     void 현재_순서_그룹원_토큰_가져오기() {
         Group group = Group.from("버니즈");
         entityManager.persist(group);
@@ -112,6 +129,19 @@ public class NotificationRepositoryUnitTest {
     private Member createMember(long num, Group group) {
         Member member = Member.of(num);
         member.joinGroup("one", "red", (int) num, GroupRole.GROUP_MEMBER, group);
+        entityManager.persist(member);
+        Notification notification = Notification.builder()
+                .token(group.getName() + num)
+                .member(member)
+                .build();
+        entityManager.persist(notification);
+
+        return member;
+    }
+
+    private Member createLeader(long num, Group group) {
+        Member member = Member.of(num);
+        member.joinGroup("리더", "red", (int) num, GroupRole.GROUP_LEADER, group);
         entityManager.persist(member);
         Notification notification = Notification.builder()
                 .token(group.getName() + num)
