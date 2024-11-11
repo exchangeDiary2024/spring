@@ -11,17 +11,17 @@ public class NotificationService {
     private final MessageSendService messageSendService;
     private final NotificationTokenService notificationTokenService;
 
-    public void pushToAllGroupMembers(Long groupId, String body) {
+    public void pushToAllGroupMembers(String groupId, String body) {
         List<String> tokens = notificationTokenService.findTokensByGroup(groupId);
         messageSendService.sendMulticastMessage(tokens, body);
     }
 
-    public void pushToAllGroupMembersExceptSelf(Long groupId, Long memberId, String body) {
+    public void pushToAllGroupMembersExceptSelf(String groupId, Long memberId, String body) {
         List<String> tokens = notificationTokenService.findTokensByGroupExceptSelf(groupId, memberId);
         messageSendService.sendMulticastMessage(tokens, body);
     }
 
-    public void pushDiaryOrderNotification(Long groupId) {
+    public void pushDiaryOrderNotification(String groupId) {
         String token = notificationTokenService.findTokenByCurrentOrder(groupId);
         messageSendService.sendMessage(token, "일기 작성 차례가 되었어요!");
     }

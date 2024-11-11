@@ -38,7 +38,7 @@ function drawStep5Join(direction) {
 function initStep5() {
     copyBtn = document.querySelector(".copy-code");
 
-    copyBtn.addEventListener("click", () => navigator.clipboard.writeText(groupData.groupCode));
+    copyBtn.addEventListener("click", () => navigator.clipboard.writeText(groupData.groupId));
 }
 
 function confirmStep5() {

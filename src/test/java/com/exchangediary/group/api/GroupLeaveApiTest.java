@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class GroupLeaveApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/leave";
+    private static final String API_PATH = "/api/groups/%s/leave";
     private static final String GROUP_NAME = "버니즈";
 
     @Autowired
@@ -257,7 +257,6 @@ public class GroupLeaveApiTest extends ApiBaseTest {
         Group group = Group.builder()
                 .name(GROUP_NAME)
                 .currentOrder(currentOrder)
-                .code("code")
                 .lastSkipOrderDate(LocalDate.now())
                 .build();
         groupRepository.save(group);

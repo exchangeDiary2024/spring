@@ -19,7 +19,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class GroupLeaderKickOutApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/leader/leave";
+    private static final String API_PATH = "/api/groups/%s/leader/leave";
     private static final String GROUP_NAME = "버니즈";
     @Autowired
     GroupRepository groupRepository;
@@ -77,7 +77,6 @@ public class GroupLeaderKickOutApiTest extends ApiBaseTest {
         Group group = Group.builder()
                 .name(GROUP_NAME)
                 .currentOrder(currentOrder)
-                .code("code")
                 .lastSkipOrderDate(LocalDate.now())
                 .build();
         groupRepository.save(group);

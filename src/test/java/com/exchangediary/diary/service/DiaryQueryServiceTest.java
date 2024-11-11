@@ -71,7 +71,7 @@ public class DiaryQueryServiceTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        Group group = Group.of("버니즈", "code");
+        Group group = Group.from("버니즈");
         return groupRepository.save(group);
     }
 
