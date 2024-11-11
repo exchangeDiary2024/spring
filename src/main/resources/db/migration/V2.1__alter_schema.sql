@@ -1,3 +1,5 @@
+BEGIN;
+
 -- pk 이름 변경
 ALTER TABLE "group" RENAME COLUMN group_id TO id;
 ALTER SEQUENCE group_group_id_seq RENAME TO group_id_seq;
@@ -43,3 +45,5 @@ ALTER TABLE "group" ALTER COLUMN "name" type VARCHAR(10);
 ALTER TABLE member ALTER COLUMN nickname type VARCHAR(5);
 ALTER TABLE member ALTER COLUMN profile_image type VARCHAR(6);
 ALTER TABLE member ALTER COLUMN group_role type VARCHAR(12);
+
+COMMIT;
