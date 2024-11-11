@@ -38,7 +38,14 @@ function drawStep5Join(direction) {
 function initStep5() {
     copyBtn = document.querySelector(".copy-code");
 
-    copyBtn.addEventListener("click", () => navigator.clipboard.writeText(groupData.groupId));
+    copyBtn.addEventListener("click", () => {
+        try {
+            navigator.clipboard.writeText(groupData.groupId);
+            openNotificationModal("success", ["코드 복사에 성공했습니다."], 500);
+        } catch {
+            openNotificationModal("error", ["오류가 발생했습니다."], 2000);
+        }
+    });
 }
 
 function confirmStep5() {
