@@ -3,7 +3,6 @@ package com.exchangediary.member.domain.entity;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.enums.GroupRole;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,7 +32,6 @@ import static lombok.AccessLevel.PROTECTED;
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
     private Long id;
     @NotNull
     private final Long kakaoId;

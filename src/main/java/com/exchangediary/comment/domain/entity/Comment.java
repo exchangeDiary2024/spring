@@ -4,7 +4,6 @@ import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.member.domain.entity.Member;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -33,7 +32,6 @@ import static lombok.AccessLevel.PROTECTED;
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
     private Long id;
     @NotNull
     private final Double xCoordinate;
@@ -43,13 +41,13 @@ public class Comment extends BaseEntity {
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
     private final String content;
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id", foreignKey = @ForeignKey(name = "comment_diary_id_fkey"))
-    @NotNull
     private final Diary diary;
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "comment_member_id_fkey"))
-    @NotNull
     private final Member member;
 
     public static Comment of(CommentCreateRequest commentRequest, Member member, Diary diary) {
