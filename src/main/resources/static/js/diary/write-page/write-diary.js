@@ -21,9 +21,17 @@ function drawTodayDate() {
 }
 
 function addEventToWriteBtn() {
-    const writeBtn = document.querySelector(".write-btn")
+    const writeBtn = document.querySelector(".write-btn");
 
-    writeBtn.addEventListener("click", writeDiary);
+    writeBtn.addEventListener("click", checkWrite);
+}
+
+async function checkWrite() {
+    const result = await openConfirmModal(`일기를 업로드할까요?`, "일기가 업로드되면 수정 또는 삭제가 불가능해요.");
+
+    if (result) {
+        writeDiary();
+    }
 }
 
 function writeDiary() {

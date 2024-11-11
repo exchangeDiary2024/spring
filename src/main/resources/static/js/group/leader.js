@@ -78,7 +78,7 @@ function isLeaderByGroupMember(groupMember) {
 }
 
 async function exitByMember(url) {
-    const selectedMemberNickname = selectedMember.querySelector(".profile-nickname").innerText
+    const selectedMemberNickname = selectedMember.querySelector(".profile-nickname").innerText;
     const result = await openConfirmModal(`${selectedMemberNickname}을 정말 내보낼까요?`, "내보내기 시 모든 데이터가 영구적으로 삭제됩니다.");
 
     if (result) {

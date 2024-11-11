@@ -28,7 +28,7 @@
     content: url("/images/diary/write-page/photo_icon.svg")
 }
 
-.cancel-btn {
+.upload-photo .cancel-btn {
     float: left;
     position: absolute;
     top: 10px;
@@ -38,7 +38,7 @@
     background: #FFFFFF;
 }
 
-.cancel-icon {
+.upload-photo .cancel-icon {
     width: 20px;
     height: 20px;
     flex-shrink: 0;
@@ -73,7 +73,7 @@
 .check-btn {
     color: var(--kakao-logo, #000);
     text-align: center;
-    font-family: "SOYOMaple";
+    font-family: "HancomMalangMalang-Regular";
     font-size: 16px;
     font-style:normal;
     font-weight: 600;
@@ -95,6 +95,9 @@
 
 textarea.diary-content {
     resize: none;
+    /* 마지막 줄 나타내는 테두리 */
+    /* border-bottom: 1px solid #000;
+    box-sizing: border-box; */
 }
 
 .bottom {
