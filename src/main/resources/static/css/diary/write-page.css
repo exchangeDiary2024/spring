@@ -28,7 +28,7 @@
     content: url("/images/diary/write-page/photo_icon.svg")
 }
 
-.cancel-btn {
+.upload-photo .cancel-btn {
     float: left;
     position: absolute;
     top: 10px;
@@ -38,7 +38,7 @@
     background: #FFFFFF;
 }
 
-.cancel-icon {
+.upload-photo .cancel-icon {
     width: 20px;
     height: 20px;
     flex-shrink: 0;
