@@ -18,17 +18,17 @@ public class NotificationTokenService {
     private final MemberQueryService memberQueryService;
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroup(Long groupId) {
+    public List<String> findTokensByGroup(String groupId) {
         return notificationRepository.findAllTokenByGroupId(groupId);
     }
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroupExceptSelf(Long groupId, Long memberId) {
+    public List<String> findTokensByGroupExceptSelf(String groupId, Long memberId) {
         return notificationRepository.findAllTokenByGroupIdExceptMemberId(groupId, memberId);
     }
 
     @Transactional(readOnly = true)
-    public String findTokenByCurrentOrder(Long groupId) {
+    public String findTokenByCurrentOrder(String groupId) {
         return notificationRepository.findCurrentOrderMemberByGroupId(groupId);
     }
 

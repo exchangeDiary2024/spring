@@ -21,7 +21,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DiaryWritableStatusApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/diaries/status";
+    private static final String API_PATH = "/api/groups/%s/diaries/status";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -155,7 +155,6 @@ public class DiaryWritableStatusApiTest extends ApiBaseTest {
         return Group.builder()
                 .name("버니즈")
                 .currentOrder(currentOrder)
-                .code("code")
                 .lastSkipOrderDate(LocalDate.now())
                 .build();
     }
