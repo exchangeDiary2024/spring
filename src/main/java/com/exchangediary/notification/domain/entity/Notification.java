@@ -2,7 +2,6 @@ package com.exchangediary.notification.domain.entity;
 
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.member.domain.entity.Member;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -28,7 +27,6 @@ import static lombok.AccessLevel.PROTECTED;
 public class Notification extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notification_id")
     private Long id;
     @NotNull
     private String token;
