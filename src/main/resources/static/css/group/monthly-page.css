@@ -170,7 +170,7 @@ th,td {
 
 .calendar-bottom {
     width: 100%;
-    height: 187px;
+    height: calc(100vw * 0.498);
     position: absolute;
     bottom: 0;
     display: flex;

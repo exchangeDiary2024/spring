@@ -96,6 +96,12 @@ a {
     line-height: 16.65px; /* 100% */
 }
 
+.diary-content.only-text {
+    height: 450px;
+    margin-top: 3px;
+    margin-bottom: 0px;
+}
+
 .mood-icon {
     width: 24px;
     height: 24px;

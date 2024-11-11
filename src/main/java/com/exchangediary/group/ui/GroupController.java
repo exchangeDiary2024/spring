@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/group")
+@RequestMapping("/groups")
 public class GroupController {
     private final GroupQueryService groupQueryService;
 

@@ -41,7 +41,7 @@ public class ApiDiaryController {
         notificationService.pushDiaryOrderNotification(groupId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .header("Content-Location", "/group/" + groupId + "/diary/" + diaryId)
+                .header("Content-Location", "/groups/" + groupId + "/diaries/" + diaryId)
                 .build();
     }
 

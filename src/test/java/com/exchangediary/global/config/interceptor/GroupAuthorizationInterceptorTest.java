@@ -23,7 +23,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get("/group")
+                .when().get("/groups")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -37,7 +37,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get("/group/" + group.getId())
+                .when().get("/groups/" + group.getId())
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -51,7 +51,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get("/group")
+                .when().get("/groups")
                 .then()
                 .log().status()
                 .log().headers()
@@ -59,7 +59,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .extract()
                 .header("location");
 
-        Assertions.assertThat(location.substring(location.indexOf("/group"))).isEqualTo("/group/" + group.getId());
+        Assertions.assertThat(location.substring(location.indexOf("/groups"))).isEqualTo("/groups/" + group.getId());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get("/group/" + group.getId())
+                .when().get("/groups/" + group.getId())
                 .then()
                 .log().status()
                 .log().headers()
@@ -78,7 +78,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .extract()
                 .header("location");
 
-        Assertions.assertThat(location.substring(location.indexOf("/group"))).isEqualTo("/group");
+        Assertions.assertThat(location.substring(location.indexOf("/groups"))).isEqualTo("/groups");
     }
 
     @Test
@@ -118,7 +118,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get(String.format("/group/%s/diary", group.getId()))
+                .when().get(String.format("/groups/%s/diaries", group.getId()))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -133,7 +133,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get(String.format("/group/%s/diary", otherGroup.getId()))
+                .when().get(String.format("/groups/%s/diaries", otherGroup.getId()))
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.FORBIDDEN.value());
@@ -148,7 +148,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get("/group/" + group.getId())
+                .when().get("/groups/" + group.getId())
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -163,7 +163,7 @@ public class GroupAuthorizationInterceptorTest extends ApiBaseTest {
                 .given().log().all()
                 .cookie("token", token)
                 .redirects().follow(false)
-                .when().get("/group/" + otherGroup.getId())
+                .when().get("/groups/" + otherGroup.getId())
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.FORBIDDEN.value());

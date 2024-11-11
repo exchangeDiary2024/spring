@@ -31,6 +31,6 @@ public class KakaoLoginController {
         String token = jwtService.generateAccessToken(memberId);
         Cookie cookie = cookieService.createCookie("token", token);
         response.addCookie(cookie);
-        return "redirect:/group";
+        return "redirect:/groups";
     }
 }
