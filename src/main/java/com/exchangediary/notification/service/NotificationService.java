@@ -26,6 +26,11 @@ public class NotificationService {
         messageSendService.sendMulticastMessage(tokens, body);
     }
 
+    public void pushToAllGroupMembersExceptMemberAndLeader(String groupId, Long memberId, String body) {
+        List<String> tokens = notificationTokenService.findTokensByGroupExceptMemberAndLeader(groupId, memberId);
+        messageSendService.sendMulticastMessage(tokens, body);
+    }
+
     public void pushDiaryOrderNotification(String groupId) {
         String token = notificationTokenService.findTokenByCurrentOrder(groupId);
         messageSendService.sendMessage(token, "일기 작성 차례가 되었어요!");

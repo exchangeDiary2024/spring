@@ -26,8 +26,9 @@ public class ApiGroupLeaderController {
             @RequestAttribute Long memberId,
             @RequestBody GroupLeaderHandOverRequest request
     ) {
-        groupLeaderService.handOverGroupLeader(groupId, memberId, request);
-        notificationService.pushToAllGroupMembersExceptMember(groupId, memberId, "방장이 다른 친구에게 방장 역할을 넘겨줬어요!");
+        long newLeaderId = groupLeaderService.handOverGroupLeader(groupId, memberId, request);
+        notificationService.pushToAllGroupMembersExceptMemberAndLeader(groupId, newLeaderId, "방장이 다른 친구에게 방장 역할을 넘겨줬어요!");
+        notificationService.pushNotification(newLeaderId, "방장이 나에게 방장 역할을 넘겨줬어요!");
         return ResponseEntity
                 .ok()
                 .build();
@@ -49,7 +50,7 @@ public class ApiGroupLeaderController {
             @RequestBody GroupKickOutRequest request
     ) {
         long memberId = groupLeaderService.kickOutMember(groupId, request);
-        notificationService.pushToAllGroupMembersExceptMember(groupId, memberId, "친구가 그룹에서 나갔어요!");
+        notificationService.pushToAllGroupMembersExceptMemberAndLeader(groupId, memberId, "방장이 친구를 그룹에서 내보냈어요!");
         notificationService.pushNotification(memberId, "앗, 그룹에서 내보내졌어요.\n다른 스프링에서 일기 쓰기를 시작해요!");
         return ResponseEntity
                 .ok()

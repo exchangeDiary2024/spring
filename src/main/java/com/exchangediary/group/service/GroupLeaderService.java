@@ -22,13 +22,14 @@ public class GroupLeaderService {
     private final GroupValidationService groupValidationService;
     private final MemberRepository memberRepository;
 
-    public void handOverGroupLeader(String groupId, Long memberId, GroupLeaderHandOverRequest request) {
+    public long handOverGroupLeader(String groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
         Member currentLeader = groupMemberService.findSelfInGroup(group, memberId);
         Member newLeader = groupMemberService.findMemberByNickname(group, request.nickname());
 
         currentLeader.changeGroupRole(GroupRole.GROUP_MEMBER);
         newLeader.changeGroupRole(GroupRole.GROUP_LEADER);
+        return newLeader.getId();
     }
 
     public int skipDiaryOrder(String groupId) {

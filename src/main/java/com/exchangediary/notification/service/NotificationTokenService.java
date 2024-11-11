@@ -30,6 +30,11 @@ public class NotificationTokenService {
     }
 
     @Transactional(readOnly = true)
+    public List<String> findTokensByGroupExceptMemberAndLeader(String groupId, Long memberId) {
+        return notificationRepository.findAllTokenByGroupIdExceptMemberIdAndLeader(groupId, memberId);
+    }
+
+    @Transactional(readOnly = true)
     public List<String> findTokensByCurrentOrderInAllGroup() {
         return notificationRepository.findAllTokenNoDiaryToday();
     }

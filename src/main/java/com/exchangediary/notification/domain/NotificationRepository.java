@@ -13,6 +13,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<String> findAllTokenByGroupId(String groupId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.id != :memberId")
     List<String> findAllTokenByGroupIdExceptMemberId(String groupId, Long memberId);
+    @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.id != :memberId AND m.groupRole != 'GROUP_LEADER'")
+    List<String> findAllTokenByGroupIdExceptMemberIdAndLeader(String groupId, Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.orderInGroup = m.group.currentOrder")
     String findByGroupIdAndCurrentOrder(String groupId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.orderInGroup = :order")
