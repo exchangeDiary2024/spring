@@ -5,7 +5,6 @@ import com.exchangediary.member.domain.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
@@ -14,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,26 +28,27 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PRIVATE)
 public class Group extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "group_id")
+    @GenericGenerator(
+            name = "group_id",
+            strategy = "com.exchangediary.group.domain.RandomIdGenerator"
+    )
     @Column(name = "group_id")
-    private Long id;
+    private String id;
     @NotNull
     private String name;
     @NotNull
     private Integer currentOrder;
-    @NotNull
-    private String code;
     @NotNull
     private LocalDate lastSkipOrderDate;
     @OneToMany(mappedBy = "group")
     @OrderBy("order_in_group ASC")
     private List<Member> members;
 
-    public static Group of(String groupName, String code) {
+    public static Group from(String groupName) {
         return Group.builder()
                 .name(groupName)
                 .currentOrder(1)
-                .code(code)
                 .lastSkipOrderDate(LocalDate.now().minusDays(1))
                 .build();
     }

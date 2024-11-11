@@ -22,7 +22,7 @@ public class GroupLeaderService {
     private final GroupValidationService groupValidationService;
     private final MemberRepository memberRepository;
 
-    public void handOverGroupLeader(Long groupId, Long memberId, GroupLeaderHandOverRequest request) {
+    public void handOverGroupLeader(String groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
         Member currentLeader = groupMemberService.findSelfInGroup(group, memberId);
         Member newLeader = groupMemberService.findMemberByNickname(group, request.nickname());
@@ -31,7 +31,7 @@ public class GroupLeaderService {
         newLeader.changeGroupRole(GroupRole.GROUP_LEADER);
     }
 
-    public int skipDiaryOrder(Long groupId) {
+    public int skipDiaryOrder(String groupId) {
         Group group = groupQueryService.findGroup(groupId);
         groupValidationService.checkSkipOrderAuthority(group);
 
@@ -43,7 +43,7 @@ public class GroupLeaderService {
         return groupOrder;
     }
 
-    public long kickOutMember(Long groupId, GroupKickOutRequest request) {
+    public long kickOutMember(String groupId, GroupKickOutRequest request) {
         Group group = groupQueryService.findGroup(groupId);
         Member kickMember = groupMemberService.findMemberByNickname(group, request.nickname());
         groupLeaveService.leaveGroup(groupId, kickMember.getId());

@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record GroupMonthlyResponse(
-        Long id,
+        String id,
         String name,
         int createdYear,
         int createdMonth,
@@ -17,7 +17,6 @@ public record GroupMonthlyResponse(
                 .name(group.getName())
                 .createdYear(group.getCreatedAt().getYear())
                 .createdMonth(group.getCreatedAt().getMonthValue())
-                .code(group.getCode())
                 .build();
     }
 }

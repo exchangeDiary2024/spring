@@ -21,7 +21,7 @@ public class GroupJoinService {
     private final MemberQueryService memberQueryService;
     private final MemberRepository memberRepository;
 
-    public void joinGroup(Long groupId, GroupJoinRequest request, Long memberId) {
+    public void joinGroup(String groupId, GroupJoinRequest request, Long memberId) {
         Group group = groupQueryService.findGroup(groupId);
         Member member = memberQueryService.findMember(memberId);
 

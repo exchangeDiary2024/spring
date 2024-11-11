@@ -13,11 +13,11 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
             "FROM Diary d JOIN d.member m " +
             "WHERE d.group.id = :groupId AND YEAR(d.createdAt) = :year AND MONTH(d.createdAt) = :month " +
             "ORDER BY d.createdAt")
-    List<DiaryDay> findAllByGroupAndYearAndMonth(Long groupId, int year, int month);
+    List<DiaryDay> findAllByGroupAndYearAndMonth(String groupId, int year, int month);
     @Query("SELECT d FROM Diary d WHERE d.group.id = :groupId AND CAST(d.createdAt AS DATE) = CURRENT_DATE")
-    Optional<Diary> findTodayDiaryInGroup(Long groupId);
+    Optional<Diary> findTodayDiaryInGroup(String groupId);
     @Query("SELECT count(d.id) > 0 FROM Diary d WHERE d.group.id = :groupId AND CAST(d.createdAt AS DATE) = CURRENT_DATE")
-    Boolean existsTodayDiaryInGroup(Long groupId);
+    Boolean existsTodayDiaryInGroup(String groupId);
     @Query("SELECT CASE WHEN m.lastViewableDiaryDate >= CAST(d.createdAt AS DATE) THEN true ELSE false END " +
             "FROM Member m JOIN Diary d " +
             "ON m.id = :memberId AND d.id = :diaryId")

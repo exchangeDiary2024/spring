@@ -58,7 +58,7 @@ public class GroupLeaderHandOverApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("group-name", "code"));
+        return groupRepository.save(Group.from("group-name"));
     }
 
     private void updateSelf(Group group, int order, GroupRole role) {

@@ -20,12 +20,12 @@ public class NotificationTokenService {
     private final MemberQueryService memberQueryService;
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroup(Long groupId) {
+    public List<String> findTokensByGroup(String groupId) {
         return notificationRepository.findAllTokenByGroupId(groupId);
     }
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroupExceptMember(Long groupId, Long memberId) {
+    public List<String> findTokensByGroupExceptMember(String groupId, Long memberId) {
         return notificationRepository.findAllTokenByGroupIdExceptMemberId(groupId, memberId);
     }
 
@@ -42,12 +42,12 @@ public class NotificationTokenService {
     }
 
     @Transactional(readOnly = true)
-    public String findTokenByCurrentOrder(Long groupId) {
+    public String findTokenByCurrentOrder(String groupId) {
         return notificationRepository.findByGroupIdAndCurrentOrder(groupId);
     }
 
     @Transactional(readOnly = true)
-    public String findTokenByPreviousOrder(Long groupId, int previousOrder) {
+    public String findTokenByPreviousOrder(String groupId, int previousOrder) {
         return notificationRepository.findByGroupIdAndOrder(groupId, previousOrder);
     }
 

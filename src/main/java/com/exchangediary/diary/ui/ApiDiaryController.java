@@ -33,7 +33,7 @@ public class ApiDiaryController {
     public ResponseEntity<Void> writeDiary(
             @RequestPart(name = "data") @Valid DiaryRequest diaryRequest,
             @RequestPart(name = "file", required = false) MultipartFile file,
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         Long diaryId = diaryWriteService.writeDiary(diaryRequest, file, groupId, memberId);
@@ -49,7 +49,7 @@ public class ApiDiaryController {
     public ResponseEntity<DiaryMonthlyResponse> viewMonthlyDiary(
             @RequestParam int year,
             @RequestParam int month,
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         DiaryMonthlyResponse diaryMonthlyResponse = diaryQueryService.viewMonthlyDiary(year, month, groupId, memberId);
@@ -60,7 +60,7 @@ public class ApiDiaryController {
 
     @GetMapping("/status")
     public ResponseEntity<DiaryWritableStatusResponse> getDiaryWritableStatus(
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         DiaryWritableStatusResponse response = diaryQueryService.getMembersDiaryAuthorization(groupId, memberId);

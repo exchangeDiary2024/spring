@@ -20,7 +20,7 @@ import org.springframework.http.HttpStatus;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class CommentCreateApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/diaries/%d/comments";
+    private static final String API_PATH = "/api/groups/%s/diaries/%d/comments";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -127,7 +127,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("GROUP_NAME", "code"));
+        return groupRepository.save(Group.from("GROUP_NAME"));
     }
 
     private void updateSelf(Group group, int order) {
