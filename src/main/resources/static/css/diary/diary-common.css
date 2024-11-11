@@ -79,7 +79,7 @@ a {
 
 .diary-content {
     width: 304px;
-    height: 205px;
+    height: 190px;
     background-color: transparent;
     border: none;
     outline: none;
@@ -93,12 +93,12 @@ a {
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 16.65px; /* 100% */
+    line-height: 15px;
 }
 
 .diary-content.only-text {
-    height: 450px;
-    margin-top: 3px;
+    height: 445px;
+    margin-top: -2px;
     margin-bottom: 0px;
 }
 
