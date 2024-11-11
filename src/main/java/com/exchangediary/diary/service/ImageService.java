@@ -3,6 +3,7 @@ package com.exchangediary.diary.service;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.FailedImageUploadException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,15 +22,20 @@ public class ImageService {
             "image/heic",
             "image/heif"
     );
+    private static final String imagePathFormat = "%s/groups/%s";
+    @Value("${file.resources.location}")
+    private String fileLocation;
 
-    private void saveImage(MultipartFile file, Diary diary, String groupId) throws IOException{
+    public void saveImage(MultipartFile file, Diary diary, String groupId) throws IOException{
         if (!isEmptyFile(file)) {
             validateImageType(file);
-            String imagePath = System.getProperty("user.dir") + "/src/main/resources/static/images/upload/groups/" + groupId;
+            String imagePath = String.format(imagePathFormat, fileLocation, groupId);
+
             File directory = new File(imagePath);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
+
             String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             String fileExtension = getFileExtension(file.getOriginalFilename());
             file.transferTo(new File(imagePath + "/" + date + fileExtension));
