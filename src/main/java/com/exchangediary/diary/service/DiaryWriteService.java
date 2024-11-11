@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +30,8 @@ import java.util.List;
 public class DiaryWriteService {
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
-    private final DiaryValidationService diaryValidationService;
     private final DiaryAuthorizationService diaryAuthorizationService;
+    private final ImageService imageService;
     private final DiaryRepository diaryRepository;
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
@@ -51,7 +48,7 @@ public class DiaryWriteService {
             Diary savedDiary = diaryRepository.save(diary);
             createDairyContent(diaryRequest.contents(), diary);
 
-            saveImage(file, diary, group.getId());
+            imageService.saveImage(file, diary, group.getId());
             updateGroupCurrentOrder(group);
             updateViewableDiaryDate(member, group);
             member.updateLastViewableDiaryDate();
@@ -75,30 +72,6 @@ public class DiaryWriteService {
             index++;
         }
         diaryContentRepository.saveAll(diaryContents);
-    }
-
-    private void saveImage(MultipartFile file, Diary diary, String groupId) throws IOException{
-        if (!isEmptyFile(file)) {
-            diaryValidationService.validateImageType(file);
-            String imagePath = System.getProperty("user.dir") + "/src/main/resources/static/images/upload/groups/" + groupId;
-            File directory = new File(imagePath);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-            String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            String fileExtension = getFileExtension(file.getOriginalFilename());
-            file.transferTo(new File(imagePath + "/" + date + fileExtension));
-            diary.uploadImageFileName(date + fileExtension);
-        }
-    }
-
-    private String getFileExtension(String fileName) {
-        int dotIndex = fileName.lastIndexOf(".");
-        return fileName.substring(dotIndex);
-    }
-
-    private boolean isEmptyFile(MultipartFile file) {
-        return file == null || file.isEmpty();
     }
 
     private void updateGroupCurrentOrder(Group group) {
