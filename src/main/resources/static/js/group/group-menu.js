@@ -103,7 +103,7 @@ function makeMemberHtml(characterName, memberName) {
 
 function makeMyHtml() {
     return `<div class="my">
-                <span style='color: #FFF; text-align: center; font-family: "SOYOMaple"; font-size: 6px; font-style: normal; font-weight: 700; line-height: 100%; letter-spacing: 0.06px;'>나</span>
+                <span style='color: #FFF; text-align: center; font-family: "HancomMalangMalang-Regular"; font-size: 6px; font-style: normal; font-weight: 700; line-height: 100%; letter-spacing: 0.06px;'>나</span>
             </div>`
 }
 
