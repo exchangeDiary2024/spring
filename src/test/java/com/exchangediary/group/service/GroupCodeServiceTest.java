@@ -19,25 +19,16 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 public class GroupCodeServiceTest {
     private static final String GROUP_NAME = "버니즈";
     @Autowired
-    private GroupCodeService groupCodeService;
+    private GroupQueryService groupQueryService;
     @Autowired
     private GroupRepository groupRepository;
-
-    @Test
-    void 그룹_코드_생성() {
-        String encodedCode = groupCodeService.generateCode(GROUP_NAME);
-
-        String code = new String(Base64.getDecoder().decode(encodedCode));
-
-        assertThat(code.substring(0, 3)).isEqualTo(GROUP_NAME);
-    }
 
     @Test
     void 그룹_코드_검증_성공() {
         Group group = createGroup();
         groupRepository.save(group);
 
-        Long result = groupCodeService.verifyCode(group.getCode());
+        String result = groupQueryService.verifyCode(group.getId());
 
         assertThat(result).isEqualTo(group.getId());
     }
@@ -47,30 +38,13 @@ public class GroupCodeServiceTest {
         String code = "invalid-code";
 
         NotFoundException exception = assertThrows(NotFoundException.class, () ->
-            groupCodeService.verifyCode(code)
+                groupQueryService.verifyCode(code)
         );
 
         assertThat(exception.getValue()).isEqualTo(code);
     }
 
-    @Test
-    void 그룹_코드_반환_성공() {
-        Group group = createGroup();
-        groupRepository.save(group);
-
-        String code = groupCodeService.findByGroupId(group.getId());
-
-        assertThat(code).isEqualTo(group.getCode());
-    }
-
-    @Test
-    void 그룹_코드_반환_실패_그룹존재안함() {
-        assertThrows(NotFoundException.class, () -> {
-            groupCodeService.findByGroupId(1L);
-        });
-    }
-
     private Group createGroup() {
-        return Group.of(GROUP_NAME, "code");
+        return Group.from(GROUP_NAME);
     }
 }

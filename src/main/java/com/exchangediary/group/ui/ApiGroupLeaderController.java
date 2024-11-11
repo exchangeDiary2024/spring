@@ -22,7 +22,7 @@ public class ApiGroupLeaderController {
 
     @PatchMapping("/hand-over")
     public ResponseEntity<Void> handOverGroupLeader(
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId,
             @RequestBody GroupLeaderHandOverRequest request
     ) {
@@ -33,7 +33,7 @@ public class ApiGroupLeaderController {
     }
 
     @PatchMapping("/skip-order")
-    public ResponseEntity<Void> skipDiaryOrder(@PathVariable Long groupId) {
+    public ResponseEntity<Void> skipDiaryOrder(@PathVariable String groupId) {
         groupLeaderService.skipDiaryOrder(groupId);
         notificationService.pushDiaryOrderNotification(groupId);
         return ResponseEntity
@@ -42,7 +42,7 @@ public class ApiGroupLeaderController {
     }
     @PatchMapping("/leave")
     public ResponseEntity<Void> kickOutMember(
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestBody GroupKickOutRequest request
     ) {
         groupLeaderService.kickOutMember(groupId, request);

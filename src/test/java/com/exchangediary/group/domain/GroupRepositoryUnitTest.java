@@ -20,7 +20,7 @@ public class GroupRepositoryUnitTest {
 
     @Test
     void 내_그룹순서가_현재_그룹순서와_일치하는지_확인() {
-        Group group = Group.of("버니즈", "code");
+        Group group = Group.from("버니즈");
         entityManager.persist(group);
         Member member = Member.of(1L);
         member.joinGroup("nickname", "red", 1, GroupRole.GROUP_MEMBER, group);
@@ -33,7 +33,7 @@ public class GroupRepositoryUnitTest {
 
     @Test
     void 내_그룹순서가_현재_그룹순서와_일치_안함() {
-        Group group = Group.of("버니즈", "code");
+        Group group = Group.from("버니즈");
         entityManager.persist(group);
         Member member = Member.of(1L);
         member.joinGroup("nickname", "red", 2, GroupRole.GROUP_MEMBER, group);

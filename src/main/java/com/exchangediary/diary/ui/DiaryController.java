@@ -21,7 +21,7 @@ public class DiaryController {
     @GetMapping
     public String writePage(
             Model model,
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         diaryAuthorizationService.checkDiaryWritable(groupId, memberId);
@@ -32,7 +32,7 @@ public class DiaryController {
     @GetMapping("/{diaryId}")
     public String viewDiary(
             Model model,
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @PathVariable Long diaryId,
             @RequestAttribute Long memberId
     ) {
