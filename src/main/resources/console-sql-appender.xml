@@ -1,0 +1,7 @@
+<included>
+    <appender name="CONSOLE-SQL" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_SQL_PATTERN}</pattern>
+        </encoder>
+    </appender>
+</included>
