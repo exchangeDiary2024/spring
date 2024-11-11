@@ -8,6 +8,7 @@ import com.exchangediary.diary.ui.dto.response.DiaryWritableStatusResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.global.exception.ErrorCode;
+import com.exchangediary.global.exception.serviceexception.InvalidDateException;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.service.GroupQueryService;
 import com.exchangediary.member.domain.entity.Member;
@@ -16,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +28,18 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class DiaryQueryService {
     private final DiaryAuthorizationService diaryAuthorizationService;
-    private final DiaryValidationService diaryValidationService;
     private final DiaryRepository diaryRepository;
     private final GroupQueryService groupQueryService;
     private final MemberQueryService memberQueryService;
+
+    public Diary findDiary(Long diaryId) {
+        return diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.DIARY_NOT_FOUND,
+                        "",
+                        String.valueOf(diaryId))
+                );
+    }
 
     public DiaryResponse viewDiary(Long memberId, Long diaryId) {
         Member member = memberQueryService.findMember(memberId);
@@ -49,10 +60,22 @@ public class DiaryQueryService {
     }
 
     public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, String groupId, Long memberId) {
-        diaryValidationService.validateYearMonthFormat(year, month);
+        validateYearMonthFormat(year, month);
         List<DiaryDay> diaries = diaryRepository.findAllByGroupAndYearAndMonth(groupId, year, month);
         LocalDate lastViewableDiaryDate = memberQueryService.getLastViewableDiaryDate(memberId);
         return DiaryMonthlyResponse.of(diaries, lastViewableDiaryDate);
+    }
+
+    private void validateYearMonthFormat(int year, int month) {
+        try {
+            YearMonth.of(year, month);
+        } catch (DateTimeException exception) {
+            throw new InvalidDateException(
+                    ErrorCode.INVALID_DATE,
+                    "",
+                    String.format("%d-%02d", year, month)
+            );
+        }
     }
 
     public DiaryWritableStatusResponse getMembersDiaryAuthorization(String groupId, Long memberId) {
@@ -66,15 +89,6 @@ public class DiaryQueryService {
             diaryId = getTodayDiaryId(isMyOrder, memberId, todayDiary.get());
         }
         return DiaryWritableStatusResponse.of(isMyOrder, writtenTodayDiary, diaryId);
-    }
-
-    public Diary findDiary(Long diaryId) {
-        return diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new NotFoundException(
-                        ErrorCode.DIARY_NOT_FOUND,
-                        "",
-                        String.valueOf(diaryId))
-                );
     }
 
     private Long getTodayDiaryId(Boolean isMyOrder, Long memberId, Diary todayDiary) {
