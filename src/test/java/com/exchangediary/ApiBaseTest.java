@@ -3,7 +3,7 @@ package com.exchangediary;
 import com.exchangediary.member.domain.MemberRepository;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.JwtService;
-import com.exchangediary.notification.service.MessageSendService;
+import com.exchangediary.notification.service.NotificationService;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class ApiBaseTest {
     @Autowired
     private JwtService jwtService;
     @MockBean
-    private MessageSendService messageSendService;
+    private NotificationService notificationService;
 
     protected Member member;
     protected String token;

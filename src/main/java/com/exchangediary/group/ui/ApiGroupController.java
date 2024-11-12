@@ -1,6 +1,5 @@
 package com.exchangediary.group.ui;
 
-import com.exchangediary.group.service.GroupCodeService;
 import com.exchangediary.group.service.GroupJoinService;
 import com.exchangediary.group.service.GroupLeaveService;
 import com.exchangediary.group.service.GroupQueryService;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiGroupController {
     private final GroupCreateService groupCreateService;
     private final GroupJoinService groupJoinService;
-    private final GroupCodeService groupCodeService;
     private final GroupQueryService groupQueryService;
     private final GroupLeaveService groupLeaveService;
     private final NotificationService notificationService;
@@ -55,7 +53,7 @@ public class ApiGroupController {
     public ResponseEntity<GroupIdResponse> verifyGroupCode(
             @RequestBody @Valid GroupCodeRequest request
     ) {
-        Long groupId = groupCodeService.verifyCode(request.code());
+        String groupId = groupQueryService.verifyCode(request.code());
         GroupIdResponse response = GroupIdResponse.builder()
                 .groupId(groupId)
                 .build();
@@ -65,7 +63,7 @@ public class ApiGroupController {
 
     @GetMapping("/{groupId}/profile-image")
     public ResponseEntity<GroupProfileResponse> viewSelectableProfileImage(
-            @PathVariable Long groupId) {
+            @PathVariable String groupId) {
         GroupProfileResponse groupProfileResponse = groupQueryService.viewSelectableProfileImage(groupId);
         return ResponseEntity
                 .ok()
@@ -74,7 +72,7 @@ public class ApiGroupController {
 
     @GetMapping("/{groupId}/nickname/verify")
     public ResponseEntity<GroupNicknameVerifyResponse> verifyNickname(
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @ModelAttribute @Valid GroupNicknameRequest request
     ) {
         GroupNicknameVerifyResponse response =
@@ -86,7 +84,7 @@ public class ApiGroupController {
 
     @PatchMapping("/{groupId}/join")
     public ResponseEntity<Void> joinGroup(
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestBody @Valid GroupJoinRequest request,
             @RequestAttribute Long memberId
     ) {
@@ -98,11 +96,11 @@ public class ApiGroupController {
     }
 
     @GetMapping("/{groupId}/members")
-    public ResponseEntity<GroupMembersResponse> findGroupMembersBySelfOrder(
-            @PathVariable Long groupId,
+    public ResponseEntity<GroupMembersResponse> listGroupMembersInformation(
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
-        GroupMembersResponse response = groupQueryService.listGroupMembersByOrder(memberId, groupId);
+        GroupMembersResponse response = groupQueryService.listGroupMembersInformation(memberId, groupId);
         return ResponseEntity
                 .ok()
                 .body(response);
@@ -110,10 +108,11 @@ public class ApiGroupController {
 
     @PatchMapping("{groupId}/leave")
     public ResponseEntity<Void> leaveGroup(
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         groupLeaveService.leaveGroup(groupId, memberId);
+        notificationService.pushToAllGroupMembersExceptMember(groupId, memberId, "친구가 그룹에서 나갔어요!");
         return ResponseEntity
                 .ok()
                 .build();

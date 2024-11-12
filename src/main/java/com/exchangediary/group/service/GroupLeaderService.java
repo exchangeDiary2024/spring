@@ -22,28 +22,33 @@ public class GroupLeaderService {
     private final GroupValidationService groupValidationService;
     private final MemberRepository memberRepository;
 
-    public void handOverGroupLeader(Long groupId, Long memberId, GroupLeaderHandOverRequest request) {
+    public long handOverGroupLeader(String groupId, Long memberId, GroupLeaderHandOverRequest request) {
         Group group = groupQueryService.findGroup(groupId);
         Member currentLeader = groupMemberService.findSelfInGroup(group, memberId);
         Member newLeader = groupMemberService.findMemberByNickname(group, request.nickname());
 
         currentLeader.changeGroupRole(GroupRole.GROUP_MEMBER);
         newLeader.changeGroupRole(GroupRole.GROUP_LEADER);
+        return newLeader.getId();
     }
 
-    public void skipDiaryOrder(Long groupId) {
+    public int skipDiaryOrder(String groupId) {
         Group group = groupQueryService.findGroup(groupId);
         groupValidationService.checkSkipOrderAuthority(group);
-        group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
+
+        int groupOrder = group.getCurrentOrder();
+        group.updateCurrentOrder(groupOrder + 1, group.getMembers().size());
         group.updateLastSkipOrderDate();
         Member currentWriter = groupMemberService.findCurrentOrderMember(group);
         currentWriter.updateLastViewableDiaryDate();
+        return groupOrder;
     }
 
-    public void kickOutMember(Long groupId, GroupKickOutRequest request) {
+    public long kickOutMember(String groupId, GroupKickOutRequest request) {
         Group group = groupQueryService.findGroup(groupId);
         Member kickMember = groupMemberService.findMemberByNickname(group, request.nickname());
         groupLeaveService.leaveGroup(groupId, kickMember.getId());
+        return kickMember.getId();
     }
 
     public boolean isGroupLeader(Long memberId) {

@@ -26,16 +26,16 @@ public class GroupAuthorizationInterceptor implements HandlerInterceptor {
     ) throws IOException {
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Long memberId = (Long) request.getAttribute("memberId");
-        Optional<Long> memberGroupId = memberQueryService.findGroupBelongTo(memberId);
+        Optional<String> memberGroupId = memberQueryService.findGroupBelongTo(memberId);
 
         handleNotExistRequestUrl(pathVariables, request.getRequestURI());
         if (isGroupCreatePageRequest(pathVariables)) {
             return processGroupCreatePageRequest(memberGroupId.orElse(null), response);
         }
 
-        Long groupId = Long.valueOf(String.valueOf(pathVariables.get("groupId")));
+        String groupId = String.valueOf(pathVariables.get("groupId"));
         if (memberGroupId.isEmpty()) {
-            response.sendRedirect("/group");
+            response.sendRedirect("/groups");
             return false;
         }
         return processGroupAuthorization(groupId, memberGroupId.get(), request);
@@ -51,17 +51,17 @@ public class GroupAuthorizationInterceptor implements HandlerInterceptor {
         return !pathVariables.containsKey("groupId");
     }
 
-    private boolean processGroupCreatePageRequest(Long memberGroupId, HttpServletResponse response) throws IOException {
+    private boolean processGroupCreatePageRequest(String memberGroupId, HttpServletResponse response) throws IOException {
         if (memberGroupId == null) {
             return true;
         }
-        response.sendRedirect("/group/" + memberGroupId);
+        response.sendRedirect("/groups/" + memberGroupId);
         return false;
     }
 
     private boolean processGroupAuthorization(
-            Long groupId,
-            Long memberGroupId,
+            String groupId,
+            String memberGroupId,
             HttpServletRequest request
     ) {
         if (!groupId.equals(memberGroupId)) {
@@ -71,6 +71,7 @@ public class GroupAuthorizationInterceptor implements HandlerInterceptor {
                     request.getRequestURI()
             );
         }
+
         request.setAttribute("groupId", groupId);
         return true;
     }

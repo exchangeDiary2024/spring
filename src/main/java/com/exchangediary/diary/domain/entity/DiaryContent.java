@@ -1,7 +1,6 @@
 package com.exchangediary.diary.domain.entity;
 
 import com.exchangediary.global.domain.entity.BaseEntity;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -27,7 +26,6 @@ import static lombok.AccessLevel.PROTECTED;
 public class DiaryContent extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "diary_content_id")
     private Long id;
     @NotNull
     private final Integer page;

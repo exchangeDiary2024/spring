@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/group/{groupId}/diary")
+@RequestMapping("/groups/{groupId}/diaries")
 public class DiaryController {
     private final DiaryAuthorizationService diaryAuthorizationService;
     private final DiaryQueryService diaryQueryService;
@@ -21,7 +21,7 @@ public class DiaryController {
     @GetMapping
     public String writePage(
             Model model,
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         diaryAuthorizationService.checkDiaryWritable(groupId, memberId);
@@ -32,7 +32,7 @@ public class DiaryController {
     @GetMapping("/{diaryId}")
     public String viewDiary(
             Model model,
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @PathVariable Long diaryId,
             @RequestAttribute Long memberId
     ) {

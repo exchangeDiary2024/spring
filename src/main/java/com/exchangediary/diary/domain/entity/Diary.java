@@ -5,9 +5,9 @@ import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.entity.Member;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,20 +37,19 @@ import static lombok.AccessLevel.PROTECTED;
 public class Diary extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "diary_id")
     private Long id;
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
     private final String moodLocation;
     private String imageFileName;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
     @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "diary_member_id_fkey"))
     private final Member member;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
     @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", foreignKey = @ForeignKey(name = "diary_group_id_fkey"))
     private final Group group;
     @OneToMany(mappedBy = "diary")
     @OrderBy("page ASC")

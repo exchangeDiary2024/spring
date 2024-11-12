@@ -4,9 +4,9 @@ import lombok.Builder;
 
 @Builder
 public record GroupIdResponse(
-    Long groupId
+    String groupId
 ) {
-    public static GroupIdResponse from(Long groupId) {
+    public static GroupIdResponse from(String groupId) {
         return GroupIdResponse.builder()
                 .groupId(groupId)
                 .build();

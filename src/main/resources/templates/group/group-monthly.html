@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/group/group-menu.css" type="text/css">
 
     <script>
-        const groupId = [[${group.id}]];
+        const groupId = "[[${group.id}]]";
 
         const groupCreatedYear = [[${group.createdYear}]];
         const groupCreatedMonth = [[${group.createdMonth}]];
@@ -16,7 +16,7 @@
 </th:block>
 
 <th:block layout:fragment="content">
-    <div class="background" style="background-image: url('/images/group/monthly-page/background.png');">
+    <div class="background" style="background-image: url('/images/group/monthly-page/background.png'); background-size: 100dvw 100dvh;">
         <div class="calendar-top">
             <div class="menu-bar">
                 <a href="#" class="menu-btn">

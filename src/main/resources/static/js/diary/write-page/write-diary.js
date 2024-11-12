@@ -1,23 +1,14 @@
+const content = document.querySelector(".content");
+const bottom = document.querySelector(".bottom");
+const pages = [];
+
 init();
 
 function init() {
     drawTodayDate();
-
-    addEventToTextArea();
     addEventToWriteBtn();
-}
-
-function addEventToTextArea() {
-    const textArea = document.querySelector("textarea");
-
-    textArea.addEventListener("click", closeModal);
-    textArea.addEventListener("focusout", () => window.scrollTo({left: 0, top: 0}));
-}
-
-function addEventToWriteBtn() {
-    const writeBtn = document.querySelector(".write-btn")
-
-    writeBtn.addEventListener("click", writeDiary);
+    makePages();
+    addEventSlide();
 }
 
 function drawTodayDate() {
@@ -29,10 +20,26 @@ function drawTodayDate() {
         `${today.getDate() < 10 ? "0" + today.getDate(): today.getDate()}`;
 }
 
+function addEventToWriteBtn() {
+    const writeBtn = document.querySelector(".write-btn");
+
+    writeBtn.addEventListener("click", checkWrite);
+}
+
+async function checkWrite() {
+    const result = await openConfirmModal(`일기를 업로드할까요?`, "일기가 업로드되면 수정 또는 삭제가 불가능해요.");
+
+    if (result) {
+        writeDiary();
+    }
+}
+
 function writeDiary() {
-    var formData = new FormData();
+    const formData = new FormData();
+    const activeContents = Array.from(content.querySelectorAll(".active .diary-content"));
+    const contents = activeContents.map(content => { return { content: content.value } });
     const json = JSON.stringify({
-        content: document.querySelector(".diary-content").value,
+        contents: contents,
         moodLocation: getMoodLocation()
     });
 
@@ -82,4 +89,77 @@ function getUploadImage() {
         return photo.files[0];
     }
     return null;
+}
+
+function makePages() {
+    const noteContents = content.children;
+    const pageCircles = bottom.children;
+    for (var index = 0; index < 5; index++) {
+        const page = {
+            index: index,
+            noteContent: noteContents[index],
+            pageCircle: pageCircles[index],
+            diaryContent: noteContents[index].querySelector(".diary-content")
+        }
+        pages.push(page);
+    }
+    currentPage = pages[0];
+    nextPage = pages[1];
+}
+
+function addEventSlide() {
+    pages.forEach(page => {
+        addSlideEventByNoteContent(page.noteContent);
+        page.noteContent.addEventListener("touchstart", () => page.diaryContent.blur());
+    });
+    content.addEventListener("transitionend", (event) => {
+        if (event.target === currentPage.noteContent) {
+            currentPage.diaryContent.focus();
+        }
+    });
+}
+
+function changePage(targetPage) {
+    drawPages(targetPage);
+    currentPage.pageCircle.classList.remove("current");
+    currentPage = targetPage;
+    prevPage = getPrevPage();
+    nextPage = getNextPage();
+    currentPage.pageCircle.classList.add("current");
+}
+
+function drawPages(targetPage) {
+    if (currentPage.index < targetPage.index) {
+        targetPage.noteContent.classList.add("active");
+        targetPage.pageCircle.classList.add("active");
+    }
+
+    if (currentPage.index > targetPage.index) {
+        if (isDeleted(currentPage)) {
+            currentPage.noteContent.classList.remove("active");
+            currentPage.pageCircle.classList.remove("active");
+        }
+    }
+}
+
+function isDeleted(page) {
+    const isEmptyAfterPage = pages.slice(page.index + 1).every(page => page.diaryContent.value === "");
+    if (isEmptyAfterPage) {
+        return page.diaryContent.value === "";
+    }
+    return false;
+}
+
+function getNextPage() {
+    if (currentPage.index === pages.length - 1) {
+        return null
+    }
+    return pages[currentPage.index + 1];
+}
+
+function getPrevPage() {
+    if (currentPage.index === 0) {
+        return null
+    }
+    return pages[currentPage.index - 1];
 }

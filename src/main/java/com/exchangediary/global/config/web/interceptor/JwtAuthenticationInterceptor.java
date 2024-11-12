@@ -62,7 +62,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             HttpServletResponse response
     ) throws IOException {
         if (request.getRequestURI().equals("/login")) {
-            response.sendRedirect(request.getContextPath()+ "/group");
+            response.sendRedirect(request.getContextPath()+ "/groups");
             return false;
         }
         return true;

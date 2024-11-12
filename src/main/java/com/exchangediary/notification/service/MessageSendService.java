@@ -18,6 +18,10 @@ public class MessageSendService {
     private static final String TITLE = "스프링";
 
     public void sendMessage(String token, String body) {
+        if (token == null) {
+            throw new MessagingFailureException(ErrorCode.NEED_TO_AT_LEAST_ONE_TOKEN, "fcm 토큰이 null입니다.", null);
+        }
+
         Notification notification = Notification.builder()
                 .setTitle(TITLE)
                 .setBody(body)
@@ -36,6 +40,10 @@ public class MessageSendService {
     }
 
     public void sendMulticastMessage(List<String> tokens, String body) {
+        if (tokens.isEmpty()) {
+            throw new MessagingFailureException(ErrorCode.NEED_TO_AT_LEAST_ONE_TOKEN, "", null);
+        }
+
         Notification notification = Notification.builder()
                 .setTitle(TITLE)
                 .setBody(body)

@@ -10,11 +10,15 @@ import java.util.Optional;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     Optional<Notification> findByMemberId(Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId")
-    List<String> findAllTokenByGroupId(Long groupId);
+    List<String> findAllTokenByGroupId(String groupId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.id != :memberId")
-    List<String> findAllTokenByGroupIdExceptMemberId(Long groupId, Long memberId);
+    List<String> findAllTokenByGroupIdExceptMemberId(String groupId, Long memberId);
+    @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.id != :memberId AND m.groupRole != 'GROUP_LEADER'")
+    List<String> findAllTokenByGroupIdExceptMemberIdAndLeader(String groupId, Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.orderInGroup = m.group.currentOrder")
-    String findCurrentOrderMemberByGroupId(Long groupId);
+    String findByGroupIdAndCurrentOrder(String groupId);
+    @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.orderInGroup = :order")
+    String findByGroupIdAndOrder(String groupId, int order);
     @Query("SELECT n.token FROM Notification n " +
             "JOIN n.member m " +
             "JOIN m.group g " +
