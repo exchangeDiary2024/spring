@@ -31,6 +31,7 @@ public enum ErrorCode {
     GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "그룹을 찾을 수 없습니다."),
     GROUP_LEADER_NOT_FOUND(HttpStatus.NOT_FOUND, "그룹장을 찾을 수 없습니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "멤버를 찾을 수 없습니다."),
+    FCM_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "member id와 매핑된 fcm 토큰을 찾을 수 없습니다."),
 
     FULL_MEMBERS_OF_GROUP(HttpStatus.CONFLICT, "그룹원이 꽉 차\n해당 그룹에 들어갈 수 없습니다."),
     ALREADY_SKIP_ORDER_TODAY(HttpStatus.CONFLICT, "이미 한 번 건너뛰었어요!\n내일 다시 건너뛸 수 있어요."),
@@ -42,6 +43,7 @@ public enum ErrorCode {
     FAILED_TO_GET_KAKAO_USER_INFO(HttpStatus.INTERNAL_SERVER_ERROR, "kakao 사용자 정보 조회에 실패했습니다."),
     FAILED_TO_ISSUE_FIREBASE_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "firebase 토큰 발급에 실패했습니다."),
     FAILED_TO_SEND_MESSAGE(HttpStatus.INTERNAL_SERVER_ERROR, "메시지 전송에 실패했습니다."),
+    NEED_TO_AT_LEAST_ONE_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "하나 이상의 fcm 토큰이 필요합니다."),
     FAILED_UPLOAD_IMAGE(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드 중 오류가 발생했습니다.");
 
     private final HttpStatus statusCode;

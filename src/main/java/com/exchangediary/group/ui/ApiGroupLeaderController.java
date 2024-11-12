@@ -26,7 +26,9 @@ public class ApiGroupLeaderController {
             @RequestAttribute Long memberId,
             @RequestBody GroupLeaderHandOverRequest request
     ) {
-        groupLeaderService.handOverGroupLeader(groupId, memberId, request);
+        long newLeaderId = groupLeaderService.handOverGroupLeader(groupId, memberId, request);
+        notificationService.pushToAllGroupMembersExceptMemberAndLeader(groupId, newLeaderId, "방장이 다른 친구에게 방장 역할을 넘겨줬어요!");
+        notificationService.pushNotification(newLeaderId, "방장이 나에게 방장 역할을 넘겨줬어요!");
         return ResponseEntity
                 .ok()
                 .build();
@@ -34,18 +36,22 @@ public class ApiGroupLeaderController {
 
     @PatchMapping("/skip-order")
     public ResponseEntity<Void> skipDiaryOrder(@PathVariable String groupId) {
-        groupLeaderService.skipDiaryOrder(groupId);
+        int previousOrder = groupLeaderService.skipDiaryOrder(groupId);
+        notificationService.pushSkipOverDiaryNotification(groupId, previousOrder);
         notificationService.pushDiaryOrderNotification(groupId);
         return ResponseEntity
                 .ok()
                 .build();
     }
+
     @PatchMapping("/leave")
     public ResponseEntity<Void> kickOutMember(
             @PathVariable String groupId,
             @RequestBody GroupKickOutRequest request
     ) {
-        groupLeaderService.kickOutMember(groupId, request);
+        long memberId = groupLeaderService.kickOutMember(groupId, request);
+        notificationService.pushToAllGroupMembersExceptMemberAndLeader(groupId, memberId, "방장이 친구를 그룹에서 내보냈어요!");
+        notificationService.pushNotification(memberId, "앗, 그룹에서 내보내졌어요.\n다른 스프링에서 일기 쓰기를 시작해요!");
         return ResponseEntity
                 .ok()
                 .build();

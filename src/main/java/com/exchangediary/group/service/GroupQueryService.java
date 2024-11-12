@@ -60,7 +60,7 @@ public class GroupQueryService {
         return GroupMonthlyResponse.of(group);
     }
 
-    public GroupMembersResponse listGroupMembersByOrder(Long memberId, String groupId) {
+    public GroupMembersResponse listGroupMembersInformation(Long memberId, String groupId) {
         Group group = findGroup(groupId);
         Member self = groupMemberService.findSelfInGroup(group, memberId);
         Member leader = groupMemberService.findGroupLeader(group);
