@@ -11,10 +11,18 @@ function setupFCM() {
         if (Notification.permission === "granted") {
             const title = payload.notification.title;
             const options = {
-                body: payload.notification.body
-            };
+                body: payload.notification.body,
+                data: {
+                    url: ""
+                }
+            }
 
-            new Notification(title, options);
+            const notification = new Notification(title, options);
+
+            notification.addEventListener("click", (event) => {
+                const url = `https://buddies-spring.site/${event.target.data.url}`
+                window.open(url);
+            });
         }
     })
 }
