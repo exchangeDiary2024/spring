@@ -38,12 +38,22 @@ function checkNextPage(event) {
         if (textarea.value.length === textareaValues[index].length) {
             textareaValues[index] = textareaValues[index].slice(0, -1);
         }
+        const selection = textarea.selectionEnd - 1;
         textarea.value = textareaValues[index];
-        if (index < 4 && event.inputType === "insertLineBreak") {
+        textarea.selectionEnd = selection;
+        if (canTurnPage(index, event)) {
             textarea.blur();
             isCalled = false;
             changePageBySlide("next", "0.3s");
         }
     }
     textareaValues[index] = textarea.value;
+}
+
+function canTurnPage(index, event) {
+    const textarea = event.target
+    if (textarea.selectionEnd !== textarea.value.length) {
+        return false;
+    }
+    return index < 4 && event.inputType === "insertLineBreak";
 }
