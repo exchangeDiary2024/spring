@@ -16,7 +16,12 @@ function checkPrevPage(event) {
         const textarea = event.target;
         const index = textareas.indexOf(textarea);
 
-        if (index > 0) {
+        if (textarea.value[0] === "\n") {
+            textareaValues[index] = textarea.value.slice(1);
+            textarea.value = textareaValues[index];
+            textarea.selectionEnd = 0;
+        } 
+        else if (index > 0) {
             textarea.blur();
             changePageBySlide("prev", "0.3s");
         }
