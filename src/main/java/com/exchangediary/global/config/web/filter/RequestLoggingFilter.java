@@ -8,8 +8,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
@@ -18,10 +17,8 @@ import java.nio.charset.StandardCharsets;
 
 import static org.springframework.web.multipart.support.MultipartResolutionDelegate.isMultipartRequest;
 
+@Slf4j
 public class RequestLoggingFilter implements Filter {
-
-    private static final Logger logger = LoggerFactory.getLogger(RequestLoggingFilter.class);
-
     @Override
     public void init(FilterConfig filterConfig) {
     }
@@ -32,19 +29,18 @@ public class RequestLoggingFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
         ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse) response);
 
-        logger.info(requestURI);
+        log.info(requestURI);
         if (isMultipartRequest(httpRequest)) {
             logMultipartRequest(httpRequest);
             chain.doFilter(request, responseWrapper);
         }
         else {
             RequestWrapper requestWrapper = new RequestWrapper(httpRequest);
-            logger.info("Request Body: " + requestWrapper.getRequestBody());
+            log.info("Request Body: " + requestWrapper.getRequestBody());
             chain.doFilter(requestWrapper, responseWrapper);
         }
-        logger.info("Response Body: " + responseWrapper.getResponseBody());
+        log.info("Response Body: " + responseWrapper.getResponseBody());
         responseWrapper.copyBodyToResponse();
-
     }
 
     private void logMultipartRequest(HttpServletRequest request) {
@@ -54,12 +50,12 @@ public class RequestLoggingFilter implements Filter {
             if ("data".equals(paramName)) {
                 try {
                     String jsonData = new String(file.getBytes(), StandardCharsets.UTF_8);
-                    logger.info("Form Field - Name: {}, Value: {}", paramName, jsonData);
+                    log.info("Form Field - Name: {}, Value: {}", paramName, jsonData);
                 } catch (IOException e) {
-                    logger.error("Error reading jsonData: " + paramName, e);
+                    log.error("Error reading jsonData: " + paramName, e);
                 }
             } else {
-                logger.info("Form Field - Name: {}, Original File Name: {}, Size: {} bytes",
+                log.info("Form Field - Name: {}, Original File Name: {}, Size: {} bytes",
                         paramName,
                         file.getOriginalFilename(),
                         file.getSize());
