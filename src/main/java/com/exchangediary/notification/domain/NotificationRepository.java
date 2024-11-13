@@ -2,6 +2,7 @@ package com.exchangediary.notification.domain;
 
 import com.exchangediary.notification.domain.entity.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -20,4 +21,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
             "LEFT JOIN Diary d ON d.group = g AND CAST(d.createdAt AS DATE) = CURRENT_DATE " +
             "WHERE m.orderInGroup = m.group.currentOrder AND d.id is NULL")
     List<String> findTokensNoDiaryToday();
+    @Modifying
+    @Query("DELETE FROM Notification n WHERE CURRENT_DATE - CAST(n.createdAt AS DATE) >= 30")
+    void deleteAllIfAMonthOld();
 }

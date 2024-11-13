@@ -60,4 +60,9 @@ public class NotificationTokenService {
                 .build();
         notificationRepository.save(notification);
     }
+
+    @Transactional
+    public void deleteOldTokens() {
+        notificationRepository.deleteAllIfAMonthOld();
+    }
 }
