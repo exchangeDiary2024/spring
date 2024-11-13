@@ -25,6 +25,27 @@ public class NotificationRepositoryUnitTest {
     private NotificationRepository notificationRepository;
 
     @Test
+    @DisplayName("findByMemberId 동작 확인")
+    void 멤버의_토큰_여러개_가져오기() {
+        Group group = Group.from("버니즈");
+        entityManager.persist(group);
+        Member self = createMember(1, group);
+        entityManager.persist(Notification.builder()
+                .token("token-one")
+                .member(self)
+                .build());
+        entityManager.persist(Notification.builder()
+                .token("token-two")
+                .member(self)
+                .build());
+        entityManager.flush();
+
+        List<Notification> notifications = notificationRepository.findByMemberId(self.getId());
+
+        assertThat(notifications).hasSize(3);
+    }
+
+    @Test
     @DisplayName("findAllTokenByGroupIdExceptMemberId 동작 확인")
     void 본인_제외한_그룹원_토큰_가져오기() {
         Group group = Group.from("버니즈");
