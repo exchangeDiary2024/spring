@@ -30,7 +30,7 @@
             <appender-ref ref="FILE-INFO"/>
         </logger>
 
-        <logger name="com.exchangediary.global.config.web.filter.RequestLoggingFilter" level="INFO" additivity="false">
+        <logger name="com.exchangediary.global.config.log.filter.RequestLoggingFilter" level="INFO" additivity="false">
             <appender-ref ref="FILE-INFO"/>
         </logger>
 

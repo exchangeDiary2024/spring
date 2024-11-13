@@ -1,6 +1,6 @@
-package com.exchangediary.global.config.web;
+package com.exchangediary.global.config.log;
 
-import com.exchangediary.global.config.web.filter.RequestLoggingFilter;
+import com.exchangediary.global.config.log.filter.RequestLoggingFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

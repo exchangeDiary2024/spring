@@ -1,5 +1,7 @@
-package com.exchangediary.global.config.web.filter;
+package com.exchangediary.global.config.log.filter;
 
+import com.exchangediary.global.config.log.wrapper.RequestWrapper;
+import com.exchangediary.global.config.log.wrapper.ResponseWrapper;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;

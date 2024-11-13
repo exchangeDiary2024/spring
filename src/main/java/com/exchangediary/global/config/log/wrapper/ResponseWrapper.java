@@ -1,4 +1,4 @@
-package com.exchangediary.global.config.web.filter;
+package com.exchangediary.global.config.log.wrapper;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.util.ContentCachingResponseWrapper;
