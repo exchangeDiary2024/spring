@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.springframework.web.multipart.support.MultipartResolutionDelegate.isMultipartRequest;
 
 @Slf4j
-public class RequestLoggingFilter implements Filter {
+public class ApiLoggingFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
     }
