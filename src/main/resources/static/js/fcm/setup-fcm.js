@@ -17,9 +17,9 @@ function setupFCM() {
                 }
             }
 
-            const notification = new Notification(title, options);
+            new Notification(title, options);
 
-            notification.addEventListener("click", (event) => {
+            self.addEventListener("notificationclick", function (event) {
                 const url = `https://buddies-spring.site/${event.target.data.url}`
                 window.open(url);
             });
