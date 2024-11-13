@@ -12,8 +12,8 @@ public class NotificationService {
     private final NotificationTokenService notificationTokenService;
 
     public void pushNotification(Long memberId, String body) {
-        String token = notificationTokenService.findTokenByMemberId(memberId);
-        messageSendService.sendMessage(token, body);
+        List<String> tokens = notificationTokenService.findTokensByMemberId(memberId);
+        messageSendService.sendMulticastMessage(tokens, body);
     }
 
     public void pushToAllGroupMembers(String groupId, String body) {
@@ -32,13 +32,13 @@ public class NotificationService {
     }
 
     public void pushDiaryOrderNotification(String groupId) {
-        String token = notificationTokenService.findTokenByCurrentOrder(groupId);
-        messageSendService.sendMessage(token, "일기 작성 차례가 되었어요!");
+        List<String> tokens = notificationTokenService.findTokensByCurrentOrder(groupId);
+        messageSendService.sendMulticastMessage(tokens, "일기 작성 차례가 되었어요!");
     }
 
     public void pushSkipOverDiaryNotification(String groupId, int previousOrder) {
-        String token = notificationTokenService.findTokenByPreviousOrder(groupId, previousOrder);
-        messageSendService.sendMessage(token, "방장이 일기 순서를 건너뛰었어요.\n다음 순서를 기다려주세요!");
+        List<String> tokens = notificationTokenService.findTokensByPreviousOrder(groupId, previousOrder);
+        messageSendService.sendMulticastMessage(tokens, "방장이 일기 순서를 건너뛰었어요.\n다음 순서를 기다려주세요!");
     }
 
     public void pushWriteDiaryNotification() {

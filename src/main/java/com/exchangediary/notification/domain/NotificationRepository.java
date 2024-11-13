@@ -8,21 +8,21 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    Optional<Notification> findByMemberId(Long memberId);
+    List<Notification> findByMemberId(Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId")
-    List<String> findAllTokenByGroupId(String groupId);
+    List<String> findTokensByGroupId(String groupId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.id != :memberId")
-    List<String> findAllTokenByGroupIdExceptMemberId(String groupId, Long memberId);
+    List<String> findTokensByGroupIdExceptMemberId(String groupId, Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.id != :memberId AND m.groupRole != 'GROUP_LEADER'")
-    List<String> findAllTokenByGroupIdExceptMemberIdAndLeader(String groupId, Long memberId);
+    List<String> findTokensByGroupIdExceptMemberIdAndLeader(String groupId, Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.orderInGroup = m.group.currentOrder")
-    String findByGroupIdAndCurrentOrder(String groupId);
+    List<String> findByGroupIdAndCurrentOrder(String groupId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.orderInGroup = :order")
-    String findByGroupIdAndOrder(String groupId, int order);
+    List<String> findByGroupIdAndOrder(String groupId, int order);
     @Query("SELECT n.token FROM Notification n " +
             "JOIN n.member m " +
             "JOIN m.group g " +
             "LEFT JOIN Diary d ON d.group = g AND CAST(d.createdAt AS DATE) = CURRENT_DATE " +
             "WHERE m.orderInGroup = m.group.currentOrder AND d.id is NULL")
-    List<String> findAllTokenNoDiaryToday();
+    List<String> findTokensNoDiaryToday();
 }

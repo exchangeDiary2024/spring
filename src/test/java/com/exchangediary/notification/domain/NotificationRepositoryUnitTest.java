@@ -35,7 +35,7 @@ public class NotificationRepositoryUnitTest {
         createMember(4, group);
         entityManager.flush();
 
-        List<String> tokens = notificationRepository.findAllTokenByGroupId(group.getId());
+        List<String> tokens = notificationRepository.findTokensByGroupId(group.getId());
 
         assertThat(tokens).hasSize(4);
     }
@@ -51,7 +51,7 @@ public class NotificationRepositoryUnitTest {
         createMember(4, group);
         entityManager.flush();
 
-        List<String> tokens = notificationRepository.findAllTokenByGroupIdExceptMemberId(group.getId(), self.getId());
+        List<String> tokens = notificationRepository.findTokensByGroupIdExceptMemberId(group.getId(), self.getId());
 
         assertThat(tokens).hasSize(3);
     }
@@ -68,7 +68,7 @@ public class NotificationRepositoryUnitTest {
         createLeader(5, group);
         entityManager.flush();
 
-        List<String> tokens = notificationRepository.findAllTokenByGroupIdExceptMemberIdAndLeader(group.getId(), self.getId());
+        List<String> tokens = notificationRepository.findTokensByGroupIdExceptMemberIdAndLeader(group.getId(), self.getId());
 
         assertThat(tokens).hasSize(3);
     }
@@ -84,9 +84,9 @@ public class NotificationRepositoryUnitTest {
         createMember(4, group);
         entityManager.flush();
 
-        String token = notificationRepository.findByGroupIdAndCurrentOrder(group.getId());
+        List<String> tokens = notificationRepository.findByGroupIdAndCurrentOrder(group.getId());
 
-        assertThat(token).isEqualTo("버니즈1");
+        assertThat(tokens.get(0)).isEqualTo("버니즈1");
     }
 
     @Test
@@ -98,9 +98,9 @@ public class NotificationRepositoryUnitTest {
         createMember(2, group);
         entityManager.flush();
 
-        String token = notificationRepository.findByGroupIdAndOrder(group.getId(), 2);
+        List<String> tokens = notificationRepository.findByGroupIdAndOrder(group.getId(), 2);
 
-        assertThat(token).isEqualTo("버니즈2");
+        assertThat(tokens.get(0)).isEqualTo("버니즈2");
     }
 
     @Test
@@ -118,7 +118,7 @@ public class NotificationRepositoryUnitTest {
         createMember(1, group3);
         entityManager.flush();
 
-        List<String> tokens = notificationRepository.findAllTokenNoDiaryToday();
+        List<String> tokens = notificationRepository.findTokensNoDiaryToday();
 
         assertThat(tokens).hasSize(2);
         assertThat(tokens.contains(group1.getName() + 1)).isFalse();
