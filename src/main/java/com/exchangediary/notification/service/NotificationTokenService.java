@@ -56,11 +56,6 @@ public class NotificationTokenService {
         return notificationRepository.findByGroupIdAndCurrentOrder(groupId);
     }
 
-    @Transactional(readOnly = true)
-    public List<String> findTokensByPreviousOrder(String groupId, int previousOrder) {
-        return notificationRepository.findByGroupIdAndOrder(groupId, previousOrder);
-    }
-
     @Transactional
     public void saveNotificationToken(NotificationTokenRequest notificationTokenRequest, Long memberId) {
         Member member = memberQueryService.findMember(memberId);

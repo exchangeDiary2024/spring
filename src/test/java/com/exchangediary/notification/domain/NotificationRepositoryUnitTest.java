@@ -90,20 +90,6 @@ public class NotificationRepositoryUnitTest {
     }
 
     @Test
-    @DisplayName("findByGroupIdAndOrder 동작 확인")
-    void 일기순서_건너뛰어진_그룹원_토큰_가져오기() {
-        Group group = Group.from("버니즈");
-        entityManager.persist(group);
-        createMember(1, group);
-        createMember(2, group);
-        entityManager.flush();
-
-        List<String> tokens = notificationRepository.findByGroupIdAndOrder(group.getId(), 2);
-
-        assertThat(tokens.get(0)).isEqualTo("버니즈2");
-    }
-
-    @Test
     @DisplayName("findAllTokenNoDiaryToday 동작 확인")
     void 오늘_일기_작성하지않은_모든_그룹원_토큰_가져오기() {
         Group group1 = Group.from("그룹1");

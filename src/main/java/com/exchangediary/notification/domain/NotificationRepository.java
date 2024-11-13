@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByMemberId(Long memberId);
@@ -17,8 +16,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<String> findTokensByGroupIdExceptMemberIdAndLeader(String groupId, Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.orderInGroup = m.group.currentOrder")
     List<String> findByGroupIdAndCurrentOrder(String groupId);
-    @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.orderInGroup = :order")
-    List<String> findByGroupIdAndOrder(String groupId, int order);
     @Query("SELECT n.token FROM Notification n " +
             "JOIN n.member m " +
             "JOIN m.group g " +

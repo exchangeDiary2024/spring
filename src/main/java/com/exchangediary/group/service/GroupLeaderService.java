@@ -32,16 +32,16 @@ public class GroupLeaderService {
         return newLeader.getId();
     }
 
-    public int skipDiaryOrder(String groupId) {
+    public long skipDiaryOrder(String groupId) {
         Group group = groupQueryService.findGroup(groupId);
         groupValidationService.checkSkipOrderAuthority(group);
 
-        int groupOrder = group.getCurrentOrder();
-        group.updateCurrentOrder(groupOrder + 1, group.getMembers().size());
+        long skipDiaryMemberId = groupMemberService.findCurrentOrderMember(group).getId();
+        group.updateCurrentOrder(group.getCurrentOrder() + 1, group.getMembers().size());
         group.updateLastSkipOrderDate();
         Member currentWriter = groupMemberService.findCurrentOrderMember(group);
         currentWriter.updateLastViewableDiaryDate();
-        return groupOrder;
+        return skipDiaryMemberId;
     }
 
     public long kickOutMember(String groupId, GroupKickOutRequest request) {
