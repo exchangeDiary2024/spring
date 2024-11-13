@@ -1,7 +1,0 @@
-<included>
-    <appender name="CONSOLE-JDBC" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${JDBC_CONSOLE_PATTERN}</pattern>
-        </encoder>
-    </appender>
-</included>

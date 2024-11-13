@@ -1,10 +1,10 @@
 <included>
-    <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="FILE-SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <pattern>${FILE_SQL_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/info/buddies-spring-info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>./log/sql/buddies-spring-sql-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
             <maxHistory>10</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
