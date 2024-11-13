@@ -27,19 +27,21 @@ public class RequestLoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String requestURI = httpRequest.getRequestURI();
+        String httpMethod = httpRequest.getMethod();
         ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse) response);
 
-        log.info(requestURI);
         if (isMultipartRequest(httpRequest)) {
+            log.info("Request: [{}] [{}] [Multipart Data]", httpMethod, requestURI);
             logMultipartRequest(httpRequest);
             chain.doFilter(request, responseWrapper);
         }
         else {
             RequestWrapper requestWrapper = new RequestWrapper(httpRequest);
-            log.info("Request Body: " + requestWrapper.getRequestBody());
+            log.info("Request: [{}] [{}] {}", httpMethod, requestURI, requestWrapper.getRequestBody());
             chain.doFilter(requestWrapper, responseWrapper);
         }
-        log.info("Response Body: " + responseWrapper.getResponseBody());
+        int statusCode = responseWrapper.getStatus();
+        log.info("Response: [{}] [{}] {}", statusCode, requestURI, responseWrapper.getResponseBody());
         responseWrapper.copyBodyToResponse();
     }
 
