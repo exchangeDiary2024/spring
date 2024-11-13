@@ -1,4 +1,4 @@
-package com.exchangediary.notification.config;
+package com.exchangediary.notification.component;
 
 import com.exchangediary.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;

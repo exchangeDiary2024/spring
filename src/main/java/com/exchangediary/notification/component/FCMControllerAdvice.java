@@ -1,4 +1,4 @@
-package com.exchangediary.notification.config;
+package com.exchangediary.notification.component;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
