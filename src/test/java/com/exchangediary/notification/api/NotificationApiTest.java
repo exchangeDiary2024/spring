@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NotificationApiTest extends ApiBaseTest {
@@ -27,8 +29,9 @@ public class NotificationApiTest extends ApiBaseTest {
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
 
-        Notification notification = notificationRepository.findByMemberId(member.getId()).get();
-        assertThat(notification.getToken()).isEqualTo("token");
+        List<Notification> notifications = notificationRepository.findByMemberId(member.getId());
+        assertThat(notifications).hasSize(1);
+        assertThat(notifications.get(0).getToken()).isEqualTo("token");
     }
 
     @Test
@@ -51,7 +54,9 @@ public class NotificationApiTest extends ApiBaseTest {
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
 
-        Notification notification = notificationRepository.findByMemberId(member.getId()).get();
-        assertThat(notification.getToken()).isEqualTo("new-token");
+        List<Notification> notifications = notificationRepository.findByMemberId(member.getId());
+        assertThat(notifications).hasSize(2);
+        assertThat(notifications.get(0).getToken()).isEqualTo("old-token");
+        assertThat(notifications.get(1).getToken()).isEqualTo("new-token");
     }
 }

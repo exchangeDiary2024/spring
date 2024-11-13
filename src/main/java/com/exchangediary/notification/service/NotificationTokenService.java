@@ -20,59 +20,49 @@ public class NotificationTokenService {
     private final MemberQueryService memberQueryService;
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroup(String groupId) {
-        return notificationRepository.findAllTokenByGroupId(groupId);
+    public List<String> findTokensByMemberId(Long memberId) {
+        List<Notification> notifications = notificationRepository.findByMemberId(memberId);
+
+        if (notifications.isEmpty()) {
+            throw new NotFoundException(ErrorCode.FCM_TOKEN_NOT_FOUND, "", String.valueOf(memberId));
+        }
+        return notifications.stream()
+                .map(Notification::getToken)
+                .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroupExceptMember(String groupId, Long memberId) {
-        return notificationRepository.findAllTokenByGroupIdExceptMemberId(groupId, memberId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<String> findTokensByGroupExceptMemberAndLeader(String groupId, Long memberId) {
-        return notificationRepository.findAllTokenByGroupIdExceptMemberIdAndLeader(groupId, memberId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<String> findTokensByCurrentOrderInAllGroup() {
-        return notificationRepository.findAllTokenNoDiaryToday();
-    }
-
-    @Transactional(readOnly = true)
-    public String findTokenByMemberId(Long memberId) {
-        return notificationRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.FCM_TOKEN_NOT_FOUND, "", String.valueOf(memberId)))
-                .getToken();
-    }
-
-    @Transactional(readOnly = true)
-    public String findTokenByCurrentOrder(String groupId) {
+    public List<String> findTokensByCurrentOrder(String groupId) {
         return notificationRepository.findByGroupIdAndCurrentOrder(groupId);
     }
 
     @Transactional(readOnly = true)
-    public String findTokenByPreviousOrder(String groupId, int previousOrder) {
-        return notificationRepository.findByGroupIdAndOrder(groupId, previousOrder);
+    public List<String> findTokensByGroupExceptMember(String groupId, Long memberId) {
+        return notificationRepository.findTokensByGroupIdExceptMemberId(groupId, memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> findTokensByGroupExceptMemberAndLeader(String groupId, Long memberId) {
+        return notificationRepository.findTokensByGroupIdExceptMemberIdAndLeader(groupId, memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> findTokensByCurrentOrderInAllGroup() {
+        return notificationRepository.findTokensNoDiaryToday();
     }
 
     @Transactional
     public void saveNotificationToken(NotificationTokenRequest notificationTokenRequest, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
+        Notification notification = Notification.builder()
+                .token(notificationTokenRequest.token())
+                .member(member)
+                .build();
+        notificationRepository.save(notification);
+    }
 
-        notificationRepository.findByMemberId(memberId)
-                .ifPresentOrElse(
-                        notification -> {
-                            notification.updateToken(notificationTokenRequest.token());
-                            notificationRepository.save(notification);
-                        },
-                        () -> {
-                            Notification notification = Notification.builder()
-                                    .token(notificationTokenRequest.token())
-                                    .member(member)
-                                    .build();
-                            notificationRepository.save(notification);
-                        }
-                );
+    @Transactional
+    public void deleteOldTokens() {
+        notificationRepository.deleteAllIfAMonthOld();
     }
 }
