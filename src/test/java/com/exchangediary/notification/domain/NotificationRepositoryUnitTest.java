@@ -25,22 +25,6 @@ public class NotificationRepositoryUnitTest {
     private NotificationRepository notificationRepository;
 
     @Test
-    @DisplayName("findAllTokenByGroupId 동작 확인")
-    void 전체_그룹원_토큰_가져오기() {
-        Group group = Group.from("버니즈");
-        entityManager.persist(group);
-        createMember(1, group);
-        createMember(2, group);
-        createMember(3, group);
-        createMember(4, group);
-        entityManager.flush();
-
-        List<String> tokens = notificationRepository.findTokensByGroupId(group.getId());
-
-        assertThat(tokens).hasSize(4);
-    }
-
-    @Test
     @DisplayName("findAllTokenByGroupIdExceptMemberId 동작 확인")
     void 본인_제외한_그룹원_토큰_가져오기() {
         Group group = Group.from("버니즈");

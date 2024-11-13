@@ -16,11 +16,6 @@ public class NotificationService {
         messageSendService.sendMulticastMessage(tokens, body);
     }
 
-    public void pushToAllGroupMembers(String groupId, String body) {
-        List<String> tokens = notificationTokenService.findTokensByGroup(groupId);
-        messageSendService.sendMulticastMessage(tokens, body);
-    }
-
     public void pushToAllGroupMembersExceptMember(String groupId, Long memberId, String body) {
         List<String> tokens = notificationTokenService.findTokensByGroupExceptMember(groupId, memberId);
         messageSendService.sendMulticastMessage(tokens, body);

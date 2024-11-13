@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByMemberId(Long memberId);
-    @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId")
-    List<String> findTokensByGroupId(String groupId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.id != :memberId")
     List<String> findTokensByGroupIdExceptMemberId(String groupId, Long memberId);
     @Query("SELECT n.token FROM Notification n JOIN n.member m WHERE m.group.id = :groupId AND m.id != :memberId AND m.groupRole != 'GROUP_LEADER'")

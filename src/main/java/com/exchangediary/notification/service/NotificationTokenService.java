@@ -20,8 +20,20 @@ public class NotificationTokenService {
     private final MemberQueryService memberQueryService;
 
     @Transactional(readOnly = true)
-    public List<String> findTokensByGroup(String groupId) {
-        return notificationRepository.findTokensByGroupId(groupId);
+    public List<String> findTokensByMemberId(Long memberId) {
+        List<Notification> notifications = notificationRepository.findByMemberId(memberId);
+
+        if (notifications.isEmpty()) {
+            throw new NotFoundException(ErrorCode.FCM_TOKEN_NOT_FOUND, "", String.valueOf(memberId));
+        }
+        return notifications.stream()
+                .map(Notification::getToken)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> findTokensByCurrentOrder(String groupId) {
+        return notificationRepository.findByGroupIdAndCurrentOrder(groupId);
     }
 
     @Transactional(readOnly = true)
@@ -37,23 +49,6 @@ public class NotificationTokenService {
     @Transactional(readOnly = true)
     public List<String> findTokensByCurrentOrderInAllGroup() {
         return notificationRepository.findTokensNoDiaryToday();
-    }
-
-    @Transactional(readOnly = true)
-    public List<String> findTokensByMemberId(Long memberId) {
-        List<Notification> notifications = notificationRepository.findByMemberId(memberId);
-
-        if (notifications.isEmpty()) {
-            throw new NotFoundException(ErrorCode.FCM_TOKEN_NOT_FOUND, "", String.valueOf(memberId));
-        }
-        return notifications.stream()
-                .map(Notification::getToken)
-                .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public List<String> findTokensByCurrentOrder(String groupId) {
-        return notificationRepository.findByGroupIdAndCurrentOrder(groupId);
     }
 
     @Transactional
