@@ -1,4 +1,4 @@
-package com.exchangediary.notification.config;
+package com.exchangediary.notification.component;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

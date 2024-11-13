@@ -25,19 +25,24 @@ public class NotificationRepositoryUnitTest {
     private NotificationRepository notificationRepository;
 
     @Test
-    @DisplayName("findAllTokenByGroupId 동작 확인")
-    void 전체_그룹원_토큰_가져오기() {
+    @DisplayName("findByMemberId 동작 확인")
+    void 멤버의_토큰_여러개_가져오기() {
         Group group = Group.from("버니즈");
         entityManager.persist(group);
-        createMember(1, group);
-        createMember(2, group);
-        createMember(3, group);
-        createMember(4, group);
+        Member self = createMember(1, group);
+        entityManager.persist(Notification.builder()
+                .token("token-one")
+                .member(self)
+                .build());
+        entityManager.persist(Notification.builder()
+                .token("token-two")
+                .member(self)
+                .build());
         entityManager.flush();
 
-        List<String> tokens = notificationRepository.findAllTokenByGroupId(group.getId());
+        List<Notification> notifications = notificationRepository.findByMemberId(self.getId());
 
-        assertThat(tokens).hasSize(4);
+        assertThat(notifications).hasSize(3);
     }
 
     @Test
@@ -51,7 +56,7 @@ public class NotificationRepositoryUnitTest {
         createMember(4, group);
         entityManager.flush();
 
-        List<String> tokens = notificationRepository.findAllTokenByGroupIdExceptMemberId(group.getId(), self.getId());
+        List<String> tokens = notificationRepository.findTokensByGroupIdExceptMemberId(group.getId(), self.getId());
 
         assertThat(tokens).hasSize(3);
     }
@@ -68,7 +73,7 @@ public class NotificationRepositoryUnitTest {
         createLeader(5, group);
         entityManager.flush();
 
-        List<String> tokens = notificationRepository.findAllTokenByGroupIdExceptMemberIdAndLeader(group.getId(), self.getId());
+        List<String> tokens = notificationRepository.findTokensByGroupIdExceptMemberIdAndLeader(group.getId(), self.getId());
 
         assertThat(tokens).hasSize(3);
     }
@@ -84,23 +89,9 @@ public class NotificationRepositoryUnitTest {
         createMember(4, group);
         entityManager.flush();
 
-        String token = notificationRepository.findByGroupIdAndCurrentOrder(group.getId());
+        List<String> tokens = notificationRepository.findByGroupIdAndCurrentOrder(group.getId());
 
-        assertThat(token).isEqualTo("버니즈1");
-    }
-
-    @Test
-    @DisplayName("findByGroupIdAndOrder 동작 확인")
-    void 일기순서_건너뛰어진_그룹원_토큰_가져오기() {
-        Group group = Group.from("버니즈");
-        entityManager.persist(group);
-        createMember(1, group);
-        createMember(2, group);
-        entityManager.flush();
-
-        String token = notificationRepository.findByGroupIdAndOrder(group.getId(), 2);
-
-        assertThat(token).isEqualTo("버니즈2");
+        assertThat(tokens.get(0)).isEqualTo("버니즈1");
     }
 
     @Test
@@ -118,7 +109,7 @@ public class NotificationRepositoryUnitTest {
         createMember(1, group3);
         entityManager.flush();
 
-        List<String> tokens = notificationRepository.findAllTokenNoDiaryToday();
+        List<String> tokens = notificationRepository.findTokensNoDiaryToday();
 
         assertThat(tokens).hasSize(2);
         assertThat(tokens.contains(group1.getName() + 1)).isFalse();
