@@ -11,11 +11,13 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import static org.springframework.web.multipart.support.MultipartResolutionDelegate.isMultipartRequest;
 
@@ -33,38 +35,37 @@ public class RequestLoggingFilter implements Filter {
         ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse) response);
 
         if (isMultipartRequest(httpRequest)) {
-            log.info("Request: [{}] [{}] [Multipart Data]", httpMethod, requestURI);
-            logMultipartRequest(httpRequest);
+            String multipartFile = getMultipartRequest(httpRequest);
+            log.info("[Request] {} {} \n{}", httpMethod, requestURI, multipartFile);
             chain.doFilter(request, responseWrapper);
-        }
-        else {
+        } else {
             RequestWrapper requestWrapper = new RequestWrapper(httpRequest);
-            log.info("Request: [{}] [{}] {}", httpMethod, requestURI, requestWrapper.getRequestBody());
+            log.info("[Request] {} {} {}", httpMethod, requestURI, requestWrapper.getRequestBody());
             chain.doFilter(requestWrapper, responseWrapper);
         }
         int statusCode = responseWrapper.getStatus();
-        log.info("Response: [{}] [{}] {}", statusCode, requestURI, responseWrapper.getResponseBody());
+        log.info("[Response] {} {} {}", statusCode, requestURI, responseWrapper.getResponseBody());
         responseWrapper.copyBodyToResponse();
     }
 
-    private void logMultipartRequest(HttpServletRequest request) {
+    private String getMultipartRequest(HttpServletRequest request) {
         StandardServletMultipartResolver multipartResolver = new StandardServletMultipartResolver();
         MultipartHttpServletRequest multipart = multipartResolver.resolveMultipart(request);
-        multipart.getFileMap().forEach((paramName, file) -> {
-            if ("data".equals(paramName)) {
-                try {
-                    String jsonData = new String(file.getBytes(), StandardCharsets.UTF_8);
-                    log.info("Form Field - Name: {}, Value: {}", paramName, jsonData);
-                } catch (IOException e) {
-                    log.error("Error reading jsonData: " + paramName, e);
-                }
-            } else {
-                log.info("Form Field - Name: {}, Original File Name: {}, Size: {} bytes",
-                        paramName,
-                        file.getOriginalFilename(),
-                        file.getSize());
-            }
-        });
+        Map<String, MultipartFile> multipartFileByName = multipart.getFileMap();
+
+        String multipartLog = "";
+
+        try {
+            String jsonData = new String(multipartFileByName.get("data").getBytes(), StandardCharsets.UTF_8);
+            multipartLog = String.format("Name: data, Value: %s", jsonData);
+        } catch (IOException exception) {
+            log.error("{} caused by {}", exception.getMessage(), "data");
+        }
+        MultipartFile file = multipartFileByName.get("file");
+        if (file != null) {
+            multipartLog += String.format("\nName: file, Original File Name: %s, Size: %d bytes", file.getOriginalFilename(), file.getSize());
+        }
+        return multipartLog;
     }
 
     @Override
