@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class RequestWrapper extends HttpServletRequestWrapper {
-    private byte[] cachedInputStream;
+    private final byte[] cachedInputStream;
 
     public RequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
@@ -22,7 +22,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
     @Override
     public ServletInputStream getInputStream() throws IOException {
         return new ServletInputStream() {
-            private InputStream cachedBodyInputStream = new ByteArrayInputStream(cachedInputStream);
+            private final InputStream cachedBodyInputStream = new ByteArrayInputStream(cachedInputStream);
 
             @Override
             public int read() throws IOException {
@@ -33,7 +33,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             public boolean isFinished() {
                 try {
                     return cachedBodyInputStream.available() == 0;
-                } catch (IOException e) {}
+                } catch (IOException ignored) {}
                 return false;
             }
 
