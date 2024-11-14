@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS diary_content
 );
 
 INSERT INTO diary_content (created_at, updated_at, page, content, diary_id)
-    SELECT created_at, updated_at, 1, content, id FROM diary;
+    SELECT created_at, updated_at, 1, SUBSTRING(content, 1, 255), id FROM diary;
 
 INSERT INTO diary_content (created_at, updated_at, page, content, diary_id)
     SELECT created_at, updated_at, 2, SUBSTRING(content, 256, 255), id FROM diary
