@@ -14,6 +14,14 @@ CREATE TABLE IF NOT EXISTS diary_content
 INSERT INTO diary_content (created_at, updated_at, page, content, diary_id)
     SELECT created_at, updated_at, 1, content, id FROM diary;
 
+INSERT INTO diary_content (created_at, updated_at, page, content, diary_id)
+    SELECT created_at, updated_at, 2, SUBSTRING(content, 256, 255), id FROM diary
+        WHERE LENGTH(content) >= 256;
+
+INSERT INTO diary_content (created_at, updated_at, page, content, diary_id)
+    SELECT created_at, updated_at, 3, SUBSTRING(content, 511, 255), id FROM diary
+        WHERE LENGTH(content) >= 511;
+
 ALTER TABLE diary DROP COLUMN IF EXISTS content;
 
 COMMIT;
