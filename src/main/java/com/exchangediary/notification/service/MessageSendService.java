@@ -17,24 +17,22 @@ public class MessageSendService {
     private static final String TITLE = "스프링";
 
     public void sendMulticastMessage(List<String> tokens, String body) {
-        if (tokens.isEmpty()) {
-            throw new MessagingFailureException(ErrorCode.NEED_TO_AT_LEAST_ONE_TOKEN, "", null);
-        }
+        if (!tokens.isEmpty()) {
+            Notification notification = Notification.builder()
+                    .setTitle(TITLE)
+                    .setBody(body)
+                    .build();
 
-        Notification notification = Notification.builder()
-                .setTitle(TITLE)
-                .setBody(body)
-                .build();
+            MulticastMessage message = MulticastMessage.builder()
+                    .addAllTokens(tokens)
+                    .setNotification(notification)
+                    .build();
 
-        MulticastMessage message = MulticastMessage.builder()
-                .addAllTokens(tokens)
-                .setNotification(notification)
-                .build();
-
-        try {
-            FirebaseMessaging.getInstance().sendEachForMulticast(message);
-        } catch (FirebaseMessagingException e) {
-            throw new MessagingFailureException(ErrorCode.FAILED_TO_SEND_MESSAGE, "", tokens.toString());
+            try {
+                FirebaseMessaging.getInstance().sendEachForMulticast(message);
+            } catch (FirebaseMessagingException e) {
+                throw new MessagingFailureException(ErrorCode.FAILED_TO_SEND_MESSAGE, "", tokens.toString());
+            }
         }
     }
 }

@@ -41,10 +41,8 @@ public enum ErrorCode {
     FAILED_TO_LOGIN_KAKAO(HttpStatus.INTERNAL_SERVER_ERROR, "kakao 로그인에 실패했습니다."),
     FAILED_TO_ISSUE_KAKAO_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "kakao 토큰 발급에 실패했습니다."),
     FAILED_TO_GET_KAKAO_USER_INFO(HttpStatus.INTERNAL_SERVER_ERROR, "kakao 사용자 정보 조회에 실패했습니다."),
-    FAILED_TO_ISSUE_FIREBASE_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "firebase 토큰 발급에 실패했습니다."),
     FAILED_TO_SEND_MESSAGE(HttpStatus.INTERNAL_SERVER_ERROR, "메시지 전송에 실패했습니다."),
-    NEED_TO_AT_LEAST_ONE_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "하나 이상의 fcm 토큰이 필요합니다."),
-    FAILED_UPLOAD_IMAGE(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드 중 오류가 발생했습니다.");
+    FAILED_UPLOAD_IMAGE(HttpStatus.INTERNAL_SERVER_ERROR, "사진 업로드에 실패했습니다.");
 
     private final HttpStatus statusCode;
     private final String message;
