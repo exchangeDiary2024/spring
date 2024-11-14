@@ -1,7 +1,5 @@
 package com.exchangediary.notification.service;
 
-import com.exchangediary.global.exception.ErrorCode;
-import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.MemberQueryService;
 import com.exchangediary.notification.domain.NotificationRepository;
@@ -11,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,7 +23,7 @@ public class NotificationTokenService {
         List<Notification> notifications = notificationRepository.findByMemberId(memberId);
 
         if (notifications.isEmpty()) {
-            throw new NotFoundException(ErrorCode.FCM_TOKEN_NOT_FOUND, "", String.valueOf(memberId));
+            return new ArrayList<>();
         }
         return notifications.stream()
                 .map(Notification::getToken)

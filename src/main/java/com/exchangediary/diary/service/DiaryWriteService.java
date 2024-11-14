@@ -55,11 +55,7 @@ public class DiaryWriteService {
 
             return savedDiary.getId();
         } catch (IOException e) {
-            throw new FailedImageUploadException(
-                    ErrorCode.FAILED_UPLOAD_IMAGE,
-                    "네트워크 오류로 인해 \n일기 업로드에 실패했습니다.\n다시 시도해주세요.",
-                    file.getOriginalFilename()
-            );
+            throw new FailedImageUploadException(ErrorCode.FAILED_UPLOAD_IMAGE, "", file.getOriginalFilename());
         }
     }
 
