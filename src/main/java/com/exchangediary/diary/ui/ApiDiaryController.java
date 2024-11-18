@@ -6,6 +6,7 @@ import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.diary.ui.dto.response.DiaryResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryWritableStatusResponse;
 import com.exchangediary.diary.ui.dto.response.DiaryMonthlyResponse;
+import com.exchangediary.notification.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,18 +27,21 @@ import org.springframework.web.multipart.MultipartFile;
 public class ApiDiaryController {
     private final DiaryWriteService diaryWriteService;
     private final DiaryQueryService diaryQueryService;
+    private final NotificationService notificationService;
 
     @PostMapping
     public ResponseEntity<Void> writeDiary(
             @RequestPart(name = "data") @Valid DiaryRequest diaryRequest,
             @RequestPart(name = "file", required = false) MultipartFile file,
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         Long diaryId = diaryWriteService.writeDiary(diaryRequest, file, groupId, memberId);
+        notificationService.pushToAllGroupMembersExceptMember(groupId, memberId, "친구가 일기를 작성했어요!");
+        notificationService.pushDiaryOrderNotification(groupId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .header("Content-Location", "/group/" + groupId + "/diary/" + diaryId)
+                .header("Content-Location", "/groups/" + groupId + "/diaries/" + diaryId)
                 .build();
     }
 
@@ -45,7 +49,7 @@ public class ApiDiaryController {
     public ResponseEntity<DiaryMonthlyResponse> viewMonthlyDiary(
             @RequestParam int year,
             @RequestParam int month,
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         DiaryMonthlyResponse diaryMonthlyResponse = diaryQueryService.viewMonthlyDiary(year, month, groupId, memberId);
@@ -56,7 +60,7 @@ public class ApiDiaryController {
 
     @GetMapping("/status")
     public ResponseEntity<DiaryWritableStatusResponse> getDiaryWritableStatus(
-            @PathVariable Long groupId,
+            @PathVariable String groupId,
             @RequestAttribute Long memberId
     ) {
         DiaryWritableStatusResponse response = diaryQueryService.getMembersDiaryAuthorization(groupId, memberId);

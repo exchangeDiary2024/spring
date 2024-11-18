@@ -1,0 +1,9 @@
+<included>
+    <logger name="jdbc.sqltiming" level="OFF" additivity="false"/>
+    <logger name="jdbc.audit" level="OFF" additivity="false"/>
+    <logger name="jdbc.resultset" level="OFF" additivity="false"/>
+    <logger name="jdbc.resultsettable" level="OFF" additivity="false"/>
+    <logger name="jdbc.connection" level="OFF" additivity="false"/>
+    <logger name="jdbc.preparedstatement" level="OFF" additivity="false"/>
+    <logger name="jdbc.resultset.get" level="OFF" additivity="false"/>
+</included>

@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 class DiaryViewMonthlyTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/diaries/monthly";
+    private static final String API_PATH = "/api/groups/%s/diaries/monthly";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -96,7 +96,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("버니즈", "code"));
+        return groupRepository.save(Group.from("버니즈"));
     }
 
     private void updateSelf(Group group, boolean canViewToday) {

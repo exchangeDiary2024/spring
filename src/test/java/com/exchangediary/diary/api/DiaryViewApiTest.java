@@ -21,7 +21,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DiaryViewApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/diaries/%d";
+    private static final String API_PATH = "/api/groups/%s/diaries/%d";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -93,7 +93,7 @@ public class DiaryViewApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("GROUP_NAME", "code"));
+        return groupRepository.save(Group.from("GROUP_NAME"));
     }
 
     private Diary createDiary(Member member, Group group) {

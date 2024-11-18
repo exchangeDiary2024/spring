@@ -35,7 +35,6 @@ async function drawDateOfCalendar() {
     }
     changeGrayProfile(writtenDiaryDays);
     addBorderToday();
-    addEvents();
 }
 
 function clearDate() {
@@ -45,21 +44,24 @@ function clearDate() {
 function makeCircle(date, writtenDiaryDays) {
     const index = writtenDiaryDays.findIndex((day) => day.day === date);
     if (index !== -1) {
-        return getProfileImageHtml(writtenDiaryDays[index].profileImage, date);
+        return getProfileImageHtml(writtenDiaryDays[index], date);
     }
     if (isToday(date)) {
-        return `<a class="date day${date} highlight" href="/group/${groupId}/diary">${date}</a>`;
+        return `<a class="date day${date} highlight" href="/groups/${groupId}/diaries">${date}</a>`;
     }
     return `<span class="date day${date}">${date}</span>`;
 }
 
-function getProfileImageHtml(profileImage, date) {
+function getProfileImageHtml(diary, date) {
+    const profileImage = diary.profileImage;
+    const diaryId = diary.id;
+
     if (profileImage === "blue" || profileImage === "green") {
-        return `<a class="date day${date} highlight written" href="/api/groups/${groupId}/diaries">
+        return `<a class="date day${date} highlight written" href="/groups/${groupId}/diaries/${diaryId}">
                     <img class="${profileImage} profile-icon ${profileImage}-icon">
                 </a>`;
     }
-    return `<a class="date day${date} highlight written" href="/api/groups/${groupId}/diaries">
+    return `<a class="date day${date} highlight written" href="/groups/${groupId}/diaries/${diaryId}">
                 <img class="${profileImage} profile-icon">
             </a>`;
 }
@@ -93,23 +95,6 @@ function addBorderToday() {
         const row = (todayDate + firstDay) % 7;
         trs[column].children[row].querySelector("a").classList.add("today");
     }
-}
-
-function addEvents() {
-    const diaryDays = document.querySelectorAll("a.written");
-    Array.from(diaryDays).forEach( date => {
-        date.addEventListener("click", showDiary);
-    })
-}
-
-function showDiary(event) {
-    event.preventDefault();
-    const url = event.currentTarget.href;
-    const day = event.currentTarget.classList[1].substr(3);
-
-    fetch(`${url}?year=${year.innerText}&month=${month.innerText}&day=${day}`)
-        .then(response => response.json())
-        .then(data => window.location.href = `/group/${groupId}/diary/${data.diaryId}`);
 }
 
 init();

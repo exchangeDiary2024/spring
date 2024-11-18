@@ -106,7 +106,7 @@
     color: var(--kakao-logo, #000);
     text-align: center;
     font-variant-numeric: lining-nums tabular-nums;
-    font-family: "SOYOMaple";
+    font-family: "HancomMalangMalang-Regular";
     font-size: 8px;
     font-style: normal;
     font-weight: 400;
@@ -121,7 +121,7 @@
 .group-size .group-number {
     color: var(--kakao-logo, #000);
     font-variant-numeric: lining-nums tabular-nums;
-    font-family: "SOYOMapleBold";
+    font-family: "HancomMalangMalang-Bold";
     font-size: 8px;
     font-style: normal;
     font-weight: 700;
@@ -220,7 +220,7 @@
 }
 
 .profile-image .character-icon.blue {
-    widthL 22px;
+    width: 22px;
     height: auto;
     margin-bottom: 4px;
 }
@@ -239,7 +239,7 @@
 
     color: var(--kakao-logo, #000);
     text-align: center;
-    font-family: "SOYOMaple";
+    font-family: "HancomMalangMalang-Regular";
     font-size: 8px;
     font-style: normal;
     font-weight: 400;
@@ -255,7 +255,7 @@
     color: var(--kakao-logo, #000);
     text-align: center;
     font-variant-numeric: lining-nums proportional-nums;
-    font-family: "SOYOMapleBold";
+    font-family: "HancomMalangMalang-Bold";
     font-size: 18.951px;
     font-style: normal;
     font-weight: 700;
@@ -294,7 +294,7 @@
 
     color: var(--kakao-logo, #000);
     text-align: center;
-    font-family: "SOYOMaple";
+    font-family: "HancomMalangMalang-Regular";
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -307,7 +307,7 @@
 
     color: var(--kakao-logo, #000);
     text-align: center;
-    font-family: "SOYOMaple";
+    font-family: "HancomMalangMalang-Regular";
     font-size: 12.634px;
     font-style: normal;
     font-weight: 400;

@@ -103,7 +103,7 @@ function makeMemberHtml(characterName, memberName) {
 
 function makeMyHtml() {
     return `<div class="my">
-                <span style='color: #FFF; text-align: center; font-family: "SOYOMaple"; font-size: 6px; font-style: normal; font-weight: 700; line-height: 100%; letter-spacing: 0.06px;'>나</span>
+                <span style='color: #FFF; text-align: center; font-family: "HancomMalangMalang-Regular"; font-size: 6px; font-style: normal; font-weight: 700; line-height: 100%; letter-spacing: 0.06px;'>나</span>
             </div>`
 }
 
@@ -137,7 +137,7 @@ async function leaveGroupByMember(url) {
         })
         .then(response => {
             if (response.status === 200) {
-                openNotificationModal("success", ["탈퇴를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
+                openNotificationModal("success", ["탈퇴를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/groups');
             } else {
                 openNotificationModal("error", ["오류가 발생했습니다."], 2000);
             }
@@ -156,7 +156,7 @@ async function deleteGroup(event) {
         })
         .then(response => {
             if (response.status === 200) {
-                openNotificationModal("success", ["삭제를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/group');
+                openNotificationModal("success", ["삭제를 완료했어요.", "새로운 스프링을 시작해 보아요!"], 2000, () => window.location.href = '/groups');
             } else {
                 openNotificationModal("error", ["오류가 발생했습니다."], 2000);
             }

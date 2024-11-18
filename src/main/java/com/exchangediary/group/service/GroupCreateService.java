@@ -9,6 +9,7 @@ import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.enums.GroupRole;
 import com.exchangediary.member.service.MemberQueryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class GroupCreateService {
-    private final GroupCodeService groupCodeService;
     private final GroupRepository groupRepository;
     private final MemberQueryService memberQueryService;
     private final MemberRepository memberRepository;
@@ -24,12 +24,16 @@ public class GroupCreateService {
     public GroupCreateResponse createGroup(GroupCreateRequest request, Long memberId) {
         Group group = saveGroup(request.groupName());
         updateMember(memberId, request, group);
-        return GroupCreateResponse.of(group);
+        return GroupCreateResponse.from(group);
     }
 
     private Group saveGroup(String groupName) {
-        Group group = Group.of(groupName, groupCodeService.generateCode(groupName));
-        return groupRepository.save(group);
+        while (true) {
+            try {
+                Group group = Group.from(groupName);
+                return groupRepository.saveAndFlush(group);
+            } catch (DataIntegrityViolationException e) {}
+        }
     }
 
     private void updateMember(Long memberId, GroupCreateRequest request, Group group) {

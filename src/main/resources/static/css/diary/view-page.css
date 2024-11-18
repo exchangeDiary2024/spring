@@ -14,10 +14,34 @@
 .note {
     position: relative;
     top: 23px;
-    width:375px;
+    width: 375px;
     height: 514px;
 
     background-image: url('/images/group/create-join-page/note.svg');
+}
+
+.left-margin {
+    width: calc((100vw - 375px) / 2);
+    height: 514px;
+    background-color: #FCF9D1;
+
+    position: absolute;
+    top: 23px;
+    left: 0;
+
+    z-index: 1;
+}
+
+.right-margin {
+    width: calc((100vw - 375px) / 2);
+    height: 514px;
+    background-color: #FCF9D1;
+
+    position: absolute;
+    top: 23px;
+    right: 0;
+
+    z-index: 1;
 }
 
 .note-header {
@@ -27,7 +51,8 @@
 
 .note-body {
     width: 375px;
-    height: 450px;
+    height: 470px;
+    position: relative;
 }
 
 .page-bar {
@@ -38,6 +63,8 @@
     flex-shrink: 0;
     position: relative;
     top: -24px;
+
+    pointer-events: none;
 }
 
 .page-icon {
@@ -50,12 +77,18 @@
     position: relative;
 
     background: #FFFFFF;
-    border: 1px solid #5A402A;
+    border: 1px solid #E2E2E2;
     border-radius: 20px;
 }
 
-.page-icon.fill {
+.page-icon.active {
+    border-color: #5A402A;
+    pointer-events: auto;
+}
+
+.page-icon.active.fill {
     background: #5A402A;
+    pointer-events: none;
 }
 
 .page-icon.page1 {
@@ -78,8 +111,8 @@
     left: 124px;
 }
 
-.title {
-    width: 375px;
+.note-title {
+    width: 304px;
     height: 24px;
 
     display: flex;
@@ -121,12 +154,22 @@
     color: var(--kakao-logo, #000);
     font-variant-numeric: lining-nums proportional-nums;
     font-feature-settings: 'dlig' on;
-    font-family: "SOYOMapleBold";
+    font-family: "HancomMalangMalang-Bold";
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: 14px; /* 70% */
     letter-spacing: 0.2px;
+}
+
+.note-content {
+    width: 375px;
+    height: 450px;
+    position: absolute;
+    top: 10px;
+
+
+    transition: transform 0.3s ease-out;
 }
 
 .image {
@@ -135,14 +178,9 @@
     flex-shrink: 0;
 
     position: relative;
-    top: 14px;
+    top: 4px;
 }
 
 .diary-content-area {
-    position: relative;
-    top: 10px;
-}
-
-.no-image {
-    display: none;
+    width: 304px;
 }

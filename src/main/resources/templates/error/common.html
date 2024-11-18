@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+
+<th:block layout:fragment="header">
+    <title>Error</title>
+
+    <link rel="stylesheet" href="/css/error.css" type="text/css">
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="background" style="background-image: url('/images/error/background-common.png');">
+        <div class="error-body">
+            <span class="bold-font">잠깐!<br>오류가 발생했어요.</span>
+            <div class="blank"></div>
+            <span class="normal-font">요청하신 페이지를 찾을 수 없어요.<br>서비스 이용에 불편을 드려 죄송합니다.</span>
+        </div>
+        <div class="error-footer">
+            <span class="bold-font">길을 잃은 당신, 우리 다시</span>
+            <a href="/" class="home-btn">
+                <span class="bold-font">홈으로!</span>
+            </a>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="script">
+</th:block>
+
+</html>

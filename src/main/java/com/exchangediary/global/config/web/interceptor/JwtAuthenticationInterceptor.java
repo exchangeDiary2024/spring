@@ -33,15 +33,36 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         try {
             token = getJwtTokenFromCookies(request);
             verifyAndReissueAccessToken(response);
-
             Long memberId = jwtService.extractMemberId(token);
             checkMemberExists(memberId);
             request.setAttribute("memberId", memberId);
         } catch (UnauthorizedException exception) {
-            if (request.getRequestURI().contains("/api")) {
-                throw exception;
-            }
-            response.sendRedirect(request.getContextPath()+ "/");
+            return processAuthorizationFail(request, response, exception);
+        }
+        return processAuthorizationSuccess(request, response);
+    }
+
+    private boolean processAuthorizationFail(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            UnauthorizedException exception
+    ) throws IOException {
+        if (request.getRequestURI().equals("/login")) {
+            return true;
+        }
+        if (request.getRequestURI().contains("/api")) {
+            throw exception;
+        }
+        response.sendRedirect(request.getContextPath()+ "/");
+        return false;
+    }
+
+    private boolean processAuthorizationSuccess(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        if (request.getRequestURI().equals("/login")) {
+            response.sendRedirect(request.getContextPath()+ "/groups");
             return false;
         }
         return true;

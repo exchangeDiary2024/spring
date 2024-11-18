@@ -4,7 +4,6 @@ import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.MessagingFailureException;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
@@ -15,39 +14,25 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MessageSendService {
-    public void sendMessage(String token, String title, String body) {
-        Notification notification = Notification.builder()
-                .setTitle(title)
-                .setBody(body)
-                .build();
+    private static final String TITLE = "스프링";
 
-        Message message = Message.builder()
-                .setToken(token)
-                .setNotification(notification)
-                .build();
+    public void sendMulticastMessage(List<String> tokens, String body) {
+        if (!tokens.isEmpty()) {
+            Notification notification = Notification.builder()
+                    .setTitle(TITLE)
+                    .setBody(body)
+                    .build();
 
-        try {
-            FirebaseMessaging.getInstance().send(message);
-        } catch (FirebaseMessagingException e) {
-            throw new MessagingFailureException(ErrorCode.FAILED_TO_SEND_MESSAGE, "", token);
-        }
-    }
+            MulticastMessage message = MulticastMessage.builder()
+                    .addAllTokens(tokens)
+                    .setNotification(notification)
+                    .build();
 
-    public void sendMulticastMessage(List<String> tokens, String title, String body) {
-        Notification notification = Notification.builder()
-                .setTitle(title)
-                .setBody(body)
-                .build();
-
-        MulticastMessage message = MulticastMessage.builder()
-                .addAllTokens(tokens)
-                .setNotification(notification)
-                .build();
-
-        try {
-            FirebaseMessaging.getInstance().sendEachForMulticast(message);
-        } catch (FirebaseMessagingException e) {
-            throw new MessagingFailureException(ErrorCode.FAILED_TO_SEND_MESSAGE, "", tokens.toString());
+            try {
+                FirebaseMessaging.getInstance().sendEachForMulticast(message);
+            } catch (FirebaseMessagingException e) {
+                throw new MessagingFailureException(ErrorCode.FAILED_TO_SEND_MESSAGE, "", tokens.toString());
+            }
         }
     }
 }

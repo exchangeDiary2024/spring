@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -29,8 +30,9 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@ActiveProfiles("test")
 class DiaryWriteApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/diaries";
+    private static final String API_PATH = "/api/groups/%s/diaries";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -278,7 +280,6 @@ class DiaryWriteApiTest extends ApiBaseTest {
         Group group = Group.builder()
                 .name("버니즈")
                 .currentOrder(currentOrder)
-                .code("code")
                 .lastSkipOrderDate(LocalDate.now())
                 .build();
         return groupRepository.save(group);
