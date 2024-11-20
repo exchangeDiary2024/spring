@@ -1,7 +1,6 @@
 package com.exchangediary.diary.ui.dto.response;
 
 import com.exchangediary.diary.domain.entity.Diary;
-import com.exchangediary.diary.domain.entity.DiaryContent;
 import lombok.Builder;
 
 import java.util.List;
@@ -19,14 +18,8 @@ public record DiaryResponse(
                 .imageFileName(diary.getImageFileName())
                 .nickname(diary.getMember().getNickname())
                 .profileImage(diary.getMember().getProfileImage())
-                .contents(getDiaryContents(diary.getContents()))
+                .contents(DiaryContentResponse.fromContents(diary.getContents()))
                 .comments(DiaryCommentResponse.fromComments(diary.getComments()))
                 .build();
-    }
-
-    private static List<DiaryContentResponse> getDiaryContents(List<DiaryContent> diaryContents) {
-        return diaryContents.stream()
-                .map(diaryContent -> DiaryContentResponse.from(diaryContent.getContent()))
-                .toList();
     }
 }
