@@ -8,6 +8,7 @@ import com.exchangediary.diary.domain.entity.DiaryContent;
 import com.exchangediary.diary.ui.dto.request.DiaryRequest;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.FailedImageUploadException;
+import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.group.service.GroupQueryService;
@@ -80,7 +81,11 @@ public class DiaryWriteService {
         Member nextWriter = group.getMembers().stream()
                         .filter(member -> group.getCurrentOrder().equals(member.getOrderInGroup()))
                         .findFirst()
-                        .get();
+                        .orElseThrow(() -> new NotFoundException(
+                                ErrorCode.MEMBER_NOT_FOUND,
+                                "현재 순서와 일치하는 멤버가 없습니다.",
+                                String.valueOf(group.getCurrentOrder())
+                        ));
 
         nextWriter.updateLastViewableDiaryDate();
         currentWriter.updateLastViewableDiaryDate();
