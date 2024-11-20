@@ -55,7 +55,7 @@ public class Comment extends BaseEntity {
     private final Member member;
     @OneToMany(mappedBy = "comment")
     @OrderBy("created_at ASC")
-    private List<Reply> replys;
+    private List<Reply> replies;
 
     public static Comment of(CommentCreateRequest commentRequest, Member member, Diary diary) {
         return Comment.builder()
