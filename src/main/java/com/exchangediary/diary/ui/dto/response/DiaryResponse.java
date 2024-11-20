@@ -11,18 +11,20 @@ public record DiaryResponse(
         String imageFileName,
         String nickname,
         String profileImage,
-        List<DiaryContentResponse> contents
+        List<DiaryContentResponse> contents,
+        List<DiaryCommentResponse> comments
 ) {
     public static DiaryResponse of(Diary diary) {
         return DiaryResponse.builder()
                 .imageFileName(diary.getImageFileName())
-                .contents(getDiaryContent(diary.getContents()))
                 .nickname(diary.getMember().getNickname())
                 .profileImage(diary.getMember().getProfileImage())
+                .contents(getDiaryContents(diary.getContents()))
+                .comments(DiaryCommentResponse.fromComments(diary.getComments()))
                 .build();
     }
 
-    private static List<DiaryContentResponse> getDiaryContent(List<DiaryContent> diaryContents) {
+    private static List<DiaryContentResponse> getDiaryContents(List<DiaryContent> diaryContents) {
         return diaryContents.stream()
                 .map(diaryContent -> DiaryContentResponse.from(diaryContent.getContent()))
                 .toList();
