@@ -1,15 +1,14 @@
-package com.exchangediary.reply.service;
+package com.exchangediary.comment.service;
 
+import com.exchangediary.comment.domain.ReplyRepository;
 import com.exchangediary.comment.domain.entity.Comment;
-import com.exchangediary.comment.service.CommentQueryService;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.service.DiaryAuthorizationService;
 import com.exchangediary.diary.service.DiaryQueryService;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.service.MemberQueryService;
-import com.exchangediary.reply.domain.entity.Reply;
-import com.exchangediary.reply.domain.entity.ReplyRepository;
-import com.exchangediary.reply.ui.dto.request.ReplyCreateRequest;
+import com.exchangediary.comment.domain.entity.Reply;
+import com.exchangediary.comment.ui.dto.request.ReplyCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +26,9 @@ public class ReplyCreateService {
     public void createReply(ReplyCreateRequest request, Long diaryId, Long commentId, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
         Diary diary = diaryQueryService.findDiary(diaryId);
-        Comment comment = commentQueryService.findComment(commentId);
 
         diaryAuthorizationService.checkDiaryViewable(member, diary);
+        Comment comment = commentQueryService.findComment(commentId);
         replyRepository.save(Reply.of(request, member, comment));
     }
 }

@@ -1,9 +1,8 @@
-package com.exchangediary.reply.domain.entity;
+package com.exchangediary.comment.domain.entity;
 
-import com.exchangediary.comment.domain.entity.Comment;
+import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.member.domain.entity.Member;
-import com.exchangediary.reply.ui.dto.request.ReplyCreateRequest;
-import jakarta.persistence.Column;
+import com.exchangediary.comment.ui.dto.request.ReplyCreateRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -29,10 +28,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @NoArgsConstructor(access = PROTECTED, force = true)
 @AllArgsConstructor(access = PRIVATE)
-public class Reply {
+public class Reply extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reply_id")
     private Long id;
     @Lob
     @JdbcType(LongVarcharJdbcType.class)

@@ -1,7 +1,9 @@
 package com.exchangediary.comment.ui;
 
 import com.exchangediary.comment.service.CommentService;
+import com.exchangediary.comment.service.ReplyCreateService;
 import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
+import com.exchangediary.comment.ui.dto.request.ReplyCreateRequest;
 import com.exchangediary.comment.ui.dto.response.CommentCreateResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/groups/{groupId}/diaries/{diaryId}/comments")
 public class ApiCommentController {
     private final CommentService commentService;
+    private final ReplyCreateService replyCreateService;
 
     @PostMapping
     public ResponseEntity<CommentCreateResponse> createComment(
@@ -30,5 +33,18 @@ public class ApiCommentController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PostMapping("/{commentId}/replies")
+    public ResponseEntity<Void> createReply(
+            @RequestBody @Valid ReplyCreateRequest request,
+            @PathVariable Long diaryId,
+            @PathVariable Long commentId,
+            @RequestAttribute Long memberId
+    ) {
+        replyCreateService.createReply(request, diaryId, commentId, memberId);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
     }
 }

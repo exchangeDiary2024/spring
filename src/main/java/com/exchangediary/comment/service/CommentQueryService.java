@@ -1,7 +1,7 @@
 package com.exchangediary.comment.service;
 
 import com.exchangediary.comment.domain.entity.Comment;
-import com.exchangediary.comment.domain.entity.CommentRepository;
+import com.exchangediary.comment.domain.CommentRepository;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import lombok.RequiredArgsConstructor;

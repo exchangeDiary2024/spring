@@ -2,7 +2,7 @@ package com.exchangediary.comment.api;
 
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.comment.domain.entity.Comment;
-import com.exchangediary.comment.domain.entity.CommentRepository;
+import com.exchangediary.comment.domain.CommentRepository;
 import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
 import com.exchangediary.comment.ui.dto.response.CommentCreateResponse;
 import com.exchangediary.diary.domain.DiaryRepository;

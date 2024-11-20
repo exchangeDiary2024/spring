@@ -2,15 +2,14 @@ package com.exchangediary.reply.api;
 
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.comment.domain.entity.Comment;
-import com.exchangediary.comment.domain.entity.CommentRepository;
-import com.exchangediary.comment.ui.dto.response.CommentCreateResponse;
+import com.exchangediary.comment.domain.CommentRepository;
 import com.exchangediary.diary.domain.DiaryRepository;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.group.domain.GroupRepository;
 import com.exchangediary.group.domain.entity.Group;
 import com.exchangediary.member.domain.entity.Member;
 import com.exchangediary.member.domain.enums.GroupRole;
-import com.exchangediary.reply.ui.dto.request.ReplyCreateRequest;
+import com.exchangediary.comment.ui.dto.request.ReplyCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -93,7 +92,7 @@ public class ReplyCreateApiTest extends ApiBaseTest {
     }
 
     private Group createGroup() {
-        return groupRepository.save(Group.of("GROUP_NAME", "code"));
+        return groupRepository.save(Group.from("GROUP_NAME"));
     }
 
     private void updateSelf(Group group, int order) {

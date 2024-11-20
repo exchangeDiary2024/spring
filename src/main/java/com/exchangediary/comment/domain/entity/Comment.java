@@ -4,7 +4,6 @@ import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.global.domain.entity.BaseEntity;
 import com.exchangediary.member.domain.entity.Member;
-import com.exchangediary.reply.domain.entity.Reply;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;

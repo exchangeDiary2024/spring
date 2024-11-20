@@ -1,7 +1,7 @@
 package com.exchangediary.comment.service;
 
 import com.exchangediary.comment.domain.entity.Comment;
-import com.exchangediary.comment.domain.entity.CommentRepository;
+import com.exchangediary.comment.domain.CommentRepository;
 import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
 import com.exchangediary.comment.ui.dto.response.CommentCreateResponse;
 import com.exchangediary.diary.domain.entity.Diary;

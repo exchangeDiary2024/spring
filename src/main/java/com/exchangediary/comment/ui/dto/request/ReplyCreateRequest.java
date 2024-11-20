@@ -1,4 +1,4 @@
-package com.exchangediary.reply.ui.dto.request;
+package com.exchangediary.comment.ui.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 
