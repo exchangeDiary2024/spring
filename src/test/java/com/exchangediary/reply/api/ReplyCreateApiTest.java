@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 public class ReplyCreateApiTest extends ApiBaseTest {
-    private static final String API_PATH = "/api/groups/%d/diaries/%d/comments/%d/replies";
+    private static final String API_PATH = "/api/groups/%s/diaries/%d/comments/%d/replies";
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
