@@ -37,6 +37,8 @@ public class Comment extends BaseEntity {
     private final Double xCoordinate;
     @NotNull
     private final Double yCoordinate;
+    @NotNull
+    private final Integer page;
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
