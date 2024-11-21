@@ -40,7 +40,7 @@ function writeDiary() {
     const contents = activeContents.map(content => { return { content: content.value } });
     const json = JSON.stringify({
         contents: contents,
-        moodLocation: getMoodLocation()
+        todayMood: getTodayMood()
     });
 
     formData.append("data", new Blob([json], {type: "application/json"}));
@@ -71,15 +71,15 @@ function writeDiary() {
         });
 }
 
-function getMoodLocation() {
-    const moodIconLocation = "/images/diary/write-page/mood_icon.svg";
+function getTodayMood() {
+    const defaultMoodIconLocation = "/images/diary/write-page/mood_icon.svg";
     const mood = document.querySelector(".mood-btn").children[0];
     const moodLocation = mood.src.substring(mood.src.indexOf("/images"));
 
-    if (moodLocation === moodIconLocation) {
+    if (moodLocation === defaultMoodIconLocation) {
         return null;
     }
-    return moodLocation;
+    return moodLocation.substring(31);
 }
 
 function getUploadImage() {
