@@ -5,6 +5,7 @@
     <title>스프링 - 일기 조회</title>
     <link rel="stylesheet" href="/css/diary/diary-common.css" type="text/css">
     <link rel="stylesheet" href="/css/diary/view-page.css" type="text/css">
+    <link rel="stylesheet" href="/css/diary/comment.css" type="text/css">
 </th:block>
 
 <th:block layout:fragment="content">
@@ -17,6 +18,9 @@
                 <span class="date">[[${diary.createdAt}]]</span>
                 <div class="mood"><img class="mood-icon" th:src="@{/images/diary/write-page/emoji/} + ${diary.todayMood}"></div>
             </div>
+            <a class="comment-btn" href="#">
+                <img class="comment-icon" src="/images/diary/view-page/comment.png">
+            </a>
         </div>
         <div class="content">
             <div class="left-margin"></div>
