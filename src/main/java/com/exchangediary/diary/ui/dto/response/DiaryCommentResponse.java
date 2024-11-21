@@ -8,6 +8,7 @@ import java.util.List;
 @Builder
 public record DiaryCommentResponse(
         Long id,
+        Integer page,
         String profileImage,
         Double xCoordinate,
         Double yCoordinate
@@ -21,6 +22,7 @@ public record DiaryCommentResponse(
     private static DiaryCommentResponse from(Comment comment) {
         return DiaryCommentResponse.builder()
                 .id(comment.getId())
+                .page(comment.getPage())
                 .profileImage(comment.getMember().getProfileImage())
                 .xCoordinate(comment.getXCoordinate())
                 .yCoordinate(comment.getYCoordinate())
