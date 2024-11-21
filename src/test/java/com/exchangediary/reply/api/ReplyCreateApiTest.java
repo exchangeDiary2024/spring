@@ -127,6 +127,7 @@ public class ReplyCreateApiTest extends ApiBaseTest {
                 Comment.builder()
                         .xCoordinate(123.45)
                         .yCoordinate(333.33)
+                        .page(1)
                         .content("댓글")
                         .member(member)
                         .diary(diary)
