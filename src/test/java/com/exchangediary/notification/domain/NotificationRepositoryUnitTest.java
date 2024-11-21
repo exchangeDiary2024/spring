@@ -147,7 +147,7 @@ public class NotificationRepositoryUnitTest {
         Diary diary = Diary.builder()
                 .member(member)
                 .group(group)
-                .moodLocation("sad.png")
+                .todayMood("sad.png")
                 .build();
         entityManager.persist(diary);
         DiaryContent diaryContent = DiaryContent.of(1, "content", diary);

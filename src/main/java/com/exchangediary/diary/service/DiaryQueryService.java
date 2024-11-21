@@ -56,7 +56,7 @@ public class DiaryQueryService {
 
         diaryAuthorizationService.checkDiaryViewable(member, diary);
 
-        return DiaryTopResponse.of(diary);
+        return DiaryTopResponse.from(diary);
     }
 
     public DiaryMonthlyResponse viewMonthlyDiary(int year, int month, String groupId, Long memberId) {
