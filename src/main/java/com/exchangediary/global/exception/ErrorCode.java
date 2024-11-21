@@ -32,6 +32,7 @@ public enum ErrorCode {
     GROUP_LEADER_NOT_FOUND(HttpStatus.NOT_FOUND, "그룹장을 찾을 수 없습니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "멤버를 찾을 수 없습니다."),
     FCM_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "member id와 매핑된 fcm 토큰을 찾을 수 없습니다."),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."),
 
     FULL_MEMBERS_OF_GROUP(HttpStatus.CONFLICT, "그룹원이 꽉 차\n해당 그룹에 들어갈 수 없습니다."),
     ALREADY_SKIP_ORDER_TODAY(HttpStatus.CONFLICT, "이미 한 번 건너뛰었어요!\n내일 다시 건너뛸 수 있어요."),
