@@ -19,14 +19,14 @@ public class CommentAuthorizationService {
         if (member == diary.getMember()) {
             throw new ForbiddenException(
                     ErrorCode.COMMENT_WRITE_FORBIDDEN,
-                    "",
+                    "내 일기에는 댓글을 남길 수 없어요!",
                     String.valueOf(diary.getId())
             );
         }
         if (commentRepository.existsByDiaryIdAndMemberId(member.getId(), diary.getId())) {
             throw new ForbiddenException(
                     ErrorCode.COMMENT_WRITE_FORBIDDEN,
-                    "이미 댓글을 작성하였습니다.",
+                    "댓글은 한 번 남길 수 있어요!",
                     String.valueOf(diary.getId())
             );
         }
