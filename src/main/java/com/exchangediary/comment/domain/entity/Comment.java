@@ -37,6 +37,8 @@ public class Comment extends BaseEntity {
     private final Double xCoordinate;
     @NotNull
     private final Double yCoordinate;
+    @NotNull
+    private final Integer page;
     @Lob
     @JdbcType(LongVarcharJdbcType.class)
     @NotNull
@@ -54,6 +56,7 @@ public class Comment extends BaseEntity {
         return Comment.builder()
                 .xCoordinate(commentRequest.xCoordinate())
                 .yCoordinate(commentRequest.yCoordinate())
+                .page(commentRequest.page())
                 .content(commentRequest.content())
                 .member(member)
                 .diary(diary)
