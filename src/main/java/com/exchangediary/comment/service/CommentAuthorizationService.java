@@ -1,6 +1,6 @@
 package com.exchangediary.comment.service;
 
-import com.exchangediary.comment.domain.entity.CommentRepository;
+import com.exchangediary.comment.domain.CommentRepository;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.ForbiddenException;

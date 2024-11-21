@@ -32,7 +32,7 @@ public class DiaryRepositoryUnitTest {
         Group group = Group.from("group-name");
         Member member = Member.of(1234L);
         Diary diary = Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .member(member)
                 .group(group)
                 .build();
@@ -62,7 +62,7 @@ public class DiaryRepositoryUnitTest {
         Member diaryCreator = Member.of(1235L);
         entityManager.persist(diaryCreator);
         Diary diary = Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .member(diaryCreator)
                 .group(group)
                 .build();
@@ -85,7 +85,7 @@ public class DiaryRepositoryUnitTest {
         Member diaryCreator = Member.of(1235L);
         entityManager.persist(diaryCreator);
         Diary diary = Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .member(diaryCreator)
                 .group(group)
                 .build();

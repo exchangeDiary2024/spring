@@ -43,6 +43,15 @@ public class ImageService {
         }
     }
 
+    public void deleteImage(String groupId, String fileName) {
+        String imageLocation = String.format(imagePathFormat, fileLocation, groupId) + "/" + fileName;
+
+        File file = new File(imageLocation);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
     private boolean isEmptyFile(MultipartFile file) {
         return file == null || file.isEmpty();
     }

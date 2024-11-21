@@ -15,7 +15,7 @@
             </div>
             <div class="bar-main">
                 <span class="date">[[${diary.createdAt}]]</span>
-                <div class="mood"><img class="mood-icon" th:src="${diary.moodLocation}"></div>
+                <div class="mood"><img class="mood-icon" th:src="@{/images/diary/write-page/emoji/} + ${diary.todayMood}"></div>
             </div>
         </div>
         <div class="content">
