@@ -79,7 +79,7 @@ function getTodayMood() {
     if (moodLocation === defaultMoodIconLocation) {
         return null;
     }
-    return moodLocation.substring(31);
+    return moodLocation.substring(moodLocation.lastIndexOf("/"));
 }
 
 function getUploadImage() {
