@@ -145,7 +145,7 @@ public class DiaryWritableStatusApiTest extends ApiBaseTest {
 
     private Diary createDiary(Group group, Member member) {
         return Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .group(group)
                 .member(member)
                 .build();

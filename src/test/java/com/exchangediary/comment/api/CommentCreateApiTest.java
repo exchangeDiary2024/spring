@@ -142,7 +142,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
     private Diary createDiary(Group group, Member member) {
         Diary diary = Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .group(group)
                 .member(member)
                 .build();

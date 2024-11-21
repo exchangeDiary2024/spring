@@ -8,12 +8,12 @@ import java.time.format.DateTimeFormatter;
 @Builder
 public record DiaryTopResponse (
         String createdAt,
-        String moodLocation
+        String todayMood
 ) {
-    public static DiaryTopResponse of(Diary diary) {
+    public static DiaryTopResponse from(Diary diary) {
         return DiaryTopResponse.builder()
                 .createdAt(diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
-                .moodLocation(diary.getMoodLocation())
+                .todayMood(diary.getTodayMood())
                 .build();
     }
 }

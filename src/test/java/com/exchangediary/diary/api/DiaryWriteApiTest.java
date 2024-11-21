@@ -64,7 +64,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
         Diary newDiary = diaryRepository.findById(diaryId).get();
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
+        assertThat(newDiary.getTodayMood()).isEqualTo(data.get("todayMood"));
 
         List<DiaryContent> diaryContents = diaryContentRepository.findAllByDiaryId(newDiary.getId());
         assertThat(diaryContents.size()).isEqualTo(3);
@@ -140,7 +140,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
+        assertThat(newDiary.getTodayMood()).isEqualTo(data.get("todayMood"));
     }
 
     @Test
@@ -171,7 +171,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(1);
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
+        assertThat(newDiary.getTodayMood()).isEqualTo(data.get("todayMood"));
     }
 
     @Test
@@ -202,7 +202,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
         assertThat(newDiary.getGroup().getId()).isEqualTo(group.getId());
         assertThat(updatedGroup.getCurrentOrder()).isEqualTo(2);
         assertThat(newDiary.getMember().getId()).isEqualTo(member.getId());
-        assertThat(newDiary.getMoodLocation()).isEqualTo(data.get("moodLocation"));
+        assertThat(newDiary.getTodayMood()).isEqualTo(data.get("todayMood"));
     }
 
     @Test
@@ -269,7 +269,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
 
     private Diary createDiary(Group group, Member member) {
         Diary diary = Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .member(member)
                 .group(group)
                 .build();
@@ -303,7 +303,7 @@ class DiaryWriteApiTest extends ApiBaseTest {
 
     private Map<String, Object> makeDiaryData() {
         Map<String, Object> data = new HashMap<>();
-        data.put("moodLocation", "/images/sad.png");
+        data.put("todayMood", "sad.png");
         List<Map<String, String>> contents = new ArrayList<>();
         contents.add(Map.of("content", "hi"));
         contents.add(Map.of("content", ""));

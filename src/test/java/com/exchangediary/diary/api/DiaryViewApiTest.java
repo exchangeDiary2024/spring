@@ -98,7 +98,7 @@ public class DiaryViewApiTest extends ApiBaseTest {
 
     private Diary createDiary(Member member, Group group) {
         Diary diary = Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .imageFileName("20241101.jpeg")
                 .group(group)
                 .member(member)
