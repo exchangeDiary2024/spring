@@ -30,8 +30,9 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
     @Test
     void 댓글_작성_성공() {
-        Double xCoordinate = 123.45;
-        Double yCoordinate= 456.78;
+        double xCoordinate = 123.45;
+        double yCoordinate= 456.78;
+        int page = 1;
         String content = "댓글";
 
         Group group = createGroup();
@@ -43,7 +44,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
         var response = RestAssured
                 .given().log().all()
-                .body(new CommentCreateRequest(xCoordinate, yCoordinate, content))
+                .body(new CommentCreateRequest(xCoordinate, yCoordinate, page, content))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(String.format(API_PATH, group.getId(), diary.getId()))
@@ -54,13 +55,15 @@ public class CommentCreateApiTest extends ApiBaseTest {
         Comment comment = commentRepository.findById(response.commentId()).get();
         assertThat(comment.getXCoordinate()).isEqualTo(xCoordinate);
         assertThat(comment.getYCoordinate()).isEqualTo(yCoordinate);
+        assertThat(comment.getPage()).isEqualTo(page);
         assertThat(comment.getContent()).isEqualTo(content);
     }
 
     @Test
     void 댓글_작성_실패_내용_없을_경우() {
-        Double xCoordinate = 123.45;
-        Double yCoordinate= 456.78;
+        double xCoordinate = 123.45;
+        double yCoordinate= 456.78;
+        int page = 1;
         String content = "";
 
         Group group = createGroup();
@@ -72,7 +75,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
         RestAssured
                 .given().log().all()
-                .body(new CommentCreateRequest(xCoordinate, yCoordinate, content))
+                .body(new CommentCreateRequest(xCoordinate, yCoordinate, page, content))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(String.format(API_PATH, group.getId(), diary.getId()))
@@ -82,8 +85,9 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
     @Test
     void 댓글_작성_실패_일기작성자일경우() {
-        Double xCoordinate = 123.45;
-        Double yCoordinate= 456.78;
+        double xCoordinate = 123.45;
+        double yCoordinate= 456.78;
+        int page = 1;
         String content = "댓글";
 
         Group group = createGroup();
@@ -94,7 +98,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
         RestAssured
                 .given().log().all()
-                .body(new CommentCreateRequest(xCoordinate, yCoordinate, content))
+                .body(new CommentCreateRequest(xCoordinate, yCoordinate, page, content))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(String.format(API_PATH, group.getId(), diary.getId()))
@@ -104,8 +108,9 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
     @Test
     void 댓글_작성_실패_이미작성() {
-        Double xCoordinate = 123.45;
-        Double yCoordinate= 456.78;
+        double xCoordinate = 123.45;
+        double yCoordinate= 456.78;
+        int page = 1;
         String content = "댓글";
 
         Group group = createGroup();
@@ -118,7 +123,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
 
         RestAssured
                 .given().log().all()
-                .body(new CommentCreateRequest(xCoordinate, yCoordinate, content))
+                .body(new CommentCreateRequest(xCoordinate, yCoordinate, page, content))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().post(String.format(API_PATH, group.getId(), diary.getId()))
@@ -162,6 +167,7 @@ public class CommentCreateApiTest extends ApiBaseTest {
                 Comment.builder()
                         .xCoordinate(123.45)
                         .yCoordinate(333.33)
+                        .page(1)
                         .content("댓글")
                         .member(member)
                         .diary(diary)
