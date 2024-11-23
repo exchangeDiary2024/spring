@@ -1,4 +1,4 @@
-package com.exchangediary.reply.api;
+package com.exchangediary.comment.api;
 
 import com.exchangediary.ApiBaseTest;
 import com.exchangediary.comment.domain.entity.Comment;
@@ -63,7 +63,7 @@ public class ReplyCreateApiTest extends ApiBaseTest {
                 .body(new ReplyCreateRequest(content))
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .when().post(String.format(API_PATH, group.getId(), diary.getId(), 1))
+                .when().post(String.format(API_PATH, group.getId(), diary.getId(), 10))
                 .then().log().all()
                 .statusCode(HttpStatus.NOT_FOUND.value());
 
