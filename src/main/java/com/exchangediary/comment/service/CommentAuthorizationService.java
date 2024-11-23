@@ -23,7 +23,7 @@ public class CommentAuthorizationService {
                     String.valueOf(diary.getId())
             );
         }
-        if (commentRepository.existsByDiaryIdAndMemberId(member.getId(), diary.getId())) {
+        if (commentRepository.existsByMemberIdAndDiaryId(member.getId(), diary.getId())) {
             throw new ForbiddenException(
                     ErrorCode.COMMENT_WRITE_FORBIDDEN,
                     "댓글은 한 번 남길 수 있어요!",
