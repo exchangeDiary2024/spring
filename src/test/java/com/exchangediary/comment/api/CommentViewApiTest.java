@@ -57,6 +57,30 @@ public class CommentViewApiTest extends ApiBaseTest {
     }
 
     @Test
+    void 댓글_조회_성공_답글_없을_경우() {
+        Group group = createGroup();
+        updateSelf(group, 1);
+        this.member.updateLastViewableDiaryDate();
+        memberRepository.save(member);
+        Member diaryCreator = createMember(group);
+        Diary diary = createDiary(group, diaryCreator);
+        Comment comment = createComment(member, diary);
+
+        var response = RestAssured
+                .given().log().all()
+                .cookie("token", token)
+                .when().get(String.format(API_PATH, group.getId(), diary.getId(), comment.getId()))
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(CommentResponse.class);
+        var replies = response.replies();
+
+        assertThat(replies).isEmpty();
+        assertThat(response.content()).isEqualTo("댓글");
+        assertThat(response.profileImage()).isEqualTo("orange");
+    }
+
+    @Test
     void 댓글_조회_실패_댓글_없을_경우() {
         Group group = createGroup();
         updateSelf(group, 1);
