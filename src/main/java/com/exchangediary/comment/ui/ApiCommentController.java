@@ -6,6 +6,7 @@ import com.exchangediary.comment.service.ReplyCreateService;
 import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
 import com.exchangediary.comment.ui.dto.request.ReplyCreateRequest;
 import com.exchangediary.comment.ui.dto.response.CommentCreateResponse;
+import com.exchangediary.comment.ui.dto.response.CommentCreationVerifyResponse;
 import com.exchangediary.comment.ui.dto.response.CommentResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,17 @@ public class ApiCommentController {
         CommentCreateResponse response = commentService.createComment(request, diaryId, memberId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<CommentCreationVerifyResponse> verifyCommentCreation(
+            @PathVariable Long diaryId,
+            @RequestAttribute Long memberId
+    ) {
+        CommentCreationVerifyResponse response = commentQueryService.verifyCommentCreation(diaryId, memberId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(response);
     }
 
