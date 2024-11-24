@@ -1,7 +1,6 @@
 package com.exchangediary.comment.ui.dto.response;
 
 import com.exchangediary.comment.domain.entity.Comment;
-import com.exchangediary.comment.domain.entity.Reply;
 import lombok.Builder;
 
 import java.util.List;
@@ -16,13 +15,7 @@ public record CommentResponse(
         return CommentResponse.builder()
                 .content(comment.getContent())
                 .profileImage(profileImage)
-                .replies(getReplies(comment.getReplies()))
+                .replies(ReplyResponse.fromReplies(comment.getReplies()))
                 .build();
-    }
-
-    private static List<ReplyResponse> getReplies(List<Reply> replies) {
-        return replies.stream()
-                .map(ReplyResponse::from)
-                .toList();
     }
 }
