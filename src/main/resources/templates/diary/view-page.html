@@ -19,7 +19,7 @@
                 <div class="mood"><img class="mood-icon" th:src="@{/images/diary/write-page/emoji/} + ${diary.todayMood}"></div>
             </div>
             <a class="comment-btn" href="#">
-                <img class="comment-icon" src="/images/diary/view-page/comment.png">
+                <img class="comment-btn-icon" src="/images/diary/view-page/comment.png">
             </a>
         </div>
         <div class="content">
@@ -45,6 +45,7 @@
 <th:block layout:fragment="script">
     <script src="/js/diary/view-diary/slide-diary.js"></script>
     <script src="/js/diary/view-diary/view-diary.js"></script>
+    <script src="/js/diary/view-diary/comment.js"></script>
 </th:block>
 
 </html>
