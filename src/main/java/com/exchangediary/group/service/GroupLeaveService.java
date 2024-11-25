@@ -1,6 +1,6 @@
 package com.exchangediary.group.service;
 
-import com.exchangediary.diary.domain.DiaryRepository;
+import com.exchangediary.diary.service.DiaryDeleteService;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.ForbiddenException;
 import com.exchangediary.group.domain.GroupRepository;
@@ -22,14 +22,15 @@ public class GroupLeaveService {
     private final MemberRepository memberRepository;
     private final MemberQueryService memberQueryService;
     private final GroupQueryService groupQueryService;
+    private final DiaryDeleteService diaryDeleteService;
     private final GroupRepository groupRepository;
-    private final DiaryRepository diaryRepository;
 
     public void leaveGroup(String groupId, Long memberId) {
         Group group = groupQueryService.findGroup(groupId);
         Member member = memberQueryService.findMember(memberId);
 
         forbidGroupLeaderLeave(member, group.getMembers().size());
+        diaryDeleteService.deleteDiary(groupId, memberId);
         int leaveMemberOrder = processMemberLeave(member);
         updateGroupAfterMemberLeave(group, leaveMemberOrder);
     }
@@ -42,7 +43,6 @@ public class GroupLeaveService {
 
     private int processMemberLeave(Member member) {
         int orderInGroup = member.getOrderInGroup();
-        diaryRepository.deleteByMemberId(member.getId());
         member.leaveGroup();
         memberRepository.save(member);
         return orderInGroup;

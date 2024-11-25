@@ -6,6 +6,7 @@ import com.exchangediary.notification.domain.NotificationRepository;
 import com.exchangediary.notification.domain.entity.Notification;
 import com.exchangediary.notification.ui.dto.request.NotificationTokenRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,14 +51,17 @@ public class NotificationTokenService {
         return notificationRepository.findTokensNoDiaryToday();
     }
 
-    @Transactional
     public void saveNotificationToken(NotificationTokenRequest notificationTokenRequest, Long memberId) {
         Member member = memberQueryService.findMember(memberId);
         Notification notification = Notification.builder()
                 .token(notificationTokenRequest.token())
                 .member(member)
                 .build();
-        notificationRepository.save(notification);
+
+        try {
+            notificationRepository.save(notification);
+        } catch (DataIntegrityViolationException ignored) {
+        }
     }
 
     @Transactional

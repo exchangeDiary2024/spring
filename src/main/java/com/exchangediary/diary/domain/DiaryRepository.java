@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
+    List<Diary> findByMemberId(Long memberId);
     @Query("SELECT new com.exchangediary.diary.domain.dto.DiaryDay(d.id, d.createdAt, m.profileImage) "+
             "FROM Diary d JOIN d.member m " +
             "WHERE d.group.id = :groupId AND YEAR(d.createdAt) = :year AND MONTH(d.createdAt) = :month " +

@@ -109,7 +109,7 @@ class DiaryViewMonthlyTest extends ApiBaseTest {
 
     private Diary createDiary(Group group) {
         Diary diary = Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .group(group)
                 .member(member)
                 .build();

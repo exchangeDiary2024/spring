@@ -42,7 +42,7 @@ public class DiaryQueryServiceTest extends ApiBaseTest {
 
         assertThat(response.createdAt()).isEqualTo(
                 diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
-        assertThat(response.moodLocation()).isEqualTo(diary.getMoodLocation());
+        assertThat(response.todayMood()).isEqualTo(diary.getTodayMood());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class DiaryQueryServiceTest extends ApiBaseTest {
 
     private Diary createDiary(Member member, Group group) {
         Diary diary = Diary.builder()
-                .moodLocation("/images/write-page/emoji/sleepy.svg")
+                .todayMood("sleepy.svg")
                 .group(group)
                 .member(member)
                 .build();
