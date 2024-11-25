@@ -20,10 +20,10 @@ public class DiaryDeleteService {
 
         diaryRepository.deleteByMemberId(memberId);
 
-        diaries.forEach(diary -> {
-            if (diary.getImageFileName() != null) {
-                imageService.deleteImage(groupId, diary.getImageFileName());
-            }
-        });
+//        diaries.forEach(diary -> {
+//            if (diary.getImageFileName() != null) {
+//                imageService.deleteImage(groupId, diary.getImageFileName());
+//            }
+//        });
     }
 }

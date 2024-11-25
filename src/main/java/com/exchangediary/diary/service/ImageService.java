@@ -39,7 +39,7 @@ public class ImageService {
             String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             String fileExtension = getFileExtension(file.getOriginalFilename());
             file.transferTo(new File(imagePath + "/" + date + fileExtension));
-            diary.uploadImageFileName(date + fileExtension);
+            //diary.uploadImageFileName(date + fileExtension);
         }
     }
 

@@ -37,7 +37,6 @@ public class Diary extends BaseEntity {
     private Long id;
     @NotNull
     private final String todayMood;
-    private String imageFileName;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "diary_member_id_fkey"))
@@ -51,6 +50,9 @@ public class Diary extends BaseEntity {
     private List<DiaryContent> contents;
     @OneToMany(mappedBy = "diary")
     private List<Comment> comments;
+    @OneToMany(mappedBy = "diary")
+    @OrderBy("order ASC")
+    private List<Image> images;
 
     public static Diary of(DiaryRequest diaryRequest, Member member, Group group) {
         return Diary.builder()
@@ -60,7 +62,7 @@ public class Diary extends BaseEntity {
                 .build();
     }
 
-    public void uploadImageFileName(String imageFileName) {
-        this.imageFileName = imageFileName;
-    }
+//    public void uploadImageFileName(String imageFileName) {
+//        this.imageFileName = imageFileName;
+//    }
 }

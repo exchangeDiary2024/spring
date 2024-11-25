@@ -15,7 +15,7 @@ public record DiaryResponse(
 ) {
     public static DiaryResponse of(Diary diary) {
         return DiaryResponse.builder()
-                .imageFileName(diary.getImageFileName())
+                //.imageFileName(diary.getImageFileName())
                 .nickname(diary.getMember().getNickname())
                 .profileImage(diary.getMember().getProfileImage())
                 .contents(DiaryContentResponse.fromContents(diary.getContents()))
