@@ -8,9 +8,9 @@ init();
 function createCommentDiv() {
     const commentDiv = document.createElement("div");
 
-    commentDiv.classList.add("comment", "highlight");
+    commentDiv.classList.add("comment");
     commentDiv.prepend(document.createElement("div"));
-    commentDiv.children[0].classList.add( "comment-character-icon");
+    commentDiv.children[0].classList.add("comment-character-icon");
     return commentDiv;
 }
 
@@ -25,7 +25,7 @@ function clickCommentBtn(event) {
         event.currentTarget.classList.add("selected");
     } else {
         removeBlur();
-        note.firstChild.remove();
+        note.removeChild(document.querySelector(".note .comment"));
         event.currentTarget.classList.remove("selected");
     }
 }
@@ -38,14 +38,14 @@ function drawCommentProfileImage() {
             }
             throw await response.json();
         })
-        .then(data => createComment(data.profileImage))
+        .then(data => {
+            initComment();
+            comment.children[0].classList.add(data.profileImage);
+            note.prepend(comment);
+        })
         .catch(data => openNotificationModal("error",  [data.message], 2000));
 }
 
-function createComment(profileImage) {
-    comment.children[0].classList.add(profileImage);
-    note.prepend(comment);
-}
 
 function addBlur() {
     const blur = document.createElement("div");
@@ -59,5 +59,14 @@ function addBlur() {
 
 function removeBlur() {
     document.querySelector(".background").lastChild.remove();
-    note.removeChild(note.children[0]);
+    note.removeChild(document.querySelector(".note .comment-area"));
+}
+
+function initComment() {
+    comment.classList.add("highlight");
+    comment.style.left = "162px";
+    comment.style.top = "198px";
+    comment.addEventListener("touchstart", touchProfileImage);
+    comment.addEventListener("touchmove", moveProfileImage);
+    comment.addEventListener("touchend", setProfileImage);
 }

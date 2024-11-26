@@ -33,29 +33,30 @@
     z-index: 2;
 }
 
-
 .comment-area {
     position: absolute;
-    border: 4px dashed #FC0;
+    top: 0;
+    left: 1px;
+    z-index: 3;
 
-    width: 367px;
+    width: 366px;
     height: 506px;
     flex-shrink: 0;
-    z-index: 3;
+    border: 4px dashed #FC0;
 }
 
 .comment {
-    position: absolute;
-    top: 198px;
-    left: 162px;
-    z-index: 3;
-}
-
-.highlight {
     width: 47px;
     height: 47px;
     flex-shrink: 0;
 
+    position: absolute;
+    top: 198px;
+    left: 162px;
+    z-index: 4;
+}
+
+.comment.highlight {
     border: 4px dashed #FC0;
     border-radius: 50%;
 }
