@@ -67,3 +67,13 @@
     border-radius: 50%;
     margin: 0;
 }
+
+.comment.blue {
+    height: 40px;
+    padding: 1px 5px 2px 5px
+}
+
+.comment.green {
+    width: 41px;
+    padding: 5px 1px 5px 1px;
+}
