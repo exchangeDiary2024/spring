@@ -1,31 +1,24 @@
 const commentBtn = document.querySelector(".comment-btn");
-const note = document.querySelector(".note");
-const comment = createCommentDiv();
+const commentArea = document.querySelector(".comment-area");
+const background = document.querySelector(".background");
 const currentPathName = window.location.pathname;
 
 init();
-
-function createCommentDiv() {
-    const commentDiv = document.createElement("div");
-
-    commentDiv.classList.add("comment");
-    commentDiv.prepend(document.createElement("div"));
-    commentDiv.children[0].classList.add("comment-character-icon");
-    return commentDiv;
-}
 
 function init() {
     commentBtn.addEventListener("click", clickCommentBtn);
 }
 
 function clickCommentBtn(event) {
+    event.preventDefault();
+
     if (!event.currentTarget.classList.contains("selected")) {
         drawCommentProfileImage();
         addBlur();
         event.currentTarget.classList.add("selected");
     } else {
         removeBlur();
-        note.removeChild(document.querySelector(".note .comment"));
+        commentArea.removeChild(document.querySelector(".comment"));
         event.currentTarget.classList.remove("selected");
     }
 }
@@ -39,34 +32,33 @@ function drawCommentProfileImage() {
             throw await response.json();
         })
         .then(data => {
-            initComment();
-            comment.children[0].classList.add(data.profileImage);
-            note.prepend(comment);
+            const comment = createComment(data.profileImage);
+            commentArea.appendChild(comment);
         })
         .catch(data => openNotificationModal("error",  [data.message], 2000));
 }
 
+function createComment(profileImage) {
+    const comment = document.createElement("div");
+
+    comment.classList.add("comment", "highlight");
+    comment.addEventListener("touchstart", touchProfileImage);
+    comment.addEventListener("touchmove", moveProfileImage);
+    comment.addEventListener("touchend", setProfileImage);
+    comment.prepend(document.createElement("image"));
+    comment.children[0].classList.add("comment-character-icon", profileImage);
+    return comment;
+}
 
 function addBlur() {
     const blur = document.createElement("div");
     blur.classList.add("blur");
-    document.querySelector(".background").appendChild(blur);
+    background.appendChild(blur);
 
-    const commentArea = document.createElement("div");
-    commentArea.classList.add("comment-area");
-    note.prepend(commentArea);
+    commentArea.classList.add("highlight");
 }
 
 function removeBlur() {
-    document.querySelector(".background").lastChild.remove();
-    note.removeChild(document.querySelector(".note .comment-area"));
-}
-
-function initComment() {
-    comment.classList.add("highlight");
-    comment.style.left = "162px";
-    comment.style.top = "198px";
-    comment.addEventListener("touchstart", touchProfileImage);
-    comment.addEventListener("touchmove", moveProfileImage);
-    comment.addEventListener("touchend", setProfileImage);
+    background.lastChild.remove();
+    commentArea.classList.remove("highlight");
 }

@@ -62,15 +62,15 @@ function setProfileImage(event) {
 }
 
 async function confirmProfileImagePosition() {
-    // todo: 0.5초 delay
     const result = await openConfirmModal("여기에 댓글을 쓸까요?");
 
     if (result) {
-        removeBlur();
+        const comment = document.querySelector(".comment");
+
         comment.classList.remove("highlight");
-        comment.removeEventListener("touchstart", touchProfileImage);
         comment.removeEventListener("touchmove", moveProfileImage);
         comment.removeEventListener("touchend", setProfileImage);
+        removeBlur();
         commentBtn.classList.remove("selected");
 
         //todo
@@ -82,7 +82,7 @@ async function confirmProfileImagePosition() {
 
 function handleClickOutside(event) {
     if (!(event.target.classList.contains("comment") || event.target.classList.contains("comment-character-icon"))) {
-        note.removeChild(document.querySelector(".note .comment"));
+        commentArea.removeChild(document.querySelector(".comment"));
         document.removeEventListener("click", handleClickOutside);
     }
 }
