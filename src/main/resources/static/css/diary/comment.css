@@ -21,7 +21,7 @@
     flex-shrink: 0;
 }
 
-.blur {
+.comment-blur {
     position: absolute;
     top: 0;
     left: 0;
@@ -29,15 +29,13 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: brightness(80%);
-    pointer-events: none;
     z-index: 2;
 }
 
 .comment-area {
     position: absolute;
-    top: 32px;
-    left: 1px;
-    z-index: 3;
+    top: 193px;
+    left: calc((100vw - 375px) / 2 + 1px);
     margin: 4px;
 
     width: 365px;

@@ -13,8 +13,8 @@ function clickCommentBtn(event) {
 }
 
 function onClickCommentBtn() {
-    drawCommentCharacter();
     addBlur();
+    drawCommentCharacter();
     commentBtn.classList.add("selected");
 }
 
@@ -49,15 +49,12 @@ function createCharacter(character) {
 }
 
 function addBlur() {
-    const blur = document.createElement("div");
-    blur.classList.add("blur");
-    background.appendChild(blur);
-
+    commentArea.parentElement.classList.add("comment-blur");
     commentArea.classList.add("highlight");
 }
 
 function removeBlur() {
-    background.lastChild.remove();
+    commentArea.parentElement.classList.remove("comment-blur");
     commentArea.classList.remove("highlight");
 }
 
@@ -119,6 +116,15 @@ async function confirmCharacterPosition() {
         removeBlur();
         commentBtn.classList.remove("selected");
 
-        createComment();
+        document.addEventListener("click", clickCommentOutside)
+    }
+}
+
+function clickCommentOutside(event) {
+    event.preventDefault();
+
+    if (!event.target.classList.contains("comment-character")) {
+        document.querySelector(".comment-character").remove();
+        document.removeEventListener("click", clickCommentOutside)
     }
 }
