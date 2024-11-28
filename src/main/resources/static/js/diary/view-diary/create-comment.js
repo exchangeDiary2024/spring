@@ -39,8 +39,8 @@ function getValidProfileImageLeft(left, width) {
 }
 
 function getValidProfileImageTop(top, height) {
-    const minimumTop = 0;
-    const maximumTop = document.querySelector(".comment-area").offsetHeight - height;
+    const minimumTop = document.querySelector(".comment-area").offsetTop;
+    const maximumTop = minimumTop + document.querySelector(".comment-area").offsetHeight - height;
 
     if (top < minimumTop) {
         return minimumTop;

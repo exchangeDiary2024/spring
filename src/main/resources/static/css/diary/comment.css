@@ -35,12 +35,12 @@
 
 .comment-area {
     position: absolute;
-    top: 0;
+    top: 80px;
     left: 1px;
     z-index: 3;
 
     width: 366px;
-    height: 506px;
+    height: 425px;
     flex-shrink: 0;
     border: 4px dashed #FC0;
 }
