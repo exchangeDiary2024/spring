@@ -1,52 +1,45 @@
-let isPress = false;
-let x = 0;
-let y = 0;
-let deltaX = 0;
-let deltaY = 0;
-
-function touchProfileImage(event) {
-    x = event.touches[0].clientX;
-    y = event.touches[0].clientY;
-    isPress = true;
-}
+const COMMENT_AREA_BORDER = 4;
+const COMMENT_AREA_TOP = 200;
 
 function moveProfileImage(event) {
-    const target = event.currentTarget;
-
     event.preventDefault();
 
-    if (isPress) {
-        deltaX = event.touches[0].clientX - x;
-        deltaY = event.touches[0].clientY - y;
-        event.currentTarget.style.left = getValidProfileImageLeft(target.offsetLeft + deltaX, target.offsetWidth) + "px";
-        event.currentTarget.style.top = getValidProfileImageTop(target.offsetTop + deltaY, target.offsetHeight) + "px";
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
-    }
+    const commentWidth = event.currentTarget.offsetWidth;
+    const commentHeight = event.currentTarget.offsetHeight;
+
+    console.log(`x: ${event.touches[0].clientX}, y: ${event.touches[0].clientY}`);
+
+    const x = getValidProfileImageLeft(event.touches[0].clientX - commentWidth / 2,  commentWidth) + commentWidth / 2;
+    const y = getValidProfileImageTop(event.touches[0].clientY - COMMENT_AREA_TOP - commentHeight / 2, commentHeight) + commentHeight / 2;
+
+    event.currentTarget.style.left = `${x}px`;
+    event.currentTarget.style.top = `${y}px`;
 }
 
-function getValidProfileImageLeft(left, width) {
-    const minimumLeft = 0;
-    const maximumLeft = document.querySelector(".comment-area").offsetWidth - width;
+function getValidProfileImageLeft(left, commentWidth) {
+    const COMMENT_AREA_WIDTH = commentArea.offsetWidth - COMMENT_AREA_BORDER * 2;
+    const MINIMUM_LEFT = 0;
+    const MAXIMUM_LEFT = COMMENT_AREA_WIDTH - commentWidth;
 
-    if (left < minimumLeft) {
-        return minimumLeft;
+    if (left <= MINIMUM_LEFT) {
+        return MINIMUM_LEFT;
     }
-    if (left > maximumLeft) {
-        return maximumLeft;
+    if (left >= MAXIMUM_LEFT) {
+        return MAXIMUM_LEFT;
     }
     return left;
 }
 
-function getValidProfileImageTop(top, height) {
-    const minimumTop = document.querySelector(".comment-area").offsetTop;
-    const maximumTop = minimumTop + document.querySelector(".comment-area").offsetHeight - height;
+function getValidProfileImageTop(top, commentHeight) {
+    const COMMENT_AREA_HEIGHT = commentArea.offsetHeight - COMMENT_AREA_BORDER * 2;
+    const MINIMUM_TOP = 0;
+    const MAXIMUM_TOP = COMMENT_AREA_HEIGHT - commentHeight;
 
-    if (top < minimumTop) {
-        return minimumTop;
+    if (top <= MINIMUM_TOP) {
+        return MINIMUM_TOP;
     }
-    if (top > maximumTop) {
-        return maximumTop;
+    if (top >= MAXIMUM_TOP) {
+        return MAXIMUM_TOP;
     }
     return top;
 }
@@ -55,10 +48,6 @@ function setProfileImage(event) {
     event.preventDefault();
 
     confirmProfileImagePosition();
-
-    deltaX = 0;
-    deltaY = 0;
-    isPress = false;
 }
 
 async function confirmProfileImagePosition() {
