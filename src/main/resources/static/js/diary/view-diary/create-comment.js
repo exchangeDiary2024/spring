@@ -1,5 +1,6 @@
 const COMMENT_AREA_BORDER = 4;
 const COMMENT_AREA_TOP = 200;
+const PAGE_MARGIN = document.querySelector(".left-margin").offsetWidth;
 
 function clickCommentBtn(event) {
     event.preventDefault();
@@ -63,13 +64,10 @@ function removeBlur() {
 function moveProfileImage(event) {
     event.preventDefault();
 
-    const commentWidth = event.currentTarget.offsetWidth;
-    const commentHeight = event.currentTarget.offsetHeight;
-
-    console.log(`x: ${event.touches[0].clientX}, y: ${event.touches[0].clientY}`);
-
-    const x = getValidProfileImageLeft(event.touches[0].clientX - commentWidth / 2,  commentWidth) + commentWidth / 2;
-    const y = getValidProfileImageTop(event.touches[0].clientY - COMMENT_AREA_TOP - commentHeight / 2, commentHeight) + commentHeight / 2;
+    const COMMENT_WIDTH = event.currentTarget.offsetWidth;
+    const COMMENT_HEIGHT = event.currentTarget.offsetHeight;
+    const x = getValidProfileImageLeft(event.touches[0].clientX - PAGE_MARGIN,  COMMENT_WIDTH) - COMMENT_WIDTH / 2;
+    const y = getValidProfileImageTop(event.touches[0].clientY - COMMENT_AREA_TOP, COMMENT_HEIGHT) - COMMENT_HEIGHT / 2;
 
     event.currentTarget.style.left = `${x}px`;
     event.currentTarget.style.top = `${y}px`;
@@ -77,8 +75,8 @@ function moveProfileImage(event) {
 
 function getValidProfileImageLeft(left, commentWidth) {
     const COMMENT_AREA_WIDTH = commentArea.offsetWidth - COMMENT_AREA_BORDER * 2;
-    const MINIMUM_LEFT = 0;
-    const MAXIMUM_LEFT = COMMENT_AREA_WIDTH - commentWidth;
+    const MINIMUM_LEFT = commentWidth / 2;
+    const MAXIMUM_LEFT = MINIMUM_LEFT + COMMENT_AREA_WIDTH - commentWidth;
 
     if (left <= MINIMUM_LEFT) {
         return MINIMUM_LEFT;
@@ -91,8 +89,8 @@ function getValidProfileImageLeft(left, commentWidth) {
 
 function getValidProfileImageTop(top, commentHeight) {
     const COMMENT_AREA_HEIGHT = commentArea.offsetHeight - COMMENT_AREA_BORDER * 2;
-    const MINIMUM_TOP = 0;
-    const MAXIMUM_TOP = COMMENT_AREA_HEIGHT - commentHeight;
+    const MINIMUM_TOP = commentHeight / 2;
+    const MAXIMUM_TOP = MINIMUM_TOP + COMMENT_AREA_HEIGHT - commentHeight;
 
     if (top <= MINIMUM_TOP) {
         return MINIMUM_TOP;

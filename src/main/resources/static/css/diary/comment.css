@@ -34,19 +34,20 @@
 }
 
 .comment-area {
-    position: relative;
-    top: 35px;
+    position: absolute;
+    top: 32px;
     left: 1px;
     z-index: 3;
+    margin: 4px;
 
-    width: 374px;
-    height: 435px;
+    width: 365px;
+    height: 428px;
     flex-shrink: 0;
 }
 
 .comment-area.highlight {
     border: 4px dashed #FC0;
-    box-sizing: border-box;
+    margin: 0;
 }
 
 .comment {
@@ -57,9 +58,8 @@
     margin: 4px;
     padding: 5px;
     position: absolute;
-    top: 203px;
-    left: 183px;
-    transform: translate(-50%, -50%);
+    top: 198px;
+    left: 158px;
 }
 
 .comment.highlight {
