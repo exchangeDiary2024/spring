@@ -41,12 +41,9 @@ function drawCommentProfileImage() {
 function createComment(profileImage) {
     const comment = document.createElement("div");
 
-    comment.classList.add("comment", "highlight");
-    comment.addEventListener("touchstart", touchProfileImage);
+    comment.classList.add("comment", "highlight", profileImage);
     comment.addEventListener("touchmove", moveProfileImage);
     comment.addEventListener("touchend", setProfileImage);
-    comment.prepend(document.createElement("image"));
-    comment.children[0].classList.add("comment-character-icon", profileImage);
     return comment;
 }
 

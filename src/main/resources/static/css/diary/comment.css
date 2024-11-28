@@ -49,25 +49,20 @@
 }
 
 .comment {
-    width: 47px;
-    height: 47px;
+    width: 33px;
+    height: 33px;
     flex-shrink: 0;
 
+    margin: 4px;
+    padding: 7px;
     position: absolute;
-    top: 180px;
-    left: 155px;
-
+    top: 203px;
+    left: 183px;
+    transform: translate(-50%, -50%);
 }
 
 .comment.highlight {
     border: 4px dashed #FC0;
     border-radius: 50%;
-}
-
-.comment-character-icon {
-    width: 33px;
-    height: 33px;
-    flex-shrink: 0;
-    position: relative;
-    top: 7px;
+    margin: 0;
 }
