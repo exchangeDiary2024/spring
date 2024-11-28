@@ -1,6 +1,65 @@
 const COMMENT_AREA_BORDER = 4;
 const COMMENT_AREA_TOP = 200;
 
+function clickCommentBtn(event) {
+    event.preventDefault();
+
+    if (!event.currentTarget.classList.contains("selected")) {
+        onClickCommentBtn();
+    } else {
+        offClickCommentBtn();
+    }
+}
+
+function onClickCommentBtn() {
+    drawCommentProfileImage();
+    addBlur();
+    commentBtn.classList.add("selected");
+}
+
+function offClickCommentBtn() {
+    removeBlur();
+    commentArea.removeChild(document.querySelector(".comment"));
+    commentBtn.classList.remove("selected");
+}
+
+function drawCommentProfileImage() {
+    fetch(`/api${currentPathName}/comments/verify`)
+        .then(async response => {
+            if (response.status === 200) {
+                return response.json();
+            }
+            throw await response.json();
+        })
+        .then(data => {
+            const comment = createComment(data.profileImage);
+            commentArea.appendChild(comment);
+        })
+        .catch(data => openNotificationModal("error",  [data.message], 2000));
+}
+
+function createComment(profileImage) {
+    const comment = document.createElement("div");
+
+    comment.classList.add("comment", "highlight", profileImage);
+    comment.addEventListener("touchmove", moveProfileImage);
+    comment.addEventListener("touchend", setProfileImage);
+    return comment;
+}
+
+function addBlur() {
+    const blur = document.createElement("div");
+    blur.classList.add("blur");
+    background.appendChild(blur);
+
+    commentArea.classList.add("highlight");
+}
+
+function removeBlur() {
+    background.lastChild.remove();
+    commentArea.classList.remove("highlight");
+}
+
 function moveProfileImage(event) {
     event.preventDefault();
 
@@ -61,23 +120,5 @@ async function confirmProfileImagePosition() {
         comment.removeEventListener("touchend", setProfileImage);
         removeBlur();
         commentBtn.classList.remove("selected");
-
-        //todo
-        document.addEventListener("click", handleClickOutside);
-
-        writeComment();
     }
-}
-
-function handleClickOutside(event) {
-    event.preventDefault();
-
-    if (!(event.target.classList.contains("comment") || event.target.classList.contains("comment-character-icon"))) {
-        commentArea.removeChild(document.querySelector(".comment"));
-        document.removeEventListener("click", handleClickOutside);
-    }
-}
-
-function writeComment() {
-
 }
