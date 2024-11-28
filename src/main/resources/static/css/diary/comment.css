@@ -36,9 +36,10 @@
 .comment-area {
     position: relative;
     top: 35px;
+    left: 1px;
     z-index: 3;
 
-    width: 375px;
+    width: 374px;
     height: 435px;
     flex-shrink: 0;
 }
