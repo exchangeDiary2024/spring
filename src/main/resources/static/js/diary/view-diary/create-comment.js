@@ -70,6 +70,8 @@ async function confirmProfileImagePosition() {
 }
 
 function handleClickOutside(event) {
+    event.preventDefault();
+
     if (!(event.target.classList.contains("comment") || event.target.classList.contains("comment-character-icon"))) {
         commentArea.removeChild(document.querySelector(".comment"));
         document.removeEventListener("click", handleClickOutside);
