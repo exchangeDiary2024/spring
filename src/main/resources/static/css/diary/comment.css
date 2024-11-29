@@ -75,3 +75,62 @@
     width: 41px;
     padding: 5px 1px 5px 1px;
 }
+
+.comment {
+    position: absolute;
+    left: 41px;
+
+    width: 282px;
+    height: 300px;
+    flex-shrink: 0;
+}
+
+.comment.left {
+    left: -3px;
+}
+
+.comment.right {
+    left: 86px;
+}
+
+.comment-box {
+    position: relative;
+
+    width: 280px;
+    height: 50px;
+    flex-shrink: 0;
+
+    border-radius: 20px;
+    border: 1px solid #767676;
+    background: #FCF9D1;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    opacity: 90%;
+}
+
+.up .comment-box {
+    margin-top: 20px;
+}
+
+.down .comment-box {
+    margin-top: 225px;
+}
+
+.comment-arrow {
+    content: url("/images/diary/view-page/comment-arrow.png");
+    float: left;
+    position: relative;
+    left: 20px;
+
+    width: 30px;
+    height: 20px;
+    z-index: 5;
+}
+
+.up .comment-arrow {
+    top: 1.5px;
+    transform: rotate(180deg);
+}
+
+.down .comment-arrow {
+    top: -1.5px;
+}

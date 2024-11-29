@@ -116,7 +116,9 @@ async function confirmCharacterPosition() {
         removeBlur();
         commentBtn.classList.remove("selected");
 
-        document.addEventListener("click", clickCommentOutside)
+        document.addEventListener("click", clickCommentOutside);
+
+        drawComment();
     }
 }
 
