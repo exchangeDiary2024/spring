@@ -107,11 +107,11 @@
     opacity: 90%;
 }
 
-.up .comment-box {
+.top .comment-box {
     margin-top: 20px;
 }
 
-.down .comment-box {
+.bottom .comment-box {
     margin-top: 225px;
 }
 
@@ -126,12 +126,12 @@
     z-index: 5;
 }
 
-.up .comment-arrow {
+.top .comment-arrow {
     top: 1.5px;
     transform: rotate(180deg);
 }
 
-.down .comment-arrow {
+.bottom .comment-arrow {
     top: -1.5px;
 }
 

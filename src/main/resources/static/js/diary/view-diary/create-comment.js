@@ -50,11 +50,11 @@ function processByCommentHorizontal(character, comment) {
 
     if (character.offsetTop < STANDARD_TOP) { // 위
         comment.style.top = `${character.offsetTop + character.offsetHeight - 4}px`;
-        comment.classList.add("up");
+        comment.classList.add("top");
         comment.prepend(commentArrow);
     } else {
         comment.style.top = `${character.offsetTop - comment.offsetHeight + 4}px`;
-        comment.classList.add("down");
+        comment.classList.add("bottom");
         comment.appendChild(commentArrow);
     }
 }
