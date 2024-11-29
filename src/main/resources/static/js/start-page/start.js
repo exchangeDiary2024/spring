@@ -20,8 +20,7 @@ setTimeout(() => {
 document.addEventListener("click", () => {
     if (isAnimationComplete) {
         window.location.href = '/login';
-    }
-    else {
+    } else {
         logo.classList.add("end");
         isAnimationComplete = true;
     }
