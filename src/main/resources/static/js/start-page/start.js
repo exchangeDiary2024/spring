@@ -6,14 +6,23 @@ const logo_images = [
 
 preLoadImgage(logo_images);
 
+let isAnimationComplete = false;
+
 setTimeout(() => {
     logo.src = "/images/start-page/line.gif";
 }, 10);
 
 setTimeout(() => {
     logo.classList.add("end");
+    isAnimationComplete = true;
 }, 2400);
 
-setTimeout(() => {
-    window.location.href = '/login';
-}, 3000);
+document.addEventListener("click", () => {
+    if (isAnimationComplete) {
+        window.location.href = '/login';
+    }
+    else {
+        logo.classList.add("end");
+        isAnimationComplete = true;
+    }
+});
