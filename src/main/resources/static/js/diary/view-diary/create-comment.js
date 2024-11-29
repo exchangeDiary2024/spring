@@ -13,10 +13,27 @@ function createComment() {
     const comment = document.createElement("div");
 
     comment.classList.add("comment");
-    comment.appendChild(document.createElement("div"));
-    comment.children[0].classList.add("comment-box");
+    comment.appendChild(createCommentBox());
     commentArea.appendChild(comment);
     return comment;
+}
+
+function createCommentBox() {
+    const commentBox = document.createElement("div");
+
+    commentBox.classList.add("comment-box");
+    commentBox.innerHTML = `<div class="comment-bar">
+                                <div class="comment-textarea">
+                                    <textarea class="comment-text" placeholder="댓글을 입력해주세요." spellcheck="false"></textarea>
+                                </div>
+                                <a class="sticker-btn" href="#">
+                                    <img class="sticker-icon" src="/images/diary/view-page/sticker-icon.png">            
+                                </a>
+                                <a class="upload-comment-btn" href="#">
+                                    <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
+                                </a>
+                            </div>`;
+    return commentBox;
 }
 
 function processByCommentVertical(character, comment) {
