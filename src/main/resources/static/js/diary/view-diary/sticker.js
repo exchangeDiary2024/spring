@@ -1,14 +1,16 @@
 function clickStickerBtn(event) {
     event.preventDefault();
-    
+
     const stickerBar = document.querySelector(".sticker-bar");
 
     if (stickerBar.style.display === "block") {
         closeStickerBar();
         stickerBar.style.display = "none";
+        event.currentTarget.classList.remove("selected");
     } else {
         openStickerBar();
         stickerBar.style.display = "block";
+        event.currentTarget.classList.add("selected");
     }
 }
 

@@ -197,8 +197,13 @@
 .sticker-btn .sticker-icon {
     content: url("/images/diary/view-page/sticker-icon.png");
 
-    width: 16px;
-    height: 16px;
+    margin: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.sticker-btn.selected .sticker-icon {
+    content: url("/images/diary/view-page/selected-sticker-icon.png");
 }
 
 .write-comment-btn {
