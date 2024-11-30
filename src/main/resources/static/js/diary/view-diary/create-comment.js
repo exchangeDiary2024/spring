@@ -101,21 +101,21 @@ async function writeComment() {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-                "xCoordinate": parseFloat(character.style.left),
-                "yCoordinate": parseFloat(character.style.top),
-                "page": currentPage.index,
-                "content": commentText.value
+            "xCoordinate": parseFloat(character.style.left),
+            "yCoordinate": parseFloat(character.style.top),
+            "page": currentPage.index,
+            "content": commentText.value
         })
     })
         .then(async response => {
             if (response.status !== 201) {
                 throw await response.json();
             }
+            commentArea.classList.remove("write");
+            window.location.reload();
             return response.json();
         })
         .catch(data => {
             openNotificationModal("error", [data.message], 2000);
         });
-    commentArea.classList.remove("write");
-    window.location.reload();
 }
