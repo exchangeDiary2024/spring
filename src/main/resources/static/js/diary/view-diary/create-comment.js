@@ -3,7 +3,7 @@ const STANDARD_LEFT = 76;
 
 function drawComment() {
     const comment = createComment();
-    const character = document.querySelector(".comment-character");
+    const character = document.querySelector(".write .comment-character");
 
     processByCommentVertical(character, comment);
     processByCommentHorizontal(character, comment);
@@ -92,7 +92,7 @@ function createCommentArrow(character, comment) {
 }
 
 async function writeComment() {
-    const character = document.querySelector(".comment-character");
+    const character = document.querySelector(".write .comment-character");
     const commentText = document.querySelector(".comment-text");
 
     fetch(`/api${currentPathName}/comments`, {
@@ -111,8 +111,11 @@ async function writeComment() {
             if (response.status !== 201) {
                 throw await response.json();
             }
+            return response.json();
         })
         .catch(data => {
             openNotificationModal("error", [data.message], 2000);
-        })
+        });
+    commentArea.classList.remove("write");
+    window.location.reload();
 }

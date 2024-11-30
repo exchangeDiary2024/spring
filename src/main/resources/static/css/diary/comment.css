@@ -41,6 +41,11 @@
     width: 365px;
     height: 428px;
     flex-shrink: 0;
+    z-index: -1;
+}
+
+.comment-area.write {
+    z-index: auto;
 }
 
 .comment-area.highlight {
@@ -64,6 +69,10 @@
     border: 4px dashed #FC0;
     border-radius: 50%;
     margin: 0;
+}
+
+.comment-character.view {
+    opacity: 0.7;
 }
 
 .comment-character.blue {

@@ -30,6 +30,7 @@ function drawPageBar(diary) {
         const page = { index: index, noteContent: noteContent };
         pages.push(page);
     }
+    drawComments(diary.comments);
     changePage(page);
 }
 
@@ -115,6 +116,20 @@ function makeDiaryPageHTMLContainsImage(image, content) {
         <p class="diary-content">${content}</p>
     </div>
     `;
+}
+
+function drawComments(comments) {
+    const noteContents = document.querySelectorAll(".note-content");
+
+    comments.forEach(comment => {
+        const commentCharacter = document.createElement("a");
+
+        commentCharacter.classList.add("comment-character", comment.profileImage, "view");
+        commentCharacter.setAttribute("href", "#");
+        commentCharacter.style.left = `${comment.xCoordinate}px`;
+        commentCharacter.style.top = `${comment.yCoordinate}px`;
+        noteContents[comment.page].appendChild(commentCharacter);
+    });
 }
 
 viewDiary();

@@ -5,10 +5,10 @@ const PAGE_MARGIN = document.querySelector(".left-margin").offsetWidth;
 function clickCommentBtn(event) {
     event.preventDefault();
 
-    if (!event.currentTarget.classList.contains("selected")) {
-        onClickCommentBtn();
-    } else {
+    if (commentArea.classList.contains("write")) {
         offClickCommentBtn();
+    } else {
+        onClickCommentBtn();
     }
 }
 
@@ -17,14 +17,14 @@ async function onClickCommentBtn() {
 
     if (result) {
         addBlur();
-        commentBtn.classList.add("selected");
+        commentArea.classList.add("write");
     }
 }
 
 function offClickCommentBtn() {
     removeBlur();
-    commentArea.removeChild(document.querySelector(".comment-character"));
-    commentBtn.classList.remove("selected");
+    commentArea.removeChild(document.querySelector(".write .comment-character"));
+    commentArea.classList.remove("write");
 }
 
 async function drawCommentCharacter() {
@@ -115,7 +115,7 @@ async function confirmCharacterPosition() {
     const result = await openConfirmModal("여기에 댓글을 쓸까요?");
 
     if (result) {
-        const character = document.querySelector(".comment-character");
+        const character = document.querySelector(".write .comment-character");
 
         character.classList.remove("highlight");
         character.removeEventListener("touchmove", moveCharacter);
@@ -132,13 +132,12 @@ async function confirmCharacterPosition() {
 function clickCommentOutside(event) {
     event.preventDefault();
 
-    const notificationModal = document.querySelector(".notification-modal");
+    // todo: notification modal 생겼을 때, 처리
+    // todo: 빈 comment box 부분 클릭
 
-    if (notificationModal.style.display === "block" &&
-        (!commentArea.contains(event.target) || event.target.classList.contains("comment-area"))
-    ) {
+    if (!commentArea.contains(event.target) || event.target.classList.contains("comment-area")) {
         document.querySelector(".comment").remove();
-        document.querySelector(".comment-character").remove();
+        document.querySelector(".write .comment-character").remove();
         document.removeEventListener("click", clickCommentOutside);
     }
 }
