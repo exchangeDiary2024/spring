@@ -124,12 +124,27 @@ function drawComments(comments) {
     comments.forEach(comment => {
         const commentCharacter = document.createElement("a");
 
-        commentCharacter.classList.add("comment-character", comment.profileImage, "view");
+        commentCharacter.classList.add("comment-character", comment.profileImage, "view", comment.id);
         commentCharacter.setAttribute("href", "#");
         commentCharacter.style.left = `${comment.xCoordinate}px`;
         commentCharacter.style.top = `${comment.yCoordinate}px`;
         noteContents[comment.page].appendChild(commentCharacter);
+        commentCharacter.addEventListener("click", showComment);
     });
+}
+
+function showComment(event) {
+    event.preventDefault();
+
+    const comment = event.currentTarget;
+
+    if (comment.classList.contains("view")) {
+        comment.classList.remove("view");
+        drawComment("view", comment.classList[1], comment.parentElement);
+    } else {
+        comment.classList.add("view");
+        comment.parentElement.lastChild.remove();
+    }
 }
 
 viewDiary();

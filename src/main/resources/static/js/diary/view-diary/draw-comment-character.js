@@ -121,11 +121,10 @@ async function confirmCharacterPosition() {
         character.removeEventListener("touchmove", moveCharacter);
         character.removeEventListener("touchend", setCharacter);
         removeBlur();
-        commentBtn.classList.remove("selected");
 
         document.addEventListener("click", clickCommentOutside);
 
-        drawComment();
+        drawComment("write", character.classList[1], commentArea);
     }
 }
 
@@ -138,6 +137,7 @@ function clickCommentOutside(event) {
     if (!commentArea.contains(event.target) || event.target.classList.contains("comment-area")) {
         document.querySelector(".comment").remove();
         document.querySelector(".write .comment-character").remove();
+        commentArea.classList.remove("write");
         document.removeEventListener("click", clickCommentOutside);
     }
 }
