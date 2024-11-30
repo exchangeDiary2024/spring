@@ -102,9 +102,8 @@
 
     border-radius: 20px;
     border: 1px solid #767676;
-    background: #FCF9D1;
+    background: rgba(252, 249, 209, 0.9);
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    opacity: 90%;
 }
 
 .top .comment-box {
@@ -187,7 +186,7 @@
     margin: 13px 0 13px 0;
 }
 
-.sticker-icon {
+.sticker-btn .sticker-icon {
     width: 16px;
     height: 16px;
 }

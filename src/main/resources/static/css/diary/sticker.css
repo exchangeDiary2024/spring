@@ -1,0 +1,79 @@
+@charset "utf-8";
+
+.sticker-bar {
+    height: 50px;
+    width: 280px;
+
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+
+    display: none;
+}
+
+.stickers {
+    position: relative;
+    top: 6px;
+}
+
+.sticker {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+}
+
+.sticker.selected {
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.sticker-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+
+    margin: 13px 6px 10px 7px;
+}
+
+.sticker-icon.v-sign {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-bottom: 11px;
+}
+
+.sticker-icon.troubled {
+    width: 20px;
+    height: 30px;
+    flex-shrink: 0;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.sticker-icon.sad {
+    width: 13px;
+    height: 21px;
+    flex-shrink: 0;
+}
+
+.sticker-icon.eating {
+    width: 30px;
+    flex-shrink: 0;
+}
+
+.sticker-icon.question {
+    width: 15px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.sticker-partition {
+    position: relative;
+    top: 11px;
+
+    width: 250px;
+    height: 1px;
+
+    border-top: 1px dashed #5A402A;;
+}
