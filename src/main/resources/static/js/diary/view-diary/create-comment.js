@@ -5,11 +5,16 @@ function drawComment() {
     const comment = createComment();
     const character = document.querySelector(".comment-character");
 
-    addEventToStickerIcon();
     processByCommentVertical(character, comment);
     processByCommentHorizontal(character, comment);
 
+    addEventInCommentBox();
+}
+
+function addEventInCommentBox() {
+    document.querySelector(".write-comment-btn").addEventListener("click", writeComment);
     document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
+    addEventToStickers();
 }
 
 function createComment() {
@@ -47,7 +52,7 @@ function createCommentBox() {
                                 <a class="sticker-btn" href="#">
                                     <img class="sticker-icon" src="/images/diary/view-page/sticker-icon.png">            
                                 </a>
-                                <a class="upload-comment-btn" href="#">
+                                <a class="write-comment-btn" href="#">
                                     <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
                                 </a>
                             </div>`;
@@ -84,4 +89,30 @@ function createCommentArrow(character, comment) {
     commentArrow.classList.add("comment-arrow");
     commentArrow.style.left = `${character.offsetLeft - comment.offsetLeft + 6}px`;
     return commentArrow;
+}
+
+async function writeComment() {
+    const character = document.querySelector(".comment-character");
+    const commentText = document.querySelector(".comment-text");
+
+    fetch(`/api${currentPathName}/comments`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+                "xCoordinate": parseFloat(character.style.left),
+                "yCoordinate": parseFloat(character.style.top),
+                "page": currentPage.index,
+                "content": commentText.value
+        })
+    })
+        .then(async response => {
+            if (response.status !== 201) {
+                throw await response.json();
+            }
+        })
+        .catch(data => {
+            openNotificationModal("error", [data.message], 2000);
+        })
 }

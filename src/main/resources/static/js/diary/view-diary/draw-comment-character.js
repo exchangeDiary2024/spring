@@ -12,10 +12,13 @@ function clickCommentBtn(event) {
     }
 }
 
-function onClickCommentBtn() {
-    addBlur();
-    drawCommentCharacter();
-    commentBtn.classList.add("selected");
+async function onClickCommentBtn() {
+    const result = await drawCommentCharacter();
+
+    if (result) {
+        addBlur();
+        commentBtn.classList.add("selected");
+    }
 }
 
 function offClickCommentBtn() {
@@ -24,8 +27,8 @@ function offClickCommentBtn() {
     commentBtn.classList.remove("selected");
 }
 
-function drawCommentCharacter() {
-    fetch(`/api${currentPathName}/comments/verify`)
+async function drawCommentCharacter() {
+    return await fetch(`/api${currentPathName}/comments/verify`)
         .then(async response => {
             if (response.status === 200) {
                 return response.json();
@@ -35,8 +38,12 @@ function drawCommentCharacter() {
         .then(data => {
             const character = createCharacter(data.profileImage);
             commentArea.appendChild(character);
+            return true;
         })
-        .catch(data => openNotificationModal("error",  [data.message], 2000));
+        .catch(data => {
+            openNotificationModal("error",  [data.message], 2000);
+            return false;
+        });
 }
 
 function createCharacter(character) {
@@ -125,9 +132,13 @@ async function confirmCharacterPosition() {
 function clickCommentOutside(event) {
     event.preventDefault();
 
-    if (!commentArea.contains(event.target) || event.target.classList.contains("comment-area")) {
+    const notificationModal = document.querySelector(".notification-modal");
+
+    if (notificationModal.style.display === "block" &&
+        (!commentArea.contains(event.target) || event.target.classList.contains("comment-area"))
+    ) {
         document.querySelector(".comment").remove();
         document.querySelector(".comment-character").remove();
-        document.removeEventListener("click", clickCommentOutside)
+        document.removeEventListener("click", clickCommentOutside);
     }
 }

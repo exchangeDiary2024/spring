@@ -34,8 +34,7 @@ function openStickerBar() {
     }
 }
 
-
-function addEventToStickerIcon() {
+function addEventToStickers() {
     const stickerBar = document.querySelectorAll(".sticker");
 
     stickerBar.forEach(sticker => sticker.addEventListener("click", clickStickerIcon));
