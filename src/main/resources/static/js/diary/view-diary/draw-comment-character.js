@@ -125,7 +125,7 @@ async function confirmCharacterPosition() {
 function clickCommentOutside(event) {
     event.preventDefault();
 
-    if (!commentArea.contains(event.target)) {
+    if (!commentArea.contains(event.target) || event.target.classList.contains("comment-area")) {
         document.querySelector(".comment").remove();
         document.querySelector(".comment-character").remove();
         document.removeEventListener("click", clickCommentOutside)
