@@ -1,16 +1,17 @@
 function clickStickerBtn(event) {
     event.preventDefault();
 
+    const stickerBtn = event.currentTarget;
     const stickerBar = document.querySelector(".sticker-bar");
 
     if (stickerBar.style.display === "block") {
         closeStickerBar();
         stickerBar.style.display = "none";
-        event.currentTarget.classList.remove("selected");
+        stickerBtn.classList.remove("selected");
     } else {
         openStickerBar();
         stickerBar.style.display = "block";
-        event.currentTarget.classList.add("selected");
+        stickerBtn.classList.add("selected");
     }
 }
 
@@ -54,7 +55,7 @@ function addEventToStickers() {
 }
 
 function clickStickerIcon(event) {
-    event.propertyIsEnumerable();
+    event.preventDefault();
 
     const selectedSticker = document.querySelector(".sticker.selected");
 

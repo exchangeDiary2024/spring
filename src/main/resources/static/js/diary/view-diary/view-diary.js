@@ -136,23 +136,23 @@ function drawComments(comments) {
 function clickWrittenComment(event) {
     event.preventDefault();
 
-    const character = event.currentTarget;
+    const commentCharacter = event.currentTarget;
 
-    if (character.classList.contains("written")) {
-        openWrittenCommentBox(character);
+    if (commentCharacter.classList.contains("written")) {
+        openWrittenCommentBox(commentCharacter);
     } else {
-        closeWrittenCommentBox(character);
+        closeWrittenCommentBox(commentCharacter);
     }
 }
 
-function openWrittenCommentBox(character) {
-    character.classList.remove("written");
-    drawComment(character.classList[1], character.parentElement);
+function openWrittenCommentBox(commentCharacter) {
+    commentCharacter.classList.remove("written");
+    drawComment(commentCharacter.classList[1], commentCharacter.parentElement);
 }
 
-function closeWrittenCommentBox(character) {
-    character.classList.add("written");
-    character.parentElement.lastChild.remove();
+function closeWrittenCommentBox(commentCharacter) {
+    commentCharacter.classList.add("written");
+    commentCharacter.parentElement.lastChild.remove();
 }
 
 viewDiary();
