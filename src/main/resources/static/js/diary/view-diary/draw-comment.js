@@ -188,8 +188,8 @@ function writeComment() {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            "xCoordinate": parseFloat(commentCharacter.style.left),
-            "yCoordinate": parseFloat(commentCharacter.style.top),
+            "xCoordinate": parseFloat(commentCharacter.style.left) + 5,
+            "yCoordinate": parseFloat(commentCharacter.style.top) + 26,
             "page": currentPage.index,
             "content": commentText.value
         })
