@@ -48,10 +48,10 @@ async function drawComment(characterColor, commentParent) {
 
 function addEventInCommentBox() {
     if (commentBtn.classList.contains("selected")) {
-        document.querySelector(".comment-bar .write-comment-btn").addEventListener("click", writeComment);
+        document.querySelector(".comment-bar .write-comment-btn").addEventListener("click", clickWriteCommentBtn);
         // document.addEventListener("click", clickWriteCommentOutside);
     } else {
-        document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", writeReply);
+        document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", clickWriteReplyBtn);
         // document.addEventListener("click", clickViewCommentOutside);
     }
 
@@ -167,11 +167,21 @@ function adjustCommentBoxHeight() {
     }
 }
 
-function writeComment(event) {
+async function clickWriteCommentBtn(event) {
+    event.preventDefault();
+
+    const result = await openConfirmModal("댓글을 작성할까요?", "댓글은 수정, 삭제가 불가하니 신중하게 결정 해주세요.");
+
+    if (result) {
+        writeComment();
+    }
+}
+
+function writeComment() {
     const commentCharacter = document.querySelector(".write .comment-character");
     const commentText = document.querySelector(".comment-text");
 
-    event.preventDefault();
+
     fetch(`/api${currentPathName}/comments`, {
         method: "POST",
         headers: {
@@ -195,9 +205,17 @@ function writeComment(event) {
         });
 }
 
-function writeReply(event) {
+async function clickWriteReplyBtn(event) {
     event.preventDefault();
 
+    const result = await openConfirmModal("답글을 작성할까요?", "답글은 수정, 삭제가 불가하니 신중하게 결정 해주세요.");
+
+    if (result) {
+        writeReply();
+    }
+}
+
+function writeReply() {
     const commentCharacter = document.querySelector(".note-content .comment-character:not(.written)");
     const commentText = document.querySelector(".reply-bar .comment-text");
     const commentId = commentCharacter.classList[2];
