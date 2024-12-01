@@ -1,0 +1,69 @@
+.help-icon-container {
+    position: fixed;
+    width: 107px;
+    height: 134px;
+    bottom: 0px;
+    right: 0px;
+}
+
+.tooltip {
+    position: absolute;
+    width: 96px;
+    height: 104px;
+    right: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tooltip img {
+    position: absolute;
+}
+
+.tooltip-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 1;
+    padding-top: 5px;
+}
+
+.tooltip-buttons button {
+    width: 80px;
+    height: 32px;
+    border-radius: 20px;
+    border: 1px solid #767676;
+    background: #FFF;
+    color: #333;
+    cursor: pointer;
+}
+
+.help-icon {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    bottom: 8px;
+    right: 8px;
+}
+
+.help-btn {
+    text-align: center;
+    font-family: "HancomMalangMalang-Regular";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.4px;
+}
+
+.inquiry-btn {
+    text-align: center;
+    font-family: "HancomMalangMalang-Regular";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.4px;
+}
+
+.hidden {
+    display: none;
+}

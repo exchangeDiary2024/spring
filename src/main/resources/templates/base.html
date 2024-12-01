@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="/css/fonts.css" type="text/css">
     <link rel="stylesheet" href="/css/base.css" type="text/css">
+    <link rel="stylesheet" href="/css/help-menu.css" type="text/css">
     <link rel="stylesheet" href="/css/character.css" type="text/css">
     <link rel="stylesheet" href="/css/notification-modal.css" type="text/css">
     <link rel="stylesheet" href="/css/confirm-modal.css" type="text/css">
@@ -54,6 +55,19 @@
         </div>
     </div>
 
+    <div class="help-icon-container">
+        <div class="tooltip hidden">
+            <img src ="/images/common/help-menu/tooltip.svg">
+            <div class="tooltip-buttons">
+                <button class="help-btn">도움말</button>
+                <button class="inquiry-btn">문의하기</button>
+            </div>
+        </div>
+        <div class="help-icon">
+            <img src="/images/common/help-menu/question.svg">
+        </div>
+    </div>
+
     <div th:replace="~{common/notification-modal :: modal}"></div>
     <div th:replace="~{common/confirm-modal :: modal}"></div>
 
@@ -61,5 +75,6 @@
 </body>
 
 <th:block layout:fragment="script"></th:block>
+<script src="/js/common/help-menu.js"></script>
 
 </html>
