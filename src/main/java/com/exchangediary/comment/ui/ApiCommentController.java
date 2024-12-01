@@ -7,6 +7,7 @@ import com.exchangediary.comment.ui.dto.request.CommentCreateRequest;
 import com.exchangediary.comment.ui.dto.request.ReplyCreateRequest;
 import com.exchangediary.comment.ui.dto.response.CommentCreateResponse;
 import com.exchangediary.comment.ui.dto.response.CommentCreationVerifyResponse;
+import com.exchangediary.comment.ui.dto.response.CommentResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,18 @@ public class ApiCommentController {
             @RequestAttribute Long memberId
     ) {
         CommentCreationVerifyResponse response = commentQueryService.verifyCommentCreation(diaryId, memberId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentResponse> viewComment(
+            @PathVariable Long diaryId,
+            @PathVariable Long commentId,
+            @RequestAttribute Long memberId
+    ) {
+        CommentResponse response = commentQueryService.viewComment(diaryId, memberId, commentId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
