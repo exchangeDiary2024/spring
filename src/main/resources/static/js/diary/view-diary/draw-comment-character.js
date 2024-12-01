@@ -52,13 +52,15 @@ async function drawCommentCharacter() {
         });
 }
 
-function createCharacter(character) {
-    const comment = document.createElement("div");
+function createCharacter(profileImage) {
+    const commentCharacter = document.createElement("div");
 
-    comment.classList.add("comment-character", "highlight", character);
-    comment.addEventListener("touchmove", moveCharacter);
-    comment.addEventListener("touchend", setCharacter);
-    return comment;
+    commentCharacter.classList.add("comment-character", "highlight", profileImage);
+    commentCharacter.style.left = "158px";
+    commentCharacter.style.top = "190px";
+    commentCharacter.addEventListener("touchmove", moveCommentCharacter);
+    commentCharacter.addEventListener("touchend", setCommentCharacter);
+    return commentCharacter;
 }
 
 function addBlur() {
@@ -71,19 +73,19 @@ function removeBlur() {
     commentArea.classList.remove("highlight");
 }
 
-function moveCharacter(event) {
+function moveCommentCharacter(event) {
     event.preventDefault();
 
     const COMMENT_WIDTH = event.currentTarget.offsetWidth;
     const COMMENT_HEIGHT = event.currentTarget.offsetHeight;
-    const x = getValidCharacterLeft(event.touches[0].clientX - PAGE_MARGIN,  COMMENT_WIDTH) - COMMENT_WIDTH / 2;
-    const y = getValidCharacterTop(event.touches[0].clientY - COMMENT_AREA_TOP, COMMENT_HEIGHT) - COMMENT_HEIGHT / 2;
+    const x = getValidCommentCharacterLeft(event.touches[0].clientX - PAGE_MARGIN,  COMMENT_WIDTH) - COMMENT_WIDTH / 2;
+    const y = getValidCommentCharacterTop(event.touches[0].clientY - COMMENT_AREA_TOP, COMMENT_HEIGHT) - COMMENT_HEIGHT / 2;
 
     event.currentTarget.style.left = `${x}px`;
     event.currentTarget.style.top = `${y}px`;
 }
 
-function getValidCharacterLeft(left, commentWidth) {
+function getValidCommentCharacterLeft(left, commentWidth) {
     const COMMENT_AREA_WIDTH = commentArea.offsetWidth - COMMENT_AREA_BORDER * 2;
     const MINIMUM_LEFT = commentWidth / 2;
     const MAXIMUM_LEFT = MINIMUM_LEFT + COMMENT_AREA_WIDTH - commentWidth;
@@ -97,7 +99,7 @@ function getValidCharacterLeft(left, commentWidth) {
     return left;
 }
 
-function getValidCharacterTop(top, commentHeight) {
+function getValidCommentCharacterTop(top, commentHeight) {
     const COMMENT_AREA_HEIGHT = commentArea.offsetHeight - COMMENT_AREA_BORDER * 2;
     const MINIMUM_TOP = commentHeight / 2;
     const MAXIMUM_TOP = MINIMUM_TOP + COMMENT_AREA_HEIGHT - commentHeight;
@@ -111,21 +113,21 @@ function getValidCharacterTop(top, commentHeight) {
     return top;
 }
 
-function setCharacter(event) {
+function setCommentCharacter(event) {
     event.preventDefault();
 
-    confirmCharacterPosition();
+    confirmCommentCharacterPosition();
 }
 
-async function confirmCharacterPosition() {
+async function confirmCommentCharacterPosition() {
     const result = await openConfirmModal("여기에 댓글을 쓸까요?");
 
     if (result) {
         const character = document.querySelector(".write .comment-character");
 
         character.classList.remove("highlight");
-        character.removeEventListener("touchmove", moveCharacter);
-        character.removeEventListener("touchend", setCharacter);
+        character.removeEventListener("touchmove", moveCommentCharacter);
+        character.removeEventListener("touchend", setCommentCharacter);
         removeBlur();
 
         drawComment(character.classList[1], commentArea);
