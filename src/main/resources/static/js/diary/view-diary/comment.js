@@ -12,7 +12,8 @@ function init() {
 function clickCommentBlur(event) {
     event.preventDefault();
 
-    if (commentArea.classList.contains("write") && event.target.classList.contains("comment-blur")) {
+    if (commentBtn.classList.contains("selected") && event.target.classList.contains("comment-blur")) {
         offClickCommentBtn();
+        commentBtn.classList.remove("selected");
     }
 }

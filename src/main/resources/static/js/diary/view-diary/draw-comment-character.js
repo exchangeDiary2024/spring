@@ -5,10 +5,12 @@ const PAGE_MARGIN = document.querySelector(".left-margin").offsetWidth;
 function clickCommentBtn(event) {
     event.preventDefault();
 
-    if (commentArea.classList.contains("write")) {
+    if (commentBtn.classList.contains("selected")) {
         offClickCommentBtn();
+        commentBtn.classList.remove("selected");
     } else {
         onClickCommentBtn();
+        commentBtn.classList.add("selected");
     }
 }
 
@@ -138,6 +140,7 @@ function clickCommentOutside(event) {
         document.querySelector(".comment").remove();
         document.querySelector(".write .comment-character").remove();
         commentArea.classList.remove("write");
+        commentBtn.classList.remove("selected");
         document.removeEventListener("click", clickCommentOutside);
     }
 }

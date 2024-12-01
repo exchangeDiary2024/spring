@@ -15,10 +15,18 @@
     border: 1px solid #767676;
 }
 
+.comment-btn.selected {
+    background-color: #FFCC00;
+}
+
 .comment-btn-icon {
     width: 24px;
     height: 24px;
     flex-shrink: 0;
+}
+
+.comment-btn.selected .comment-btn-icon {
+    content: url("/images/diary/view-page/selected-comment-icon.png");
 }
 
 .comment-blur {
