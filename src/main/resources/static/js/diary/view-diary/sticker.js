@@ -24,7 +24,7 @@ function closeStickerBar() {
     if (comment.classList.contains("bottom")) {
         commentBox.style.marginTop = `${parseInt(commentBox.style.marginTop) + 50}px`;
     }
-    if (commentBox.children[0].classList.contains("reply-box")) {
+    if (!commentBtn.classList.contains("selected")) {
         const replyBox = document.querySelector(".reply-box");
 
         replyBox.style.height = `${parseInt(replyBox.style.height) - 44}px`;
@@ -40,7 +40,7 @@ function openStickerBar() {
     if (comment.classList.contains("bottom")) {
         commentBox.style.marginTop = `${parseInt(commentBox.style.marginTop) - 50}px`;
     }
-    if (commentBox.children[0].classList.contains("reply-box")) {
+    if (!commentBtn.classList.contains("selected")) {
         const replyBox = document.querySelector(".reply-box");
 
         replyBox.style.height = `${parseInt(replyBox.style.height) + 44}px`;

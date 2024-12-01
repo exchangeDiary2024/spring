@@ -29,26 +29,9 @@ const COMMENT_BAR_HTML = `
     </a>
 </div>
 `;
-const REPLY_BAR_HTML = `
-<div class="reply-box" style="height: 44px;">
-    ${STICKER_BAR_HTML}
-    <div class="reply-bar">
-        <div class="reply-character"></div>
-        <div class="comment-textarea">
-            <textarea class="comment-text" placeholder="답글을 입력해주세요." spellcheck="false"></textarea>
-        </div>
-        <a class="sticker-btn" href="#">
-            <img class="sticker-icon" src="/images/diary/view-page/sticker-icon.png">            
-        </a>
-        <a class="write-comment-btn" href="#">
-            <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
-        </a>
-    </div>
-</div>
-`;
 
-function drawComment(characterColor, commentParent) {
-    const comment = createComment();
+async function drawComment(characterColor, commentParent) {
+    const comment = await createComment();
     const character = document.querySelector(`.comment-character.${characterColor}`);
 
     commentParent.appendChild(comment);
@@ -56,31 +39,35 @@ function drawComment(characterColor, commentParent) {
     processByCommentVertical(character, comment);
     processByCommentHorizontal(character, comment);
 
+    if (!commentBtn.classList.contains("selected")) {
+        adjustCommentBoxHeight();
+    }
+
     addEventInCommentBox();
 }
 
 function addEventInCommentBox() {
-
     if (commentBtn.classList.contains("selected")) {
-        document.querySelector(".write-comment-btn").addEventListener("click", writeComment);
-        document.addEventListener("click", clickWriteCommentOutside);
+        document.querySelector(".comment-bar .write-comment-btn").addEventListener("click", writeComment);
+        // document.addEventListener("click", clickWriteCommentOutside);
     } else {
-        document.addEventListener("click", clickViewCommentOutside);
+        document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", writeReply);
+        // document.addEventListener("click", clickViewCommentOutside);
     }
 
     document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
     addEventToStickers();
 }
 
-function createComment() {
+async function createComment() {
     const comment = document.createElement("div");
 
     comment.classList.add("comment");
-    comment.appendChild(createCommentBox());
+    comment.appendChild(await createCommentBox());
     return comment;
 }
 
-function createCommentBox() {
+async function createCommentBox() {
     const commentBox = document.createElement("div");
 
     commentBox.classList.add("comment-box");
@@ -89,9 +76,46 @@ function createCommentBox() {
         commentBox.innerHTML = STICKER_BAR_HTML + COMMENT_BAR_HTML;
     } else {
         commentBox.style.height = "100px";
-        commentBox.innerHTML = REPLY_BAR_HTML;
+        commentBox.innerHTML = await makeViewCommentBoxHTML();
     }
     return commentBox;
+}
+
+async function makeViewCommentBoxHTML() {
+    const commentId = document.querySelector(".note-content .comment-character:not(.written)").classList[2];
+    const comment =  await getCommentById(commentId);
+
+    return `
+    <div class="written-comment" style="height: 50px;">
+        <p class="written-comment-text">${comment.content}</p>
+    </div>
+     <div class="reply-box" style="height: 44px;">
+        ${STICKER_BAR_HTML}
+        <div class="reply-bar">
+            <div class="reply-character ${comment.profileImage}"></div>
+            <div class="comment-textarea">
+                <textarea class="comment-text" placeholder="답글을 입력해주세요." spellcheck="false"></textarea>
+            </div>
+            <a class="sticker-btn" href="#">
+                <img class="sticker-icon" src="/images/diary/view-page/sticker-icon.png">            
+            </a>
+            <a class="write-comment-btn" href="#">
+                <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
+            </a>
+        </div>
+    </div>
+    `;
+}
+
+async function getCommentById(commentId) {
+    return await fetch(`/api${currentPathName}/comments/${commentId}`)
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                openNotificationModal("error", "댓글 조회 실패", 2000);
+            }
+        });
 }
 
 function processByCommentVertical(character, comment) {
@@ -127,6 +151,22 @@ function createCommentArrow(character, comment) {
     return commentArrow;
 }
 
+function adjustCommentBoxHeight() {
+    const commentText = document.querySelector(".written-comment-text");
+    const commentBox = document.querySelector(".comment-box");
+    const comment = document.querySelector(".written-comment");
+
+    if (commentText.offsetHeight > 125) {
+        commentText.style.height = "125px";
+        commentText.style.overflow = "scroll";
+    }
+    commentBox.style.height = `${parseInt(commentBox.style.height) + (commentText.offsetHeight - 25)}px`;
+    comment.style.height = `${parseInt(comment.style.height) + (commentText.offsetHeight - 25)}px`;
+    if (commentBox.parentElement.classList.contains("bottom")) {
+        commentBox.style.marginTop = `${200 - commentText.offsetHeight}px`
+    }
+}
+
 async function writeComment() {
     const character = document.querySelector(".write .comment-character");
     const commentText = document.querySelector(".comment-text");
@@ -154,4 +194,8 @@ async function writeComment() {
         .catch(data => {
             openNotificationModal("error", [data.message], 2000);
         });
+}
+
+function writeReply() {
+    // todo: 답글 작성 API 호출
 }

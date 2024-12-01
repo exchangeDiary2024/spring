@@ -9,8 +9,11 @@ function clickCommentBtn(event) {
         offClickCommentBtn();
         commentBtn.classList.remove("selected");
     } else {
+        const character = document.querySelector(".note-content .comment-character:not(.written)");
+        if (character) {
+            closeWrittenCommentBox(character);
+        }
         onClickCommentBtn();
-        commentBtn.classList.add("selected");
     }
 }
 
@@ -20,6 +23,7 @@ async function onClickCommentBtn() {
     if (result) {
         addBlur();
         commentArea.classList.add("write");
+        commentBtn.classList.add("selected");
     }
 }
 

@@ -124,27 +124,35 @@ function drawComments(comments) {
     comments.forEach(comment => {
         const commentCharacter = document.createElement("a");
 
-        commentCharacter.classList.add("comment-character", comment.profileImage, "view", comment.id);
+        commentCharacter.classList.add("comment-character", comment.profileImage, "written", comment.id);
         commentCharacter.setAttribute("href", "#");
         commentCharacter.style.left = `${comment.xCoordinate}px`;
         commentCharacter.style.top = `${comment.yCoordinate}px`;
         noteContents[comment.page].appendChild(commentCharacter);
-        commentCharacter.addEventListener("click", showComment);
+        commentCharacter.addEventListener("click", clickWrittenComment);
     });
 }
 
-function showComment(event) {
+function clickWrittenComment(event) {
     event.preventDefault();
 
     const character = event.currentTarget;
 
-    if (character.classList.contains("view")) {
-        character.classList.remove("view");
-        drawComment(character.classList[1], character.parentElement);
+    if (character.classList.contains("written")) {
+        openWrittenCommentBox(character);
     } else {
-        character.classList.add("view");
-        character.parentElement.lastChild.remove();
+        closeWrittenCommentBox(character);
     }
+}
+
+function openWrittenCommentBox(character) {
+    character.classList.remove("written");
+    drawComment(character.classList[1], character.parentElement);
+}
+
+function closeWrittenCommentBox(character) {
+    character.classList.add("written");
+    character.parentElement.lastChild.remove();
 }
 
 viewDiary();
