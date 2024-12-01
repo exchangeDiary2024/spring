@@ -47,9 +47,8 @@ const REPLY_BAR_HTML = `
 </div>
 `;
 
-
-function drawComment(type, characterColor, commentParent) {
-    const comment = createComment(type);
+function drawComment(characterColor, commentParent) {
+    const comment = createComment();
     const character = document.querySelector(`.comment-character.${characterColor}`);
 
     commentParent.appendChild(comment);
@@ -61,24 +60,31 @@ function drawComment(type, characterColor, commentParent) {
 }
 
 function addEventInCommentBox() {
-    document.querySelector(".write-comment-btn").addEventListener("click", writeComment);
+
+    if (commentBtn.classList.contains("selected")) {
+        document.querySelector(".write-comment-btn").addEventListener("click", writeComment);
+        document.addEventListener("click", clickWriteCommentOutside);
+    } else {
+        document.addEventListener("click", clickViewCommentOutside);
+    }
+
     document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
     addEventToStickers();
 }
 
-function createComment(type) {
+function createComment() {
     const comment = document.createElement("div");
 
     comment.classList.add("comment");
-    comment.appendChild(createCommentBox(type));
+    comment.appendChild(createCommentBox());
     return comment;
 }
 
-function createCommentBox(type) {
+function createCommentBox() {
     const commentBox = document.createElement("div");
 
     commentBox.classList.add("comment-box");
-    if (type === "write") {
+    if (commentBtn.classList.contains("selected")) {
         commentBox.style.height = "50px";
         commentBox.innerHTML = STICKER_BAR_HTML + COMMENT_BAR_HTML;
     } else {
@@ -86,24 +92,6 @@ function createCommentBox(type) {
         commentBox.innerHTML = REPLY_BAR_HTML;
     }
     return commentBox;
-}
-
-function makeWrittenCommentBoxHtml() {
-    const READ_COMMENT_BOX_HTML = `
-        <div class="comment-bar">
-            <div class="comment-textarea">
-                <textarea class="comment-text" placeholder="댓글을 입력해주세요." spellcheck="false"></textarea>
-            </div>
-            <a class="sticker-btn" href="#">
-                <img class="sticker-icon" src="/images/diary/view-page/sticker-icon.png">            
-            </a>
-            <a class="write-comment-btn" href="#">
-                <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
-            </a>
-        </div>
-        `;
-
-
 }
 
 function processByCommentVertical(character, comment) {

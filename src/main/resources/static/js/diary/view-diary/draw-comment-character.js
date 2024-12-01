@@ -124,30 +124,6 @@ async function confirmCharacterPosition() {
         character.removeEventListener("touchend", setCharacter);
         removeBlur();
 
-        document.addEventListener("click", clickCommentOutside);
-
-        drawComment("write", character.classList[1], commentArea);
+        drawComment(character.classList[1], commentArea);
     }
-}
-
-function clickCommentOutside(event) {
-    event.preventDefault();
-
-    const notificationModal = document.querySelector(".notification-modal");
-
-    if (!notificationModal.contains(event.target) && !isComment(event.target)) {
-        document.querySelector(".comment").remove();
-        document.querySelector(".write .comment-character").remove();
-        commentArea.classList.remove("write");
-        commentBtn.classList.remove("selected");
-        document.removeEventListener("click", clickCommentOutside);
-    }
-}
-
-function isComment(target) {
-    const commentBox = document.querySelector(".comment-box");
-
-    return (commentBox.contains(target) && !target.classList.contains("comment-box"))
-        || (target.classList.contains("comment-character") && target.parentElement.classList.contains("write"))
-        || target.classList.contains("comment-arrow");
 }

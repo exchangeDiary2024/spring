@@ -136,14 +136,14 @@ function drawComments(comments) {
 function showComment(event) {
     event.preventDefault();
 
-    const comment = event.currentTarget;
+    const character = event.currentTarget;
 
-    if (comment.classList.contains("view")) {
-        comment.classList.remove("view");
-        drawComment("view", comment.classList[1], comment.parentElement);
+    if (character.classList.contains("view")) {
+        character.classList.remove("view");
+        drawComment(character.classList[1], character.parentElement);
     } else {
-        comment.classList.add("view");
-        comment.parentElement.lastChild.remove();
+        character.classList.add("view");
+        character.parentElement.lastChild.remove();
     }
 }
 
