@@ -167,18 +167,19 @@ function adjustCommentBoxHeight() {
     }
 }
 
-async function writeComment() {
-    const character = document.querySelector(".write .comment-character");
+function writeComment(event) {
+    const commentCharacter = document.querySelector(".write .comment-character");
     const commentText = document.querySelector(".comment-text");
 
+    event.preventDefault();
     fetch(`/api${currentPathName}/comments`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            "xCoordinate": parseFloat(character.style.left),
-            "yCoordinate": parseFloat(character.style.top),
+            "xCoordinate": parseFloat(commentCharacter.style.left),
+            "yCoordinate": parseFloat(commentCharacter.style.top),
             "page": currentPage.index,
             "content": commentText.value
         })
@@ -187,15 +188,36 @@ async function writeComment() {
             if (response.status !== 201) {
                 throw await response.json();
             }
-            commentArea.classList.remove("write");
             window.location.reload();
-            return response.json();
         })
         .catch(data => {
             openNotificationModal("error", [data.message], 2000);
         });
 }
 
-function writeReply() {
-    // todo: 답글 작성 API 호출
+function writeReply(event) {
+    event.preventDefault();
+
+    const commentCharacter = document.querySelector(".note-content .comment-character:not(.written)");
+    const commentText = document.querySelector(".reply-bar .comment-text");
+    const commentId = commentCharacter.classList[2];
+
+    fetch(`/api${currentPathName}/comments/${commentId}/replies`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "content": commentText.value
+        })
+    })
+        .then(async response => {
+            if (response.status !== 201) {
+                throw await response.json();
+            }
+            window.location.reload();
+        })
+        .catch(data => {
+            openNotificationModal("error", [data.message], 2000);
+        });
 }
