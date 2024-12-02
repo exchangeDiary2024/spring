@@ -5,6 +5,12 @@ const inquiryButton = document.querySelector(".inquiry-btn");
 const helpImageContainer = document.querySelector(".help-image-container");
 const helpImage = document.querySelector(".help-image");
 
+let currentImageIndex = 0;
+const monthlyImages = [
+    '/images/common/help-menu/help-image/help-monthly.svg',
+    '/images/common/help-menu/help-image/help-group-menu.svg'
+];
+
 helpIcon.addEventListener('click', () => {
     tooltip.classList.toggle('hidden');
 });
@@ -23,19 +29,35 @@ helpButton.addEventListener('click', () => {
     let helpImagePath = '';
 
     if (monthlyRegexp.test(pathname)) {
-        helpImagePath = '/images/common/help-menu/help-image/help-monthly.svg';
+        currentImageIndex = 0;
+        showHelpImages(0);
+        return;
     } else if (diaryWriteRegexp.test(pathname)) {
         helpImagePath = '/images/common/help-menu/help-image/help-diary-write.svg';
     } else if (diaryViewRegexp.test(pathname)) {
         helpImagePath = '/images/common/help-menu/help-image/help-diary-view.svg';
     }
+    showHelpImage(helpImagePath);
+});
 
+function showHelpImages(imageIndex) {
+    currentImageIndex = imageIndex;
+    helpImage.src = monthlyImages[currentImageIndex++];
+    helpImageContainer.classList.remove('hidden');
+    tooltip.classList.add('hidden');
+}
+
+function showHelpImage(helpImagePath) {
     helpImage.src = helpImagePath;
     helpImageContainer.classList.remove('hidden');
     tooltip.classList.add('hidden');
-
-});
+}
 
 helpImage.addEventListener('click', () => {
-    helpImageContainer.classList.add('hidden');
+    if (currentImageIndex === 1) {
+        showHelpImages(1);
+    }
+    else {
+        helpImageContainer.classList.add('hidden');
+    }
 });
