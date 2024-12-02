@@ -20,11 +20,9 @@ function closeStickerBar() {
     const commentBox = document.querySelector(".comment-box");
     const selectedSticker = document.querySelector(".sticker.selected");
 
+    comment.style.height = `${parseInt(comment.style.height) - 50}px`;
     commentBox.style.height = `${parseInt(commentBox.style.height) - 50}px`;
 
-    if (comment.classList.contains("bottom")) {
-        commentBox.style.marginTop = `${parseInt(commentBox.style.marginTop) + 50}px`;
-    }
     if (!commentBtn.classList.contains("selected")) {
         const replyBox = document.querySelector(".reply-box");
 
@@ -37,10 +35,8 @@ function openStickerBar() {
     const comment = document.querySelector(".comment");
     const commentBox = document.querySelector(".comment-box");
 
+    comment.style.height = `${parseInt(comment.style.height) + 50}px`;
     commentBox.style.height = `${parseInt(commentBox.style.height) + 50}px`;
-    if (comment.classList.contains("bottom")) {
-        commentBox.style.marginTop = `${parseInt(commentBox.style.marginTop) - 50}px`;
-    }
     if (!commentBtn.classList.contains("selected")) {
         const replyBox = document.querySelector(".reply-box");
 
