@@ -49,10 +49,10 @@ async function drawComment(characterColor, commentParent) {
 function addEventInCommentBox() {
     if (commentBtn.classList.contains("selected")) {
         document.querySelector(".comment-bar .write-comment-btn").addEventListener("click", clickWriteCommentBtn);
-        // document.addEventListener("click", clickWriteCommentOutside);
+        document.addEventListener("click", clickWriteCommentOutside);
     } else {
         document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", clickWriteReplyBtn);
-        // document.addEventListener("click", clickViewCommentOutside);
+        document.addEventListener("click", clickWrittenCommentOutside);
     }
 
     document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
@@ -170,7 +170,7 @@ function adjustCommentBoxHeight() {
 async function clickWriteCommentBtn(event) {
     event.preventDefault();
 
-    const result = await openConfirmModal("댓글을 작성할까요?", "댓글은 수정, 삭제가 불가하니 신중하게 결정 해주세요.");
+    const result = await openConfirmModal("댓글을 작성할까요?", "댓글은 수정, 삭제가 불가하니 신중하게 결정해 주세요.");
 
     if (result) {
         writeComment();
@@ -180,7 +180,6 @@ async function clickWriteCommentBtn(event) {
 function writeComment() {
     const commentCharacter = document.querySelector(".write .comment-character");
     const commentText = document.querySelector(".comment-text");
-
 
     fetch(`/api${currentPathName}/comments`, {
         method: "POST",
@@ -208,7 +207,7 @@ function writeComment() {
 async function clickWriteReplyBtn(event) {
     event.preventDefault();
 
-    const result = await openConfirmModal("답글을 작성할까요?", "답글은 수정, 삭제가 불가하니 신중하게 결정 해주세요.");
+    const result = await openConfirmModal("답글을 작성할까요?", "답글은 수정, 삭제가 불가하니 신중하게 결정해 주세요.");
 
     if (result) {
         writeReply();

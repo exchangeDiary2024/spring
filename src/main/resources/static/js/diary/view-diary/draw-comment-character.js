@@ -9,15 +9,13 @@ function clickCommentBtn(event) {
         offClickCommentBtn();
         commentBtn.classList.remove("selected");
     } else {
-        const character = document.querySelector(".note-content .comment-character:not(.written)");
-        if (character) {
-            closeWrittenCommentBox(character);
-        }
         onClickCommentBtn();
     }
 }
 
 async function onClickCommentBtn() {
+    closeSelectedCommentCharacter();
+
     const result = await drawCommentCharacter();
 
     if (result) {

@@ -146,6 +146,7 @@ function clickWrittenComment(event) {
 }
 
 function openWrittenCommentBox(commentCharacter) {
+    closeSelectedCommentCharacter();
     commentCharacter.classList.remove("written");
     drawComment(commentCharacter.classList[1], commentCharacter.parentElement);
 }
@@ -153,6 +154,15 @@ function openWrittenCommentBox(commentCharacter) {
 function closeWrittenCommentBox(commentCharacter) {
     commentCharacter.classList.add("written");
     commentCharacter.parentElement.lastChild.remove();
+    document.removeEventListener("click", clickWrittenCommentOutside);
+}
+
+function closeSelectedCommentCharacter() {
+    const selectedCommentCharacter = document.querySelector(".note-content .comment-character:not(.written)");
+
+    if (selectedCommentCharacter) {
+        closeWrittenCommentBox(selectedCommentCharacter);
+    }
 }
 
 viewDiary();
