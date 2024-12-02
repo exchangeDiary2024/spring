@@ -63,6 +63,11 @@ async function createComment() {
     const comment = document.createElement("div");
 
     comment.classList.add("comment");
+    if (commentBtn.classList.contains("selected")) {
+        comment.style.height = "70px";
+    } else {
+        comment.style.height = "125px";
+    }
     comment.appendChild(await createCommentBox());
     return comment;
 }
@@ -129,15 +134,17 @@ function processByCommentVertical(character, comment) {
 
 function processByCommentHorizontal(character, comment) {
     const commentArrow = createCommentArrow(character, comment);
-    const commentBox = document.querySelector(".comment-box");
 
-    if (character.offsetTop < STANDARD_TOP) { // 위
-        comment.style.top = `${character.offsetTop + character.offsetHeight - 4}px`;
+    if (character.offsetTop < STANDARD_TOP) {
+        comment.style.top = `${character.offsetTop + character.offsetHeight}px`;
         comment.classList.add("top");
         comment.prepend(commentArrow);
     } else {
-        comment.style.top = `${character.offsetTop - comment.offsetHeight + 4}px`;
-        comment.children[0].style.marginTop = `${225 - parseInt(commentBox.style.height) + 50}px`;
+        if (commentBtn.classList.contains("selected")) {
+            comment.style.bottom = `${comment.parentElement.offsetHeight - character.offsetTop}px`;
+        } else {
+            comment.style.bottom = `${comment.parentElement.offsetHeight - character.offsetTop - 5}px`;
+        }
         comment.classList.add("bottom");
         comment.appendChild(commentArrow);
     }
@@ -153,18 +160,17 @@ function createCommentArrow(character, comment) {
 
 function adjustCommentBoxHeight() {
     const commentText = document.querySelector(".written-comment-text");
+    const comment = document.querySelector(".comment");
     const commentBox = document.querySelector(".comment-box");
-    const comment = document.querySelector(".written-comment");
+    const writtenComment = document.querySelector(".written-comment");
 
     if (commentText.offsetHeight > 125) {
         commentText.style.height = "125px";
         commentText.style.overflow = "scroll";
     }
-    commentBox.style.height = `${parseInt(commentBox.style.height) + (commentText.offsetHeight - 25)}px`;
     comment.style.height = `${parseInt(comment.style.height) + (commentText.offsetHeight - 25)}px`;
-    if (commentBox.parentElement.classList.contains("bottom")) {
-        commentBox.style.marginTop = `${200 - commentText.offsetHeight}px`
-    }
+    commentBox.style.height = `${parseInt(commentBox.style.height) + (commentText.offsetHeight - 25)}px`;
+    writtenComment.style.height = `${parseInt(writtenComment.style.height) + (commentText.offsetHeight - 25)}px`;
 }
 
 async function clickWriteCommentBtn(event) {

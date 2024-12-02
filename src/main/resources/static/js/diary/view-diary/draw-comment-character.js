@@ -27,7 +27,7 @@ async function onClickCommentBtn() {
 
 function offClickCommentBtn() {
     removeBlur();
-    commentArea.removeChild(document.querySelector(".write .comment-character"));
+    commentArea.replaceChildren();
     commentArea.classList.remove("write");
 }
 

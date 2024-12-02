@@ -98,7 +98,7 @@
     left: 41px;
 
     width: 282px;
-    height: 300px;
+    height: 70px;
     flex-shrink: 0;
 }
 
@@ -129,10 +129,6 @@
 
 .top .comment-box {
     margin-top: 20px;
-}
-
-.bottom .comment-box {
-    margin-top: 225px;
 }
 
 .comment-arrow {
