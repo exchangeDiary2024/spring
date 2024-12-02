@@ -55,6 +55,11 @@
         </div>
     </div>
 
+    <div th:replace="~{common/notification-modal :: modal}"></div>
+    <div th:replace="~{common/confirm-modal :: modal}"></div>
+
+    <th:block layout:fragment="body"></th:block>
+
     <div class="help-icon-container">
         <div class="tooltip hidden">
             <img src ="/images/common/help-menu/tooltip.svg">
@@ -66,12 +71,10 @@
         <div class="help-icon">
             <img src="/images/common/help-menu/question.svg">
         </div>
+        <div class="help-image-container hidden">
+            <img src="" class="help-image">
+        </div>
     </div>
-
-    <div th:replace="~{common/notification-modal :: modal}"></div>
-    <div th:replace="~{common/confirm-modal :: modal}"></div>
-
-    <th:block layout:fragment="body"></th:block>
 </body>
 
 <th:block layout:fragment="script"></th:block>

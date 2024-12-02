@@ -4,13 +4,14 @@
     height: 134px;
     bottom: 0px;
     right: 0px;
+    z-index: 20;
 }
 
 .tooltip {
     position: absolute;
     width: 96px;
     height: 104px;
-    right: 2px;
+    right: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,6 +63,12 @@
     font-style: normal;
     font-weight: 400;
     letter-spacing: -0.4px;
+}
+
+.help-image-container {
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .hidden {
