@@ -2,9 +2,8 @@ const notificationModal = document.querySelector(".notification-modal");
 const confirmModal = document.querySelector(".confirm-modal");
 
 function clickCommentBlur(event) {
-    event.preventDefault();
-
     if (commentBtn.classList.contains("selected") && event.target.classList.contains("comment-blur")) {
+        event.preventDefault();
         offClickCommentBtn();
         commentBtn.classList.remove("selected");
     }
