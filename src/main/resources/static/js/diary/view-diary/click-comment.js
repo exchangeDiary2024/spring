@@ -12,43 +12,34 @@ function clickCommentBlur(event) {
 function clickWriteCommentOutside(event) {
     event.preventDefault();
 
+    const commentCharacter = document.querySelector(".comment-area .comment-character");
+    const comment = document.querySelector(".comment");
+
+    console.log(commentCharacter);
     if (!isInModal(event.target)
-        && (commentBtn.classList.contains("selected") && !isWriteComment(event.target))
+        && event.target !== commentCharacter
+        && !comment.contains(event.target)
     ) {
-            document.querySelector(".write .comment-character").remove();
-            commentArea.classList.remove("write");
-            commentBtn.classList.remove("selected");
-            document.querySelector(".comment").remove();
-            document.removeEventListener("click", clickWriteCommentOutside);
+        commentCharacter.remove();
+        commentArea.classList.remove("write");
+        commentBtn.classList.remove("selected");
+        comment.remove();
+        document.removeEventListener("click", clickWriteCommentOutside);
     }
-}
-
-function isWriteComment(target) {
-    const commentBox = document.querySelector(".comment-box");
-
-    return (commentBox.contains(target) && target !== commentBox)
-        || (target.classList.contains("comment-character") && target.parentElement.classList.contains("write"))
-        || target.classList.contains("comment-arrow");
 }
 
 function clickWrittenCommentOutside(event) {
     const viewCommentCharacter = document.querySelector(".note-content .comment-character:not(.written)");
+    const comment = document.querySelector(".comment");
 
     if (!isInModal(event.target)
-        && (viewCommentCharacter && !isWrittenComment(event.target, viewCommentCharacter))
+        && event.target !== viewCommentCharacter
+        && !comment.contains(event.target)
     ) {
         viewCommentCharacter.classList.add("written");
         document.querySelector(".comment").remove();
         document.removeEventListener("click", clickWrittenCommentOutside);
     }
-}
-
-function isWrittenComment(target, viewCommentCharacter) {
-    const commentBox = document.querySelector(".comment-box");
-
-    return commentBox.contains(target)
-        || target === viewCommentCharacter
-        || target.classList.contains("comment-arrow");
 }
 
 function isInModal(target) {
