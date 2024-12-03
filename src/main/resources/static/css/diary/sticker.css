@@ -1,19 +1,23 @@
 @charset "utf-8";
 
 .sticker-bar {
-    height: 50px;
     width: 280px;
+    height: 50px;
+    flex-shrink: 0;
 
-    position: absolute;
-    bottom: 50px;
-    left: 0;
+    background: #FCF9D1;
+    border: 1px solid #5A402A;
+    border-radius: 20px;
+
+    position: relative;
 
     display: none;
 }
 
 .stickers {
-    position: relative;
-    top: 6px;
+    position: absolute;
+    top: 5px;
+    left: 7px;
 }
 
 .sticker {
@@ -66,14 +70,4 @@
     width: 15px;
     height: 22px;
     flex-shrink: 0;
-}
-
-.sticker-partition {
-    position: relative;
-    top: 8px;
-
-    width: 250px;
-    height: 1px;
-
-    border-top: 1px dashed #5A402A;;
 }

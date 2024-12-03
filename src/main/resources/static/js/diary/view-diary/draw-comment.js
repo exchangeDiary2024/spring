@@ -1,21 +1,5 @@
 const STANDARD_TOP = 137;
 const STANDARD_LEFT = 76;
-const STICKER_BAR_HTML = `
-<div class="sticker-bar">
-    <table class="stickers">
-        <tr>
-            <td><a class="sticker" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/heart-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/angry-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon v-sign" src="/images/diary/view-page/sticker/v-sign-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon troubled" src="/images/diary/view-page/sticker/troubled-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon sad" src="/images/diary/view-page/sticker/sad-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon eating" src="/images/diary/view-page/sticker/eating-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon question" src="/images/diary/view-page/sticker/question-icon.png"/></a></td>
-        </tr>
-    </table>    
-    <div class="sticker-partition"></div>
-</div>
-`;
 const COMMENT_BAR_HTML = `
 <div class="comment-bar">
     <div class="comment-textarea">
@@ -42,6 +26,7 @@ async function drawComment(characterColor, commentParent) {
     if (!commentBtn.classList.contains("selected")) {
         adjustCommentBoxHeight();
     }
+    comment.innerHTML += STICKER_BAR_HTML;
 
     addEventInCommentBox();
 }
@@ -78,7 +63,7 @@ async function createCommentBox() {
     commentBox.classList.add("comment-box");
     if (commentBtn.classList.contains("selected")) {
         commentBox.style.height = "50px";
-        commentBox.innerHTML = STICKER_BAR_HTML + COMMENT_BAR_HTML;
+        commentBox.innerHTML =  COMMENT_BAR_HTML;
     } else {
         commentBox.style.height = "100px";
         commentBox.innerHTML = await makeViewCommentBoxHTML();
@@ -95,7 +80,6 @@ async function makeViewCommentBoxHTML() {
         <p class="written-comment-text">${comment.content}</p>
     </div>
      <div class="reply-box" style="height: 44px;">
-        ${STICKER_BAR_HTML}
         <div class="reply-bar">
             <div class="reply-character ${comment.profileImage}"></div>
             <div class="comment-textarea">

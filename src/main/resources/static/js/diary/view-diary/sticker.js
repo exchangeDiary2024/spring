@@ -1,46 +1,38 @@
+const STICKER_BAR_HTML = `
+<div class="sticker-bar">
+    <table class="stickers">
+        <tr>
+            <td><a class="sticker" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/heart-icon.png"/></a></td>
+            <td><a class="sticker" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/angry-icon.png"/></a></td>
+            <td><a class="sticker" href="#"><img class="sticker-icon v-sign" src="/images/diary/view-page/sticker/v-sign-icon.png"/></a></td>
+            <td><a class="sticker" href="#"><img class="sticker-icon troubled" src="/images/diary/view-page/sticker/troubled-icon.png"/></a></td>
+            <td><a class="sticker" href="#"><img class="sticker-icon sad" src="/images/diary/view-page/sticker/sad-icon.png"/></a></td>
+            <td><a class="sticker" href="#"><img class="sticker-icon eating" src="/images/diary/view-page/sticker/eating-icon.png"/></a></td>
+            <td><a class="sticker" href="#"><img class="sticker-icon question" src="/images/diary/view-page/sticker/question-icon.png"/></a></td>
+        </tr>
+    </table>
+</div>
+`;
+
 function clickStickerBtn(event) {
     event.preventDefault();
 
     const stickerBtn = event.currentTarget;
     const stickerBar = document.querySelector(".sticker-bar");
+    const comment = document.querySelector(".comment");
 
     if (stickerBar.style.display === "block") {
-        closeStickerBar();
+        if (comment.classList.contains("bottom")) {
+            comment.children[1].style.zIndex = 5;
+        }
         stickerBar.style.display = "none";
         stickerBtn.classList.remove("selected");
     } else {
-        openStickerBar();
+        if (comment.classList.contains("bottom")) {
+            comment.children[1].style.zIndex = -1;
+        }
         stickerBar.style.display = "block";
         stickerBtn.classList.add("selected");
-    }
-}
-
-function closeStickerBar() {
-    const comment = document.querySelector(".comment");
-    const commentBox = document.querySelector(".comment-box");
-    const selectedSticker = document.querySelector(".sticker.selected");
-
-    comment.style.height = `${parseInt(comment.style.height) - 50}px`;
-    commentBox.style.height = `${parseInt(commentBox.style.height) - 50}px`;
-
-    if (!commentBtn.classList.contains("selected")) {
-        const replyBox = document.querySelector(".reply-box");
-
-        replyBox.style.height = `${parseInt(replyBox.style.height) - 44}px`;
-    }
-    removeSelectedSticker(selectedSticker);
-}
-
-function openStickerBar() {
-    const comment = document.querySelector(".comment");
-    const commentBox = document.querySelector(".comment-box");
-
-    comment.style.height = `${parseInt(comment.style.height) + 50}px`;
-    commentBox.style.height = `${parseInt(commentBox.style.height) + 50}px`;
-    if (!commentBtn.classList.contains("selected")) {
-        const replyBox = document.querySelector(".reply-box");
-
-        replyBox.style.height = `${parseInt(replyBox.style.height) + 44}px`;
     }
 }
 
@@ -53,16 +45,5 @@ function addEventToStickers() {
 function clickStickerIcon(event) {
     event.preventDefault();
 
-    const selectedSticker = document.querySelector(".sticker.selected");
-
-    removeSelectedSticker(selectedSticker);
-    if (selectedSticker !== event.currentTarget) {
-        event.currentTarget.classList.add("selected");
-    }
-}
-
-function removeSelectedSticker(selectedSticker) {
-    if (selectedSticker) {
-        selectedSticker.classList.remove("selected");
-    }
+    // todo: 클릭시 스티커 생성됨
 }
