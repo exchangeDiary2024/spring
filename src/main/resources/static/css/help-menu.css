@@ -1,7 +1,7 @@
 .help-icon-container {
     position: fixed;
     width: 107px;
-    height: 134px;
+    height: 130px;
     bottom: 0px;
     right: 0px;
     z-index: 20;
@@ -11,7 +11,7 @@
     position: absolute;
     width: 96px;
     height: 104px;
-    right: 20px;
+    right: 3px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,7 +43,7 @@
     position: absolute;
     width: 32px;
     height: 32px;
-    bottom: 8px;
+    bottom: 4px;
     right: 8px;
 }
 
