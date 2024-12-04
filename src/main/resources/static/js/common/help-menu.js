@@ -69,7 +69,7 @@ function showHelpImage(helpImagePath) {
     tooltip.classList.add('hidden');
 }
 
-helpImage.addEventListener('click', () => {
+helpImageContainer.addEventListener('click', () => {
     if (currentImageIndex === 1) {
         showHelpImages(1);
     }
