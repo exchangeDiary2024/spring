@@ -23,6 +23,8 @@ document.addEventListener('click', (event) => {
 
 helpButton.addEventListener('click', () => {
     const pathname = window.location.pathname;
+    const stepContent = document.querySelector(".step-content");
+
     const monthlyRegexp = /^\/groups\/[a-zA-Z0-9]+$/;
     const diaryWriteRegexp = /^\/groups\/[a-zA-Z0-9]+\/diaries$/;
     const diaryViewRegexp = /^\/groups\/[a-zA-Z0-9]+\/diaries\/\d+$/;
@@ -36,6 +38,20 @@ helpButton.addEventListener('click', () => {
         helpImagePath = '/images/common/help-menu/help-image/help-diary-write.svg';
     } else if (diaryViewRegexp.test(pathname)) {
         helpImagePath = '/images/common/help-menu/help-image/help-diary-view.svg';
+    } else if (stepContent.classList.contains("step1")) {
+        helpImagePath = '/images/common/help-menu/help-image/help-group-step1.svg';
+    } else if (stepContent.classList.contains("step2-create")) {
+        helpImagePath = '/images/common/help-menu/help-image/help-group-create-step2.svg';
+    } else if (stepContent.classList.contains("step2-join")) {
+        helpImagePath = '/images/common/help-menu/help-image/help-group-join-step2.svg';
+    } else if (stepContent.classList.contains("step3")) {
+        helpImagePath = '/images/common/help-menu/help-image/help-group-step3.svg';
+    } else if (stepContent.classList.contains("step4")) {
+        helpImagePath = '/images/common/help-menu/help-image/help-group-step4.svg';
+    } else if (stepContent.classList.contains("step5-create")) {
+        helpImagePath = '/images/common/help-menu/help-image/help-group-create-step5.svg';
+    } else if (stepContent.classList.contains("step5-join")) {
+        helpImagePath = '/images/common/help-menu/help-image/help-group-join-step5.svg';
     }
     showHelpImage(helpImagePath);
 });
