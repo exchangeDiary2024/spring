@@ -5,11 +5,7 @@ const inquiryButton = document.querySelector(".inquiry-btn");
 const helpImageContainer = document.querySelector(".help-image-container");
 const helpImage = document.querySelector(".help-image");
 
-let currentImageIndex = 0;
-const monthlyImages = [
-    '/images/common/help-menu/help-image/help-monthly.svg',
-    '/images/common/help-menu/help-image/help-group-menu.svg'
-];
+let helpImagePath = '';
 
 helpIcon.addEventListener('click', () => {
     tooltip.classList.toggle('hidden');
@@ -28,12 +24,9 @@ helpButton.addEventListener('click', () => {
     const monthlyRegexp = /^\/groups\/[a-zA-Z0-9]+$/;
     const diaryWriteRegexp = /^\/groups\/[a-zA-Z0-9]+\/diaries$/;
     const diaryViewRegexp = /^\/groups\/[a-zA-Z0-9]+\/diaries\/\d+$/;
-    let helpImagePath = '';
 
     if (monthlyRegexp.test(pathname)) {
-        currentImageIndex = 0;
-        showHelpImages(0);
-        return;
+        showHelpMonthly();
     } else if (diaryWriteRegexp.test(pathname)) {
         helpImagePath = '/images/common/help-menu/help-image/help-diary-write.svg';
     } else if (diaryViewRegexp.test(pathname)) {
@@ -56,11 +49,12 @@ helpButton.addEventListener('click', () => {
     showHelpImage(helpImagePath);
 });
 
-function showHelpImages(imageIndex) {
-    currentImageIndex = imageIndex;
-    helpImage.src = monthlyImages[currentImageIndex++];
-    helpImageContainer.classList.remove('hidden');
-    tooltip.classList.add('hidden');
+function showHelpMonthly() {
+    if (groupMenu.classList.contains("blur")) {
+        helpImagePath = '/images/common/help-menu/help-image/help-group-menu.svg';
+    } else {
+        helpImagePath = '/images/common/help-menu/help-image/help-monthly.svg';
+    }
 }
 
 function showHelpImage(helpImagePath) {
@@ -70,10 +64,5 @@ function showHelpImage(helpImagePath) {
 }
 
 helpImageContainer.addEventListener('click', () => {
-    if (currentImageIndex === 1) {
-        showHelpImages(1);
-    }
-    else {
-        helpImageContainer.classList.add('hidden');
-    }
+    helpImageContainer.classList.add('hidden');
 });
