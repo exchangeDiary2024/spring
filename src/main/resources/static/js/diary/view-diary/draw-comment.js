@@ -148,8 +148,8 @@ function adjustCommentBoxHeight() {
     const commentBox = document.querySelector(".comment-box");
     const writtenComment = document.querySelector(".written-comment");
 
-    if (commentText.offsetHeight > 125) {
-        commentText.style.height = "125px";
+    if (commentText.offsetHeight > 60) {
+        commentText.style.height = "60px";
         commentText.style.overflow = "scroll";
     }
     comment.style.height = `${parseInt(comment.style.height) + (commentText.offsetHeight - 25)}px`;
