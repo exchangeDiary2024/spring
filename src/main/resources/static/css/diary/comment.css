@@ -26,7 +26,7 @@
 }
 
 .comment-btn.selected .comment-btn-icon {
-    content: url("/images/diary/view-page/selected-comment-icon.png");
+    content: url("/images/diary/view-page/white-comment-icon.png");
 }
 
 .comment-blur {
@@ -213,7 +213,7 @@
 }
 
 .sticker-btn.selected .sticker-icon {
-    content: url("/images/diary/view-page/selected-sticker-icon.png");
+    content: url("/images/diary/view-page/yellow-sticker-icon.png");
 }
 
 .write-comment-btn {
@@ -276,6 +276,10 @@
 
 .reply-bar .sticker-btn {
     margin: 10px 1px 10px 6px;
+}
+
+.reply-bar .sticker-btn.selected .sticker-icon {
+    content: url("/images/diary/view-page/white-sticker-icon.png");
 }
 
 .reply-bar .write-comment-btn {
