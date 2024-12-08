@@ -114,7 +114,31 @@ function getValidCommentCharacterTop(top, commentHeight) {
 function setCommentCharacter(event) {
     event.preventDefault();
 
-    confirmCommentCharacterPosition();
+    if (overlapWithWrittenComments(event.currentTarget)) {
+        openNotificationModal("error", ["여기는 이미 다른 친구가 작성했어요.", "다른 영역에 작성해볼까요?"], 2000);
+    } else {
+        confirmCommentCharacterPosition();
+    }
+}
+
+function overlapWithWrittenComments(currentComment) {
+    const comments = currentPage.noteContent.querySelectorAll(".comment-character.written");
+    const currentCommentLeft = parseInt(currentComment.style.left) + 5;
+    const currentCommentTop = parseInt(currentComment.style.top) - 18;
+    var isOverlap = false;
+
+    comments.forEach(comment => {
+        if (!isOverlap) {
+            const commentTop = parseInt(comment.style.top);
+            const commentLeft = parseInt(comment.style.left);
+
+            isOverlap = ((currentCommentLeft >= commentLeft - comment.offsetWidth
+                && currentCommentLeft <= commentLeft + comment.offsetWidth)
+            && (currentCommentTop >= commentTop - comment.offsetHeight
+                && currentCommentTop <= commentTop + comment.offsetHeight))
+        }
+    });
+    return isOverlap;
 }
 
 async function confirmCommentCharacterPosition() {
