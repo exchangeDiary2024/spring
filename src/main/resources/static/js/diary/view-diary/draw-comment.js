@@ -110,7 +110,9 @@ function makeRepliesHTML(replies) {
     replies.forEach(reply => {
         repliesHTML += `
         <div class="reply"">
-            <div class="reply-character ${reply.profileImage}"></div>
+            <div class="reply-character">
+                <img class="reply-character-icon ${reply.profileImage}">
+            </div>
             <p class="reply-text">${reply.content}</p>
         </div>
         `;
@@ -126,7 +128,9 @@ function makeRepliesHTML(replies) {
 function makeReplyBoxHTML(profileImage) {
     return `
     <div class="reply-bar">
-        <div class="reply-character ${profileImage}"></div>
+        <div class="reply-character">
+                <img class="reply-character-icon ${profileImage}">
+            </div>
         <div class="comment-textarea">
             <textarea class="comment-text" placeholder="답글을 입력해주세요." spellcheck="false"></textarea>
         </div>

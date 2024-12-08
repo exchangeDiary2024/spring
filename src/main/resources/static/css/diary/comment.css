@@ -253,17 +253,49 @@
 }
 
 .reply-character {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
 
     float: left;
     margin: 10px;
+}
+
+.reply-character-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+
     border: 1px solid #767676;
     border-radius: 50%;
 }
 
-.reply-bar .comment-textarea {
+.reply-character-icon.green {
+    width: 30px;
+    height: 24px;
+    content: url("/images/diary/view-page/green-reply-character.png");
+    position: relative;
+    left: -2px;
+
+    border: none;
+    border-radius: 0;
+}
+
+.reply-character-icon.blue {
+    width: 24px;
+    height: 29px;
+    content: url("/images/diary/view-page/blue-reply-character.png");
+    position: relative;
+    top: -6px;
+
+    border: none;
+    border-radius: 0;
+}
+
+    .reply-bar .comment-textarea {
     width: 148px;
     height: 24px;
     top: 9px;
