@@ -1,5 +1,5 @@
 const COMMENT_AREA_BORDER = 4;
-const COMMENT_AREA_TOP = 200;
+const COMMENT_AREA_TOP = 150;
 const PAGE_MARGIN = document.querySelector(".left-margin").offsetWidth;
 
 function clickCommentBtn(event) {

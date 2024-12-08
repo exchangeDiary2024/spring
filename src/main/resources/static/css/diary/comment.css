@@ -42,12 +42,12 @@
 
 .comment-area {
     position: absolute;
-    top: 193px;
+    top: 149px;
     left: calc((100vw - 375px) / 2 + 1px);
     margin: 4px;
 
     width: 365px;
-    height: 428px;
+    height: 472px;
     flex-shrink: 0;
     z-index: -1;
 }
