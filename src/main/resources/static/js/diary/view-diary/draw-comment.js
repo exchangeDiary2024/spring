@@ -24,7 +24,8 @@ async function drawComment(characterColor, commentParent) {
     processByCommentHorizontal(character, comment);
 
     if (!commentBtn.classList.contains("selected")) {
-        adjustCommentBoxHeight();
+        adjustHeightByWrittenComment();
+        adjustHeightByWrittenReplies();
     }
     comment.innerHTML += STICKER_BAR_HTML;
 
@@ -66,32 +67,24 @@ async function createCommentBox() {
         commentBox.innerHTML =  COMMENT_BAR_HTML;
     } else {
         commentBox.style.height = "100px";
-        commentBox.innerHTML = await makeViewCommentBoxHTML();
+        commentBox.innerHTML = await makeWrittenCommentBoxHTML();
     }
     return commentBox;
 }
 
-async function makeViewCommentBoxHTML() {
+async function makeWrittenCommentBoxHTML() {
     const commentId = document.querySelector(".note-content .comment-character:not(.written)").classList[2];
     const comment =  await getCommentById(commentId);
+    const repliesHTML = makeRepliesHTML(comment.replies);
+    const replyBarHTML = makeReplyBoxHTML(comment.profileImage)
 
     return `
     <div class="written-comment" style="height: 50px;">
         <p class="written-comment-text">${comment.content}</p>
     </div>
      <div class="reply-box" style="height: 44px;">
-        <div class="reply-bar">
-            <div class="reply-character ${comment.profileImage}"></div>
-            <div class="comment-textarea">
-                <textarea class="comment-text" placeholder="답글을 입력해주세요." spellcheck="false"></textarea>
-            </div>
-            <a class="sticker-btn" href="#">
-                <img class="sticker-icon" src="/images/diary/view-page/sticker-icon.png">            
-            </a>
-            <a class="write-comment-btn" href="#">
-                <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
-            </a>
-        </div>
+             ${repliesHTML}
+        ${replyBarHTML}
     </div>
     `;
 }
@@ -105,6 +98,46 @@ async function getCommentById(commentId) {
                 openNotificationModal("error", "댓글 조회 실패", 2000);
             }
         });
+}
+
+function makeRepliesHTML(replies) {
+    var repliesHTML = "";
+
+    if (replies.length === 0) {
+        return "";
+    }
+
+    replies.forEach(reply => {
+        repliesHTML += `
+        <div class="reply"">
+            <div class="reply-character ${reply.profileImage}"></div>
+            <p class="reply-text">${reply.content}</p>
+        </div>
+        `;
+    })
+    return `
+    <div class="replies" style="height: 40px">
+        ${repliesHTML}
+    </div>
+    <div class="reply-partition"></div>
+    `;
+}
+
+function makeReplyBoxHTML(profileImage) {
+    return `
+    <div class="reply-bar">
+        <div class="reply-character ${profileImage}"></div>
+        <div class="comment-textarea">
+            <textarea class="comment-text" placeholder="답글을 입력해주세요." spellcheck="false"></textarea>
+        </div>
+        <a class="sticker-btn" href="#">
+            <img class="sticker-icon" src="/images/diary/view-page/sticker-icon.png">            
+        </a>
+        <a class="write-comment-btn" href="#">
+            <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
+        </a>
+    </div>
+    `;
 }
 
 function processByCommentVertical(character, comment) {
@@ -142,7 +175,7 @@ function createCommentArrow(character, comment) {
     return commentArrow;
 }
 
-function adjustCommentBoxHeight() {
+function adjustHeightByWrittenComment() {
     const commentText = document.querySelector(".written-comment-text");
     const comment = document.querySelector(".comment");
     const commentBox = document.querySelector(".comment-box");
@@ -155,6 +188,36 @@ function adjustCommentBoxHeight() {
     comment.style.height = `${parseInt(comment.style.height) + (commentText.offsetHeight - 25)}px`;
     commentBox.style.height = `${parseInt(commentBox.style.height) + (commentText.offsetHeight - 25)}px`;
     writtenComment.style.height = `${parseInt(writtenComment.style.height) + (commentText.offsetHeight - 25)}px`;
+}
+
+function adjustHeightByWrittenReplies() {
+    const repliesText = document.querySelectorAll(".reply-text");
+
+    if (repliesText.length > 0) {
+        const replies = document.querySelector(".replies");
+        const replyBox = document.querySelector(".reply-box");
+        const comment = document.querySelector(".comment");
+        const commentBox = document.querySelector(".comment-box");
+        var repliesHeight = 0;
+
+        repliesText.forEach(reply => {
+            console.log(reply.parentElement);
+            repliesHeight += reply.offsetHeight;
+            reply.parentElement.style.height = `${reply.offsetHeight}px`;
+            if (reply.offsetHeight === 20) {
+                repliesHeight += 20;
+                reply.parentElement.style.height = `${parseInt(reply.parentElement.style.height) + 20}px`;
+            }
+        });
+        if (repliesHeight > 120) {
+            repliesHeight = 120;
+            replies.style.overflow = "scroll";
+        }
+        replies.style.height = `${parseInt(replies.style.height) + (repliesHeight - 40)}px`;
+        replyBox.style.height = `${parseInt(replyBox.style.height) + (repliesHeight + 24)}px`;
+        comment.style.height = `${parseInt(comment.style.height) + (repliesHeight + 24)}px`;
+        commentBox.style.height = `${parseInt(commentBox.style.height) + (repliesHeight + 24)}px`;
+    }
 }
 
 async function clickWriteCommentBtn(event) {

@@ -253,8 +253,8 @@
 }
 
 .reply-character {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     flex-shrink: 0;
 
     float: left;
@@ -266,7 +266,7 @@
 .reply-bar .comment-textarea {
     width: 148px;
     height: 24px;
-    top: 11px;
+    top: 9px;
     left: -2px;
 }
 
@@ -312,4 +312,44 @@
     font-weight: 400;
     line-height: 20px; /* 166.667% */
     letter-spacing: 0.12px
+}
+
+.replies {
+    width: 260px;
+    height: 60px;
+
+    margin: 10px 5px 10px 5px;
+}
+
+.reply {
+    width: 260px;
+    height: 40px;
+}
+
+.replies .reply-character {
+    margin: 3px 10px 0 5px;
+}
+
+.reply-text {
+    width: 211px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    flex-shrink: 0;
+    float: left;
+    margin: 0 0 3px 0;
+
+    color: #5A402A;
+    font-family: "HancomMalangMalang-Regular";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 166.667% */
+}
+
+.reply-partition {
+    width: 250px;
+    height: 1px;
+    border-top: 1px dashed #5A402A;;
 }
