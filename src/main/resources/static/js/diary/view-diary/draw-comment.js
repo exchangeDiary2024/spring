@@ -1,17 +1,20 @@
 const STANDARD_TOP = 137;
 const STANDARD_LEFT = 76;
-const MAXIMUM_REPLY_BOX_HEIGHT = 127;
+const MAXIMUM_REPLY_BOX_HEIGHT = 100;
+const COMMON_BAR_HTML = `
+<div class="comment-textarea" style="height: 24px;">
+    <textarea class="comment-text" placeholder="댓글을 입력해주세요." spellcheck="false" rows="1" style="height: 20px;"></textarea>
+</div>
+<a class="write-comment-btn" href="#">
+    <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
+</a>
+<a class="sticker-btn" href="#">
+    <img class="sticker-icon">
+</a>
+`;
 const COMMENT_BAR_HTML = `
 <div class="comment-bar">
-    <div class="comment-textarea">
-        <textarea class="comment-text" placeholder="댓글을 입력해주세요." spellcheck="false"></textarea>
-    </div>
-    <a class="sticker-btn" href="#">
-        <img class="sticker-icon">
-    </a>
-    <a class="write-comment-btn" href="#">
-        <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
-    </a>
+    ${COMMON_BAR_HTML}
 </div>
 `;
 
@@ -41,8 +44,8 @@ function addEventInCommentBox() {
         document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", clickWriteReplyBtn);
         document.addEventListener("click", clickWrittenCommentOutside);
     }
-
     document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
+    document.querySelector(".comment-text").addEventListener("input", inputComment);
     addEventToStickers();
 }
 
@@ -130,17 +133,9 @@ function makeReplyBoxHTML(profileImage) {
     return `
     <div class="reply-bar">
         <div class="reply-character">
-                <img class="reply-character-icon ${profileImage}">
-            </div>
-        <div class="comment-textarea">
-            <textarea class="comment-text" placeholder="답글을 입력해주세요." spellcheck="false"></textarea>
+            <img class="reply-character-icon ${profileImage}">
         </div>
-        <a class="sticker-btn" href="#">
-            <img class="sticker-icon" src="/images/diary/view-page/sticker-icon.png">            
-        </a>
-        <a class="write-comment-btn" href="#">
-            <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
-        </a>
+        ${COMMON_BAR_HTML}
     </div>
     `;
 }
@@ -156,8 +151,12 @@ function processByCommentVertical(character, comment) {
 
 function processByCommentHorizontal(character, comment) {
     const commentArrow = createCommentArrow(character, comment);
+    var standard = STANDARD_TOP;
 
-    if (character.offsetTop < STANDARD_TOP) {
+    if (!commentBtn.classList.contains("selected")) {
+        standard -= 18;
+    }
+    if (character.offsetTop < standard) {
         comment.style.top = `${character.offsetTop + character.offsetHeight}px`;
         comment.classList.add("top");
         comment.prepend(commentArrow);
@@ -186,13 +185,13 @@ function adjustHeightByWrittenComment() {
     const commentBox = document.querySelector(".comment-box");
     const writtenComment = document.querySelector(".written-comment");
 
-    if (commentText.offsetHeight > 60) {
-        commentText.style.height = "60px";
+    if (commentText.offsetHeight > 40) {
+        commentText.style.height = "40px";
         commentText.style.overflow = "scroll";
     }
-    comment.style.height = `${parseInt(comment.style.height) + (commentText.offsetHeight - 25)}px`;
-    commentBox.style.height = `${parseInt(commentBox.style.height) + (commentText.offsetHeight - 25)}px`;
-    writtenComment.style.height = `${parseInt(writtenComment.style.height) + (commentText.offsetHeight - 25)}px`;
+    comment.style.height = `${parseInt(comment.style.height) + (commentText.offsetHeight - 26)}px`;
+    commentBox.style.height = `${parseInt(commentBox.style.height) + (commentText.offsetHeight - 26)}px`;
+    writtenComment.style.height = `${parseInt(writtenComment.style.height) + (commentText.offsetHeight - 26)}px`;
 }
 
 function adjustHeightByWrittenReplies() {
