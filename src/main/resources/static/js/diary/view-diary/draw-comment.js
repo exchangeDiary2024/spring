@@ -205,7 +205,6 @@ function adjustHeightByWrittenReplies() {
         var repliesHeight = 0;
 
         repliesText.forEach(reply => {
-            console.log(reply.parentElement);
             repliesHeight += reply.offsetHeight;
             reply.parentElement.style.height = `${reply.offsetHeight}px`;
             if (reply.offsetHeight === 20) {
@@ -245,7 +244,7 @@ function writeComment() {
         },
         body: JSON.stringify({
             "xCoordinate": parseFloat(commentCharacter.style.left) + 5,
-            "yCoordinate": parseFloat(commentCharacter.style.top) + 26,
+            "yCoordinate": parseFloat(commentCharacter.style.top) - 18,
             "page": currentPage.index,
             "content": commentText.value
         })
