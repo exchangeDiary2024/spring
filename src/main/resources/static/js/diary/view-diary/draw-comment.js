@@ -217,7 +217,7 @@ function adjustHeightByWrittenReplies() {
                 const reply = replyText.parentElement;
 
                 reply.style.height = `${replyText.offsetHeight}px`;
-                reply.style.marginBottom = "0";
+                reply.style.marginBottom = "2px";
             }
             lastReplyHeight = replyText.offsetHeight;
         });
