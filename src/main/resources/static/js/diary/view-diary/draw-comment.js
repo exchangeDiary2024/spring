@@ -1,6 +1,8 @@
 const STANDARD_TOP = 137;
 const STANDARD_LEFT = 76;
 const MAXIMUM_REPLY_BOX_HEIGHT = 100;
+const NEWLINE_REGEX = /^[\r\n]*$/;
+const WHITESPACE_REGEX = /^\s+$/;
 const COMMON_BAR_HTML = `
 <div class="comment-textarea" style="height: 24px;">
     <textarea class="comment-text" placeholder="댓글을 입력해주세요." spellcheck="false" rows="1" style="height: 20px;"></textarea>
@@ -261,16 +263,21 @@ function getIncreaseOfHeight(repliesHeight, lastReplyHeight) {
 async function clickWriteCommentBtn(event) {
     event.preventDefault();
 
-    const result = await openConfirmModal("댓글을 작성할까요?", "댓글은 수정, 삭제가 불가하니 신중하게 결정해 주세요.");
+    const commentText = document.querySelector(".comment-text");
 
-    if (result) {
-        writeComment();
+    if (NEWLINE_REGEX.test(commentText.value) || WHITESPACE_REGEX.test(commentText.value)) {
+        openNotificationModal("error", ["댓글 내용을 입력해주세요."], 2000);
+    } else {
+        const result = await openConfirmModal("댓글을 작성할까요?", "댓글은 수정, 삭제가 불가하니 신중하게 결정해 주세요.");
+
+        if (result) {
+            writeComment(commentText.value);
+        }
     }
 }
 
-function writeComment() {
+function writeComment(commentContent) {
     const commentCharacter = document.querySelector(".write .comment-character");
-    const commentText = document.querySelector(".comment-text");
 
     fetch(`/api${currentPathName}/comments`, {
         method: "POST",
@@ -281,7 +288,7 @@ function writeComment() {
             "xCoordinate": parseFloat(commentCharacter.style.left) + 5,
             "yCoordinate": parseFloat(commentCharacter.style.top) - 18,
             "page": currentPage.index,
-            "content": commentText.value
+            "content": commentContent
         })
     })
         .then(async response => {
@@ -298,16 +305,21 @@ function writeComment() {
 async function clickWriteReplyBtn(event) {
     event.preventDefault();
 
-    const result = await openConfirmModal("답글을 작성할까요?", "답글은 수정, 삭제가 불가하니 신중하게 결정해 주세요.");
+    const commentText = document.querySelector(".reply-bar .comment-text");
 
-    if (result) {
-        writeReply();
+    if (NEWLINE_REGEX.test(commentText.value) || WHITESPACE_REGEX.test(commentText.value)) {
+        openNotificationModal("error", ["답글 내용을 입력해주세요."], 2000);
+    } else {
+        const result = await openConfirmModal("답글을 작성할까요?", "답글은 수정, 삭제가 불가하니 신중하게 결정해 주세요.");
+
+        if (result) {
+            writeReply(commentText.value);
+        }
     }
 }
 
-function writeReply() {
+function writeReply(replyContent) {
     const commentCharacter = document.querySelector(".note-content .comment-character:not(.written)");
-    const commentText = document.querySelector(".reply-bar .comment-text");
     const commentId = commentCharacter.classList[2];
 
     fetch(`/api${currentPathName}/comments/${commentId}/replies`, {
@@ -316,7 +328,7 @@ function writeReply() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            "content": commentText.value
+            "content": replyContent
         })
     })
         .then(async response => {
