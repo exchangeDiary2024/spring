@@ -1,5 +1,6 @@
 const STANDARD_TOP = 137;
 const STANDARD_LEFT = 76;
+const MAXIMUM_REPLY_BOX_HEIGHT = 127;
 const COMMENT_BAR_HTML = `
 <div class="comment-bar">
     <div class="comment-textarea">
@@ -83,7 +84,7 @@ async function makeWrittenCommentBoxHTML() {
         <p class="written-comment-text">${comment.content}</p>
     </div>
      <div class="reply-box" style="height: 44px;">
-             ${repliesHTML}
+        ${repliesHTML}
         ${replyBarHTML}
     </div>
     `;
@@ -109,7 +110,7 @@ function makeRepliesHTML(replies) {
 
     replies.forEach(reply => {
         repliesHTML += `
-        <div class="reply"">
+        <div class="reply">
             <div class="reply-character">
                 <img class="reply-character-icon ${reply.profileImage}">
             </div>
@@ -118,7 +119,7 @@ function makeRepliesHTML(replies) {
         `;
     })
     return `
-    <div class="replies" style="height: 40px">
+    <div class="replies">
         ${repliesHTML}
     </div>
     <div class="reply-partition"></div>
@@ -198,29 +199,64 @@ function adjustHeightByWrittenReplies() {
     const repliesText = document.querySelectorAll(".reply-text");
 
     if (repliesText.length > 0) {
-        const replies = document.querySelector(".replies");
         const replyBox = document.querySelector(".reply-box");
         const comment = document.querySelector(".comment");
         const commentBox = document.querySelector(".comment-box");
         var repliesHeight = 0;
+        var lastReplyHeight;
 
-        repliesText.forEach(reply => {
-            repliesHeight += reply.offsetHeight;
-            reply.parentElement.style.height = `${reply.offsetHeight}px`;
-            if (reply.offsetHeight === 20) {
-                repliesHeight += 20;
-                reply.parentElement.style.height = `${parseInt(reply.parentElement.style.height) + 20}px`;
+        repliesText.forEach(replyText => {
+            repliesHeight += replyText.offsetHeight;
+
+            if (replyText.offsetHeight === 20) {
+                repliesHeight += 7;
+
+                replyText.parentElement.style.height = `${replyText.offsetHeight + 7}px`;
+            } else {
+                replyText.style.marginTop = "-3px";
+
+                const reply = replyText.parentElement;
+
+                reply.style.height = `${replyText.offsetHeight}px`;
+                reply.style.marginBottom = "0";
             }
+            lastReplyHeight = replyText.offsetHeight;
         });
-        if (repliesHeight > 120) {
-            repliesHeight = 120;
-            replies.style.overflow = "scroll";
-        }
-        replies.style.height = `${parseInt(replies.style.height) + (repliesHeight - 40)}px`;
-        replyBox.style.height = `${parseInt(replyBox.style.height) + (repliesHeight + 24)}px`;
-        comment.style.height = `${parseInt(comment.style.height) + (repliesHeight + 24)}px`;
-        commentBox.style.height = `${parseInt(commentBox.style.height) + (repliesHeight + 24)}px`;
+
+        changeRepliesStyle(repliesHeight, lastReplyHeight);
+        const gap = getIncreaseOfHeight(repliesHeight, lastReplyHeight);
+
+        replyBox.style.height = `${parseInt(replyBox.style.height) + gap}px`;
+        comment.style.height = `${parseInt(comment.style.height) + gap}px`;
+        commentBox.style.height = `${parseInt(commentBox.style.height) + gap}px`;
     }
+}
+
+function changeRepliesStyle(repliesHeight, lastReplyHeight) {
+    const replies = document.querySelector(".replies");
+
+    if (lastReplyHeight === 20 && repliesHeight < MAXIMUM_REPLY_BOX_HEIGHT) {
+        replies.style.height = `${repliesHeight + 7}px`;
+    } else {
+        replies.style.height = `${repliesHeight}px`;
+    }
+    if (repliesHeight > MAXIMUM_REPLY_BOX_HEIGHT) {
+        replies.style.overflow = "scroll";
+        replies.style.height = `${MAXIMUM_REPLY_BOX_HEIGHT}px`;
+    }
+    if (lastReplyHeight > 20) {
+        replies.style.marginBottom = "6px";
+    }
+}
+
+function getIncreaseOfHeight(repliesHeight, lastReplyHeight) {
+    if (repliesHeight >= MAXIMUM_REPLY_BOX_HEIGHT) {
+         return MAXIMUM_REPLY_BOX_HEIGHT + 24;
+    }
+    if (lastReplyHeight > 20) {
+        return repliesHeight + 23;
+    }
+    return repliesHeight + 30;
 }
 
 async function clickWriteCommentBtn(event) {

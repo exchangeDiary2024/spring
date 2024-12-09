@@ -96,29 +96,31 @@
 
 .replies {
     width: 260px;
-    height: 60px;
+    height: 27px;
 
-    margin: 10px 5px 10px 5px;
+    margin: 13px 5px 3px 5px;
 }
 
 .reply {
     width: 260px;
-    height: 40px;
+    height: 27px;
+
+    margin-bottom: 7px;
 }
 
 .replies .reply-character {
-    margin: 3px 10px 0 5px;
+    margin: 0 10px 0 5px;
 }
 
 .reply-text {
-    width: 211px;
+    width: 213px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: left;
     flex-shrink: 0;
     float: left;
-    margin: 0 0 3px 0;
+    margin: 0;
 
     color: #5A402A;
     font-family: "HancomMalangMalang-Regular";
