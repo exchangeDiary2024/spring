@@ -52,28 +52,27 @@ function inputComment(event) {
     event.preventDefault();
 
     const commentText = document.querySelector(".comment-text");
-    const gap = event.currentTarget.scrollHeight - previousCommentTextHeight;
-    var maximumHeight = 60;
-
+    var maximumHeight = 44;
     if (commentBtn.classList.contains("selected")) {
-        maximumHeight = 120;
+        maximumHeight = 104;
     }
 
     if (event.currentTarget.scrollHeight > maximumHeight) {
         commentText.style.overflow = "scroll";
-        commentText.style.height = `${maximumHeight - 20}px`;
+        commentText.style.height = `${maximumHeight - 4}px`;
+        previousCommentTextHeight = maximumHeight;
         return ;
     }
 
     commentText.style.height = "auto";
     commentText.style.height = `${event.currentTarget.scrollHeight}px`;
 
-    if (gap !== 0) {
-        previousCommentTextHeight = event.currentTarget.scrollHeight;
+    if (event.currentTarget.scrollHeight !== previousCommentTextHeight) {
+        const gap = event.currentTarget.scrollHeight > previousCommentTextHeight ? 20 : -20;
 
         commentText.style.overflow = "none";
+        previousCommentTextHeight = event.currentTarget.scrollHeight;
 
-        const replyBox = document.querySelector(".reply-box");
         const comment = document.querySelector(".comment");
         const commentBox = document.querySelector(".comment-box");
         const commentTextarea = document.querySelector(".comment-textarea");
@@ -82,7 +81,8 @@ function inputComment(event) {
         commentBox.style.height = `${parseInt(commentBox.style.height) + gap}px`;
         commentTextarea.style.height = `${parseInt(commentTextarea.style.height) + gap}px`;
 
-        if (replyBox) {
+        if (!commentBtn.classList.contains("selected")) {
+            const replyBox = document.querySelector(".reply-box");
             replyBox.style.height = `${parseInt(replyBox.style.height) + gap}px`;
         }
     }
