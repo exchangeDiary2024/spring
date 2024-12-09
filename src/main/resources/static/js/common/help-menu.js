@@ -1,9 +1,11 @@
 const helpIcon = document.querySelector(".help-icon");
 const tooltip = document.querySelector(".tooltip");
 const helpButton = document.querySelector(".help-btn");
-const inquiryButton = document.querySelector(".inquiry-btn");
 const helpImageContainer = document.querySelector(".help-image-container");
 const helpImage = document.querySelector(".help-image");
+const inquiryButton = document.querySelector(".inquiry-btn");
+const inquiryPopupContainer = document.querySelector(".inquiry-popup-container");
+const overlay = document.querySelector(".overlay");
 
 let helpImagePath = '';
 
@@ -65,4 +67,15 @@ function showHelpImage(helpImagePath) {
 
 helpImageContainer.addEventListener('click', () => {
     helpImageContainer.classList.add('hidden');
+});
+
+inquiryButton.addEventListener('click', () => {
+    inquiryPopupContainer.classList.remove('hidden');
+    overlay.classList.remove("hidden");
+    tooltip.classList.add('hidden');
+});
+
+overlay.addEventListener("click", () => {
+    inquiryPopupContainer.classList.add("hidden");
+    overlay.classList.add("hidden");
 });
