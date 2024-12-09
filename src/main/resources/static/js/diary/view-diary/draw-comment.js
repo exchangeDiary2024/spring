@@ -3,20 +3,17 @@ const STANDARD_LEFT = 76;
 const MAXIMUM_REPLY_BOX_HEIGHT = 100;
 const NEWLINE_REGEX = /^[\r\n]*$/;
 const WHITESPACE_REGEX = /^\s+$/;
-const COMMON_BAR_HTML = `
-<div class="comment-textarea" style="height: 24px;">
-    <textarea class="comment-text" placeholder="댓글을 입력해주세요." spellcheck="false" rows="1" style="height: 20px;"></textarea>
-</div>
-<a class="write-comment-btn" href="#">
-    <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
-</a>
-<a class="sticker-btn" href="#">
-    <img class="sticker-icon">
-</a>
-`;
 const COMMENT_BAR_HTML = `
 <div class="comment-bar">
-    ${COMMON_BAR_HTML}
+    <div class="comment-textarea" style="height: 24px;">
+        <textarea class="comment-text" placeholder="댓글을 입력해주세요." spellcheck="false" rows="1" style="height: 20px;"></textarea>
+    </div>
+    <a class="write-comment-btn" href="#">
+        <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
+    </a>
+    <a class="sticker-btn" href="#">
+        <img class="sticker-icon">
+    </a>
 </div>
 `;
 
@@ -137,7 +134,15 @@ function makeReplyBoxHTML(profileImage) {
         <div class="reply-character">
             <img class="reply-character-icon ${profileImage}">
         </div>
-        ${COMMON_BAR_HTML}
+        <div class="comment-textarea" style="height: 24px;">
+            <textarea class="comment-text" placeholder="답글을 입력해주세요." spellcheck="false" rows="1" style="height: 20px;"></textarea>
+        </div>
+        <a class="write-comment-btn" href="#">
+            <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
+        </a>
+        <a class="sticker-btn" href="#">
+            <img class="sticker-icon">
+        </a>
     </div>
     `;
 }
