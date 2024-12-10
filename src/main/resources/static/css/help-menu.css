@@ -27,6 +27,8 @@
     gap: 8px;
     z-index: 1;
     padding-top: 5px;
+    flex-wrap: nowrap;
+    overflow: hidden;
 }
 
 .tooltip-buttons button {
@@ -37,6 +39,10 @@
     background: #FFF;
     color: #333;
     cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .help-icon {
@@ -48,7 +54,6 @@
 }
 
 .help-btn {
-    text-align: center;
     font-family: "HancomMalangMalang-Regular";
     font-size: 16px;
     font-style: normal;
@@ -57,7 +62,6 @@
 }
 
 .inquiry-btn {
-    text-align: center;
     font-family: "HancomMalangMalang-Regular";
     font-size: 16px;
     font-style: normal;
@@ -135,8 +139,9 @@
     padding: 20px 0;
 }
 
-.popup-content .email:hover {
-    text-decoration: underline;
+.profile-icons {
+    width: 313px;
+    display: inline-block;
 }
 
 .overlay {
