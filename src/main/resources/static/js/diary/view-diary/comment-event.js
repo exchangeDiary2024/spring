@@ -30,6 +30,8 @@ function clickWriteCommentOutside(event) {
 }
 
 function clickWrittenCommentOutside(event) {
+    event.preventDefault();
+
     const viewCommentCharacter = document.querySelector(".note-content .comment-character:not(.written)");
     const comment = document.querySelector(".comment");
 
