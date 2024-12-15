@@ -2,13 +2,13 @@ const STICKER_BAR_HTML = `
 <div class="sticker-bar">
     <table class="stickers">
         <tr>
-            <td><a class="sticker" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/heart-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/angry-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon v-sign" src="/images/diary/view-page/sticker/v-sign-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon troubled" src="/images/diary/view-page/sticker/troubled-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon sad" src="/images/diary/view-page/sticker/sad-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon eating" src="/images/diary/view-page/sticker/eating-icon.png"/></a></td>
-            <td><a class="sticker" href="#"><img class="sticker-icon question" src="/images/diary/view-page/sticker/question-icon.png"/></a></td>
+            <td><a class="sticker heart" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/heart-icon.png"/></a></td>
+            <td><a class="sticker angry" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/angry-icon.png"/></a></td>
+            <td><a class="sticker v-sign" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/v-sign-icon.png"/></a></td>
+            <td><a class="sticker troubled" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/troubled-icon.png"/></a></td>
+            <td><a class="sticker sad" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/sad-icon.png"/></a></td>
+            <td><a class="sticker eating" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/eating-icon.png"/></a></td>
+            <td><a class="sticker question" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/question-icon.png"/></a></td>
         </tr>
     </table>
 </div>
@@ -45,5 +45,9 @@ function addEventToStickers() {
 function clickStickerIcon(event) {
     event.preventDefault();
 
-    // todo: 클릭시 스티커 생성됨
+    const textarea = document.querySelector(".comment-text");
+
+    textarea.value += `(${event.currentTarget.classList[1]})`;
+    adjustCommentBoxHeightByTextarea();
+    textarea.focus();
 }

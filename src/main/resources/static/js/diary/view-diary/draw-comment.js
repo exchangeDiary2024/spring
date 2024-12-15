@@ -44,7 +44,7 @@ function addEventInCommentBox() {
         document.addEventListener("click", clickWrittenCommentOutside);
     }
     document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
-    document.querySelector(".comment-text").addEventListener("input", inputComment);
+    document.querySelector(".comment-text").addEventListener("input", adjustCommentBoxHeightByTextarea);
     addEventToStickers();
 }
 

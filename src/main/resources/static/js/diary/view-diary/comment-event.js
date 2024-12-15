@@ -50,16 +50,14 @@ function isInModal(target) {
     return notificationModal.contains(target) || confirmModal.contains(target);
 }
 
-function inputComment(event) {
-    event.preventDefault();
-
+function adjustCommentBoxHeightByTextarea() {
     const commentText = document.querySelector(".comment-text");
     var maximumHeight = 44;
     if (commentBtn.classList.contains("selected")) {
         maximumHeight = 104;
     }
 
-    if (event.currentTarget.scrollHeight > maximumHeight) {
+    if (commentText.scrollHeight > maximumHeight) {
         commentText.style.overflow = "scroll";
         commentText.style.height = `${maximumHeight - 4}px`;
         previousCommentTextHeight = maximumHeight;
@@ -67,13 +65,13 @@ function inputComment(event) {
     }
 
     commentText.style.height = "auto";
-    commentText.style.height = `${event.currentTarget.scrollHeight}px`;
+    commentText.style.height = `${commentText.scrollHeight}px`;
 
-    if (event.currentTarget.scrollHeight !== previousCommentTextHeight) {
-        const gap = event.currentTarget.scrollHeight > previousCommentTextHeight ? 20 : -20;
+    if (commentText.scrollHeight !== previousCommentTextHeight) {
+        const gap = commentText.scrollHeight > previousCommentTextHeight ? 20 : -20;
 
         commentText.style.overflow = "none";
-        previousCommentTextHeight = event.currentTarget.scrollHeight;
+        previousCommentTextHeight = commentText.scrollHeight;
 
         const comment = document.querySelector(".comment");
         const commentBox = document.querySelector(".comment-box");
