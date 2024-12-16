@@ -73,15 +73,15 @@
 }
 
 .sticker-character {
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
 
     display: inline-block;
 }
 
 .sticker-character .character-icon {
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
 }

@@ -60,8 +60,8 @@ function clickStickerIcon(event) {
 
 function makeStickerCharacterHTML(stickerType) {
     return `<div class="sticker-character">
-        <img src="${IMAGE_FROM_STICKER_TYPE[stickerType]}" class="character-icon">
-    </div>`;
+                <img src="${IMAGE_FROM_STICKER_TYPE[stickerType]}" class="character-icon">
+            </div>`;
 }
 
 function moveCursorToEnd(element) {

@@ -65,14 +65,15 @@ function adjustCommentBoxHeightByTextarea() {
         return ;
     }
 
+    const commentTextHeight = parseInt(commentText.scrollHeight / 20) * 20;
     commentText.style.height = "auto";
-    commentText.style.height = `${commentText.scrollHeight}px`;
+    commentText.style.height = `${commentTextHeight}px`;
 
-    if (commentText.scrollHeight !== previousCommentTextHeight) {
-        const gap = commentText.scrollHeight > previousCommentTextHeight ? 20 : -20;
+    if (commentTextHeight > 0 && commentTextHeight !== previousCommentTextHeight) {
+        const gap = commentTextHeight > previousCommentTextHeight ? 20 : -20;
 
         commentText.style.overflow = "none";
-        previousCommentTextHeight = commentText.scrollHeight;
+        previousCommentTextHeight = commentTextHeight;
 
         const comment = document.querySelector(".comment");
         const commentBox = document.querySelector(".comment-box");
