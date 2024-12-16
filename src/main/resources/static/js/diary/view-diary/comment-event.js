@@ -68,6 +68,7 @@ function addEventInCommentTextarea() {
     const textarea = document.querySelector(".comment-textarea");
 
     textarea.addEventListener("input", (event) => {
+        adjustCommentBoxHeightByTextarea();
         moveCursorToEnd(textarea);
     });
 
@@ -75,7 +76,7 @@ function addEventInCommentTextarea() {
         if (event.key === "Enter") {
             event.preventDefault();
             textarea.appendChild(document.createElement("br"));
-            textarea.appendChild(document.createElement("br"));
+            adjustCommentBoxHeightByTextarea();
             moveCursorToEnd(textarea);
         }
         if (textarea.innerHTML === "<br>") {
@@ -83,8 +84,6 @@ function addEventInCommentTextarea() {
         }
     });
     textarea.addEventListener("keyup", () => {
-        adjustCommentBoxHeightByTextarea();
-
         console.log(`innerHTML: ${textarea.innerHTML}`)
     })
 }
@@ -101,6 +100,7 @@ function moveCursorToEnd(element) {
 
 function adjustCommentBoxHeightByTextarea() {
     const commentText = document.querySelector(".comment-textarea");
+    commentText.style.height = "auto";
     const commentTextHeight = parseInt(commentText.scrollHeight / 20) * 20;
     const maximumHeight = commentBtn.classList.contains("selected") ? 100 : 40;
 
@@ -111,7 +111,6 @@ function adjustCommentBoxHeightByTextarea() {
         return ;
     }
 
-    commentText.style.height = "auto";
     commentText.style.height = `${commentTextHeight}px`;
 
     if (commentTextHeight > 0 && commentTextHeight !== previousCommentTextHeight) {
