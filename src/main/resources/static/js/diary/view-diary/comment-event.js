@@ -1,6 +1,6 @@
 const notificationModal = document.querySelector(".notification-modal");
 const confirmModal = document.querySelector(".confirm-modal");
-let previousCommentTextHeight = 20;
+let previousCommentTextHeight = 24;
 
 function clickCommentBlur(event) {
     if (commentBtn.classList.contains("selected") && event.target.classList.contains("comment-blur")) {
@@ -24,7 +24,7 @@ function clickWriteCommentOutside(event) {
         commentArea.classList.remove("write");
         commentBtn.classList.remove("selected");
         comment.remove();
-        previousCommentTextHeight = 20;
+        previousCommentTextHeight = 24;
         document.removeEventListener("click", clickWriteCommentOutside);
     }
 }
@@ -41,7 +41,7 @@ function clickWrittenCommentOutside(event) {
     ) {
         viewCommentCharacter.classList.add("written");
         document.querySelector(".comment").remove();
-        previousCommentTextHeight = 20;
+        previousCommentTextHeight = 24;
         document.removeEventListener("click", clickWrittenCommentOutside);
     }
 }
@@ -68,20 +68,29 @@ function addEventInCommentTextarea() {
     const textarea = document.querySelector(".comment-textarea");
 
     textarea.addEventListener("input", (event) => {
+        // if (textarea.lastChild.nodeType !== Node.TEXT_NODE) {
+        //     textarea.appendChild(document.createTextNode("\u200B"));
+        // }
         adjustCommentBoxHeightByTextarea();
         moveCursorToEnd(textarea);
     });
 
     textarea.addEventListener("keydown", (event) => {
+        if (event.key === "Backspace"
+            && (textarea.lastChild && textarea.lastChild.nodeType === Node.ELEMENT_NODE)
+        ) {
+            event.preventDefault();
+            textarea.lastChild.remove();
+        }
         if (event.key === "Enter") {
             event.preventDefault();
             textarea.appendChild(document.createElement("br"));
-            adjustCommentBoxHeightByTextarea();
-            moveCursorToEnd(textarea);
         }
         if (textarea.innerHTML === "<br>") {
             textarea.innerHTML = "";
         }
+        adjustCommentBoxHeightByTextarea();
+        moveCursorToEnd(textarea);
     });
     textarea.addEventListener("keyup", () => {
         console.log(`innerHTML: ${textarea.innerHTML}`)
@@ -101,8 +110,8 @@ function moveCursorToEnd(element) {
 function adjustCommentBoxHeightByTextarea() {
     const commentText = document.querySelector(".comment-textarea");
     commentText.style.height = "auto";
-    const commentTextHeight = parseInt(commentText.scrollHeight / 20) * 20;
-    const maximumHeight = commentBtn.classList.contains("selected") ? 100 : 40;
+    const commentTextHeight = parseInt(commentText.scrollHeight / 20) * 20 + 4;
+    const maximumHeight = commentBtn.classList.contains("selected") ? 104 : 44;
 
     if (commentTextHeight > maximumHeight) {
         commentText.style.overflow = "scroll";
