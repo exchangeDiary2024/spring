@@ -1,6 +1,6 @@
 const notificationModal = document.querySelector(".notification-modal");
 const confirmModal = document.querySelector(".confirm-modal");
-let previousCommentTextHeight = 24;
+let previousCommentTextHeight = 20;
 
 function clickCommentBlur(event) {
     if (commentBtn.classList.contains("selected") && event.target.classList.contains("comment-blur")) {
@@ -24,7 +24,7 @@ function clickWriteCommentOutside(event) {
         commentArea.classList.remove("write");
         commentBtn.classList.remove("selected");
         comment.remove();
-        previousCommentTextHeight = 24;
+        previousCommentTextHeight = 20;
         document.removeEventListener("click", clickWriteCommentOutside);
     }
 }
@@ -41,7 +41,7 @@ function clickWrittenCommentOutside(event) {
     ) {
         viewCommentCharacter.classList.add("written");
         document.querySelector(".comment").remove();
-        previousCommentTextHeight = 24;
+        previousCommentTextHeight = 20;
         document.removeEventListener("click", clickWrittenCommentOutside);
     }
 }
@@ -51,15 +51,16 @@ function isInModal(target) {
 }
 
 function adjustCommentBoxHeightByTextarea() {
-    const commentText = document.querySelector(".comment-text");
-    var maximumHeight = 44;
+    const commentText = document.querySelector(".comment-textarea");
+
+    var maximumHeight = 40;
     if (commentBtn.classList.contains("selected")) {
-        maximumHeight = 104;
+        maximumHeight = 100;
     }
 
     if (commentText.scrollHeight > maximumHeight) {
         commentText.style.overflow = "scroll";
-        commentText.style.height = `${maximumHeight - 4}px`;
+        commentText.style.height = `${maximumHeight}px`;
         previousCommentTextHeight = maximumHeight;
         return ;
     }
@@ -75,11 +76,9 @@ function adjustCommentBoxHeightByTextarea() {
 
         const comment = document.querySelector(".comment");
         const commentBox = document.querySelector(".comment-box");
-        const commentTextarea = document.querySelector(".comment-textarea");
 
         comment.style.height = `${parseInt(comment.style.height) + gap}px`;
         commentBox.style.height = `${parseInt(commentBox.style.height) + gap}px`;
-        commentTextarea.style.height = `${parseInt(commentTextarea.style.height) + gap}px`;
 
         if (!commentBtn.classList.contains("selected")) {
             const replyBox = document.querySelector(".reply-box");

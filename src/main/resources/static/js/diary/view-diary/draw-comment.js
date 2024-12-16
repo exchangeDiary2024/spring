@@ -5,9 +5,7 @@ const NEWLINE_REGEX = /^[\r\n]*$/;
 const WHITESPACE_REGEX = /^\s+$/;
 const COMMENT_BAR_HTML = `
 <div class="comment-bar">
-    <div class="comment-textarea" style="height: 24px;">
-        <textarea class="comment-text" placeholder="댓글을 입력해주세요." spellcheck="false" rows="1" style="height: 20px;"></textarea>
-    </div>
+    <div class="comment-textarea" contenteditable="true" spellcheck="false" style="height: 20px;"></div>
     <a class="write-comment-btn" href="#">
         <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
     </a>
@@ -44,7 +42,22 @@ function addEventInCommentBox() {
         document.addEventListener("click", clickWrittenCommentOutside);
     }
     document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
-    document.querySelector(".comment-text").addEventListener("input", adjustCommentBoxHeightByTextarea);
+
+    const textarea = document.querySelector(".comment-textarea");
+
+    textarea.addEventListener("input", (event) => {
+        moveCursorToEnd(event.currentTarget);
+        adjustCommentBoxHeightByTextarea();
+    });
+    textarea.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            textarea.appendChild(document.createElement("br"))
+            textarea.appendChild(document.createTextNode("\u200B"));
+            moveCursorToEnd(textarea)
+            adjustCommentBoxHeightByTextarea();
+        }
+    });
     addEventToStickers();
 }
 
@@ -134,9 +147,7 @@ function makeReplyBoxHTML(profileImage) {
         <div class="reply-character">
             <img class="reply-character-icon ${profileImage}">
         </div>
-        <div class="comment-textarea" style="height: 24px;">
-            <textarea class="comment-text" placeholder="답글을 입력해주세요." spellcheck="false" rows="1" style="height: 20px;"></textarea>
-        </div>
+        <div class="comment-textarea" contenteditable="true" spellcheck="false" style="height: 20px;"></div>
         <a class="write-comment-btn" href="#">
             <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
         </a>
@@ -268,7 +279,7 @@ function getIncreaseOfHeight(repliesHeight, lastReplyHeight) {
 async function clickWriteCommentBtn(event) {
     event.preventDefault();
 
-    const commentText = document.querySelector(".comment-text");
+    const commentText = document.querySelector(".comment-textarea");
 
     if (NEWLINE_REGEX.test(commentText.value) || WHITESPACE_REGEX.test(commentText.value)) {
         openNotificationModal("error", ["댓글 내용을 입력해주세요."], 2000);
@@ -310,7 +321,7 @@ function writeComment(commentContent) {
 async function clickWriteReplyBtn(event) {
     event.preventDefault();
 
-    const commentText = document.querySelector(".reply-bar .comment-text");
+    const commentText = document.querySelector(".reply-bar .comment-textarea");
 
     if (NEWLINE_REGEX.test(commentText.value) || WHITESPACE_REGEX.test(commentText.value)) {
         openNotificationModal("error", ["답글 내용을 입력해주세요."], 2000);

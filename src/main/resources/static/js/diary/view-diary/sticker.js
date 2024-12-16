@@ -13,6 +13,9 @@ const STICKER_BAR_HTML = `
     </table>
 </div>
 `;
+const IMAGE_FROM_STICKER_TYPE = {
+    "heart": "/images/diary/view-page/sticker/heart-purple-character.png",
+};
 
 function clickStickerBtn(event) {
     event.preventDefault();
@@ -45,9 +48,29 @@ function addEventToStickers() {
 function clickStickerIcon(event) {
     event.preventDefault();
 
-    const textarea = document.querySelector(".comment-text");
+    const textarea = document.querySelector(".comment-textarea");
+    const stickerType = event.currentTarget.classList[1];
 
-    textarea.value += `(${event.currentTarget.classList[1]})`;
+    textarea.innerHTML += makeStickerCharacterHTML(stickerType);
+    textarea.appendChild(document.createTextNode("\u200B"));
+
+    moveCursorToEnd(textarea);
     adjustCommentBoxHeightByTextarea();
-    textarea.focus();
+}
+
+function makeStickerCharacterHTML(stickerType) {
+    return `<div class="sticker-character">
+        <img src="${IMAGE_FROM_STICKER_TYPE[stickerType]}" class="character-icon">
+    </div>`;
+}
+
+function moveCursorToEnd(element) {
+    const range = document.createRange();
+    const selection = window.getSelection();
+
+    range.selectNodeContents(element);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    element.focus();
 }

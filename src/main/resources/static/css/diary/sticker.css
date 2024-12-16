@@ -71,3 +71,17 @@
     height: 22px;
     flex-shrink: 0;
 }
+
+.sticker-character {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+
+    display: inline-block;
+}
+
+.sticker-character .character-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
