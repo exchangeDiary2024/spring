@@ -14,7 +14,12 @@ const STICKER_BAR_HTML = `
 </div>
 `;
 const IMAGE_FROM_STICKER_TYPE = {
-    "heart": "/images/diary/view-page/sticker/heart-purple-character.png",
+    "angry": "/images/diary/view-page/sticker/angry-sticker.png",
+    "v-sign": "/images/diary/view-page/sticker/v-sign-sticker.png",
+    "troubled": "/images/diary/view-page/sticker/troubled-sticker.png",
+    "sad": "/images/diary/view-page/sticker/sad-sticker.png",
+    "eating": "/images/diary/view-page/sticker/eating-sticker.png",
+    "question": "/images/diary/view-page/sticker/question-sticker.png"
 };
 
 function clickStickerBtn(event) {
@@ -59,7 +64,17 @@ function clickStickerIcon(event) {
 }
 
 function makeStickerCharacterHTML(stickerType) {
-    return `<div class="sticker-character">
-                <img src="${IMAGE_FROM_STICKER_TYPE[stickerType]}" class="character-icon">
+    const character = getCharacter();
+
+    return `<div class="sticker-character ${stickerType}">
+                <img class="character-icon ${character}">
+                <img class="sticker">
             </div>`;
+}
+
+function getCharacter() {
+    if (commentBtn.classList.contains("selected")) {
+        return document.querySelector(".comment-area .comment-character").classList[1];
+    }
+    return document.querySelector(".reply-bar .reply-character-icon").classList[1];
 }

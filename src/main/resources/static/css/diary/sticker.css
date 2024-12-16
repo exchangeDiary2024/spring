@@ -73,16 +73,109 @@
 }
 
 .sticker-character {
-    width: 20px;
+    width: 22px;
     height: 20px;
     flex-shrink: 0;
 
     display: inline-block;
     vertical-align: middle;
+    position: relative;
+    top: -1px;
 }
 
 .sticker-character .character-icon {
-    width: 20px;
-    height: 20px;
+    position: relative;
+    left: 1px;
+    top: 1px;
+
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
+}
+
+.sticker-character.heart {
+    width: 24px;
+    left: 1px;
+}
+
+.heart .sticker {
+    content: url("/images/diary/view-page/sticker/heart-sticker.png");
+
+    width: 22px;
+    height: 16px;
+
+    position: absolute;
+    left: -1px;
+    top: 3px;
+}
+
+.angry .sticker {
+    content: url("/images/diary/view-page/sticker/angry-sticker.png");
+
+    width: 9px;
+    height: 9px;
+
+    position: absolute;
+    right: -1px;
+    top: 1px;
+}
+
+.v-sign .sticker {
+    content: url("/images/diary/view-page/sticker/v-sign-sticker.png");
+
+    width: 9px;
+    height: 9px;
+
+    position: absolute;
+    right: -1px;
+    bottom: 0;
+}
+
+.troubled .sticker {
+    content: url("/images/diary/view-page/sticker/troubled-sticker.png");
+
+    width: 8px;
+    height: 12px;
+
+    position: absolute;
+    right: 3px;
+    top: 0;
+}
+
+.sad .sticker {
+    content: url("/images/diary/view-page/sticker/sad-sticker.png");
+
+    width: 7px;
+    height: 9px;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.sticker-character.eating {
+    width: 24px;
+    left: 1px;
+}
+
+.eating .sticker {
+    content: url("/images/diary/view-page/sticker/eating-sticker.png");
+
+    width: 23px;
+    height: 14px;
+
+    position: absolute;
+    left: -1px;
+    bottom: 0;
+}
+
+.question .sticker {
+    content: url("/images/diary/view-page/sticker/question-sticker.png");
+
+    width: 7px;
+    height: 10px;
+
+    position: absolute;
+    right: -1px;
+    bottom: 0;
 }
