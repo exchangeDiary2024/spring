@@ -50,22 +50,67 @@ function isInModal(target) {
     return notificationModal.contains(target) || confirmModal.contains(target);
 }
 
+function addEventInCommentBox() {
+    if (commentBtn.classList.contains("selected")) {
+        document.querySelector(".comment-bar .write-comment-btn").addEventListener("click", clickWriteCommentBtn);
+        document.addEventListener("click", clickWriteCommentOutside);
+    } else {
+        document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", clickWriteReplyBtn);
+        document.addEventListener("click", clickWrittenCommentOutside);
+    }
+    document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
+
+    addEventInCommentTextarea();
+    addEventToStickers();
+}
+
+function addEventInCommentTextarea() {
+    const textarea = document.querySelector(".comment-textarea");
+
+    textarea.addEventListener("input", (event) => {
+        moveCursorToEnd(textarea);
+    });
+
+    textarea.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            textarea.appendChild(document.createElement("br"));
+            textarea.appendChild(document.createElement("br"));
+            moveCursorToEnd(textarea);
+        }
+        if (textarea.innerHTML === "<br>") {
+            textarea.innerHTML = "";
+        }
+    });
+    textarea.addEventListener("keyup", () => {
+        adjustCommentBoxHeightByTextarea();
+
+        console.log(`innerHTML: ${textarea.innerHTML}`)
+    })
+}
+
+function moveCursorToEnd(element) {
+    const range = document.createRange();
+    const selection = window.getSelection();
+
+    range.selectNodeContents(element);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
+
 function adjustCommentBoxHeightByTextarea() {
     const commentText = document.querySelector(".comment-textarea");
+    const commentTextHeight = parseInt(commentText.scrollHeight / 20) * 20;
+    const maximumHeight = commentBtn.classList.contains("selected") ? 100 : 40;
 
-    var maximumHeight = 40;
-    if (commentBtn.classList.contains("selected")) {
-        maximumHeight = 100;
-    }
-
-    if (commentText.scrollHeight > maximumHeight) {
+    if (commentTextHeight > maximumHeight) {
         commentText.style.overflow = "scroll";
         commentText.style.height = `${maximumHeight}px`;
         previousCommentTextHeight = maximumHeight;
         return ;
     }
 
-    const commentTextHeight = parseInt(commentText.scrollHeight / 20) * 20;
     commentText.style.height = "auto";
     commentText.style.height = `${commentTextHeight}px`;
 

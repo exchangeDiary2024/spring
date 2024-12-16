@@ -63,14 +63,3 @@ function makeStickerCharacterHTML(stickerType) {
                 <img src="${IMAGE_FROM_STICKER_TYPE[stickerType]}" class="character-icon">
             </div>`;
 }
-
-function moveCursorToEnd(element) {
-    const range = document.createRange();
-    const selection = window.getSelection();
-
-    range.selectNodeContents(element);
-    range.collapse(false);
-    selection.removeAllRanges();
-    selection.addRange(range);
-    element.focus();
-}

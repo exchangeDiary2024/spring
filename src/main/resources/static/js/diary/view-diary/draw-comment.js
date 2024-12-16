@@ -33,34 +33,6 @@ async function drawComment(characterColor, commentParent) {
     addEventInCommentBox();
 }
 
-function addEventInCommentBox() {
-    if (commentBtn.classList.contains("selected")) {
-        document.querySelector(".comment-bar .write-comment-btn").addEventListener("click", clickWriteCommentBtn);
-        document.addEventListener("click", clickWriteCommentOutside);
-    } else {
-        document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", clickWriteReplyBtn);
-        document.addEventListener("click", clickWrittenCommentOutside);
-    }
-    document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
-
-    const textarea = document.querySelector(".comment-textarea");
-
-    textarea.addEventListener("input", (event) => {
-        moveCursorToEnd(event.currentTarget);
-        adjustCommentBoxHeightByTextarea();
-    });
-    textarea.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            textarea.appendChild(document.createElement("br"))
-            textarea.appendChild(document.createTextNode("\u200B"));
-            moveCursorToEnd(textarea)
-            adjustCommentBoxHeightByTextarea();
-        }
-    });
-    addEventToStickers();
-}
-
 async function createComment() {
     const comment = document.createElement("div");
 
