@@ -68,7 +68,7 @@ async function makeWrittenCommentBoxHTML() {
 
     return `
     <div class="written-comment" style="height: 50px;">
-        <p class="written-comment-text">${comment.content}</p>
+        <div class="written-comment-text">${comment.content}</div>
     </div>
      <div class="reply-box" style="height: 44px;">
         ${repliesHTML}
@@ -101,7 +101,7 @@ function makeRepliesHTML(replies) {
             <div class="reply-character">
                 <img class="reply-character-icon ${reply.profileImage}">
             </div>
-            <p class="reply-text">${reply.content}</p>
+            <div class="reply-text">${reply.content}</div>
         </div>
         `;
     })
@@ -197,8 +197,8 @@ function adjustHeightByWrittenReplies() {
         repliesText.forEach(replyText => {
             repliesHeight += replyText.offsetHeight;
 
-            if (replyText.offsetHeight === 20) {
-                repliesHeight += 7;
+            if (parseInt(replyText.offsetHeight / 20) === 1) {
+                repliesHeight += (27 - replyText.offsetHeight);
 
                 replyText.parentElement.style.height = `${replyText.offsetHeight + 7}px`;
             } else {
@@ -259,7 +259,7 @@ async function clickWriteCommentBtn(event) {
         const result = await openConfirmModal("댓글을 작성할까요?", "댓글은 수정, 삭제가 불가하니 신중하게 결정해 주세요.");
 
         if (result) {
-            writeComment(commentText.value);
+            writeComment(commentText.innerHTML);
         }
     }
 }
@@ -301,7 +301,7 @@ async function clickWriteReplyBtn(event) {
         const result = await openConfirmModal("답글을 작성할까요?", "답글은 수정, 삭제가 불가하니 신중하게 결정해 주세요.");
 
         if (result) {
-            writeReply(commentText.value);
+            writeReply(commentText.innerHTML);
         }
     }
 }

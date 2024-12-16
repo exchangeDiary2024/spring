@@ -109,9 +109,6 @@
 
 .reply-text {
     width: 213px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     text-align: left;
     flex-shrink: 0;
     float: left;
