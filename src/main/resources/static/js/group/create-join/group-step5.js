@@ -13,7 +13,7 @@ const STEP5_HTML_CREATE = `
                         <div style="width: 375px; height: 106px; position: relative; top: 56px;">
                             <img src="/images/group/create-join-page/heart.svg" style="width: 144.2px; height: 70px;">
                             <div style="width: 200px; height: 34px;">
-                                <a href="#" class="copy-code">눌러서 코드 복사하기</a>
+                                <a href="javascript:void(0);" class="copy-code">눌러서 코드 복사하기</a>
                             </div>
                         </div>`;
 

@@ -4,7 +4,7 @@ const STEP1_HTML = `
                     </div>
                     <div class="group">
                         <div class="join-btn">
-                            <a href="#" class="join circle">
+                            <a href="javascript:void(0);" class="join circle">
                                 <div style="width: 64px; height: 90px;">
                                     <img class="group-icon">
                                     <span class="text group-text">그룹 가입</span>
@@ -12,7 +12,7 @@ const STEP1_HTML = `
                             </a>
                         </div>
                         <div class="create-btn">
-                            <a href="#" class="create circle">
+                            <a href="javascript:void(0);" class="create circle">
                                 <div style="width: 64px; height: 90px;">
                                     <img class="group-icon">
                                     <span class="text group-text">그룹 생성</span>
