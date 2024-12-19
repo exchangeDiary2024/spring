@@ -197,11 +197,19 @@ function adjustHeightByWrittenReplies() {
         repliesText.forEach(replyText => {
             repliesHeight += replyText.offsetHeight;
 
+            console.log(replyText.offsetHeight);
             if (parseInt(replyText.offsetHeight / 20) === 1) {
-                repliesHeight += (27 - replyText.offsetHeight);
+                if (replyText.offsetHeight === 20) {
+                    repliesHeight += 7;
+                } else {
+                    repliesHeight += 14;
+                }
 
                 replyText.parentElement.style.height = `${replyText.offsetHeight + 7}px`;
             } else {
+                if (replyText.offsetHeight % 20 !== 0) {
+                    repliesHeight += 6;
+                }
                 replyText.style.marginTop = "-3px";
 
                 const reply = replyText.parentElement;
