@@ -3,6 +3,7 @@ var prevPage = null;
 var nextPage = null;
 var startX = 0;
 var slideType = "stop";
+var isActive = true;
 
 function addSlideEventByNoteContent(noteContent) {
     noteContent.addEventListener("touchstart", slidePage);
@@ -11,34 +12,40 @@ function addSlideEventByNoteContent(noteContent) {
 }
 
 function slidePage(event) {
-    startX = event.touches[0].pageX;
-    slideType = "stop";
-    changeTransformTime(prevPage, "0s");
-    changeTransformTime(nextPage, "0s");
-    changeTransformTime(currentPage, "0s");
+    if (isActive) {
+        startX = event.touches[0].pageX;
+        slideType = "stop";
+        changeTransformTime(prevPage, "0s");
+        changeTransformTime(nextPage, "0s");
+        changeTransformTime(currentPage, "0s");
+    }
 }
 
 function movePage(event) {
-    const changedX = -(startX - event.touches[0].pageX);
+    if (isActive) {
+        const changedX = -(startX - event.touches[0].pageX);
 
-    changeTransformX(prevPage, -window.innerWidth + changedX);
-    changeTransformX(nextPage, window.innerWidth + changedX);
-    changeTransformX(currentPage, changedX);
+        changeTransformX(prevPage, -window.innerWidth + changedX);
+        changeTransformX(nextPage, window.innerWidth + changedX);
+        changeTransformX(currentPage, changedX);
 
-    slideType = "stop";
-    if (changedX <= -100 && nextPage !== null) {
-        slideType = "next";
-    }
-    if (changedX >= 100 && prevPage !== null) {
-        slideType = "prev";
+        slideType = "stop";
+        if (changedX <= -100 && nextPage !== null) {
+            slideType = "next";
+        }
+        if (changedX >= 100 && prevPage !== null) {
+            slideType = "prev";
+        }
     }
 }
 
 function changePageBySlide(slideType, time) {
-    changePage(getPageBySlideType(slideType));
-    changeTransform(prevPage, time, "-100%");
-    changeTransform(nextPage, time, "100%");
-    changeTransform(currentPage, time, "0%");
+    if (isActive) {
+        changePage(getPageBySlideType(slideType));
+        changeTransform(prevPage, time, "-100%");
+        changeTransform(nextPage, time, "100%");
+        changeTransform(currentPage, time, "0%");
+    }
 }
 
 function changeTransformTime(page, time) {

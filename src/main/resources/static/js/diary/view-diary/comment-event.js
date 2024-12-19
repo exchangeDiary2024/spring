@@ -10,6 +10,21 @@ function clickCommentBlur(event) {
     }
 }
 
+function addEventInCommentBox() {
+    if (commentBtn.classList.contains("selected")) {
+        document.querySelector(".comment-bar .write-comment-btn").addEventListener("click", clickWriteCommentBtn);
+        document.addEventListener("click", clickWriteCommentOutside);
+    } else {
+        isActive = false;
+        document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", clickWriteReplyBtn);
+        document.addEventListener("click", clickWrittenCommentOutside);
+    }
+    document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
+
+    addEventInCommentTextarea();
+    addEventToStickers();
+}
+
 function clickWriteCommentOutside(event) {
     event.preventDefault();
 
@@ -42,26 +57,13 @@ function clickWrittenCommentOutside(event) {
         viewCommentCharacter.classList.add("written");
         document.querySelector(".comment").remove();
         previousCommentTextHeight = 24;
+        isActive = true;
         document.removeEventListener("click", clickWrittenCommentOutside);
     }
 }
 
 function isInModal(target) {
     return notificationModal.contains(target) || confirmModal.contains(target);
-}
-
-function addEventInCommentBox() {
-    if (commentBtn.classList.contains("selected")) {
-        document.querySelector(".comment-bar .write-comment-btn").addEventListener("click", clickWriteCommentBtn);
-        document.addEventListener("click", clickWriteCommentOutside);
-    } else {
-        document.querySelector(".reply-bar .write-comment-btn").addEventListener("click", clickWriteReplyBtn);
-        document.addEventListener("click", clickWrittenCommentOutside);
-    }
-    document.querySelector(".sticker-btn").addEventListener("click", clickStickerBtn);
-
-    addEventInCommentTextarea();
-    addEventToStickers();
 }
 
 function addEventInCommentTextarea() {
