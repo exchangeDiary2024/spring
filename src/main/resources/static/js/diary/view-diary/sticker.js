@@ -13,14 +13,6 @@ const STICKER_BAR_HTML = `
     </table>
 </div>
 `;
-const IMAGE_FROM_STICKER_TYPE = {
-    "angry": "/images/diary/view-page/sticker/angry-sticker.png",
-    "v-sign": "/images/diary/view-page/sticker/v-sign-sticker.png",
-    "troubled": "/images/diary/view-page/sticker/troubled-sticker.png",
-    "sad": "/images/diary/view-page/sticker/sad-sticker.png",
-    "eating": "/images/diary/view-page/sticker/eating-sticker.png",
-    "question": "/images/diary/view-page/sticker/question-sticker.png"
-};
 
 function clickStickerBtn(event) {
     event.preventDefault();
@@ -45,7 +37,7 @@ function clickStickerBtn(event) {
 }
 
 function addEventToStickers() {
-    const stickerBar = document.querySelectorAll(".sticker");
+    const stickerBar = document.querySelectorAll(".sticker-bar .sticker");
 
     stickerBar.forEach(sticker => sticker.addEventListener("click", clickStickerIcon));
 }
