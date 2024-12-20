@@ -49,16 +49,14 @@ function clickStickerIcon(event) {
     const stickerType = event.currentTarget.classList[1];
 
     textarea.innerHTML += makeStickerCharacterHTML(stickerType);
-    textarea.appendChild(document.createTextNode("\u200B"));
 
-    moveCursorToEnd(textarea);
     adjustCommentBoxHeightByTextarea();
 }
 
 function makeStickerCharacterHTML(stickerType) {
     const character = getCharacter();
 
-    return `<div class="sticker-character ${stickerType}">
+    return `<div class="sticker-character ${stickerType}" contenteditable="false">
                 <img class="character-icon ${character}">
                 <img class="sticker">
             </div>`;

@@ -70,33 +70,36 @@ function addEventInCommentTextarea() {
     const textarea = document.querySelector(".comment-textarea");
 
     textarea.addEventListener("input", (event) => {
-        // if (textarea.lastChild.nodeType !== Node.TEXT_NODE) {
-        //     textarea.appendChild(document.createTextNode("\u200B"));
-        // }
         adjustCommentBoxHeightByTextarea();
-        moveCursorToEnd(textarea);
     });
 
     textarea.addEventListener("keydown", (event) => {
-        if (event.key === "Backspace"
-            && (textarea.lastChild && textarea.lastChild.nodeType === Node.ELEMENT_NODE)
-        ) {
-            event.preventDefault();
-            textarea.lastChild.remove();
+        if (isIME(event)) {
+            return;
+        }
+        if (event.key === "Backspace") {
+            if (textarea.lastChild && textarea.lastChild.nodeType === Node.ELEMENT_NODE && textarea.lastElementChild.tagName === "DIV") {
+                event.preventDefault();
+                textarea.lastElementChild.remove();
+            }
+            if (textarea.innerHTML.lastIndexOf("<br>") === textarea.innerHTML.length - 5) {
+                event.preventDefault();
+                textarea.innerHTML = textarea.innerHTML.substring(0, textarea.innerHTML.length - 5);
+                moveCursorToEnd(textarea);
+            }
         }
         if (event.key === "Enter") {
             event.preventDefault();
             textarea.appendChild(document.createElement("br"));
-        }
-        if (textarea.innerHTML === "<br>") {
-            textarea.innerHTML = "";
+            textarea.appendChild(document.createTextNode("\u200B"));
+            moveCursorToEnd(textarea);
         }
         adjustCommentBoxHeightByTextarea();
-        moveCursorToEnd(textarea);
     });
-    textarea.addEventListener("keyup", () => {
-        console.log(`innerHTML: ${textarea.innerHTML}`)
-    })
+}
+
+function isIME(event) {
+    return event.isComposing || event.key === "Process"
 }
 
 function moveCursorToEnd(element) {
