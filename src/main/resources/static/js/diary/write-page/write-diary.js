@@ -1,6 +1,15 @@
 const content = document.querySelector(".content");
 const bottom = document.querySelector(".bottom");
 const pages = [];
+const tooltipText = document.querySelector(".tooltip-text");
+const textList = [
+    "오늘도 스프링을 작성하러 오셨군요➿\ntip! 꼭 오늘 있었던 일이 아니어도 좋아요.",
+    "오늘 스프링에서 만났네요➿\ntip! 친구에게 보내는 편지처럼,\n오늘의 이야기를 가볍게 풀어보세요.",
+    "반가워요. 스프링이 열렸네요➿\ntip! 친구들과 함께했던 추억을 써보세요.",
+    "당신의 이야기를 남겨볼까요➿?\ntip! 궁금해할 질문을 하나 남기면\n댓글로 이야기 나눠볼 수 있어요.",
+    "스프링을 채울 준비가 되었나요➿?\ntip! 꼭 길게 쓰지 않아도 괜찮아요.",
+    "밥 한 끼 같이 먹듯, 스프링에 마음을 나눠요➿\ntip! 오늘 먹었던 음식처럼,\n사소한 이야기도 좋아요."
+];
 
 init();
 
@@ -9,6 +18,7 @@ function init() {
     addEventToWriteBtn();
     makePages();
     addEventSlide();
+    getRandomText();
 }
 
 function drawTodayDate() {
@@ -162,4 +172,9 @@ function getPrevPage() {
         return null
     }
     return pages[currentPage.index - 1];
+}
+
+function getRandomText() {
+    const randomIndex = Math.floor(Math.random() * textList.length);
+    tooltipText.textContent = textList[randomIndex];
 }
