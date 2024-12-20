@@ -36,7 +36,7 @@ function clickStickerBtn(event) {
     }
 }
 
-function addEventToStickers() {
+function addEventToStickerIcons() {
     const stickerBar = document.querySelectorAll(".sticker-bar .sticker");
 
     stickerBar.forEach(sticker => sticker.addEventListener("click", clickStickerIcon));
@@ -50,7 +50,7 @@ function clickStickerIcon(event) {
 
     textarea.innerHTML += makeStickerCharacterHTML(stickerType);
 
-    adjustCommentBoxHeightByTextarea();
+    adjustHeightByTextarea();
 }
 
 function makeStickerCharacterHTML(stickerType) {
