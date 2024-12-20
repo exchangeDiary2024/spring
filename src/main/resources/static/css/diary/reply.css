@@ -67,9 +67,13 @@
 }
 
 .reply-bar .comment-textarea {
-    width: 151px;
+    width: 149px;
     left: 41px;
     bottom: 11px;
+}
+
+.reply-bar .comment-textarea:empty:before {
+    content: "답글을 작성해주세요.";
 }
 
 .reply-bar .sticker-btn {

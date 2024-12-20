@@ -186,6 +186,11 @@
     box-sizing: border-box;
 }
 
+.comment-textarea:empty:before {
+    content: "댓글을 작성해주세요.";
+    color: #767676;
+}
+
 .sticker-btn {
     width: 16px;
     height: 16px;
