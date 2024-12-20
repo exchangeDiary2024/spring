@@ -4,7 +4,7 @@ const MAXIMUM_REPLY_BOX_HEIGHT = 100;
 const NEWLINE_REGEX = /^[\r\n]*$/;
 const WHITESPACE_REGEX = /^\s+$/;
 const COMMENT_COMMENT_BAR_HTML = `
-<div class="comment-textarea" contenteditable="true" spellcheck="false" style="height: 20px;"></div>
+<div class="comment-textarea" contenteditable="true" spellcheck="false" style="height: 24px;"></div>
 <a class="write-comment-btn" href="#">
     <img class="bar-icon" src="/images/diary/write-page/write_icon.svg"/>
 </a>
