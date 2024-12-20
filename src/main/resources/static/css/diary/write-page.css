@@ -135,12 +135,19 @@ textarea.diary-content {
 .tooltip {
     position: relative;
     top: 18px;
-    height: 107px;
+    width: 310px;
+    height: 115px;
+}
+
+.tooltip-img {
+    position: relative;
+    width: 308px;
+    height: 114px;
 }
 
 .tooltip-text {
     position: relative;
-    top: -50px;
+    top: -63px;
     left: 50%;
     transform: translate(-50%, -50%);
     white-space: pre-wrap;

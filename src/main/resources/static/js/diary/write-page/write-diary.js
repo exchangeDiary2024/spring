@@ -2,7 +2,7 @@ const content = document.querySelector(".content");
 const bottom = document.querySelector(".bottom");
 const pages = [];
 const tooltipText = document.querySelector(".tooltip-text");
-const textList = [
+const TEXTLIST = [
     "오늘도 스프링을 작성하러 오셨군요➿\ntip! 꼭 오늘 있었던 일이 아니어도 좋아요.",
     "오늘 스프링에서 만났네요➿\ntip! 친구에게 보내는 편지처럼,\n오늘의 이야기를 가볍게 풀어보세요.",
     "반가워요. 스프링이 열렸네요➿\ntip! 친구들과 함께했던 추억을 써보세요.",
@@ -175,6 +175,6 @@ function getPrevPage() {
 }
 
 function getRandomText() {
-    const randomIndex = Math.floor(Math.random() * textList.length);
-    tooltipText.textContent = textList[randomIndex];
+    const randomIndex = Math.floor(Math.random() * TEXTLIST.length);
+    tooltipText.textContent = TEXTLIST[randomIndex];
 }
