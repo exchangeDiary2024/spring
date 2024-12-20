@@ -16,9 +16,6 @@ function addEventInCommentTextarea() {
                     removeNewLine(event, startContainer);
                 }
             }
-            if (event.key === "Enter") {
-                addNewLine(event, textarea)
-            }
             adjustHeightByTextarea();
         }
     });
@@ -61,21 +58,4 @@ function removeNewLine(event, startContainer) {
         }
         startContainer.remove();
     }
-}
-
-function addNewLine(event, textarea) {
-    event.preventDefault();
-    textarea.appendChild(document.createElement("br"));
-    textarea.appendChild(document.createTextNode("\u200B"));
-    moveCursorToEnd(textarea);
-}
-
-function moveCursorToEnd(element) {
-    const range = document.createRange();
-    const selection = window.getSelection();
-
-    range.selectNodeContents(element);
-    range.collapse(false);
-    selection.removeAllRanges();
-    selection.addRange(range);
 }
