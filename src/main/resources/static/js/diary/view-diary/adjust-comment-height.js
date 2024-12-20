@@ -14,7 +14,7 @@ function adjustHeightByTextarea() {
     commentText.style.height = `${commentTextHeight}px`;
 
     if (commentTextHeight > 0 && commentTextHeight !== previousCommentTextHeight) {
-        const gap = commentTextHeight > previousCommentTextHeight ? 20 : -20;
+        const gap = 20 * parseInt((commentTextHeight - previousCommentTextHeight) / 20);
 
         commentText.style.overflow = "none";
         previousCommentTextHeight = commentTextHeight;
