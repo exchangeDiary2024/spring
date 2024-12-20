@@ -45,12 +45,23 @@ function addEventToStickerIcons() {
 function clickStickerIcon(event) {
     event.preventDefault();
 
-    const textarea = document.querySelector(".comment-textarea");
     const stickerType = event.currentTarget.classList[1];
 
-    textarea.innerHTML += makeStickerCharacterHTML(stickerType);
-
+    addStickerCharacter(stickerType);
     adjustHeightByTextarea();
+}
+
+function addStickerCharacter(stickerType) {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+
+    const template = document.createElement("template");
+    template.innerHTML = makeStickerCharacterHTML(stickerType);
+
+    const stickerElement = template.content.firstChild;
+    range.insertNode(stickerElement);
+    range.setStartAfter(stickerElement);
+    range.setEndAfter(stickerElement);
 }
 
 function makeStickerCharacterHTML(stickerType) {
