@@ -30,6 +30,7 @@ function drawPageBar(diary) {
         const page = { index: index, noteContent: noteContent };
         pages.push(page);
     }
+    drawComments(diary.comments);
     changePage(page);
 }
 
@@ -115,6 +116,53 @@ function makeDiaryPageHTMLContainsImage(image, content) {
         <p class="diary-content">${content}</p>
     </div>
     `;
+}
+
+function drawComments(comments) {
+    const noteContents = document.querySelectorAll(".note-content");
+
+    comments.forEach(comment => {
+        const commentCharacter = document.createElement("a");
+
+        commentCharacter.classList.add("comment-character", comment.profileImage, "written", comment.id);
+        commentCharacter.setAttribute("href", "#");
+        commentCharacter.style.left = `${comment.xCoordinate}px`;
+        commentCharacter.style.top = `${comment.yCoordinate}px`;
+        noteContents[comment.page].appendChild(commentCharacter);
+        commentCharacter.addEventListener("click", clickWrittenComment);
+    });
+}
+
+function clickWrittenComment(event) {
+    event.preventDefault();
+
+    const commentCharacter = event.currentTarget;
+
+    if (commentCharacter.classList.contains("written")) {
+        openWrittenCommentBox(commentCharacter);
+    } else {
+        closeWrittenCommentBox(commentCharacter);
+    }
+}
+
+function openWrittenCommentBox(commentCharacter) {
+    closeSelectedCommentCharacter();
+    commentCharacter.classList.remove("written");
+    drawComment(commentCharacter.classList[1], commentCharacter.parentElement);
+}
+
+function closeWrittenCommentBox(commentCharacter) {
+    commentCharacter.classList.add("written");
+    commentCharacter.parentElement.lastChild.remove();
+    document.removeEventListener("click", clickWrittenCommentOutside);
+}
+
+function closeSelectedCommentCharacter() {
+    const selectedCommentCharacter = document.querySelector(".note-content .comment-character:not(.written)");
+
+    if (selectedCommentCharacter) {
+        closeWrittenCommentBox(selectedCommentCharacter);
+    }
 }
 
 viewDiary();

@@ -5,6 +5,9 @@
     <title>스프링 - 일기 조회</title>
     <link rel="stylesheet" href="/css/diary/diary-common.css" type="text/css">
     <link rel="stylesheet" href="/css/diary/view-page.css" type="text/css">
+    <link rel="stylesheet" href="/css/diary/comment.css" type="text/css">
+    <link rel="stylesheet" href="/css/diary/sticker.css" type="text/css">
+    <link rel="stylesheet" href="/css/diary/reply.css" type="text/css">
 </th:block>
 
 <th:block layout:fragment="content">
@@ -17,8 +20,11 @@
                 <span class="date">[[${diary.createdAt}]]</span>
                 <div class="mood"><img class="mood-icon" th:src="@{/images/diary/write-page/emoji/} + ${diary.todayMood}"></div>
             </div>
+            <a class="comment-btn" href="#">
+                <img class="comment-btn-icon" src="/images/diary/view-page/comment-icon.png">
+            </a>
         </div>
-        <div class="content">
+        <div class="content"    >
             <div class="left-margin"></div>
             <div class="right-margin"></div>
             <div class="note">
@@ -35,12 +41,23 @@
                 </div>
             </div>
         </div>
+        <div class="write-comment">
+            <div class="comment-area"></div>
+        </div>
     </div>
 </th:block>
 
 <th:block layout:fragment="script">
     <script src="/js/diary/view-diary/slide-diary.js"></script>
     <script src="/js/diary/view-diary/view-diary.js"></script>
+    <script src="/js/diary/view-diary/draw-comment-character.js"></script>
+    <script src="/js/diary/view-diary/draw-comment.js"></script>
+    <script src="/js/diary/view-diary/write-comment.js"></script>
+    <script src="/js/diary/view-diary/adjust-comment-height.js"></script>
+    <script src="/js/diary/view-diary/sticker.js"></script>
+    <script src="/js/diary/view-diary/click-comment-outside.js"></script>
+    <script src="/js/diary/view-diary/comment-textarea.js"></script>
+    <script src="/js/diary/view-diary/comment.js"></script>
 </th:block>
 
 </html>
