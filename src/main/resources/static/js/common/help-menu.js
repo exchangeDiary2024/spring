@@ -9,6 +9,10 @@ const overlay = document.querySelector(".overlay");
 
 let helpImagePath = '';
 
+if (window.location.pathname === '/' || window.location.pathname === '/login') {
+    document.querySelector('.help-icon-container').remove();
+}
+
 helpIcon.addEventListener('click', () => {
     tooltip.classList.toggle('hidden');
 });
