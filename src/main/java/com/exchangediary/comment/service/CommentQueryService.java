@@ -6,6 +6,7 @@ import com.exchangediary.comment.ui.dto.response.CommentCreationVerifyResponse;
 import com.exchangediary.diary.domain.entity.Diary;
 import com.exchangediary.diary.service.DiaryAuthorizationService;
 import com.exchangediary.diary.service.DiaryQueryService;
+import com.exchangediary.comment.ui.dto.response.CommentResponse;
 import com.exchangediary.global.exception.ErrorCode;
 import com.exchangediary.global.exception.serviceexception.NotFoundException;
 import com.exchangediary.member.domain.entity.Member;
@@ -40,5 +41,14 @@ public class CommentQueryService {
         diaryAuthorizationService.checkDiaryViewable(member, diary);
         commentAuthorizationService.checkCommentWritable(member, diary);
         return CommentCreationVerifyResponse.from(member.getProfileImage());
+    }
+
+    public CommentResponse viewComment(Long diaryId, Long memberId, Long commentId) {
+        Member member = memberQueryService.findMember(memberId);
+        Diary diary = diaryQueryService.findDiary(diaryId);
+
+        diaryAuthorizationService.checkDiaryViewable(member, diary);
+        Comment comment = findComment(commentId);
+        return CommentResponse.of(comment, member.getProfileImage());
     }
 }

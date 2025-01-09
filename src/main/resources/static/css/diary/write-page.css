@@ -131,3 +131,34 @@ textarea.diary-content {
 .page-circle.current {
     background-color: #5A402A;
 }
+
+.tooltip-box {
+    position: relative;
+    top: 18px;
+    width: 310px;
+    height: 115px;
+}
+
+.tooltip-img {
+    position: relative;
+    width: 308px;
+    height: 114px;
+}
+
+.tooltip-text {
+    position: relative;
+    top: -63px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: pre-wrap;
+    color: #767676;
+    text-align: center;
+    font-variant-numeric: lining-nums proportional-nums;
+    font-feature-settings: 'dlig' on;
+    font-family: "HancomMalangMalang-Regular";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.14px;
+}
