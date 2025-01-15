@@ -33,7 +33,12 @@ function writeComment(commentContent) {
             if (response.status !== 201) {
                 throw await response.json();
             }
-            window.location.reload();
+            removeWriteComment();
+            return response.json();
+        })
+        .then(data => {
+            createCommentCharacter(data);
+            openWrittenCommentBox(document.querySelector(`.note-content .comment-character.${data.profileImage}`));
         })
         .catch(data => {
             openNotificationModal("error", [data.message], 2000);

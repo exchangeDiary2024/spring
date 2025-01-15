@@ -12,13 +12,20 @@ function clickWriteCommentOutside(event) {
         && event.target !== commentCharacter
         && comment && !comment.contains(event.target)
     ) {
-        commentCharacter.remove();
-        commentArea.classList.remove("write");
-        commentBtn.classList.remove("selected");
-        comment.remove();
-        previousCommentTextHeight = 24;
-        document.removeEventListener("click", clickWriteCommentOutside);
+        removeWriteComment(commentCharacter, comment);
     }
+}
+
+function removeWriteComment() {
+    const commentCharacter = document.querySelector(".comment-area .comment-character");
+    const comment = document.querySelector(".comment");
+
+    commentCharacter.remove();
+    commentArea.classList.remove("write");
+    commentBtn.classList.remove("selected");
+    comment.remove();
+    previousCommentTextHeight = 24;
+    document.removeEventListener("click", clickWriteCommentOutside);
 }
 
 function clickWrittenCommentOutside(event) {
