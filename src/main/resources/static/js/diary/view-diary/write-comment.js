@@ -73,7 +73,7 @@ function writeReply(replyContent) {
             if (response.status !== 201) {
                 throw await response.json();
             }
-            window.location.reload();
+            openWrittenCommentBox(commentCharacter);
         })
         .catch(data => {
             openNotificationModal("error", [data.message], 2000);

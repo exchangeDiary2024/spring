@@ -119,18 +119,21 @@ function makeDiaryPageHTMLContainsImage(image, content) {
 }
 
 function drawComments(comments) {
-    const noteContents = document.querySelectorAll(".note-content");
-
     comments.forEach(comment => {
-        const commentCharacter = document.createElement("a");
-
-        commentCharacter.classList.add("comment-character", comment.profileImage, "written", comment.id);
-        commentCharacter.setAttribute("href", "#");
-        commentCharacter.style.left = `${comment.xCoordinate}px`;
-        commentCharacter.style.top = `${comment.yCoordinate}px`;
-        noteContents[comment.page].appendChild(commentCharacter);
-        commentCharacter.addEventListener("click", clickWrittenComment);
+        createCommentCharacter(comment);
     });
+}
+
+function createCommentCharacter(comment) {
+    const noteContents = document.querySelectorAll(".note-content");
+    const commentCharacter = document.createElement("a");
+
+    commentCharacter.classList.add("comment-character", comment.profileImage, "written", comment.id);
+    commentCharacter.setAttribute("href", "#");
+    commentCharacter.style.left = `${comment.xCoordinate}px`;
+    commentCharacter.style.top = `${comment.yCoordinate}px`;
+    noteContents[comment.page].appendChild(commentCharacter);
+    commentCharacter.addEventListener("click", clickWrittenComment);
 }
 
 function clickWrittenComment(event) {
