@@ -8,6 +8,13 @@ const inquiryPopupContainer = document.querySelector(".inquiry-popup-container")
 const overlay = document.querySelector(".overlay");
 
 let helpImagePath = '';
+let currentImageIndex = 0;
+const diaryViewImages = [
+    '/images/common/help-menu/help-image/help-diary-view.svg',
+    '/images/common/help-menu/help-image/help-diary-view-new-comment.svg',
+    '/images/common/help-menu/help-image/help-diary-view-comment-write.svg',
+    '/images/common/help-menu/help-image/help-diary-view-reply.svg'
+];
 
 if (window.location.pathname === '/' || window.location.pathname === '/login') {
     document.querySelector('.help-icon-container').remove();
@@ -36,7 +43,8 @@ helpButton.addEventListener('click', () => {
     } else if (diaryWriteRegexp.test(pathname)) {
         helpImagePath = '/images/common/help-menu/help-image/help-diary-write.svg';
     } else if (diaryViewRegexp.test(pathname)) {
-        helpImagePath = '/images/common/help-menu/help-image/help-diary-view.svg';
+        helpImagePath = diaryViewImages[currentImageIndex];
+        currentImageIndex++;
     } else if (stepContent.classList.contains("step1")) {
         helpImagePath = '/images/common/help-menu/help-image/help-group-step1.svg';
     } else if (stepContent.classList.contains("step2-create")) {
@@ -70,7 +78,16 @@ function showHelpImage(helpImagePath) {
 }
 
 helpImageContainer.addEventListener('click', () => {
-    helpImageContainer.classList.add('hidden');
+    if (currentImageIndex >= diaryViewImages.length) {
+        currentImageIndex = 0;
+    }
+    if (currentImageIndex !== 0) {
+        showHelpImage(diaryViewImages[currentImageIndex])
+        currentImageIndex++;
+    }
+    else {
+        helpImageContainer.classList.add('hidden');
+    }
 });
 
 inquiryButton.addEventListener('click', () => {
