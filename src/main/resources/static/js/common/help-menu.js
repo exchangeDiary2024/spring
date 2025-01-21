@@ -10,10 +10,10 @@ const overlay = document.querySelector(".overlay");
 let helpImagePath = '';
 let currentImageIndex = 0;
 const diaryViewImages = [
-    '/images/common/help-menu/help-image/help-diary-view.svg',
-    '/images/common/help-menu/help-image/help-diary-view-new-comment.svg',
-    '/images/common/help-menu/help-image/help-diary-view-comment-write.svg',
-    '/images/common/help-menu/help-image/help-diary-view-reply.svg'
+    '/images/common/help-menu/help-image/help-diary-view.png',
+    '/images/common/help-menu/help-image/help-diary-view-new-comment.png',
+    '/images/common/help-menu/help-image/help-diary-view-comment-write.png',
+    '/images/common/help-menu/help-image/help-diary-view-reply.png'
 ];
 
 if (window.location.pathname === '/' || window.location.pathname === '/login') {

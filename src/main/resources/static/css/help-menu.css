@@ -82,6 +82,11 @@
     z-index: 30;
 }
 
+.help-image {
+    width: 375px;
+    height: 667px;
+}
+
 .inquiry-popup-container {
     position: fixed;
     left: 0;
