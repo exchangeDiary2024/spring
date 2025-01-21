@@ -41,33 +41,34 @@ helpButton.addEventListener('click', () => {
     if (monthlyRegexp.test(pathname)) {
         showHelpMonthly();
     } else if (diaryWriteRegexp.test(pathname)) {
-        helpImagePath = '/images/common/help-menu/help-image/help-diary-write.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-diary-write.png';
     } else if (diaryViewRegexp.test(pathname)) {
         helpImagePath = diaryViewImages[currentImageIndex];
         currentImageIndex++;
     } else if (stepContent.classList.contains("step1")) {
-        helpImagePath = '/images/common/help-menu/help-image/help-group-step1.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-step1.png';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-step1.png';
     } else if (stepContent.classList.contains("step2-create")) {
-        helpImagePath = '/images/common/help-menu/help-image/help-group-create-step2.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-create-step2.png';
     } else if (stepContent.classList.contains("step2-join")) {
-        helpImagePath = '/images/common/help-menu/help-image/help-group-join-step2.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-join-step2.png';
     } else if (stepContent.classList.contains("step3")) {
-        helpImagePath = '/images/common/help-menu/help-image/help-group-step3.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-step3.png';
     } else if (stepContent.classList.contains("step4")) {
-        helpImagePath = '/images/common/help-menu/help-image/help-group-step4.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-step4.png';
     } else if (stepContent.classList.contains("step5-create")) {
-        helpImagePath = '/images/common/help-menu/help-image/help-group-create-step5.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-create-step5.png';
     } else if (stepContent.classList.contains("step5-join")) {
-        helpImagePath = '/images/common/help-menu/help-image/help-group-join-step5.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-join-step5.png';
     }
     showHelpImage(helpImagePath);
 });
 
 function showHelpMonthly() {
     if (groupMenu.classList.contains("blur")) {
-        helpImagePath = '/images/common/help-menu/help-image/help-group-menu.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-group-menu.png';
     } else {
-        helpImagePath = '/images/common/help-menu/help-image/help-monthly.svg';
+        helpImagePath = '/images/common/help-menu/help-image/help-monthly.png';
     }
 }
 
