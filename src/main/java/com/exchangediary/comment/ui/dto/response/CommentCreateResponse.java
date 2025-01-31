@@ -11,7 +11,7 @@ public record CommentCreateResponse(
         Double xCoordinate,
         Double yCoordinate
 ) {
-    public static CommentCreateResponse from(Comment comment, String profileImage) {
+    public static CommentCreateResponse of(Comment comment, String profileImage) {
         return CommentCreateResponse.builder()
                 .id(comment.getId())
                 .page(comment.getPage())
