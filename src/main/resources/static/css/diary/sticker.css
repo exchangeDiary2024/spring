@@ -40,19 +40,29 @@
     margin: 13px 6px 10px 7px;
 }
 
-.v-sign .sticker-icon {
-    width: 20px;
+.heart .sticker-icon {
+    width: 22px;
     height: 20px;
+}
+
+.angry .sticker-icon {
+    width: 26px;
+    height: 26px;
+}
+
+.v-sign .sticker-icon {
+    width: 18px;
+    height: 21px;
     flex-shrink: 0;
     margin-bottom: 11px;
 }
 
 .troubled .sticker-icon {
-    width: 20px;
-    height: 30px;
+    width: 30px;
+    height: 38px;
     flex-shrink: 0;
     margin-left: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 0;
 }
 
 .sad .sticker-icon {
@@ -62,12 +72,12 @@
 }
 
 .eating .sticker-icon {
-    width: 30px;
+    width: 36px;
     flex-shrink: 0;
 }
 
 .question .sticker-icon {
-    width: 15px;
+    width: 17px;
     height: 22px;
     flex-shrink: 0;
 }
@@ -99,7 +109,7 @@
 }
 
 .heart .sticker {
-    content: url("/images/diary/view-page/sticker/heart-sticker.png");
+    content: url("/images/diary/sticker/heart-sticker.png");
 
     width: 22px;
     height: 16px;
@@ -110,7 +120,7 @@
 }
 
 .angry .sticker {
-    content: url("/images/diary/view-page/sticker/angry-sticker.png");
+    content: url("/images/diary/sticker/angry-sticker.png");
 
     width: 9px;
     height: 9px;
@@ -121,7 +131,7 @@
 }
 
 .v-sign .sticker {
-    content: url("/images/diary/view-page/sticker/v-sign-sticker.png");
+    content: url("/images/diary/sticker/v-sign-sticker.png");
 
     width: 9px;
     height: 9px;
@@ -132,7 +142,7 @@
 }
 
 .troubled .sticker {
-    content: url("/images/diary/view-page/sticker/troubled-sticker.png");
+    content: url("/images/diary/sticker/troubled-sticker.png");
 
     width: 8px;
     height: 12px;
@@ -143,7 +153,7 @@
 }
 
 .sad .sticker {
-    content: url("/images/diary/view-page/sticker/sad-sticker.png");
+    content: url("/images/diary/sticker/sad-sticker.png");
 
     width: 7px;
     height: 9px;
@@ -159,7 +169,7 @@
 }
 
 .eating .sticker {
-    content: url("/images/diary/view-page/sticker/eating-sticker.png");
+    content: url("/images/diary/sticker/eating-sticker.png");
 
     width: 23px;
     height: 14px;
@@ -170,7 +180,7 @@
 }
 
 .question .sticker {
-    content: url("/images/diary/view-page/sticker/question-sticker.png");
+    content: url("/images/diary/sticker/question-sticker.png");
 
     width: 7px;
     height: 10px;

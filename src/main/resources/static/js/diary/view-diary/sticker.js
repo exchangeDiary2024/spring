@@ -2,13 +2,13 @@ const STICKER_BAR_HTML = `
 <div class="sticker-bar">
     <table class="stickers">
         <tr>
-            <td><a class="sticker heart" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/heart-icon.png"/></a></td>
-            <td><a class="sticker angry" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/angry-icon.png"/></a></td>
-            <td><a class="sticker v-sign" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/v-sign-icon.png"/></a></td>
-            <td><a class="sticker troubled" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/troubled-icon.png"/></a></td>
-            <td><a class="sticker sad" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/sad-icon.png"/></a></td>
-            <td><a class="sticker eating" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/eating-icon.png"/></a></td>
-            <td><a class="sticker question" href="#"><img class="sticker-icon" src="/images/diary/view-page/sticker/question-icon.png"/></a></td>
+            <td><a class="sticker heart" href="#"><img class="sticker-icon" src="/images/diary/sticker/heart-icon.png"/></a></td>
+            <td><a class="sticker angry" href="#"><img class="sticker-icon" src="/images/diary/sticker/angry-icon.png"/></a></td>
+            <td><a class="sticker v-sign" href="#"><img class="sticker-icon" src="/images/diary/sticker/v-sign-icon.png"/></a></td>
+            <td><a class="sticker troubled" href="#"><img class="sticker-icon" src="/images/diary/sticker/troubled-icon.png"/></a></td>
+            <td><a class="sticker sad" href="#"><img class="sticker-icon" src="/images/diary/sticker/sad-icon.png"/></a></td>
+            <td><a class="sticker eating" href="#"><img class="sticker-icon" src="/images/diary/sticker/eating-icon.png"/></a></td>
+            <td><a class="sticker question" href="#"><img class="sticker-icon" src="/images/diary/sticker/question-icon.png"/></a></td>
         </tr>
     </table>
 </div>
