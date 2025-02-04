@@ -91,6 +91,7 @@
     vertical-align: middle;
     position: relative;
     top: -1px;
+    pointer-events : none;
 }
 
 .sticker-character .character-icon {
