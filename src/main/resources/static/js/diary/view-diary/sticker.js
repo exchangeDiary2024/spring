@@ -60,6 +60,10 @@ function addStickerCharacter(stickerType) {
 
     const stickerElement = template.content.firstChild;
     range.insertNode(stickerElement);
+
+    const space = document.createTextNode("\u200B");
+    stickerElement.parentNode.insertBefore(space, stickerElement.nextSibling);
+
     range.setStartAfter(stickerElement);
     range.setEndAfter(stickerElement);
 }
