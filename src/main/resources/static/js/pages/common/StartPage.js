@@ -1,62 +1,63 @@
-import ImageUtil from "../../common/ImageUtil.js";
+import ImageUtil from "../../common/ImageUtil.js"
 import Component from "../../components/Component.js";
 
 export default class StartPage extends Component {
-  template() {
-    return `
-    <div class="background" style="background-image: url('/images/start-page/background.png'); background-size: 100dvw 100dvh;">
-        <img class="logo"/>
-        <div class="title-box">
-            <span class="text spring" >스프링</span>
-        </div>
-    </div>
-    `;
-  }
+    setup() {
+        window.location.hash = "";
+        const logo_images = [
+            "/images/start-page/logo.png"
+        ];
+        ImageUtil.preLoadImage(logo_images);
 
-  mounted() {
-    loadPages();
-  }
-}
-
-function loadPages() {
-    window.location.hash = "";
-
-    const logo = document.querySelector(".logo");
-    const logo_images = [
-        "/images/start-page/line.gif",
-        "/images/start-page/logo.png"
-    ];
-
-    ImageUtil.preLoadImage(logo_images);
-
-    let isAnimationComplete = false;
-
-    setTimeout(() => {
-        logo.src = "/images/start-page/line.gif";
-    }, 10);
-
-    setTimeout(() => {
-        logo.classList.add("end");
-        isAnimationComplete = true;
-    }, 2400);
-
-    document.addEventListener("click", () => {
-        if (isAnimationComplete) {
-            window.location.hash = getHash();
-        } else {
-            logo.classList.add("end");
-            isAnimationComplete = true;
+        this.$state = {
+            animationState: "",
+            logoUrl: `/images/start-page/line.gif?${Math.random()}`
         }
-    });
-}
+    }
 
-function getHash() {
-    const userData = {};
-    if (true) {
-        return "/login";
+    setEvent() {
+        this.addEvent("click", ".background", () => {
+            if (this.$state.animationState === "end") {
+                window.location.hash = this.getHash();
+            } else {
+                this.endAnimation();
+            }
+        })
     }
-    if (userData.hasGroup) {
-        return `/group/${userData.groupId}`;
+
+    template() {
+        return `
+        <div class="background" style="background-image: url('/images/start-page/background.png'); background-size: 100dvw 100dvh;">
+            <img class="logo ${this.$state.animationState}" src="${this.$state.logoUrl}"/>
+            <div class="title-box">
+                <span class="text spring" >스프링</span>
+            </div>
+        </div>
+        `;
     }
-    return "/";
+    
+    mounted() {
+        setTimeout(() => { this.endAnimation() }, 2400);
+    }
+
+    endAnimation() {
+        if (this.$state.animationState != "end") {
+            this.setState({ animationState: "end" });
+        }
+    }
+
+    getHash() {
+        const userData = {
+            shouldLogin: false,
+            groupId: ""
+        };
+        if (userData.shouldLogin) {
+            return "/login";
+        }
+        if (userData.groupId === "") {
+            return `/group`;
+        }
+        this.$props = { groupId: userData.groupId };
+        return "/";
+    }
 }

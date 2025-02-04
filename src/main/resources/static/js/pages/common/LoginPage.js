@@ -1,5 +1,5 @@
 import Component from "../../components/Component.js";
-import { requestNotificationPermission } from "../../fcm/setup.js";
+import { KAKAO_REDIRECT_URI, KAKAO_CLIENT_ID } from "../../common/env.js";
 
 export default class LoginPage extends Component {
   template() {
@@ -15,7 +15,7 @@ export default class LoginPage extends Component {
             <div class="signup">
                 <span class="text signup-text">SNS 계정으로 간편 가입하기</span>
             </div>
-            <a class="login-btn" href="https://kauth.kakao.com/oauth/authorize(response_type='code', redirect_uri={}, client_id=$})">
+            <a class="login-btn" href="https://kauth.kakao.com/oauth/authorize(response_type='code', redirect_uri=${KAKAO_REDIRECT_URI}, client_id=${KAKAO_CLIENT_ID})">
                 <div class="kakao-login">
                     <div class="kakao">
                         <img src="/images/login-page/kakao.svg">
@@ -29,10 +29,5 @@ export default class LoginPage extends Component {
         </div>
     </div>
     `;
-  }
-
-  mounted() {
-
-    document.querySelector(".test").addEventListener("click", requestNotificationPermission);
   }
 }

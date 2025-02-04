@@ -31,7 +31,7 @@ a {
     flex-shrink: 0;
 }
 
-.logo {
+.top-bar .logo {
     width: 215px;
     height: 52px;
     margin: 0 75px 0 10px;

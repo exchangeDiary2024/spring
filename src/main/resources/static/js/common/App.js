@@ -13,6 +13,6 @@ export default class App extends Component {
   }
 
   changePage(targetPage) {
-    this.setState({ page: new targetPage(this.$target) });
+    this.setState({ page: new targetPage(this.$target, this.$state.page.$props) });
   }
 }
