@@ -54,27 +54,30 @@ function clickStickerIcon(event) {
 function addStickerCharacter(stickerType) {
     const selection = window.getSelection();
     const range = selection.getRangeAt(0);
+    const sticker = createStickerDiv(stickerType);
 
-    const template = document.createElement("template");
-    template.innerHTML = makeStickerCharacterHTML(stickerType);
-
-    const stickerElement = template.content.firstChild;
-    range.insertNode(stickerElement);
+    range.insertNode(sticker);
 
     const space = document.createTextNode("\u200B");
-    stickerElement.parentNode.insertBefore(space, stickerElement.nextSibling);
+    sticker.parentNode.insertBefore(space, sticker.nextSibling);
 
-    range.setStartAfter(stickerElement);
-    range.setEndAfter(stickerElement);
+    range.setStartAfter(sticker);
+    range.setEndAfter(sticker);
 }
 
-function makeStickerCharacterHTML(stickerType) {
-    const character = getCharacter();
+function createStickerDiv(stickerType) {
+    const stickerDiv = document.createElement("div");
+    const characterImage = document.createElement("img");
+    const stickerImage = document.createElement("img");
 
-    return `<div class="sticker-character ${stickerType}" contenteditable="false">
-                <img class="character-icon ${character}">
-                <img class="sticker">
-            </div>`;
+    stickerDiv.classList.add("sticker-character", `${stickerType}`);
+    stickerDiv.contentEditable = "false";
+
+    characterImage.classList.add("character-icon", `${getCharacter()}`);
+    stickerImage.classList.add("sticker");
+
+    stickerDiv.append(characterImage, stickerImage);
+    return stickerDiv;
 }
 
 function getCharacter() {
