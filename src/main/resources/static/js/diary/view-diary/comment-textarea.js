@@ -13,19 +13,11 @@ function addEventInCommentTextarea() {
                     event.preventDefault();
                 } else {
                     removeSticker(event, startContainer, startOffset);
-                    removeNewLine(event, startContainer);
                 }
             }
             adjustHeightByTextarea();
         }
     });
-    textarea.addEventListener("keyup", (event) => {
-        if (event.key === "Backspace") {
-            if (textarea.innerHTML === "<br>") {
-                textarea.innerHTML = "";
-            }
-        }
-    })
 }
 
 function isIME(event) {
@@ -48,14 +40,4 @@ function isCursorPositionBehindSticker(element) {
         && element.nodeType === Node.ELEMENT_NODE
         && element.tagName === "DIV"
         && element.classList.contains("sticker-character");
-}
-
-function removeNewLine(event, startContainer) {
-    if (startContainer.nodeType === Node.TEXT_NODE && startContainer.textContent === "\u200B") {
-        event.preventDefault();
-        if (startContainer.previousSibling && startContainer.previousSibling.tagName === "BR") {
-            startContainer.previousSibling.remove();
-        }
-        startContainer.remove();
-    }
 }
