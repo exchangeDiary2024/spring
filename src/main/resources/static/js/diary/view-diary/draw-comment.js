@@ -27,6 +27,8 @@ async function drawComment(characterColor, commentParent) {
     processByCommentHorizontal(character, comment);
     comment.innerHTML += STICKER_BAR_HTML;
 
+    document.querySelector(".comment-textarea").focus();
+
     if (!commentBtn.classList.contains("selected")) {
         adjustHeightByWrittenComment();
         adjustHeightByWrittenReplies();
